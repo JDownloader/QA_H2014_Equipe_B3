@@ -4,6 +4,7 @@
 *.jar
 *.war
 *.ear
+/target
 
 # OS Files #
 .DS_Store
