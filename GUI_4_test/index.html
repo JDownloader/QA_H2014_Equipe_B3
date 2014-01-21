@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<!--Utiliser votre serveur préféré pour servire la page, exemple apache, node.js, jetty-->
+<html>
+  <head>
+    <title>Test</title>
+    <meta charset="utf-8" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://www.json.org/json2.js"></script>
+    <script type="text/javascript" src="script.js"></script>
+  </head>
+  <body>
+    <h2>Story 1 : Ajouter une prescription</h2>
+    <form>
+      <p>No patient</p>
+      <input id="noPatient" type="text" value="000000"><br/>
+      <p>Json</p>
+      <textarea id="messages" style="width: 400px; height: 200px;">
+        { intervenant: "000000",
+          date: "2001-07-04T12:08:56",
+          renouvellements: 0,
+          din: "02240541"
+        }
+      </textarea></form><br/>
+      <button id="target">Button</button>
+    </form>
+    <h2>Votre réponse:</h2>
+    <div id="responce_text">
+    </div>
+    <div id="responce_status">
+    </div>
+    <h3>Réponse reçu à:</h3>
+    <div id="responce_date">
+    </div>
+  </body>
+</html>
