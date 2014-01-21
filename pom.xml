@@ -50,5 +50,15 @@
 			<artifactId>jersey-json</artifactId>
 			<version>1.18</version>
 		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+		</dependency>
+		<dependency>
+			<groupId>org.infinitest</groupId>
+			<artifactId>continuous-testing-toolkit</artifactId>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
 </project>
