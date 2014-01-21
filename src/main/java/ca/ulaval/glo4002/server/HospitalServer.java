@@ -10,7 +10,7 @@ public class HospitalServer extends HttpServlet {
 	private static int httpPort = 8080;
 	private static Server server = new Server(httpPort);
 
-	public static void start() {
+	public static void main(String[] args) {
 		try {
 			server.start();
 		} catch (Exception e) {
