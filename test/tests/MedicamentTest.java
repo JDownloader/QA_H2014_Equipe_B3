@@ -1,9 +1,11 @@
-package ca.ulaval.glo4002.server;
+package tests;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import ca.ulaval.glo4002.server.Medicament;
 
 public class MedicamentTest {
     private static final int NULL_DIN = 0;

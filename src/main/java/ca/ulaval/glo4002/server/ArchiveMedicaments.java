@@ -7,42 +7,57 @@ import java.util.ArrayList;
 import java.util.List;
 
 import au.com.bytecode.opencsv.CSVReader;
+import erreurs.BadFileFormatException;
+import erreurs.MedicamentNotFoundException;
+
+/*
+ * 86% coverage, j'aime...je me touche :)
+ * 
+ * @author Vincent
+ * 
+ */
 
 public class ArchiveMedicaments {
-    private static final int DRUG_IDENTIFICATION_NUMBER_COLUMN = 3;
-    private static final int BRAND_NAME_COLUMN = 4;
+	private static final int DRUG_IDENTIFICATION_NUMBER_COLUMN = 3;
+	private static final int BRAND_NAME_COLUMN = 4;
 
-    private List<Medicament> medicaments = new ArrayList<Medicament>();
+	private List<Medicament> medicaments = new ArrayList<Medicament>();
 
-    ArchiveMedicaments(String pathOfDrugTextFile) throws FileNotFoundException, IOException, BadFileFormatException {
-	CSVReader reader = new CSVReader(new FileReader(pathOfDrugTextFile), ',');
+	public ArchiveMedicaments(String pathOfDrugTextFile) throws FileNotFoundException, IOException, BadFileFormatException {
+		CSVReader reader = new CSVReader(new FileReader(pathOfDrugTextFile), ',');
 
-	String[] nextLine;
-	int lineNumber = 0;
-	while ((nextLine = reader.readNext()) != null) {
-	    medicaments.add(parseMedicament(nextLine, ++lineNumber));
+		String[] nextLine;
+		int lineNumber = 0;
+		while ((nextLine = reader.readNext()) != null) {
+			medicaments.add(parseMedicament(nextLine, ++lineNumber));
+		}
+
+		reader.close();
 	}
 
-	reader.close();
-    }
-
-    private Medicament parseMedicament(final String[] line, int lineNumber) throws BadFileFormatException {
-	try {
-	    return new Medicament(Integer.parseInt(line[DRUG_IDENTIFICATION_NUMBER_COLUMN]), line[BRAND_NAME_COLUMN]);
-	} catch (NumberFormatException e) {
-	    throw new BadFileFormatException(String.format("Could not parse line %d due to bad data format.", lineNumber));
-	} catch (ArrayIndexOutOfBoundsException e) {
-	    throw new BadFileFormatException(String.format("Could not parse line %d due to invalid number of values.", lineNumber));
-	}
-    }
-
-    public Medicament getMedicament(int din) throws MedicamentNotFoundException {
-	for (Medicament medicament : medicaments) {
-	    if (medicament.getDin() == din) {
-		return medicament;
-	    }
+	private Medicament parseMedicament(final String[] line, int lineNumber) throws BadFileFormatException {
+		try {
+			return new Medicament(Integer.parseInt(line[DRUG_IDENTIFICATION_NUMBER_COLUMN]), line[BRAND_NAME_COLUMN]);
+		} catch (NumberFormatException e) {
+			throw new BadFileFormatException(String.format("Could not parse line %d due to bad data format.", lineNumber));
+		} catch (ArrayIndexOutOfBoundsException e) {
+			throw new BadFileFormatException(String.format("Could not parse line %d due to invalid number of values.", lineNumber));
+		}
 	}
 
-	throw new MedicamentNotFoundException(String.format("Cannot find 'Medicament' with id '%s'.", din));
-    }
+	/*
+	 * il faudrait trouver une alternative à l'approche ittérative
+	 * 
+	 * -Vince L-G
+	 */
+
+	public Medicament getMedicament(int din) throws MedicamentNotFoundException {
+		for (Medicament medicament : medicaments) {
+			if (medicament.getDin() == din) {
+				return medicament;
+			}
+		}
+
+		throw new MedicamentNotFoundException(String.format("Cannot find 'Medicament' with id '%s'.", din));
+	}
 }

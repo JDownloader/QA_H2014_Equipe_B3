@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.server;
+package erreurs;
 
 public class MedicamentNotFoundException extends Exception {
 	private static final long serialVersionUID = 1L;

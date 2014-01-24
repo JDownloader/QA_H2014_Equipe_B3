@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.server;
+package tests;
 
 import static org.junit.Assert.*;
 
@@ -8,6 +8,11 @@ import java.io.IOException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import ca.ulaval.glo4002.server.ArchiveMedicaments;
+import ca.ulaval.glo4002.server.Medicament;
+import erreurs.BadFileFormatException;
+import erreurs.MedicamentNotFoundException;
 
 public class ArchiveMedicamentsTest {
     private static final int DIN_INVALIDE = -1;
