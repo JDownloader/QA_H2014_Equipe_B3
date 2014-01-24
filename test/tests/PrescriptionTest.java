@@ -17,7 +17,7 @@ import erreurs.FormatDeDateNonValide;
 
 public class PrescriptionTest {
 
-	public static final Medicament UN_MEDICAMENT = new Medicament();
+	public static final Medicament UN_MEDICAMENT = new Medicament("test");
 	public static final int UN_RENOUVELLEMENT = 3;
 	public static final String MAINTENANT = "2001-07-04T12:08:56";
 	public static final String UNE_MAUVAISE_DATE = "28-04-1989234-23";
