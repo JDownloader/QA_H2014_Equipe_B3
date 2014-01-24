@@ -1,4 +1,4 @@
-package test;
+package tests;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -9,10 +9,10 @@ import java.text.ParseException;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.ulaval.glo4002.server.Intervenant;
 import ca.ulaval.glo4002.server.Medicament;
 import ca.ulaval.glo4002.server.Patient;
 import ca.ulaval.glo4002.server.Prescription;
+import ca.ulaval.glo4002.server.Staff;
 import erreurs.FormatDeDateNonValide;
 
 public class PrescriptionTest {
@@ -21,8 +21,8 @@ public class PrescriptionTest {
 	public static final int UN_RENOUVELLEMENT = 3;
 	public static final String MAINTENANT = "2001-07-04T12:08:56";
 	public static final String UNE_MAUVAISE_DATE = "28-04-1989234-23";
-	public static final Intervenant UN_INTERVENANT = new Intervenant();
-	public static final Patient UN_PATIENT = new Patient();
+	public static final Staff UN_INTERVENANT = new Staff(1);
+	public static final Patient UN_PATIENT = new Patient(1);
 
 	Prescription prescriptionVide;
 	Prescription prescriptionPleine;

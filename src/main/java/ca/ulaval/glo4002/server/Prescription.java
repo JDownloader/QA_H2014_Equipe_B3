@@ -13,11 +13,11 @@ public class Prescription {
 	private Medicament medicament;
 	private int renouvellement = -1;
 	private Date date;
-	private Intervenant intervenant;
+	private Staff intervenant;
 	private Patient patient;
 	private boolean isValid = false;
 
-	public Prescription(Medicament medicament, Patient patient, Intervenant intervenant) {
+	public Prescription(Medicament medicament, Patient patient, Staff intervenant) {
 		this.id = idMax;
 		this.medicament = medicament;
 		this.patient = patient;
