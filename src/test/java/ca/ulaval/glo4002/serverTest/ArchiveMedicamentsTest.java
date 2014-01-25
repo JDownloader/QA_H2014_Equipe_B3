@@ -28,7 +28,13 @@ public class ArchiveMedicamentsTest {
     
     @Test(expected=BadFileFormatException.class)
     public void ArchiveMedicamentLanceExceptionQuandMauvaisFormatFichier() throws IOException, FileNotFoundException, BadFileFormatException  {
-	ArchiveMedicaments archiveMedicaments = new ArchiveMedicaments("data/test/bad_format_drug_file.txt");
+	ArchiveMedicaments archiveMedicaments = new ArchiveMedicaments("data/test/drug_file_w_missing_values.txt");
+	assertNull(archiveMedicaments);
+    }    
+    
+    @Test(expected=BadFileFormatException.class)
+    public void ArchiveMedicamentLanceExceptionQuandMauvaisFormatFichier2() throws IOException, FileNotFoundException, BadFileFormatException  {
+	ArchiveMedicaments archiveMedicaments = new ArchiveMedicaments("data/test/drug_file_w_invalid_din.txt");
 	assertNull(archiveMedicaments);
     }     
     

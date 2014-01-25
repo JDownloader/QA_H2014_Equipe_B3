@@ -6,6 +6,15 @@ import java.util.Date;
 
 import erreurs.FormatDeDateNonValide;
 
+/* CODE REVIEW 25/01/2014
+ * - "renouvellement = -1": Magic number... Je définirais la constante suivante: UNSPECIFIED = -1
+ * - Je pense que la validation du format de date devrait se faire au niveau du Servlet par une fonction réutilisable, parce que c'est surement pas la seule date qu'on va avoir à valider dans les user stories.
+ * - Toujours dans le même sens, setDate devrait prendre une Date et non un String.
+ * - Le terme isActive serait à mon avis plus approprié que isValid, étant donnée que cet attribut est utilisé pour savoir si la prescription est expirée ou pas... Techniquement parlant, l'état de prescription devrait toujours être valide (sans être nécessairement être actif).
+ * 
+ * - Olivier R
+ */
+
 public class Prescription {
 	// TODO refactor idMax dans l<archive
 	private static int idMax = 0;
