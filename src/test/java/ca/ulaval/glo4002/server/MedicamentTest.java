@@ -23,6 +23,7 @@ public class MedicamentTest {
     public void unNouveauMedicamentEstCree() {
 	assertNotNull(medicament);
     }
+    
 
     @Test
     public void unNouveauMedicamentSansDinEstCree() {

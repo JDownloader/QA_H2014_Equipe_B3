@@ -9,10 +9,10 @@ import java.text.ParseException;
 import org.junit.Before;
 import org.junit.Test;
 
+import ca.ulaval.glo4002.error.FormatDeDateNonValide;
 import ca.ulaval.glo4002.server.Medicament;
 import ca.ulaval.glo4002.server.Prescription;
 import ca.ulaval.glo4002.server.Staff;
-import ca.ulaval.glo4002.server.FormatDeDateNonValide;
 
 public class PrescriptionTest {
 

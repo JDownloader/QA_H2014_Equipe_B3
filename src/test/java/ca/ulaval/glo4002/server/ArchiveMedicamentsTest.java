@@ -11,7 +11,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import ca.ulaval.glo4002.server.BadFileFormatException;
+import ca.ulaval.glo4002.error.BadFileFormatException;
+import ca.ulaval.glo4002.server.Medicament;
+import ca.ulaval.glo4002.error.MedicamentNotFoundException;
 import ca.ulaval.glo4002.server.ArchiveMedicaments;
 
 public class ArchiveMedicamentsTest {
