@@ -11,7 +11,7 @@ import ca.ulaval.glo4002.error.BadFileFormatException;
 import ca.ulaval.glo4002.error.MedicamentNotFoundException;
 
 /*
- * 86% coverage, j'aime...je me touche :)
+ * 86% coverage, j'aime
  * 
  * @author Vincent
  * 
