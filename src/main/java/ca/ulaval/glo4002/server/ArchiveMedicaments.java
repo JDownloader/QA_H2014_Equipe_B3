@@ -12,7 +12,7 @@ import ca.ulaval.glo4002.server.MedicamentNotFoundException;
 import ca.ulaval.glo4002.server.Medicament;
 
 /*
- * 86% coverage, j'aime...je me touche :)
+ * 86% coverage, j'aime
  * 
  * @author Vincent
  * 
