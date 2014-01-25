@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.serverTest;
+package ca.ulaval.glo4002.server;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -12,7 +12,7 @@ import org.junit.Test;
 import ca.ulaval.glo4002.server.Medicament;
 import ca.ulaval.glo4002.server.Prescription;
 import ca.ulaval.glo4002.server.Staff;
-import ca.ulaval.glo4002.error.FormatDeDateNonValide;
+import ca.ulaval.glo4002.server.FormatDeDateNonValide;
 
 public class PrescriptionTest {
 

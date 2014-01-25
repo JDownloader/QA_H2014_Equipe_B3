@@ -1,6 +1,8 @@
-package ca.ulaval.glo4002.serverTest;
+package ca.ulaval.glo4002.server;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -9,14 +11,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import ca.ulaval.glo4002.server.BadFileFormatException;
 import ca.ulaval.glo4002.server.ArchiveMedicaments;
-import ca.ulaval.glo4002.server.Medicament;
-import ca.ulaval.glo4002.error.BadFileFormatException;
-import ca.ulaval.glo4002.error.MedicamentNotFoundException;
 
 public class ArchiveMedicamentsTest {
     private static final int DIN_INVALIDE = -1;
     private static final int TRIFULUOPERAZINE_DIN = 326836;
+    
     @Rule
     public ExpectedException exception = ExpectedException.none();
     

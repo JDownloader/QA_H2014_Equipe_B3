@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.error;
+package ca.ulaval.glo4002.server;
 
 public class FormatDeDateNonValide extends Exception {
 
