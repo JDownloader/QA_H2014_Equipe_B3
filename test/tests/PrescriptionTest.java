@@ -10,7 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ca.ulaval.glo4002.server.Medicament;
-import ca.ulaval.glo4002.server.Patient;
 import ca.ulaval.glo4002.server.Prescription;
 import ca.ulaval.glo4002.server.Staff;
 import erreurs.FormatDeDateNonValide;
@@ -22,15 +21,14 @@ public class PrescriptionTest {
 	public static final String MAINTENANT = "2001-07-04T12:08:56";
 	public static final String UNE_MAUVAISE_DATE = "28-04-1989234-23";
 	public static final Staff UN_INTERVENANT = new Staff(1);
-	public static final Patient UN_PATIENT = new Patient(1);
 
 	Prescription prescriptionVide;
 	Prescription prescriptionPleine;
 
 	@Before
 	public void init() throws FormatDeDateNonValide, ParseException {
-		prescriptionVide = new Prescription(UN_MEDICAMENT, UN_PATIENT, UN_INTERVENANT);
-		prescriptionPleine = new Prescription(UN_MEDICAMENT, UN_PATIENT, UN_INTERVENANT);
+		prescriptionVide = new Prescription(UN_MEDICAMENT, UN_INTERVENANT);
+		prescriptionPleine = new Prescription(UN_MEDICAMENT, UN_INTERVENANT);
 		prescriptionPleine.setDate(MAINTENANT);
 		prescriptionPleine.setRenouvellement(UN_RENOUVELLEMENT);
 	}
@@ -42,7 +40,7 @@ public class PrescriptionTest {
 
 	@Test
 	public void unePrescriptionAUnIdUnique() {
-		Prescription autrePrescription = new Prescription(UN_MEDICAMENT, UN_PATIENT, UN_INTERVENANT);
+		Prescription autrePrescription = new Prescription(UN_MEDICAMENT, UN_INTERVENANT);
 		assertFalse(prescriptionVide.getId() == autrePrescription.getId());
 	}
 

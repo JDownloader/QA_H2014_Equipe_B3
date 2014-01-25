@@ -14,15 +14,12 @@ public class Prescription {
 	private int renouvellement = -1;
 	private Date date;
 	private Staff intervenant;
-	private Patient patient;
 	private boolean isValid = false;
 
-	public Prescription(Medicament medicament, Patient patient, Staff intervenant) {
-		this.id = idMax;
+	public Prescription(Medicament medicament, Staff intervenant) {
+		incrementAutoId();
 		this.medicament = medicament;
-		this.patient = patient;
 		this.intervenant = intervenant;
-		idMax++;
 	}
 
 	public int getId() {
@@ -60,6 +57,11 @@ public class Prescription {
 		if ((renouvellement >= 0) && (date != null)) {
 			this.isValid = true;
 		}
+	}
+
+	private void incrementAutoId() {
+		this.id = idMax;
+		idMax++;
 	}
 
 }
