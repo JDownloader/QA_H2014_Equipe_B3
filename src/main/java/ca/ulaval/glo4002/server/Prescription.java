@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import erreurs.FormatDeDateNonValide;
+import ca.ulaval.glo4002.error.FormatDeDateNonValide;
 
 /* CODE REVIEW 25/01/2014
  * - "renouvellement = -1": Magic number... Je définirais la constante suivante: UNSPECIFIED = -1

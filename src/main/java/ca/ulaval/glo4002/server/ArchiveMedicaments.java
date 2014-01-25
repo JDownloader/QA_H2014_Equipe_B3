@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import au.com.bytecode.opencsv.CSVReader;
-import erreurs.BadFileFormatException;
-import erreurs.MedicamentNotFoundException;
+import ca.ulaval.glo4002.error.BadFileFormatException;
+import ca.ulaval.glo4002.error.MedicamentNotFoundException;
 
 /*
  * 86% coverage, j'aime...je me touche :)

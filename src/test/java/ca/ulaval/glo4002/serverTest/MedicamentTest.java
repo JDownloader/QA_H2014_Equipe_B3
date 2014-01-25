@@ -1,4 +1,4 @@
-package tests;
+package ca.ulaval.glo4002.serverTest;
 
 import static org.junit.Assert.*;
 
