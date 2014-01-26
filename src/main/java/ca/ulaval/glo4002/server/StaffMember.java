@@ -5,26 +5,24 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity(name = "STAFF")
-public class Staff {
+public class StaffMember {
 
 	@Id
 	@Column(name = "STAFF_ID", nullable = false)
 	private int id;
 
-	/*
-	 * ID devrait pas être un argument mais être auto Incremanté
-	 * 
-	 * -Vince l-g
-	 */
-	public Staff(int p_id) {
-		id = p_id;
+	private static int idMax = 0;
+
+	public StaffMember() {
+		incrementAutoId();
 	}
 
 	public int getId() {
-		return id;
+		return this.id;
 	}
 
-	public void setId(int p_id) {
-		id = p_id;
+	private void incrementAutoId() {
+		this.id = idMax;
+		idMax++;
 	}
 }

@@ -46,14 +46,14 @@ public class Prescription {
 	private Date date;
 
 	@ManyToOne()
-	@ElementCollection(targetClass = Staff.class)
+	@ElementCollection(targetClass = StaffMember.class)
 	@JoinColumn(name = "STAFF_MEMBER", nullable = false)
-	private Staff intervenant;
+	private StaffMember intervenant;
 
 	@Transient
 	private boolean isValid = false;
 
-	public Prescription(Medicament medicament, Staff intervenant) {
+	public Prescription(Medicament medicament, StaffMember intervenant) {
 		incrementAutoId();
 		this.medicament = medicament;
 		this.intervenant = intervenant;
