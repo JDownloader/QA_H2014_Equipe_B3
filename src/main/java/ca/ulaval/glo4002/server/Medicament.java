@@ -1,39 +1,50 @@
 package ca.ulaval.glo4002.server;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity(name = "DRUG")
 public class Medicament {
-    private static int idMax = 0;
+	private static int idMax = 0;
 
-    private static final int NULL_DIN = 0;
+	private static final int NULL_DIN = 0;
 
-    private int id;
-    private int din;
-    private String nom;
+	@Id
+	@Column(name = "DRUG_ID", nullable = false)
+	private int id;
 
-    public Medicament(int din, String nom) {
-	incrementAutoId();
+	@Column(name = "DIN", nullable = false)
+	private int din;
 
-	this.din = din;
-	this.nom = nom;
-    }
+	@Column(name = "DRUG_NAME", nullable = false)
+	private String nom;
 
-    public Medicament(String nom) {
-	this(NULL_DIN, nom);
-    }
+	public Medicament(int din, String nom) {
+		incrementAutoId();
 
-    private void incrementAutoId() {
-	id = idMax;
-	idMax++;
-    }
+		this.din = din;
+		this.nom = nom;
+	}
 
-    public int getId() {
-	return this.id;
-    }
+	public Medicament(String nom) {
+		this(NULL_DIN, nom);
+	}
 
-    public int getDin() {
-	return this.din;
-    }
+	private void incrementAutoId() {
+		id = idMax;
+		idMax++;
+	}
 
-    public String getNom() {
-	return this.nom;
-    }
+	public int getId() {
+		return this.id;
+	}
+
+	public int getDin() {
+		return this.din;
+	}
+
+	public String getNom() {
+		return this.nom;
+	}
 }

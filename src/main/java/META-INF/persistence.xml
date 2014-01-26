@@ -5,7 +5,7 @@
                   http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
   <persistence-unit name="QA_H2014" transaction-type="RESOURCE_LOCAL">
     <description>H2 In Memory DB</description>
-    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
 
     <properties>
@@ -17,14 +17,14 @@
       <property name="hibernate.transaction.flush_before_completion"
         value="true" />
 
-      <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:test;DB_CLOSE_DELAY=-1" />
+      <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:QA_H2014;DB_CLOSE_DELAY=-1" />
       <property name="javax.persistence.jdbc.user" value="sa" />
       <property name="javax.persistence.jdbc.password" value="" />
 
       <property name="hibernate.archive.autodetection" value="class, hbm" />
       <property name="hibernate.id.new_generator_mappings"
         value="true" />
-      <property name="hibernate.connection.url" value="jdbc:h2:~/test" />
+      <property name="hibernate.connection.url" value="jdbc:h2:~/QA_H2014" />
       <property name="hibernate.connection.username" value="sa" />
 
     </properties>

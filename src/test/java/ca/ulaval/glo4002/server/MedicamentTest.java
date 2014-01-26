@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.serverTest;
+package ca.ulaval.glo4002.server;
 
 import static org.junit.Assert.*;
 
@@ -23,6 +23,7 @@ public class MedicamentTest {
     public void unNouveauMedicamentEstCree() {
 	assertNotNull(medicament);
     }
+    
 
     @Test
     public void unNouveauMedicamentSansDinEstCree() {

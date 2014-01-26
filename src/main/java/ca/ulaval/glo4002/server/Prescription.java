@@ -4,6 +4,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
+
 import ca.ulaval.glo4002.error.FormatDeDateNonValide;
 
 /* CODE REVIEW 25/01/2014
@@ -15,14 +23,34 @@ import ca.ulaval.glo4002.error.FormatDeDateNonValide;
  * - Olivier R
  */
 
+@Entity(name = "PRESCRIPTION")
 public class Prescription {
 	// TODO refactor idMax dans l<archive
+
+	@Transient
 	private static int idMax = 0;
+
+	@Id
+	@Column(name = "PRES_ID", nullable = false)
 	private int id;
+
+	@ManyToOne()
+	@ElementCollection(targetClass = Medicament.class)
+	@JoinColumn(name = "DRUG", nullable = false)
 	private Medicament medicament;
+
+	@Column(name = "RENEWAL", nullable = false)
 	private int renouvellement = -1;
+
+	@Column(name = "DATE", nullable = false)
 	private Date date;
+
+	@ManyToOne()
+	@ElementCollection(targetClass = Staff.class)
+	@JoinColumn(name = "STAFF_MEMBER", nullable = false)
 	private Staff intervenant;
+
+	@Transient
 	private boolean isValid = false;
 
 	public Prescription(Medicament medicament, Staff intervenant) {
@@ -44,7 +72,8 @@ public class Prescription {
 		estValide();
 	}
 
-	public void setDate(String date) throws FormatDeDateNonValide, ParseException {
+	public void setDate(String date) throws FormatDeDateNonValide,
+			ParseException {
 		if (verifieDate(date)) {
 			this.date = new SimpleDateFormat("yyyy-MM-dd").parse(date);
 		} else {
