@@ -3,7 +3,7 @@ $(function() {
     var dat = $( "#messages" ).val();
     $.ajax({
       type: "POST",
-      url: "127.0.0.1:8080/patient/" + $( "#noPatient" ).val() + "/prescriptions/",
+      url: "http://127.0.0.1:8080/patient/" + $( "#noPatient" ).val() + "/prescriptions/",
       data: dat,
       success: function(msg){
         $( "#responce_text" ).css('color', 'black');

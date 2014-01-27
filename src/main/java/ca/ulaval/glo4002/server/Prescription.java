@@ -37,7 +37,7 @@ public class Prescription {
 	@ManyToOne()
 	@ElementCollection(targetClass = Medicament.class)
 	@JoinColumn(name = "DRUG", nullable = false)
-	private Medicament medicament;
+	private Medicament drug;
 
 	@Column(name = "RENEWAL", nullable = false)
 	private int renouvellement = -1;
@@ -48,41 +48,37 @@ public class Prescription {
 	@ManyToOne()
 	@ElementCollection(targetClass = StaffMember.class)
 	@JoinColumn(name = "STAFF_MEMBER", nullable = false)
-	private StaffMember intervenant;
+	private StaffMember prescriber;
 
 	@Transient
 	private boolean isValid = false;
 
 	public Prescription(Medicament medicament, StaffMember intervenant) {
 		incrementAutoId();
-		this.medicament = medicament;
-		this.intervenant = intervenant;
+		this.drug = medicament;
+		this.prescriber = intervenant;
 	}
 
 	public int getId() {
 		return id;
 	}
 
-	public boolean getValid() {
-		return isValid;
-	}
-
 	public void setRenouvellement(int renouvellement) {
 		this.renouvellement = renouvellement;
-		estValide();
+		calculateValid();
 	}
 
 	public void setDate(String date) throws FormatDeDateNonValide,
 			ParseException {
-		if (verifieDate(date)) {
+		if (verifyDate(date)) {
 			this.date = new SimpleDateFormat("yyyy-MM-dd").parse(date);
 		} else {
 			throw new FormatDeDateNonValide();
 		}
-		estValide();
+		calculateValid();
 	}
 
-	private boolean verifieDate(String laDate) {
+	private boolean verifyDate(String laDate) {
 		String regexDeValidationDeDate = "((?:2|1)\\d{3}(?:-|\\/)(?:(?:0[1-9])|(?:1[0-2]))(?:-|\\/)(?:(?:0[1-9])|(?:[1-2][0-9])|(?:3[0-1]))(?:T|\\s)(?:(?:[0-1][0-9])|(?:2[0-3])):(?:[0-5][0-9]):(?:[0-5][0-9]))";
 		System.out.println(laDate);
 		if (laDate.matches(regexDeValidationDeDate))
@@ -91,10 +87,14 @@ public class Prescription {
 			return false;
 	}
 
-	private void estValide() {
+	private void calculateValid(){
 		if ((renouvellement >= 0) && (date != null)) {
 			this.isValid = true;
 		}
+	}
+	
+	public boolean isValid() {
+		return this.isValid;
 	}
 
 	private void incrementAutoId() {

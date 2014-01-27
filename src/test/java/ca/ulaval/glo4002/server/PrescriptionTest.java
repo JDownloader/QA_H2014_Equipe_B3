@@ -6,7 +6,6 @@ import java.text.ParseException;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import ca.ulaval.glo4002.error.FormatDeDateNonValide;
 
 public class PrescriptionTest {
@@ -48,25 +47,25 @@ public class PrescriptionTest {
 
 	@Test
 	public void unePrescriptionVideNestPasValide() {
-		assertFalse(prescriptionVide.getValid());
+		assertFalse(prescriptionVide.isValid());
 	}
 
 	@Test
 	public void onPeutAjouterUnRenouvellementAUnePrescription() {
 		prescriptionVide.setRenouvellement(UN_RENOUVELLEMENT);
-		assertFalse(prescriptionVide.getValid());
+		assertFalse(prescriptionVide.isValid());
 	}
 
 	@Test
 	public void onPeutAjouterUneDateAUnePrescription()
 			throws FormatDeDateNonValide, ParseException {
 		prescriptionVide.setDate(MAINTENANT);
-		assertFalse(prescriptionVide.getValid());
+		assertFalse(prescriptionVide.isValid());
 	}
 
 	@Test
 	public void UnePrescriptionCompleteEstValide() {
-		assertTrue(prescriptionPleine.getValid());
+		assertTrue(prescriptionPleine.isValid());
 	}
 
 }
