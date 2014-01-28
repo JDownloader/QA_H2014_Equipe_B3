@@ -12,9 +12,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+import antlr.Utils;
 import ca.ulaval.glo4002.drug.Drug;
 import ca.ulaval.glo4002.exeptions.InvalidDateFormat;
 import ca.ulaval.glo4002.staff.StaffMember;
+import ca.ulaval.glo4002.utils.validate;
 
 /* CODE REVIEW 25/01/2014
  * - "renouvellement = -1": Magic number... Je définirais la constante suivante: UNSPECIFIED = -1
@@ -72,21 +74,10 @@ public class Prescription {
 
 	public void setDate(String date) throws InvalidDateFormat,
 			ParseException {
-		if (verifyDate(date)) {
+		if (validate.validateDate(date)) {
 			this.date = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-		} else {
-			throw new InvalidDateFormat();
-		}
+		} 
 		calculateValid();
-	}
-
-	private boolean verifyDate(String laDate) {
-		String regexDeValidationDeDate = "((?:2|1)\\d{3}(?:-|\\/)(?:(?:0[1-9])|(?:1[0-2]))(?:-|\\/)(?:(?:0[1-9])|(?:[1-2][0-9])|(?:3[0-1]))(?:T|\\s)(?:(?:[0-1][0-9])|(?:2[0-3])):(?:[0-5][0-9]):(?:[0-5][0-9]))";
-		System.out.println(laDate);
-		if (laDate.matches(regexDeValidationDeDate))
-			return true;
-		else
-			return false;
 	}
 
 	private void calculateValid(){
