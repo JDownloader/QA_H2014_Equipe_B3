@@ -10,7 +10,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import ca.ulaval.glo4002.exceptions.BadFileFormatException;
-import ca.ulaval.glo4002.exceptions.DrugNotFoundException;
 
 public class DrugArchiveTest {
 	private static final int INVALID_DIN = -1;

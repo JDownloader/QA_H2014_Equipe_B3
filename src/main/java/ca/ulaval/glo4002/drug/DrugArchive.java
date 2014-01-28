@@ -8,7 +8,6 @@ import java.util.List;
 
 import au.com.bytecode.opencsv.CSVReader;
 import ca.ulaval.glo4002.exceptions.BadFileFormatException;
-import ca.ulaval.glo4002.exceptions.DrugNotFoundException;
 
 /*
  * 86% coverage, j'aime

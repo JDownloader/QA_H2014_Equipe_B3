@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.exceptions;
+package ca.ulaval.glo4002.drug;
 
 public class DrugNotFoundException extends Exception {
 	private static final long serialVersionUID = 1L;
