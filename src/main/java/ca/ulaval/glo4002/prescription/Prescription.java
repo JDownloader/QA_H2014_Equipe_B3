@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.server;
+package ca.ulaval.glo4002.prescription;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,7 +12,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
-import ca.ulaval.glo4002.error.FormatDeDateNonValide;
+import ca.ulaval.glo4002.drug.Drug;
+import ca.ulaval.glo4002.exeptions.InvalidDateFormat;
+import ca.ulaval.glo4002.staff.StaffMember;
 
 /* CODE REVIEW 25/01/2014
  * - "renouvellement = -1": Magic number... Je définirais la constante suivante: UNSPECIFIED = -1
@@ -35,9 +37,9 @@ public class Prescription {
 	private int id;
 
 	@ManyToOne()
-	@ElementCollection(targetClass = Medicament.class)
+	@ElementCollection(targetClass = Drug.class)
 	@JoinColumn(name = "DRUG", nullable = false)
-	private Medicament drug;
+	private Drug drug;
 
 	@Column(name = "RENEWAL", nullable = false)
 	private int renouvellement = -1;
@@ -53,7 +55,7 @@ public class Prescription {
 	@Transient
 	private boolean isValid = false;
 
-	public Prescription(Medicament medicament, StaffMember intervenant) {
+	public Prescription(Drug medicament, StaffMember intervenant) {
 		incrementAutoId();
 		this.drug = medicament;
 		this.prescriber = intervenant;
@@ -68,12 +70,12 @@ public class Prescription {
 		calculateValid();
 	}
 
-	public void setDate(String date) throws FormatDeDateNonValide,
+	public void setDate(String date) throws InvalidDateFormat,
 			ParseException {
 		if (verifyDate(date)) {
 			this.date = new SimpleDateFormat("yyyy-MM-dd").parse(date);
 		} else {
-			throw new FormatDeDateNonValide();
+			throw new InvalidDateFormat();
 		}
 		calculateValid();
 	}

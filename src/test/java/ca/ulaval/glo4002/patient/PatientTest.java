@@ -1,9 +1,11 @@
-package ca.ulaval.glo4002.server;
+package ca.ulaval.glo4002.patient;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import ca.ulaval.glo4002.patient.Patient;
 
 public class PatientTest {
 	private static final int ID_PATIENT = 1;

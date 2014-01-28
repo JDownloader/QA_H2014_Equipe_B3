@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.server;
+package ca.ulaval.glo4002.patient;
 
 import java.util.ArrayList;
 
@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+
+import ca.ulaval.glo4002.prescription.Prescription;
 
 @Entity(name = "Patient")
 public class Patient {

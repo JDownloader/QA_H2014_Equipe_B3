@@ -1,11 +1,11 @@
-package ca.ulaval.glo4002.server;
+package ca.ulaval.glo4002.drug;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity(name = "DRUG")
-public class Medicament {
+public class Drug {
 	private static int idMax = 0;
 
 	private static final int NULL_DIN = 0;
@@ -20,14 +20,14 @@ public class Medicament {
 	@Column(name = "DRUG_NAME", nullable = false)
 	private String nom;
 
-	public Medicament(int din, String nom) {
+	public Drug(int din, String nom) {
 		incrementAutoId();
 
 		this.din = din;
 		this.nom = nom;
 	}
 
-	public Medicament(String nom) {
+	public Drug(String nom) {
 		this(NULL_DIN, nom);
 	}
 

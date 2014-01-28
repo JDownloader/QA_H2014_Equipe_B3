@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.server;
+package ca.ulaval.glo4002.prescription;
 
 import java.util.ArrayList;
 
@@ -10,11 +10,11 @@ import java.util.ArrayList;
  * - Olivier R
  */
 
-public class ArchivePrescription {
+public class PrescriptionArchive {
 
 	ArrayList<Prescription> archive;
 
-	public ArchivePrescription() {
+	public PrescriptionArchive() {
 		archive = new ArrayList<Prescription>();
 	}
 

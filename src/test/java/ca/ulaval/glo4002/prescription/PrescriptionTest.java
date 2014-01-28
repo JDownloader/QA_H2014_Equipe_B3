@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.server;
+package ca.ulaval.glo4002.prescription;
 
 import static org.junit.Assert.*;
 
@@ -6,11 +6,15 @@ import java.text.ParseException;
 
 import org.junit.Before;
 import org.junit.Test;
-import ca.ulaval.glo4002.error.FormatDeDateNonValide;
+
+import ca.ulaval.glo4002.drug.Drug;
+import ca.ulaval.glo4002.exeptions.InvalidDateFormat;
+import ca.ulaval.glo4002.staff.StaffMember;
+import ca.ulaval.glo4002.prescription.Prescription;
 
 public class PrescriptionTest {
 
-	public static final Medicament UN_MEDICAMENT = new Medicament("test");
+	public static final Drug UN_MEDICAMENT = new Drug("test");
 	public static final int UN_RENOUVELLEMENT = 3;
 	public static final String MAINTENANT = "2001-07-04T12:08:56";
 	public static final String UNE_MAUVAISE_DATE = "28-04-1989234-23";
@@ -20,7 +24,7 @@ public class PrescriptionTest {
 	Prescription prescriptionPleine;
 
 	@Before
-	public void init() throws FormatDeDateNonValide, ParseException {
+	public void init() throws InvalidDateFormat, ParseException {
 		prescriptionVide = new Prescription(UN_MEDICAMENT, UN_INTERVENANT);
 		prescriptionPleine = new Prescription(UN_MEDICAMENT, UN_INTERVENANT);
 		prescriptionPleine.setDate(MAINTENANT);
@@ -39,9 +43,9 @@ public class PrescriptionTest {
 		assertFalse(prescriptionVide.getId() == autrePrescription.getId());
 	}
 
-	@Test(expected = FormatDeDateNonValide.class)
+	@Test(expected = InvalidDateFormat.class)
 	public void unePrescriptionNePrendPasLeMauvaisFormatDeDate()
-			throws FormatDeDateNonValide, ParseException {
+			throws InvalidDateFormat, ParseException {
 		prescriptionVide.setDate(UNE_MAUVAISE_DATE);
 	}
 
@@ -58,7 +62,7 @@ public class PrescriptionTest {
 
 	@Test
 	public void onPeutAjouterUneDateAUnePrescription()
-			throws FormatDeDateNonValide, ParseException {
+			throws InvalidDateFormat, ParseException {
 		prescriptionVide.setDate(MAINTENANT);
 		assertFalse(prescriptionVide.isValid());
 	}

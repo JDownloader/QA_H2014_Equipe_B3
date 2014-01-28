@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.server;
+package ca.ulaval.glo4002.drug;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import au.com.bytecode.opencsv.CSVReader;
-import ca.ulaval.glo4002.error.BadFileFormatException;
-import ca.ulaval.glo4002.error.MedicamentNotFoundException;
+import ca.ulaval.glo4002.exeptions.BadFileFormatException;
 
 /*
  * 86% coverage, j'aime
@@ -17,13 +16,13 @@ import ca.ulaval.glo4002.error.MedicamentNotFoundException;
  * 
  */
 
-public class ArchiveMedicaments {
+public class DrugArchive {
 	private static final int DRUG_IDENTIFICATION_NUMBER_COLUMN = 3;
 	private static final int BRAND_NAME_COLUMN = 4;
 
-	private List<Medicament> medicaments = new ArrayList<Medicament>();
+	private List<Drug> medicaments = new ArrayList<Drug>();
 
-	public ArchiveMedicaments(String pathOfDrugTextFile)
+	public DrugArchive(String pathOfDrugTextFile)
 			throws FileNotFoundException, IOException, BadFileFormatException {
 		CSVReader reader = new CSVReader(new FileReader(pathOfDrugTextFile),
 				',');
@@ -37,10 +36,10 @@ public class ArchiveMedicaments {
 		reader.close();
 	}
 
-	private Medicament parseMedicament(final String[] line, int lineNumber)
+	private Drug parseMedicament(final String[] line, int lineNumber)
 			throws BadFileFormatException {
 		try {
-			return new Medicament(
+			return new Drug(
 					Integer.parseInt(line[DRUG_IDENTIFICATION_NUMBER_COLUMN]),
 					line[BRAND_NAME_COLUMN]);
 		} catch (NumberFormatException e) {
@@ -60,14 +59,14 @@ public class ArchiveMedicaments {
 	 * -Vince L-G
 	 */
 
-	public Medicament getMedicament(int din) throws MedicamentNotFoundException {
-		for (Medicament medicament : medicaments) {
+	public Drug getMedicament(int din) throws DrugNotFoundException {
+		for (Drug medicament : medicaments) {
 			if (medicament.getDin() == din) {
 				return medicament;
 			}
 		}
 
-		throw new MedicamentNotFoundException(String.format(
+		throw new DrugNotFoundException(String.format(
 				"Cannot find 'Medicament' with id '%s'.", din));
 	}
 }
