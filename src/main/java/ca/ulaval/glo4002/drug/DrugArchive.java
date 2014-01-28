@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import au.com.bytecode.opencsv.CSVReader;
-import ca.ulaval.glo4002.exeptions.BadFileFormatException;
+import ca.ulaval.glo4002.exceptions.BadFileFormatException;
+import ca.ulaval.glo4002.exceptions.DrugNotFoundException;
 
 /*
  * 86% coverage, j'aime
@@ -20,23 +21,23 @@ public class DrugArchive {
 	private static final int DRUG_IDENTIFICATION_NUMBER_COLUMN = 3;
 	private static final int BRAND_NAME_COLUMN = 4;
 
-	private List<Drug> medicaments = new ArrayList<Drug>();
+	private List<Drug> drugs = new ArrayList<Drug>();
 
-	public DrugArchive(String pathOfDrugTextFile)
-			throws FileNotFoundException, IOException, BadFileFormatException {
+	public DrugArchive(String pathOfDrugTextFile) throws FileNotFoundException,
+			IOException, BadFileFormatException {
 		CSVReader reader = new CSVReader(new FileReader(pathOfDrugTextFile),
 				',');
 
 		String[] nextLine;
 		int lineNumber = 0;
 		while ((nextLine = reader.readNext()) != null) {
-			medicaments.add(parseMedicament(nextLine, ++lineNumber));
+			drugs.add(parseDrug(nextLine, ++lineNumber));
 		}
 
 		reader.close();
 	}
 
-	private Drug parseMedicament(final String[] line, int lineNumber)
+	private Drug parseDrug(final String[] line, int lineNumber)
 			throws BadFileFormatException {
 		try {
 			return new Drug(
@@ -59,10 +60,10 @@ public class DrugArchive {
 	 * -Vince L-G
 	 */
 
-	public Drug getMedicament(int din) throws DrugNotFoundException {
-		for (Drug medicament : medicaments) {
-			if (medicament.getDin() == din) {
-				return medicament;
+	public Drug getDrug(int din) throws DrugNotFoundException {
+		for (Drug drug : drugs) {
+			if (drug.getDin() == din) {
+				return drug;
 			}
 		}
 

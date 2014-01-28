@@ -1,5 +1,5 @@
-package ca.ulaval.glo4002.exeptions;
+package ca.ulaval.glo4002.exceptions;
 
-public class InvalidDateFormat extends Exception {
+public class InvalidDateFormatException extends Exception {
 
 }

@@ -12,9 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
-import antlr.Utils;
 import ca.ulaval.glo4002.drug.Drug;
-import ca.ulaval.glo4002.exeptions.InvalidDateFormat;
+import ca.ulaval.glo4002.exceptions.InvalidDateFormatException;
 import ca.ulaval.glo4002.staff.StaffMember;
 import ca.ulaval.glo4002.utils.validate;
 
@@ -44,7 +43,7 @@ public class Prescription {
 	private Drug drug;
 
 	@Column(name = "RENEWAL", nullable = false)
-	private int renouvellement = -1;
+	private int renewal = -1;
 
 	@Column(name = "DATE", nullable = false)
 	private Date date;
@@ -57,35 +56,35 @@ public class Prescription {
 	@Transient
 	private boolean isValid = false;
 
-	public Prescription(Drug medicament, StaffMember intervenant) {
+	public Prescription(Drug drug, StaffMember staff) {
 		incrementAutoId();
-		this.drug = medicament;
-		this.prescriber = intervenant;
+		this.drug = drug;
+		this.prescriber = staff;
 	}
 
 	public int getId() {
 		return id;
 	}
 
-	public void setRenouvellement(int renouvellement) {
-		this.renouvellement = renouvellement;
+	public void setRenewal(int renewal) {
+		this.renewal = renewal;
 		calculateValid();
 	}
 
-	public void setDate(String date) throws InvalidDateFormat,
+	public void setDate(String date) throws InvalidDateFormatException,
 			ParseException {
 		if (validate.validateDate(date)) {
 			this.date = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-		} 
+		}
 		calculateValid();
 	}
 
-	private void calculateValid(){
-		if ((renouvellement >= 0) && (date != null)) {
+	private void calculateValid() {
+		if ((renewal >= 0) && (date != null)) {
 			this.isValid = true;
 		}
 	}
-	
+
 	public boolean isValid() {
 		return this.isValid;
 	}

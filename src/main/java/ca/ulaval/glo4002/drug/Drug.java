@@ -18,17 +18,17 @@ public class Drug {
 	private int din;
 
 	@Column(name = "DRUG_NAME", nullable = false)
-	private String nom;
+	private String name;
 
-	public Drug(int din, String nom) {
+	public Drug(int din, String name) {
 		incrementAutoId();
 
 		this.din = din;
-		this.nom = nom;
+		this.name = name;
 	}
 
-	public Drug(String nom) {
-		this(NULL_DIN, nom);
+	public Drug(String name) {
+		this(NULL_DIN, name);
 	}
 
 	private void incrementAutoId() {
@@ -44,7 +44,7 @@ public class Drug {
 		return this.din;
 	}
 
-	public String getNom() {
-		return this.nom;
+	public String getName() {
+		return this.name;
 	}
 }

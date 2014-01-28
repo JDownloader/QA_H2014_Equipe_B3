@@ -8,68 +8,67 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ca.ulaval.glo4002.drug.Drug;
-import ca.ulaval.glo4002.exeptions.InvalidDateFormat;
+import ca.ulaval.glo4002.exceptions.InvalidDateFormatException;
 import ca.ulaval.glo4002.staff.StaffMember;
-import ca.ulaval.glo4002.prescription.Prescription;
 
 public class PrescriptionTest {
 
-	public static final Drug UN_MEDICAMENT = new Drug("test");
-	public static final int UN_RENOUVELLEMENT = 3;
-	public static final String MAINTENANT = "2001-07-04T12:08:56";
-	public static final String UNE_MAUVAISE_DATE = "28-04-1989234-23";
-	public static final StaffMember UN_INTERVENANT = new StaffMember();
+	public static final Drug A_DRUG = new Drug("test");
+	public static final int A_RENEWAL = 3;
+	public static final String NOW = "2001-07-04T12:08:56";
+	public static final String A_WRONG_DATE = "28-04-1989234-23";
+	public static final StaffMember A_STAFF_MEMBER = new StaffMember();
 
-	Prescription prescriptionVide;
-	Prescription prescriptionPleine;
+	Prescription emptyPrescription;
+	Prescription filledPrescription;
 
 	@Before
-	public void init() throws InvalidDateFormat, ParseException {
-		prescriptionVide = new Prescription(UN_MEDICAMENT, UN_INTERVENANT);
-		prescriptionPleine = new Prescription(UN_MEDICAMENT, UN_INTERVENANT);
-		prescriptionPleine.setDate(MAINTENANT);
-		prescriptionPleine.setRenouvellement(UN_RENOUVELLEMENT);
+	public void init() throws InvalidDateFormatException, ParseException {
+		emptyPrescription = new Prescription(A_DRUG, A_STAFF_MEMBER);
+		filledPrescription = new Prescription(A_DRUG, A_STAFF_MEMBER);
+		filledPrescription.setDate(NOW);
+		filledPrescription.setRenewal(A_RENEWAL);
 	}
 
 	@Test
 	public void unePrescriptionEstCree() {
-		assertNotNull(prescriptionVide);
+		assertNotNull(emptyPrescription);
 	}
 
 	@Test
 	public void unePrescriptionAUnIdUnique() {
-		Prescription autrePrescription = new Prescription(UN_MEDICAMENT,
-				UN_INTERVENANT);
-		assertFalse(prescriptionVide.getId() == autrePrescription.getId());
+		Prescription otherPrescription = new Prescription(A_DRUG,
+				A_STAFF_MEMBER);
+		assertFalse(emptyPrescription.getId() == otherPrescription.getId());
 	}
 
-	@Test(expected = InvalidDateFormat.class)
+	@Test(expected = InvalidDateFormatException.class)
 	public void unePrescriptionNePrendPasLeMauvaisFormatDeDate()
-			throws InvalidDateFormat, ParseException {
-		prescriptionVide.setDate(UNE_MAUVAISE_DATE);
+			throws InvalidDateFormatException, ParseException {
+		emptyPrescription.setDate(A_WRONG_DATE);
 	}
 
 	@Test
 	public void unePrescriptionVideNestPasValide() {
-		assertFalse(prescriptionVide.isValid());
+		assertFalse(emptyPrescription.isValid());
 	}
 
 	@Test
 	public void onPeutAjouterUnRenouvellementAUnePrescription() {
-		prescriptionVide.setRenouvellement(UN_RENOUVELLEMENT);
-		assertFalse(prescriptionVide.isValid());
+		emptyPrescription.setRenewal(A_RENEWAL);
+		assertFalse(emptyPrescription.isValid());
 	}
 
 	@Test
 	public void onPeutAjouterUneDateAUnePrescription()
-			throws InvalidDateFormat, ParseException {
-		prescriptionVide.setDate(MAINTENANT);
-		assertFalse(prescriptionVide.isValid());
+			throws InvalidDateFormatException, ParseException {
+		emptyPrescription.setDate(NOW);
+		assertFalse(emptyPrescription.isValid());
 	}
 
 	@Test
 	public void UnePrescriptionCompleteEstValide() {
-		assertTrue(prescriptionPleine.isValid());
+		assertTrue(filledPrescription.isValid());
 	}
 
 }

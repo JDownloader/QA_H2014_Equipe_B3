@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.exeptions;
+package ca.ulaval.glo4002.exceptions;
 
 public class BadFileFormatException extends Exception {
 	private static final long serialVersionUID = 1L;
