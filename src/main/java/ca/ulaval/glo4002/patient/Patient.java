@@ -1,6 +1,6 @@
 package ca.ulaval.glo4002.patient;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,16 +24,7 @@ public class Patient {
 
 	@OneToMany(targetEntity = Prescription.class, cascade = CascadeType.ALL)
 	@JoinColumn(name = "PRES_ID")
-	private Prescription prescriptionId;
-
-	/*
-	 * Il n'est pas possible de persister une liste, elle est "Transient" pour
-	 * dire qu'elle ne serait pas ajouter
-	 * 
-	 * Antoine
-	 */
-	@Transient
-	private ArrayList<Integer> presciptionId;
+	private List<Integer> presciptionId;
 
 	public Patient() {
 		incrementAutoId();
@@ -43,12 +34,6 @@ public class Patient {
 		return id;
 	}
 
-	/*
-	 * Si l'on garde l'ArrayList, la methode peut toujours servir, sinon est
-	 * elle pourait etre modifier pour mettre a jouer la BD
-	 * 
-	 * Antoine
-	 */
 	public void addPrescription(int idPrescription) {
 		presciptionId.add(idPrescription);
 	}
