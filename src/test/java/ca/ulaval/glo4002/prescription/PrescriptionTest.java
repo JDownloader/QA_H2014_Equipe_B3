@@ -17,7 +17,7 @@ public class PrescriptionTest {
 	public static final int A_RENEWAL = 3;
 	public static final String NOW = "2001-07-04T12:08:56";
 	public static final String A_WRONG_DATE = "28-04-1989234-23";
-	public static final StaffMember A_STAFF_MEMBER = new StaffMember();
+	public static final StaffMember A_STAFF_MEMBER = new StaffMember(0);
 
 	Prescription emptyPrescription;
 	Prescription filledPrescription;

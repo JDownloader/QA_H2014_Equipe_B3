@@ -11,8 +11,6 @@ public class StaffMember {
 	@Column(name = "STAFF_ID", nullable = false)
 	private int id;
 
-	private static int idMax = 0;
-
 	public StaffMember(int id) {
 		this.id = id;
 	}
@@ -21,8 +19,4 @@ public class StaffMember {
 		return this.id;
 	}
 
-	private void incrementAutoId() {
-		this.id = idMax;
-		idMax++;
-	}
 }
