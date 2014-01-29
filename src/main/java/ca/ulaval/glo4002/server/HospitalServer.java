@@ -7,7 +7,8 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
-import ca.ulaval.glo4002.server.PrescriptionServlet;
+import ca.ulaval.glo4002.persistence.EM;
+
 /*
  * il faudrait automatiser les test
  * 
@@ -18,12 +19,15 @@ public class HospitalServer extends HttpServlet {
 
 	private static int httpPort = 8080;
 	private static Server server = new Server(httpPort);
-	static ServletContextHandler servletContextHandler = new ServletContextHandler(server, "/");
+	static ServletContextHandler servletContextHandler = new ServletContextHandler(
+			server, "/");
 
 	public static void main(String[] args) {
 		try {
-			servletContextHandler.addServlet(new ServletHolder(PrescriptionServlet.class), "/prescription");
+			servletContextHandler.addServlet(new ServletHolder(
+					PrescriptionServlet.class), "/prescription");
 			server.start();
+			EM.setEntityManager();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -42,6 +46,7 @@ public class HospitalServer extends HttpServlet {
 	public void stop() {
 		try {
 			server.stop();
+			EM.closeEntityManager();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
