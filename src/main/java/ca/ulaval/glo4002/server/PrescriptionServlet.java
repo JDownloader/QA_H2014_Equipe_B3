@@ -28,6 +28,7 @@ import ca.ulaval.glo4002.staff.StaffMember;
 
 /*
  * Check that you need to put staffMember as an Integer.
+ * Also, think about creating a "request" object.
  * 
  * @author Marie-Hélène
  *
