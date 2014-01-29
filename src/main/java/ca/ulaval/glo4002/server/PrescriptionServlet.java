@@ -1,6 +1,5 @@
 package ca.ulaval.glo4002.server;
 
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -39,19 +38,31 @@ public class PrescriptionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private boolean badRequest = false;
 
+	private static final String CONTENT_TYPE = "application/json; charset=UTF-8";
+	private static final String ENCODING = "UTF-8";
+	private static final String DIN_PARAMETER = "din";
+	private static final String STAFF_MEMBER_PARAMETER = "intervenant";
+	private static final String NAME_PARAMETER = "nom";
+	private static final String DATE_PARAMETER = "date";
+	private static final String RENEWAL_PARAMETER = "renouvellements";
+
+	private static final String CODE_PARAMETER = "code";
+	private static final String INVALID_PRESCRIPTION_CODE = "PRES001";
+	private static final String MESSAGE_PARAMETER = "message";
+	private static final String MESSAGE = "La prescription est invalide";
+
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.setContentType("application/json; charset=UTF-8");
+		response.setContentType(CONTENT_TYPE);
 		InputStream requestBody = request.getInputStream();
 		StringWriter writer = new StringWriter();
-		IOUtils.copy(requestBody, writer, "UTF-8");
+		IOUtils.copy(requestBody, writer, ENCODING);
 		String requestString = writer.toString();
-			parseJsonObject(requestString);
-			if (badRequest == true) {
-				sendBadRequestMessage(response);
-			} 
-			else
-				sendCreatedMessage(response);
+		parseJsonObject(requestString);
+		if (badRequest == true) {
+			sendBadRequestMessage(response);
+		} else
+			sendCreatedMessage(response);
 
 	}
 
@@ -59,28 +70,30 @@ public class PrescriptionServlet extends HttpServlet {
 		String name = null;
 		Integer din = null;
 		JSONObject objectBody = new JSONObject(jsonRequest);
-		Integer staffMember = objectBody.getInt("intervenant");
-		if (objectBody.has("din")) {
-			din = objectBody.getInt("din");
+		Integer staffMember = objectBody.getInt(STAFF_MEMBER_PARAMETER);
+		if (objectBody.has(DIN_PARAMETER)) {
+			din = objectBody.getInt(DIN_PARAMETER);
 		}
-		if (objectBody.has("nom")) {
-			name = objectBody.getString("nom");
+		if (objectBody.has(NAME_PARAMETER)) {
+			name = objectBody.getString(NAME_PARAMETER);
 		}
-		String date = objectBody.getString("date");
-		int renewals = objectBody.getInt("renouvellements");
+		String date = objectBody.getString(DATE_PARAMETER);
+		int renewals = objectBody.getInt(RENEWAL_PARAMETER);
 		if (din != null && name != null) {
 			badRequest = true;
 		} else {
 			dinNameValidation(din, name, staffMember, renewals, date);
-			badRequest = false;
+			// redondance
+			// badRequest = false;
 		}
 	}
 
 	public void sendBadRequestMessage(HttpServletResponse requestResponse)
 			throws IOException {
+		// Considérer les errors messages : possibles variables statiques
 		JSONObject errorMessage = new JSONObject();
-		errorMessage.put("code", "PRES001");
-		errorMessage.put("message", "La prescription est invalide");
+		errorMessage.put(CODE_PARAMETER, INVALID_PRESCRIPTION_CODE);
+		errorMessage.put(MESSAGE_PARAMETER, MESSAGE);
 		requestResponse.sendError(HttpServletResponse.SC_BAD_REQUEST,
 				errorMessage.toString());
 	}
@@ -88,10 +101,9 @@ public class PrescriptionServlet extends HttpServlet {
 	public void sendCreatedMessage(HttpServletResponse requestResponse) {
 		requestResponse.setStatus(HttpServletResponse.SC_CREATED);
 	}
-	
+
 	public void dinNameValidation(Integer din, String name,
-			Integer staffMember, int renewals,
-			String date) {
+			Integer staffMember, int renewals, String date) {
 
 		StaffMember requestedStaffMember = new StaffMember(staffMember);
 
@@ -99,11 +111,14 @@ public class PrescriptionServlet extends HttpServlet {
 			Drug requestedDrug;
 			try {
 				requestedDrug = HospitalServer.archiveDrug.getDrug(din);
-				Prescription requestedPrescription = new Prescription(requestedDrug,requestedStaffMember);
+				Prescription requestedPrescription = new Prescription(
+						requestedDrug, requestedStaffMember);
 				requestedPrescription.setDate(date);
 				requestedPrescription.setRenewal(renewals);
-				HospitalServer.archivePrescription.addPrescription(requestedPrescription);
-			} catch (DrugNotFoundException | InvalidDateFormatException | ParseException e) {
+				HospitalServer.archivePrescription
+						.addPrescription(requestedPrescription);
+			} catch (DrugNotFoundException | InvalidDateFormatException
+					| ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -111,8 +126,8 @@ public class PrescriptionServlet extends HttpServlet {
 
 		else if (din == null && name != null) {
 			Drug requestedDrug = new Drug(name);
-			Prescription requestedPrescription = new Prescription(requestedDrug,
-					requestedStaffMember);
+			Prescription requestedPrescription = new Prescription(
+					requestedDrug, requestedStaffMember);
 			try {
 				requestedPrescription.setDate(date);
 			} catch (InvalidDateFormatException | ParseException e) {
@@ -120,7 +135,8 @@ public class PrescriptionServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 			requestedPrescription.setRenewal(renewals);
-			HospitalServer.archivePrescription.addPrescription(requestedPrescription);
+			HospitalServer.archivePrescription
+					.addPrescription(requestedPrescription);
 		}
 	}
 }
