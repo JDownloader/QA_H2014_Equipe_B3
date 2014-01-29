@@ -20,6 +20,7 @@ public class Drug {
 	@Column(name = "DRUG_NAME", nullable = false)
 	private String name;
 
+	//Deux constructeurs: un avec le din et un avec le nom
 	public Drug(int din, String name) {
 		incrementAutoId();
 

@@ -52,7 +52,6 @@ public class PrescriptionServlet extends HttpServlet {
 			} 
 			else
 				sendCreatedMessage(response);
-
 	}
 
 	public void parseJsonObject(String jsonRequest) {
