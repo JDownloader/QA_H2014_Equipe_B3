@@ -13,8 +13,8 @@ public class StaffMember {
 
 	private static int idMax = 0;
 
-	public StaffMember() {
-		incrementAutoId();
+	public StaffMember(int id) {
+		this.id = id;
 	}
 
 	public int getId() {
