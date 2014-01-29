@@ -19,18 +19,18 @@ import ca.ulaval.glo4002.exceptions.InvalidDateFormatException;
 import ca.ulaval.glo4002.prescription.Prescription;
 import ca.ulaval.glo4002.staff.StaffMember;
 
-/*
- * il faudrait automatiser les test
- * 
- * @author Vincent
- * 
- */
-
 /* CODE REVIEW 25/01/2014
  * - Je ne sais pas si c'est voulu, mais il n'y présentement pas d'appel à ArchivePrescription et le médicament n'est jamais créé.
  * - La fonction doPost dépasse la maximum de 10 lignes, il faudrait refactorer en sous-fonctions (parseJsonObject(), returnErrormessage(code, message)...)
  * 
  * - Olivier R
+ */
+
+/*
+ * Check that you need to put staffMember as an Integer.
+ * 
+ * @author Marie-Hélène
+ *
  */
 
 public class PrescriptionServlet extends HttpServlet {
@@ -55,37 +55,81 @@ public class PrescriptionServlet extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType(CONTENT_TYPE);
 		InputStream requestBody = request.getInputStream();
+
 		StringWriter writer = new StringWriter();
 		IOUtils.copy(requestBody, writer, ENCODING);
 		String requestString = writer.toString();
+
 		parseJsonObject(requestString);
-		if (badRequest == true) {
+
+		if (badRequest == true)
 			sendBadRequestMessage(response);
-		} else
+		else
 			sendCreatedMessage(response);
 
 	}
 
 	public void parseJsonObject(String jsonRequest) {
-		String name = null;
-		Integer din = null;
-		JSONObject objectBody = new JSONObject(jsonRequest);
-		Integer staffMember = objectBody.getInt(STAFF_MEMBER_PARAMETER);
-		if (objectBody.has(DIN_PARAMETER)) {
-			din = objectBody.getInt(DIN_PARAMETER);
-		}
-		if (objectBody.has(NAME_PARAMETER)) {
-			name = objectBody.getString(NAME_PARAMETER);
-		}
-		String date = objectBody.getString(DATE_PARAMETER);
-		int renewals = objectBody.getInt(RENEWAL_PARAMETER);
-		if (din != null && name != null) {
+		JSONObject parsedJson = fetchJsonObject(jsonRequest);
+		if (!validateJsonObject(parsedJson)) {
 			badRequest = true;
-		} else {
-			dinNameValidation(din, name, staffMember, renewals, date);
-			// redondance
-			// badRequest = false;
+			return;
 		}
+
+		Integer din = fetchDinInJson(parsedJson);
+		String name = fetchNameInJson(parsedJson);
+		Integer staffMember = fetchStaffMemberInJson(parsedJson);
+		int renewals = fetchRenewalsInJson(parsedJson);
+		String date = fetchDateInJson(parsedJson);
+
+		dinNameValidation(din, name, staffMember, renewals, date);
+	}
+
+	public JSONObject fetchJsonObject(String jsonRequest) {
+		JSONObject objectBody = new JSONObject(jsonRequest);
+		return objectBody;
+	}
+
+	public boolean validateJsonObject(JSONObject jsonRequest) {
+		if (validateDinAndName(jsonRequest)
+				&& jsonRequest.has(STAFF_MEMBER_PARAMETER)
+				&& jsonRequest.has(DATE_PARAMETER)
+				&& jsonRequest.has(RENEWAL_PARAMETER))
+			return true;
+		return false;
+	}
+
+	public boolean validateDinAndName(JSONObject jsonRequest) {
+		boolean validJson = true;
+		if (jsonRequest.has(DIN_PARAMETER) && jsonRequest.has(NAME_PARAMETER)
+				|| !jsonRequest.has(DIN_PARAMETER)
+				&& jsonRequest.has(NAME_PARAMETER))
+			validJson = false;
+		return validJson;
+	}
+
+	public Integer fetchDinInJson(JSONObject jsonRequest) {
+		if (jsonRequest.has(DIN_PARAMETER))
+			return jsonRequest.getInt(DATE_PARAMETER);
+		return null;
+	}
+
+	public String fetchNameInJson(JSONObject jsonRequest) {
+		if (jsonRequest.has(NAME_PARAMETER))
+			return jsonRequest.getString(NAME_PARAMETER);
+		return null;
+	}
+
+	public Integer fetchStaffMemberInJson(JSONObject jsonRequest) {
+		return jsonRequest.getInt(STAFF_MEMBER_PARAMETER);
+	}
+
+	public String fetchDateInJson(JSONObject jsonRequest) {
+		return jsonRequest.getString(DATE_PARAMETER);
+	}
+
+	public int fetchRenewalsInJson(JSONObject jsonRequest) {
+		return jsonRequest.getInt(RENEWAL_PARAMETER);
 	}
 
 	public void sendBadRequestMessage(HttpServletResponse requestResponse)
