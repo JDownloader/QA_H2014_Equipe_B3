@@ -1,6 +1,5 @@
 package ca.ulaval.glo4002.server;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
 import org.eclipse.jetty.server.Server;
@@ -10,12 +9,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import ca.ulaval.glo4002.drug.DrugArchive;
 import ca.ulaval.glo4002.prescription.PrescriptionArchive;
 import ca.ulaval.glo4002.server.PrescriptionServlet;
-/*
- * il faudrait automatiser les test
- * 
- * @author Vincent
- * 
- */
+
 public class HospitalServer extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
@@ -29,7 +23,7 @@ public class HospitalServer extends HttpServlet {
 		try {
 			archiveDrug = new DrugArchive("data/drug.txt");
 			ServletHolder prescriptionHolder = new ServletHolder(PrescriptionServlet.class);
-			servletContextHandler.addServlet(prescriptionHolder, "/prescription");
+			servletContextHandler.addServlet(prescriptionHolder, "/patient/*");
 			server.start();
 		} catch (Exception e) {
 			e.printStackTrace();
