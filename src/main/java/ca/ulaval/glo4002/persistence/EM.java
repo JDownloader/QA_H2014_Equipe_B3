@@ -12,10 +12,6 @@ public class EM {
 	private static EntityManager entityManager;
 	private static EntityTransaction userTransaction;
 
-	/*
-	 * public static void start() { userTransaction =
-	 * entityManager.getTransaction(); userTransaction.begin(); }
-	 */
 	public static void setEntityManager() {
 		entityManagerFactory = Persistence
 				.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
