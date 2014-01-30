@@ -19,20 +19,19 @@ public class PrescriptionServletTest {
 	public void servletReceivesBadRequest(){
 		String badRequest = "{'intervenant': 000000, 'date': '2001-07-04T12:08:56', 'renouvellements': 0, 'din': 02240541, 'nom': 'ADVIL NIGHTTIME LIQUI'}";
 		testServlet.parseJsonObject(badRequest);
-		testServlet.dinNameValidation(VALID_DIN, VALID_NAME, STAFF_MEMBER, RENEWALS, DATE);
 	}
 	
-	@Test(expected = NullPointerException.class)
+	/*@Test(expected = NullPointerException.class)
 	public void servletReceivesRequestWithDin(){
 		String goodRequest = "{'intervenant': 000000, 'date': '2001-07-04T12:08:56', 'renouvellements': 0, 'din': 02240541}";
 		testServlet.parseJsonObject(goodRequest);
-		testServlet.dinNameValidation(VALID_DIN, NULL_NAME, STAFF_MEMBER, RENEWALS, DATE);
-	}
+		testServlet.createPrescriptionWithDin(VALID_DIN, NULL_NAME, STAFF_MEMBER, RENEWALS, DATE);
+	}*/
 	
-	@Test
+	@Test(expected = NullPointerException.class)
 	public void servletReceivesRequestWithName(){
 		String goodRequest = "{'intervenant': 000000, 'date': '2001-07-04T12:08:56', 'renouvellements': 0, 'nom': 'ADVIL NIGHTTIME LIQUI'}";
 		testServlet.parseJsonObject(goodRequest);
-		testServlet.dinNameValidation(NULL_DIN, VALID_NAME, STAFF_MEMBER, RENEWALS, DATE);
+		testServlet.createPrescriptionWithName(NULL_DIN, VALID_NAME, STAFF_MEMBER, RENEWALS, DATE);
 	}
 }

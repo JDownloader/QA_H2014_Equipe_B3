@@ -6,6 +6,8 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
+import com.sun.jersey.spi.container.servlet.ServletContainer;
+
 import ca.ulaval.glo4002.drug.DrugArchive;
 import ca.ulaval.glo4002.prescription.PrescriptionArchive;
 import ca.ulaval.glo4002.server.PrescriptionServlet;
