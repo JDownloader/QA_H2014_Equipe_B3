@@ -67,7 +67,6 @@ public class PrescriptionServlet extends HttpServlet {
 			sendBadRequestMessage(response);
 		else
 			sendCreatedMessage(response);
-
 	}
 
 	public void parseJsonObject(String jsonRequest) {
@@ -76,14 +75,17 @@ public class PrescriptionServlet extends HttpServlet {
 			badRequest = true;
 			return;
 		}
-
 		Integer din = fetchDinInJson(parsedJson);
 		String name = fetchNameInJson(parsedJson);
 		Integer staffMember = fetchStaffMemberInJson(parsedJson);
 		int renewals = fetchRenewalsInJson(parsedJson);
 		String date = fetchDateInJson(parsedJson);
-
-		dinNameValidation(din, name, staffMember, renewals, date);
+		if (din != null && name == null) {
+			createPrescriptionWithDin(din, name, staffMember, renewals, date);
+		}
+		else if(din == null && name != null){
+			createPrescriptionWithName(din, name, staffMember, renewals, date);
+		}
 	}
 
 	public JSONObject fetchJsonObject(String jsonRequest) {
@@ -102,16 +104,16 @@ public class PrescriptionServlet extends HttpServlet {
 
 	public boolean validateDinAndName(JSONObject jsonRequest) {
 		boolean validJson = true;
-		if (jsonRequest.has(DIN_PARAMETER) && jsonRequest.has(NAME_PARAMETER)
-				|| !jsonRequest.has(DIN_PARAMETER)
-				&& jsonRequest.has(NAME_PARAMETER))
+		if ((jsonRequest.has(DIN_PARAMETER) && jsonRequest.has(NAME_PARAMETER))
+				|| (!jsonRequest.has(DIN_PARAMETER)
+				&& !jsonRequest.has(NAME_PARAMETER)))
 			validJson = false;
 		return validJson;
 	}
 
 	public Integer fetchDinInJson(JSONObject jsonRequest) {
 		if (jsonRequest.has(DIN_PARAMETER))
-			return jsonRequest.getInt(DATE_PARAMETER);
+			return jsonRequest.getInt(DIN_PARAMETER);
 		return null;
 	}
 
@@ -147,41 +149,46 @@ public class PrescriptionServlet extends HttpServlet {
 		requestResponse.setStatus(HttpServletResponse.SC_CREATED);
 	}
 
-	public void dinNameValidation(Integer din, String name,
+	public void createPrescriptionWithDin(Integer din, String name,
 			Integer staffMember, int renewals, String date) {
-
 		StaffMember requestedStaffMember = new StaffMember(staffMember);
-
-		if (din != null && name == null) {
-			Drug requestedDrug;
-			try {
-				requestedDrug = HospitalServer.archiveDrug.getDrug(din);
-				Prescription requestedPrescription = new Prescription(
-						requestedDrug, requestedStaffMember);
-				requestedPrescription.setDate(date);
-				requestedPrescription.setRenewal(renewals);
-				HospitalServer.archivePrescription
-						.addPrescription(requestedPrescription);
-			} catch (DrugNotFoundException | InvalidDateFormatException
-					| ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		Drug requestedDrug;
+		try {
+			requestedDrug = HospitalServer.archiveDrug.getDrug(din);
+			Prescription requestedPrescription = new Prescription(
+					requestedDrug, requestedStaffMember);
+			requestedPrescription.setDate(date);
+			requestedPrescription.setRenewal(renewals);
+			HospitalServer.archivePrescription
+					.addPrescription(requestedPrescription);
+		} catch (DrugNotFoundException | InvalidDateFormatException
+				| ParseException e) {
+			badRequest = true;
+			e.printStackTrace();
 		}
+	}
 
-		else if (din == null && name != null) {
+	public void createPrescriptionWithName(Integer din, String name,
+			Integer staffMember, int renewals, String date) {
+		StaffMember requestedStaffMember = new StaffMember(staffMember);
+		 {
 			Drug requestedDrug = new Drug(name);
 			Prescription requestedPrescription = new Prescription(
 					requestedDrug, requestedStaffMember);
 			try {
 				requestedPrescription.setDate(date);
 			} catch (InvalidDateFormatException | ParseException e) {
-				// TODO Auto-generated catch block
+				badRequest = true;
 				e.printStackTrace();
 			}
 			requestedPrescription.setRenewal(renewals);
 			HospitalServer.archivePrescription
 					.addPrescription(requestedPrescription);
 		}
+	}
+	
+	public void fetchUrlPatientNumber(HttpServletRequest request){
+		String pathInfo = request.getPathInfo();
+		System.out.println(pathInfo);
 	}
 }
