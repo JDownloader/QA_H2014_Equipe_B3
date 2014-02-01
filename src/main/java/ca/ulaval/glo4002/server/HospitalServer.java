@@ -25,7 +25,7 @@ public class HospitalServer extends HttpServlet {
 		try {
 			archiveDrug = new DrugArchive("data/drug.txt");
 			ServletHolder prescriptionHolder = new ServletHolder(PrescriptionServlet.class);
-			servletContextHandler.addServlet(prescriptionHolder, "/patient/*");
+			servletContextHandler.addServlet(prescriptionHolder, "/patient");
 			server.start();
 		} catch (Exception e) {
 			e.printStackTrace();
