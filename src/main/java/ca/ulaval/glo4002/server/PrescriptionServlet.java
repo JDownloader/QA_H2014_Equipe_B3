@@ -14,7 +14,7 @@ import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 
 import ca.ulaval.glo4002.drug.Drug;
-import ca.ulaval.glo4002.drug.DrugNotFoundException;
+import ca.ulaval.glo4002.exceptions.DrugNotFoundException;
 import ca.ulaval.glo4002.exceptions.InvalidDateFormatException;
 import ca.ulaval.glo4002.patient.Patient;
 import ca.ulaval.glo4002.persistence.EM;
@@ -188,7 +188,6 @@ public class PrescriptionServlet extends HttpServlet {
 		} catch (DrugNotFoundException | InvalidDateFormatException
 				| ParseException e) {
 			badRequest = true;
-			e.printStackTrace();
 		}
 		return prescriptionId;
 

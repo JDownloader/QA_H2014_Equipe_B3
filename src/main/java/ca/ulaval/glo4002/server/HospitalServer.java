@@ -1,5 +1,6 @@
 package ca.ulaval.glo4002.server;
 
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +32,8 @@ public class HospitalServer extends HttpServlet {
 	public static void main(String[] args) {
 		try {
 			EM.setEntityManager();
-			archiveDrug = new DrugArchive("data/drug.txt");
+			String myFile = "data/drug.txt";
+			archiveDrug = new DrugArchive(new FileReader(myFile));
 			createDefaultPatients();
 			ServletHolder prescriptionHolder = new ServletHolder(
 					PrescriptionServlet.class);
