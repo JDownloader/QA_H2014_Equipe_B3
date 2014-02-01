@@ -14,6 +14,7 @@ import javax.persistence.Transient;
 
 import ca.ulaval.glo4002.drug.Drug;
 import ca.ulaval.glo4002.exceptions.InvalidDateFormatException;
+import ca.ulaval.glo4002.persistence.EM;
 import ca.ulaval.glo4002.staff.StaffMember;
 import ca.ulaval.glo4002.utils.validate;
 
@@ -87,6 +88,14 @@ public class Prescription {
 
 	public boolean isValid() {
 		return this.isValid;
+	}
+
+	public void addPrescription(Prescription prescription) {
+
+		EM.getEntityManager().persist(prescription);
+
+		EM.getUserTransaction().commit();
+
 	}
 
 	private void incrementAutoId() {

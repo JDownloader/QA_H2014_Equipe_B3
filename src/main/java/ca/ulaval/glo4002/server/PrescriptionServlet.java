@@ -17,6 +17,7 @@ import ca.ulaval.glo4002.drug.Drug;
 import ca.ulaval.glo4002.drug.DrugNotFoundException;
 import ca.ulaval.glo4002.exceptions.InvalidDateFormatException;
 import ca.ulaval.glo4002.patient.Patient;
+import ca.ulaval.glo4002.persistence.EM;
 import ca.ulaval.glo4002.prescription.Prescription;
 import ca.ulaval.glo4002.staff.StaffMember;
 
@@ -67,7 +68,7 @@ public class PrescriptionServlet extends HttpServlet {
 		IOUtils.copy(requestBody, writer, ENCODING);
 		String requestString = writer.toString();
 		fetchUrlPatientNumber(request, response);
-		if (checkUrl(request)==true) {
+		if (checkUrl(request) == true) {
 			parseJsonObject(requestString);
 			if (badRequest == true)
 				sendBadRequestMessage(response);
@@ -96,10 +97,13 @@ public class PrescriptionServlet extends HttpServlet {
 	public void verifyWhichPrescriptionToCreate(Integer din, String name,
 			Integer staffMember, int renewals, String date) {
 		if (din != 0 && name == "") {
-			int prescriptionId = createPrescriptionWithDin(din, name, staffMember, renewals, date);
+			int prescriptionId = createPrescriptionWithDin(din, name,
+					staffMember, renewals, date);
 			addPrescriptionToPatient(prescriptionId, currentPatientId);
+
 		} else if (din == 0 && name != "") {
-			int prescriptionId = createPrescriptionWithName(din, name, staffMember, renewals, date);
+			int prescriptionId = createPrescriptionWithName(din, name,
+					staffMember, renewals, date);
 			addPrescriptionToPatient(prescriptionId, currentPatientId);
 		}
 	}
@@ -180,6 +184,8 @@ public class PrescriptionServlet extends HttpServlet {
 			requestedPrescription.setDate(date);
 			requestedPrescription.setRenewal(renewals);
 			prescriptionId = requestedPrescription.getId();
+			// Ajouter prescription BD
+			requestedPrescription.addPrescription(requestedPrescription);
 		} catch (DrugNotFoundException | InvalidDateFormatException
 				| ParseException e) {
 			badRequest = true;
@@ -191,20 +197,21 @@ public class PrescriptionServlet extends HttpServlet {
 	public int createPrescriptionWithName(Integer din, String name,
 			Integer staffMember, int renewals, String date) {
 		StaffMember requestedStaffMember = new StaffMember(staffMember);
-			Drug requestedDrug = new Drug(name);
-			Prescription requestedPrescription = new Prescription(
-					requestedDrug, requestedStaffMember);
-			try {
-				requestedPrescription.setDate(date);
-				requestedPrescription.setRenewal(renewals);
-			} catch (InvalidDateFormatException | ParseException e) {
-				badRequest = true;
-				e.printStackTrace();
-			}
+		Drug requestedDrug = new Drug(name);
+		Prescription requestedPrescription = new Prescription(requestedDrug,
+				requestedStaffMember);
+		try {
+			requestedPrescription.setDate(date);
+			requestedPrescription.setRenewal(renewals);
+		} catch (InvalidDateFormatException | ParseException e) {
+			badRequest = true;
+			e.printStackTrace();
+		}
 		return requestedPrescription.getId();
 	}
 
-	public void fetchUrlPatientNumber(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void fetchUrlPatientNumber(HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
 		String pathInfo = request.getPathInfo();
 		int afterSlash = pathInfo.indexOf("p");
 		String patientNumber = pathInfo.substring(1, afterSlash - 1);
@@ -212,15 +219,21 @@ public class PrescriptionServlet extends HttpServlet {
 		if (HospitalServer.idsList.contains(patientId)) {
 			currentPatientId = patientId;
 		} else {
-			response.sendError(HttpServletResponse.SC_NOT_FOUND, "Patient does not exist");
+			response.sendError(HttpServletResponse.SC_NOT_FOUND,
+					"Patient does not exist");
 		}
 	}
 
 	public void addPrescriptionToPatient(int idPrescription, int idPatient) {
-		int patientIndex = HospitalServer.idsList.indexOf(idPatient);
-		Patient currentPatient = HospitalServer.patientsList.get(patientIndex);
-		//TODO call good method to add prescription
-		//currentPatient.addPrescription(idPrescription);
+		Patient currentPatient = EM.getEntityManager().find(Patient.class,
+				idPatient);
+		currentPatient.addPrescription(idPrescription);
+		EM.getUserTransaction().commit();
+		// int patientIndex = HospitalServer.idsList.indexOf(idPatient);
+		// Patient currentPatient =
+		// HospitalServer.patientsList.get(patientIndex);
+		// TODO call good method to add prescription
+
 	}
 
 	public boolean checkUrl(HttpServletRequest request) {
