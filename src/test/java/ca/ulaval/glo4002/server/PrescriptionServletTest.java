@@ -8,11 +8,11 @@ import org.junit.Test;
 public class PrescriptionServletTest {
 
 	private static final Integer VALID_DIN = 02240541;
-	private static final Integer NULL_DIN = null;
+	private static final Integer NULL_DIN = 0;
 	private static final String VALID_NAME = "ADVIL NIGHTTIME LIQUI";
-	private static final String NULL_NAME = null;
+	private static final String NULL_NAME = "";
 	private static final Integer STAFF_MEMBER = 000000;
-	private static final Integer RENEWALS = 0;
+	private static final int RENEWALS = 0;
 	private static final String DATE = "2001-07-04T12:08:56";
 	PrescriptionServlet testServlet = new PrescriptionServlet();
 
@@ -42,7 +42,6 @@ public class PrescriptionServletTest {
 	public void validateDinAndNameWhenDinOnly() {
 		JSONObject object = new JSONObject();
 		object.put("din", VALID_DIN);
-		object.put("nom", NULL_NAME);
 
 		assertTrue(testServlet.validateDinAndName(object));
 	}
@@ -50,7 +49,6 @@ public class PrescriptionServletTest {
 	@Test
 	public void validateDinAndNameWhenNameOnly() {
 		JSONObject object = new JSONObject();
-		object.put("din", NULL_DIN);
 		object.put("nom", VALID_NAME);
 
 		assertTrue(testServlet.validateDinAndName(object));
@@ -84,7 +82,7 @@ public class PrescriptionServletTest {
 	@Test
 	public void fecthDinWhenNone() {
 		JSONObject object = new JSONObject();
-		assertEquals(null, testServlet.fetchDinInJson(object));
+		assertEquals(NULL_DIN, testServlet.fetchDinInJson(object));
 	}
 
 	@Test
@@ -97,7 +95,7 @@ public class PrescriptionServletTest {
 	@Test
 	public void fetchNameInJsonWhenNone() {
 		JSONObject object = new JSONObject();
-		assertEquals(null, testServlet.fetchNameInJson(object));
+		assertEquals(NULL_NAME, testServlet.fetchNameInJson(object));
 	}
 
 	@Test
@@ -108,22 +106,10 @@ public class PrescriptionServletTest {
 	}
 
 	@Test
-	public void fetchStaffMemberWhenNone() {
-		JSONObject object = new JSONObject();
-		assertEquals(null, testServlet.fetchStaffMemberInJson(object));
-	}
-
-	@Test
 	public void fetchDateInJsonWhenExists() {
 		JSONObject object = new JSONObject();
 		object.put("date", DATE);
 		assertEquals(DATE, testServlet.fetchDateInJson(object));
-	}
-
-	@Test
-	public void fetchDateInJsonWhenNone() {
-		JSONObject object = new JSONObject();
-		assertEquals(null, testServlet.fetchDateInJson(object));
 	}
 
 	@Test
@@ -132,12 +118,6 @@ public class PrescriptionServletTest {
 		object.put("renouvellements", RENEWALS);
 		assertEquals(RENEWALS, testServlet.fetchRenewalsInJson(object));
 
-	}
-
-	@Test
-	public void fetchRenewalsWhenNone() {
-		JSONObject object = new JSONObject();
-		assertEquals(null, testServlet.fetchRenewalsInJson(object));
 	}
 
 	// TODO test out doPost()

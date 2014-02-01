@@ -16,6 +16,7 @@ public class PrescriptionRequest extends Request {
 	private Integer renewals;
 	private String date;
 
+	// Constructor
 	public PrescriptionRequest(JSONObject jsonRequest) {
 		this.din = jsonRequest.getInt(DIN_PARAMETER);
 		this.name = jsonRequest.getString(NAME_PARAMETER);
@@ -24,16 +25,46 @@ public class PrescriptionRequest extends Request {
 		this.date = jsonRequest.getString(DATE_PARAMETER);
 	}
 
+	// Getters
+	public Integer getDin() {
+		return this.din;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public Integer getStaffMember() {
+		return this.staffMember;
+	}
+
+	public Integer getrenewals() {
+		return this.renewals;
+	}
+
+	public String getDate() {
+		return this.date;
+	}
+
+	// Other methods
 	public boolean isValid() {
-		if (validateDinAndName() && !STAFF_MEMBER_PARAMETER.isEmpty()
-				&& !DATE_PARAMETER.isEmpty() && !RENEWAL_PARAMETER.isEmpty())
-			return true;
-		return false;
+		// TODO complete the isValid() method
+		if (!this.validateDinAndName() && this.staffMember == null
+				&& this.renewals == null && !this.validateDate())
+			return false;
+		return true;
 	}
 
 	private boolean validateDinAndName() {
-		if ((!DIN_PARAMETER.isEmpty() && !NAME_PARAMETER.isEmpty())
-				|| (DIN_PARAMETER.isEmpty() && NAME_PARAMETER.isEmpty()))
+		if ((!this.name.isEmpty() && !(this.din == null))
+				|| (this.name.isEmpty() && (this.din != null)))
+			return false;
+		return true;
+	}
+
+	private boolean validateDate() {
+		// TODO complete the validateDate() method; must verify the format.
+		if (this.date == null)
 			return false;
 		return true;
 	}

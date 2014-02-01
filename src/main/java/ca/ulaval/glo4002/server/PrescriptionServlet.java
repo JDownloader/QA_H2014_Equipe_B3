@@ -77,15 +77,15 @@ public class PrescriptionServlet extends HttpServlet {
 		JSONObject parsedJson = fetchJsonObject(jsonRequest);
 		if (!validateJsonObject(parsedJson)) {
 			badRequest = true;
-		}
-		else {
+		} else {
 			badRequest = false;
 			Integer din = fetchDinInJson(parsedJson);
 			String name = fetchNameInJson(parsedJson);
 			Integer staffMember = fetchStaffMemberInJson(parsedJson);
 			int renewals = fetchRenewalsInJson(parsedJson);
 			String date = fetchDateInJson(parsedJson);
-			verifyWhichPrescriptionToCreate(din, name, staffMember, renewals, date);
+			verifyWhichPrescriptionToCreate(din, name, staffMember, renewals,
+					date);
 		}
 	}
 
@@ -117,9 +117,8 @@ public class PrescriptionServlet extends HttpServlet {
 		boolean validJson = true;
 		if ((jsonRequest.has(DIN_PARAMETER) && jsonRequest.has(NAME_PARAMETER))
 				|| (!jsonRequest.has(DIN_PARAMETER) && !jsonRequest
-						.has(NAME_PARAMETER))) {
+						.has(NAME_PARAMETER)))
 			validJson = false;
-		}
 		return validJson;
 	}
 
