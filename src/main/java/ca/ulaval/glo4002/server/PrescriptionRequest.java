@@ -38,7 +38,7 @@ public class PrescriptionRequest extends Request {
 		return this.staffMember;
 	}
 
-	public Integer getrenewals() {
+	public Integer getRenewals() {
 		return this.renewals;
 	}
 

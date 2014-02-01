@@ -27,14 +27,6 @@ import ca.ulaval.glo4002.staff.StaffMember;
  * - Olivier R
  */
 
-/*
- * Check that you need to put staffMember as an Integer.
- * Also, think about creating a "request" object.
- * 
- * @author Marie-Hélène
- *
- */
-
 public class PrescriptionServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
@@ -58,6 +50,8 @@ public class PrescriptionServlet extends HttpServlet {
 	private static final String MESSAGE_PARAMETER = "message";
 	private static final String MESSAGE = "La prescription est invalide";
 
+	private static final int INVALID_PRESCRIPTION_ID = -1;
+
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType(CONTENT_TYPE);
@@ -67,7 +61,7 @@ public class PrescriptionServlet extends HttpServlet {
 		IOUtils.copy(requestBody, writer, ENCODING);
 		String requestString = writer.toString();
 		fetchUrlPatientNumber(request, response);
-		if (checkUrl(request)==true) {
+		if (checkUrl(request) == true) {
 			parseJsonObject(requestString);
 			if (badRequest == true)
 				sendBadRequestMessage(response);
@@ -78,28 +72,22 @@ public class PrescriptionServlet extends HttpServlet {
 	}
 
 	public void parseJsonObject(String jsonRequest) {
-		JSONObject parsedJson = fetchJsonObject(jsonRequest);
-		if (!validateJsonObject(parsedJson)) {
+		JSONObject parsedJson = this.fetchJsonObject(jsonRequest);
+		PrescriptionRequest myRequest = new PrescriptionRequest(parsedJson);
+		if (!myRequest.isValid())
 			badRequest = true;
-		} else {
+		else {
 			badRequest = false;
-			Integer din = fetchDinInJson(parsedJson);
-			String name = fetchNameInJson(parsedJson);
-			Integer staffMember = fetchStaffMemberInJson(parsedJson);
-			int renewals = fetchRenewalsInJson(parsedJson);
-			String date = fetchDateInJson(parsedJson);
-			verifyWhichPrescriptionToCreate(din, name, staffMember, renewals,
-					date);
+			verifyWhichPrescriptionToCreate(myRequest);
 		}
 	}
 
-	public void verifyWhichPrescriptionToCreate(Integer din, String name,
-			Integer staffMember, int renewals, String date) {
-		if (din != 0 && name == "") {
-			int prescriptionId = createPrescriptionWithDin(din, name, staffMember, renewals, date);
+	public void verifyWhichPrescriptionToCreate(PrescriptionRequest myRequest) {
+		if (myRequest.getDin() != 0 && myRequest.getName() == "") {
+			int prescriptionId = createPrescriptionWithDin(myRequest);
 			addPrescriptionToPatient(prescriptionId, currentPatientId);
-		} else if (din == 0 && name != "") {
-			int prescriptionId = createPrescriptionWithName(din, name, staffMember, renewals, date);
+		} else if (myRequest.getDin() == 0 && myRequest.getName() != "") {
+			int prescriptionId = createPrescriptionWithName(myRequest);
 			addPrescriptionToPatient(prescriptionId, currentPatientId);
 		}
 	}
@@ -109,54 +97,8 @@ public class PrescriptionServlet extends HttpServlet {
 		return objectBody;
 	}
 
-	public boolean validateJsonObject(JSONObject jsonRequest) {
-		if (validateDinAndName(jsonRequest)
-				&& jsonRequest.has(STAFF_MEMBER_PARAMETER)
-				&& jsonRequest.has(DATE_PARAMETER)
-				&& jsonRequest.has(RENEWAL_PARAMETER)) {
-			return true;
-		}
-		return false;
-	}
-
-	public boolean validateDinAndName(JSONObject jsonRequest) {
-		boolean validJson = true;
-		if ((jsonRequest.has(DIN_PARAMETER) && jsonRequest.has(NAME_PARAMETER))
-				|| (!jsonRequest.has(DIN_PARAMETER) && !jsonRequest
-						.has(NAME_PARAMETER)))
-			validJson = false;
-		return validJson;
-	}
-
-	public Integer fetchDinInJson(JSONObject jsonRequest) {
-		if (jsonRequest.has(DIN_PARAMETER)) {
-			return jsonRequest.getInt(DIN_PARAMETER);
-		}
-		return NULL_DIN;
-	}
-
-	public String fetchNameInJson(JSONObject jsonRequest) {
-		if (jsonRequest.has(NAME_PARAMETER)) {
-			return jsonRequest.getString(NAME_PARAMETER);
-		}
-		return NULL_NAME;
-	}
-
-	public Integer fetchStaffMemberInJson(JSONObject jsonRequest) {
-		return jsonRequest.getInt(STAFF_MEMBER_PARAMETER);
-	}
-
-	public String fetchDateInJson(JSONObject jsonRequest) {
-		return jsonRequest.getString(DATE_PARAMETER);
-	}
-
-	public int fetchRenewalsInJson(JSONObject jsonRequest) {
-		return jsonRequest.getInt(RENEWAL_PARAMETER);
-	}
-
 	public void sendBadRequestMessage(HttpServletResponse requestResponse)
 			throws IOException {
-		// Considérer les errors messages : possibles variables statiques
 		JSONObject errorMessage = new JSONObject();
 		errorMessage.put(CODE_PARAMETER, INVALID_PRESCRIPTION_CODE);
 		errorMessage.put(MESSAGE_PARAMETER, MESSAGE);
@@ -168,42 +110,49 @@ public class PrescriptionServlet extends HttpServlet {
 		requestResponse.setStatus(HttpServletResponse.SC_CREATED);
 	}
 
-	public int createPrescriptionWithDin(Integer din, String name,
-			Integer staffMember, int renewals, String date) {
-		StaffMember requestedStaffMember = new StaffMember(staffMember);
-		int prescriptionId = -1;
+	// Function should only have one purpose. Why does it return an id? Should
+	// return the Prescription object instead.
+	public int createPrescriptionWithDin(PrescriptionRequest myRequest) {
+		int prescriptionId = INVALID_PRESCRIPTION_ID;
 		try {
-			Drug requestedDrug = HospitalServer.archiveDrug.getDrug(din);
+			StaffMember requestedStaffMember = new StaffMember(
+					myRequest.getStaffMember());
+			/*------ Should be done in a single line ------*/
+			Drug requestedDrug = HospitalServer.archiveDrug.getDrug(myRequest
+					.getDin());
 			Prescription requestedPrescription = new Prescription(
 					requestedDrug, requestedStaffMember);
-			requestedPrescription.setDate(date);
-			requestedPrescription.setRenewal(renewals);
+			requestedPrescription.setDate(myRequest.getDate());
+			requestedPrescription.setRenewal(myRequest.getRenewals());
 			prescriptionId = requestedPrescription.getId();
+			/*---------------------------------------------*/
 		} catch (DrugNotFoundException | InvalidDateFormatException
 				| ParseException e) {
 			badRequest = true;
-			e.printStackTrace();
 		}
 		return prescriptionId;
 	}
 
-	public int createPrescriptionWithName(Integer din, String name,
-			Integer staffMember, int renewals, String date) {
-		StaffMember requestedStaffMember = new StaffMember(staffMember);
-			Drug requestedDrug = new Drug(name);
-			Prescription requestedPrescription = new Prescription(
-					requestedDrug, requestedStaffMember);
-			try {
-				requestedPrescription.setDate(date);
-				requestedPrescription.setRenewal(renewals);
-			} catch (InvalidDateFormatException | ParseException e) {
-				badRequest = true;
-				e.printStackTrace();
-			}
+	public int createPrescriptionWithName(PrescriptionRequest myRequest) {
+
+		StaffMember requestedStaffMember = new StaffMember(
+				myRequest.getStaffMember());
+		Drug requestedDrug = new Drug(myRequest.getName());
+		Prescription requestedPrescription = new Prescription(requestedDrug,
+				requestedStaffMember);
+		try {
+			// Why need setters after using the constructor?
+			requestedPrescription.setDate(myRequest.getDate());
+			requestedPrescription.setRenewal(myRequest.getRenewals());
+		} catch (InvalidDateFormatException | ParseException e) {
+			badRequest = true;
+		}
+
 		return requestedPrescription.getId();
 	}
 
-	public void fetchUrlPatientNumber(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void fetchUrlPatientNumber(HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
 		String pathInfo = request.getPathInfo();
 		int afterSlash = pathInfo.indexOf("p");
 		String patientNumber = pathInfo.substring(1, afterSlash - 1);
@@ -211,15 +160,16 @@ public class PrescriptionServlet extends HttpServlet {
 		if (HospitalServer.idsList.contains(patientId)) {
 			currentPatientId = patientId;
 		} else {
-			response.sendError(HttpServletResponse.SC_NOT_FOUND, "Patient does not exist");
+			response.sendError(HttpServletResponse.SC_NOT_FOUND,
+					"Patient does not exist");
 		}
 	}
 
 	public void addPrescriptionToPatient(int idPrescription, int idPatient) {
 		int patientIndex = HospitalServer.idsList.indexOf(idPatient);
 		Patient currentPatient = HospitalServer.patientsList.get(patientIndex);
-		//TODO call good method to add prescription
-		//currentPatient.addPrescription(idPrescription);
+		// TODO call good method to add prescription
+		// currentPatient.addPrescription(idPrescription);
 	}
 
 	public boolean checkUrl(HttpServletRequest request) {
