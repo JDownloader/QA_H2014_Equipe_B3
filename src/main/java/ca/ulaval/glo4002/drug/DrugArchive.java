@@ -23,7 +23,7 @@ public class DrugArchive {
 
 	private List<Drug> drugs = new ArrayList<Drug>();
 
-	public DrugArchive(Reader reader) throws FileNotFoundException, IOException, BadFileFormatException {
+	public DrugArchive(Reader reader) throws IOException, BadFileFormatException {
 		CSVReader csvReader = new CSVReader(reader, ',');
 
 		String[] nextLine;
