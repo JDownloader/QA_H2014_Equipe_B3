@@ -15,6 +15,8 @@ import org.eclipse.jetty.servlet.ServletHolder;
  */
 public class HospitalServer extends HttpServlet {
 
+        private static final long serialVersionUID = 6293402787221307507L;
+
 	private static int httpPort = 8080;
 	private static Server server = new Server(httpPort);
 	static ServletContextHandler servletContextHandler = new ServletContextHandler(

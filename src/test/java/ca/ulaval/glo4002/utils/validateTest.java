@@ -16,13 +16,13 @@ public class validateTest {
 	@Test(expected = InvalidDateFormatException.class)
 	public void invalidDateReturnExeption()
 			throws InvalidDateFormatException, ParseException {
-		validate.validateDate(INVALID_DATE);
+		Validate.validateDate(INVALID_DATE);
 	}
 	
 	@Test
 	public void validDateReturnTrue()
 			throws InvalidDateFormatException, ParseException {
-		boolean result = validate.validateDate(VALID_DATE);
+		boolean result = Validate.validateDate(VALID_DATE);
 		assertTrue(result);
 	}
 

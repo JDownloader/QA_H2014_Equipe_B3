@@ -16,7 +16,7 @@ import ca.ulaval.glo4002.drug.Drug;
 import ca.ulaval.glo4002.exceptions.InvalidDateFormatException;
 import ca.ulaval.glo4002.persistence.EM;
 import ca.ulaval.glo4002.staff.StaffMember;
-import ca.ulaval.glo4002.utils.validate;
+import ca.ulaval.glo4002.utils.Validate;
 
 /* CODE REVIEW 25/01/2014
  * - "renouvellement = -1": Magic number... Je définirais la constante suivante: UNSPECIFIED = -1
@@ -74,7 +74,7 @@ public class Prescription {
 
 	public void setDate(String date) throws InvalidDateFormatException,
 			ParseException {
-		if (validate.validateDate(date)) {
+		if (Validate.validateDate(date)) {
 			this.date = new SimpleDateFormat("yyyy-MM-dd").parse(date);
 		}
 		calculateValid();

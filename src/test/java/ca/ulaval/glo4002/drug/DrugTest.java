@@ -8,44 +8,45 @@ import org.junit.Test;
 public class DrugTest {
 	private static final int NULL_DIN = 0;
 
-	private static final String NAME_OF_DRUG = "Drug";
-	private static final int DIN_OF_DRUG = 5;
+	private static final String DRUG_NAME = "Drug";
+	private static final int DRUG_DIN = 5;
+	
 	Drug drug;
 
 	@Before
 	public void init() {
-		drug = new Drug(DIN_OF_DRUG, NAME_OF_DRUG);
+		drug = new Drug(DRUG_DIN, DRUG_NAME);
 	}
 
 	@Test
-	public void unNouveauMedicamentEstCree() {
+	public void aNewDrugIsBeingCreated() {
 		assertNotNull(drug);
 	}
 
 	@Test
-	public void unNouveauMedicamentSansDinEstCree() {
-		assertNotNull(new Drug(NAME_OF_DRUG));
+	public void aNewDrugWithoutDinIsBeingCreated() {
+		assertNotNull(new Drug(DRUG_NAME));
 	}
 
 	@Test
-	public void unNouveauMedicamentAUnIdUnique() {
-		Drug autreMedicament = new Drug("other drug");
-		assertTrue(autreMedicament.getId() != drug.getId());
+	public void aNewDrugHasAUniqueId() {
+		Drug anotherDrug = new Drug("another drug");
+		assertTrue(anotherDrug.getId() != drug.getId());
 	}
 
 	@Test
-	public void unNouveauMedicamentSansDinRetourneUnDinNull() {
-		Drug medicamentSansDin = new Drug("drug without DIN");
-		assertEquals(NULL_DIN, medicamentSansDin.getDin());
+	public void aNewDrugWithoutDinReturnsANullDin() {
+		Drug drugWithoutDin = new Drug("drug without DIN");
+		assertEquals(NULL_DIN, drugWithoutDin.getDin());
 	}
 
 	@Test
-	public void unNouveauMedicamentRetourneLeBonNom() {
-		assertEquals(NAME_OF_DRUG, drug.getName());
+	public void aNewDrugReturnsTheRightName() {
+		assertEquals(DRUG_NAME, drug.getName());
 	}
 
 	@Test
-	public void unNouveauMedicamentRetourneLeBonDin() {
-		assertEquals(DIN_OF_DRUG, drug.getDin());
+	public void aNewDrugReturnsTheRightDin() {
+		assertEquals(DRUG_DIN, drug.getDin());
 	}
 }
