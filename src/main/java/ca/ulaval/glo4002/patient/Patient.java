@@ -33,14 +33,7 @@ public class Patient {
 	}
 
 	public void addPrescription(Integer idPrescription) {
-		// try {
-		// EM.getUserTransaction().begin();
 		presciptionId.add(idPrescription);
-		// EM.getUserTransaction().commit();
-		/*
-		 * } catch (Exception e) { System.out.print("poop" + idPrescription); }
-		 */
-
 	}
 
 	private void incrementAutoId() {

@@ -21,21 +21,6 @@ import ca.ulaval.glo4002.persistence.EM;
 import ca.ulaval.glo4002.prescription.Prescription;
 import ca.ulaval.glo4002.staff.StaffMember;
 
-/* CODE REVIEW 25/01/2014
- * - Je ne sais pas si c'est voulu, mais il n'y présentement pas d'appel à ArchivePrescription et le médicament n'est jamais créé.
- * - La fonction doPost dépasse la maximum de 10 lignes, il faudrait refactorer en sous-fonctions (parseJsonObject(), returnErrormessage(code, message)...)
- * 
- * - Olivier R
- */
-
-/*
- * Check that you need to put staffMember as an Integer.
- * Also, think about creating a "request" object.
- * 
- * @author Marie-Hélène
- *
- */
-
 public class PrescriptionServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;

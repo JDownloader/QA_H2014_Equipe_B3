@@ -37,10 +37,5 @@ public class EM {
 		entityManager.persist(object);
 		userTransaction.commit();
 	}
-	/*
-	 * EXEMPLE public static Query queryEx() { return query = entityManager()
-	 * .createQuery(
-	 * "SELECT drug FROM DRUG drug WHERE drug.name LIKE UPPER('%NORIQUAT%')"); }
-	 */
 
 }
