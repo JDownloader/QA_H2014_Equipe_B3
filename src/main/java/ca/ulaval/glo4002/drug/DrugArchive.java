@@ -8,18 +8,9 @@ import ca.ulaval.glo4002.exceptions.BadFileFormatException;
 import ca.ulaval.glo4002.exceptions.DrugNotFoundException;
 import ca.ulaval.glo4002.persistence.EM;
 
-/*
- * 86% coverage, j'aime
- * 
- * @author Vincent
- * 
- */
-
 public class DrugArchive {
 	private static final int DRUG_IDENTIFICATION_NUMBER_COLUMN = 3;
 	private static final int BRAND_NAME_COLUMN = 4;
-
-	// private List<Drug> drugs = new ArrayList<Drug>();
 
 	public DrugArchive(Reader reader) throws IOException,
 			BadFileFormatException {
@@ -29,7 +20,6 @@ public class DrugArchive {
 		int lineNumber = 0;
 		while ((nextLine = csvReader.readNext()) != null) {
 			EM.getEntityManager().persist(parseDrug(nextLine, ++lineNumber));
-			// drugs.add(parseDrug(nextLine, ++lineNumber));
 		}
 		EM.getUserTransaction().commit();
 		csvReader.close();
@@ -52,12 +42,6 @@ public class DrugArchive {
 					lineNumber));
 		}
 	}
-
-	/*
-	 * il faudrait trouver une alternative à l'approche ittérative
-	 * 
-	 * -Vince L-G
-	 */
 
 	public Drug getDrug(int din) throws DrugNotFoundException {
 		Drug drug = EM.getEntityManager().find(Drug.class, din);

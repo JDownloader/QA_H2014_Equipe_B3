@@ -185,12 +185,10 @@ public class PrescriptionServlet extends HttpServlet {
 			requestedPrescription.setRenewal(renewals);
 			prescriptionId = requestedPrescription.getId();
 			if (EM.getEntityManager().find(StaffMember.class,
-					requestedStaffMember.getId()) != null
-			/* || EM.getEntityManager().find(Drug.class, din) != null */) {
+					requestedStaffMember.getId()) != null) {
 				EM.persist(requestedPrescription);
 			} else {
 				EM.persist(requestedStaffMember);
-				// EM.persist(requestedDrug);
 				EM.persist(requestedPrescription);
 			}
 		} catch (DrugNotFoundException | InvalidDateFormatException
@@ -232,7 +230,6 @@ public class PrescriptionServlet extends HttpServlet {
 		String patientNumber = pathInfo.substring(1, afterSlash - 1);
 		Integer patientId = Integer.parseInt(patientNumber);
 		if (EM.getEntityManager().find(Patient.class, patientId) != null) {
-			// if (HospitalServer.idsList.contains(patientId)) {
 			currentPatientId = patientId;
 		} else {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND,
@@ -247,10 +244,6 @@ public class PrescriptionServlet extends HttpServlet {
 				idPatient);
 		currentPatient.addPrescription(idPrescription);
 		EM.getUserTransaction().commit();
-		// int patientIndex = HospitalServer.idsList.indexOf(idPatient);
-		// Patient currentPatient =
-		// HospitalServer.patientsList.get(patientIndex);
-		// TODO call good method to add prescription
 
 	}
 
