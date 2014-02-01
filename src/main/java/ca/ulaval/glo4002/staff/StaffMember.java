@@ -11,18 +11,12 @@ public class StaffMember {
 	@Column(name = "STAFF_ID", nullable = false)
 	private int id;
 
-	private static int idMax = 0;
-
-	public StaffMember() {
-		incrementAutoId();
+	public StaffMember(int id) {
+		this.id = id;
 	}
 
 	public int getId() {
 		return this.id;
 	}
 
-	private void incrementAutoId() {
-		this.id = idMax;
-		idMax++;
-	}
 }
