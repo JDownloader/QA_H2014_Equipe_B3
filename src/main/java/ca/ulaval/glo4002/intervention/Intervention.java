@@ -13,7 +13,7 @@ import javax.persistence.Transient;
 import ca.ulaval.glo4002.drug.Drug;
 import ca.ulaval.glo4002.patient.Patient;
 import ca.ulaval.glo4002.persistence.EM;
-import ca.ulaval.glo4002.staff.Surgeon;
+import ca.ulaval.glo4002.staff.StaffMember;
 
 @Entity(name = "INTERVENTION")
 public class Intervention {
@@ -28,9 +28,9 @@ public class Intervention {
 	private String description;
 
 	@ManyToOne()
-	@ElementCollection(targetClass = Surgeon.class)
+	@ElementCollection(targetClass = StaffMember.class)
 	@JoinColumn(name = "SURGEON", nullable = false)
-	private Surgeon surgeon;
+	private StaffMember surgeon;
 
 	@Column(name = "DATE", nullable = false)
 	private Date date = null;
@@ -46,7 +46,7 @@ public class Intervention {
 			return super.toString();
 		}
 	}
-	
+
 	@Column(name = "TYPE", nullable = false)
 	private Type type;
 
@@ -71,7 +71,7 @@ public class Intervention {
 		incrementAutoId();
 		this.description = description;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -80,8 +80,8 @@ public class Intervention {
 		this.id = idMax;
 		idMax++;
 	}
-	
-	public void setSurgeon(Surgeon surgeon) {
+
+	public void setSurgeon(StaffMember surgeon) {
 		this.surgeon = surgeon;
 	}
 
@@ -109,9 +109,10 @@ public class Intervention {
 			}
 		}
 
-		throw new IllegalArgumentException("The specified status value is invalid.");
+		throw new IllegalArgumentException(
+				"The specified status value is invalid.");
 	}
-	
+
 	public void commit() {
 		EM.getEntityManager().persist(this);
 		EM.getUserTransaction().commit();
