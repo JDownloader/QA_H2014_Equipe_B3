@@ -40,7 +40,7 @@ public class PrescriptionServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	private boolean badRequest = false;
-	private int currentPatientId = -1;
+	private Integer currentPatientId = -1;
 
 	private static final String CONTENT_TYPE = "application/json; charset=UTF-8";
 	private static final String ENCODING = "UTF-8";
@@ -95,14 +95,15 @@ public class PrescriptionServlet extends HttpServlet {
 	}
 
 	public void verifyWhichPrescriptionToCreate(Integer din, String name,
-			Integer staffMember, int renewals, String date) {
+			Integer staffMember, Integer renewals, String date) {
 		if (din != 0 && name == "") {
-			int prescriptionId = createPrescriptionWithDin(din, name,
+			Integer prescriptionId = createPrescriptionWithDin(din, name,
 					staffMember, renewals, date);
+			// System.out.println(currentPatientId + prescriptionId);
 			addPrescriptionToPatient(prescriptionId, currentPatientId);
 
 		} else if (din == 0 && name != "") {
-			int prescriptionId = createPrescriptionWithName(din, name,
+			Integer prescriptionId = createPrescriptionWithName(din, name,
 					staffMember, renewals, date);
 			addPrescriptionToPatient(prescriptionId, currentPatientId);
 		}
@@ -155,7 +156,7 @@ public class PrescriptionServlet extends HttpServlet {
 		return jsonRequest.getString(DATE_PARAMETER);
 	}
 
-	public int fetchRenewalsInJson(JSONObject jsonRequest) {
+	public Integer fetchRenewalsInJson(JSONObject jsonRequest) {
 		return jsonRequest.getInt(RENEWAL_PARAMETER);
 	}
 
@@ -173,10 +174,10 @@ public class PrescriptionServlet extends HttpServlet {
 		requestResponse.setStatus(HttpServletResponse.SC_CREATED);
 	}
 
-	public int createPrescriptionWithDin(Integer din, String name,
-			Integer staffMember, int renewals, String date) {
+	public Integer createPrescriptionWithDin(Integer din, String name,
+			Integer staffMember, Integer renewals, String date) {
 		StaffMember requestedStaffMember = new StaffMember(staffMember);
-		int prescriptionId = -1;
+		Integer prescriptionId = 1;
 		try {
 			Drug requestedDrug = HospitalServer.archiveDrug.getDrug(din);
 			Prescription requestedPrescription = new Prescription(
@@ -184,18 +185,18 @@ public class PrescriptionServlet extends HttpServlet {
 			requestedPrescription.setDate(date);
 			requestedPrescription.setRenewal(renewals);
 			prescriptionId = requestedPrescription.getId();
-			// Ajouter prescription BD
-			requestedPrescription.addPrescription(requestedPrescription);
+			EM.persist(requestedPrescription);
 		} catch (DrugNotFoundException | InvalidDateFormatException
 				| ParseException e) {
 			badRequest = true;
 			e.printStackTrace();
 		}
 		return prescriptionId;
+
 	}
 
-	public int createPrescriptionWithName(Integer din, String name,
-			Integer staffMember, int renewals, String date) {
+	public Integer createPrescriptionWithName(Integer din, String name,
+			Integer staffMember, Integer renewals, String date) {
 		StaffMember requestedStaffMember = new StaffMember(staffMember);
 		Drug requestedDrug = new Drug(name);
 		Prescription requestedPrescription = new Prescription(requestedDrug,
@@ -213,10 +214,11 @@ public class PrescriptionServlet extends HttpServlet {
 	public void fetchUrlPatientNumber(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		String pathInfo = request.getPathInfo();
-		int afterSlash = pathInfo.indexOf("p");
+		Integer afterSlash = pathInfo.indexOf("p");
 		String patientNumber = pathInfo.substring(1, afterSlash - 1);
-		int patientId = Integer.parseInt(patientNumber);
-		if (HospitalServer.idsList.contains(patientId)) {
+		Integer patientId = Integer.parseInt(patientNumber);
+		if (EM.getEntityManager().find(Patient.class, patientId) != null) {
+			// if (HospitalServer.idsList.contains(patientId)) {
 			currentPatientId = patientId;
 		} else {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND,
@@ -224,7 +226,9 @@ public class PrescriptionServlet extends HttpServlet {
 		}
 	}
 
-	public void addPrescriptionToPatient(int idPrescription, int idPatient) {
+	public void addPrescriptionToPatient(Integer idPrescription,
+			Integer idPatient) {
+		EM.getUserTransaction().begin();
 		Patient currentPatient = EM.getEntityManager().find(Patient.class,
 				idPatient);
 		currentPatient.addPrescription(idPrescription);
@@ -238,11 +242,12 @@ public class PrescriptionServlet extends HttpServlet {
 
 	public boolean checkUrl(HttpServletRequest request) {
 		String pathInfo = request.getPathInfo();
-		int afterSlash = pathInfo.indexOf("p");
+		Integer afterSlash = pathInfo.indexOf("p");
 		String prescriptionsString = pathInfo.substring(afterSlash);
 		if (prescriptionsString.equals("prescriptions")) {
 			return true;
 		} else
 			return false;
 	}
+
 }

@@ -32,6 +32,11 @@ public class EM {
 		entityManagerFactory.close();
 	}
 
+	public static void persist(Object object) {
+		userTransaction.begin();
+		entityManager.persist(object);
+		userTransaction.commit();
+	}
 	/*
 	 * EXEMPLE public static Query queryEx() { return query = entityManager()
 	 * .createQuery(

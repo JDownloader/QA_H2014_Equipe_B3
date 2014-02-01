@@ -24,16 +24,19 @@ public class HospitalServer extends HttpServlet {
 			server, "/");
 	static PrescriptionArchive archivePrescription = new PrescriptionArchive();
 	static DrugArchive archiveDrug;
+
 	static List<Patient> patientsList = new ArrayList<Patient>();
 	static List<Integer> idsList = new ArrayList<Integer>();
 
 	public static void main(String[] args) {
 		try {
+			EM.setEntityManager();
 			archiveDrug = new DrugArchive("data/drug.txt");
+			createDefaultPatients();
 			ServletHolder prescriptionHolder = new ServletHolder(
 					PrescriptionServlet.class);
 			servletContextHandler.addServlet(prescriptionHolder, "/patient/*");
-			createDefaultPatients();
+
 			server.start();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -48,6 +51,7 @@ public class HospitalServer extends HttpServlet {
 		Patient patientTrois = new Patient();
 		StaffMember staffUn = new StaffMember(MAGIC_VALUE_ONE);
 		StaffMember staffDeux = new StaffMember(MAGIC_VALUE_TWO);
+
 		/*
 		 * patientsList.add(patientUn); patientsList.add(patientDeux);
 		 * patientsList.add(patientTrois); Integer idPatientUn =
@@ -56,7 +60,14 @@ public class HospitalServer extends HttpServlet {
 		 * patientsList.get(2).getId(); idsList.add(idPatientUn);
 		 * idsList.add(idPatientDeux); idsList.add(idPatientTrois);
 		 */
-		EM.setEntityManager();
+
+		/*
+		 * Il faut ajouter dans la BD les patients pour que ca fonctionne
+		 * 
+		 * 
+		 * Antoine
+		 */
+
 		EM.getUserTransaction().begin();
 		EM.getEntityManager().persist(patientUn);
 		EM.getEntityManager().persist(patientDeux);

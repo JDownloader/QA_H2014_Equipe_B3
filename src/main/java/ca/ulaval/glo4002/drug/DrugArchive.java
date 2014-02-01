@@ -8,6 +8,7 @@ import java.util.List;
 
 import au.com.bytecode.opencsv.CSVReader;
 import ca.ulaval.glo4002.exceptions.BadFileFormatException;
+import ca.ulaval.glo4002.persistence.EM;
 
 /*
  * 86% coverage, j'aime
@@ -26,13 +27,14 @@ public class DrugArchive {
 			IOException, BadFileFormatException {
 		CSVReader reader = new CSVReader(new FileReader(pathOfDrugTextFile),
 				',');
-
+		EM.getUserTransaction().begin();
 		String[] nextLine;
 		int lineNumber = 0;
 		while ((nextLine = reader.readNext()) != null) {
-			drugs.add(parseDrug(nextLine, ++lineNumber));
+			EM.getEntityManager().persist(parseDrug(nextLine, ++lineNumber));
+			// drugs.add(parseDrug(nextLine, ++lineNumber));
 		}
-
+		EM.getUserTransaction().commit();
 		reader.close();
 	}
 
@@ -59,14 +61,22 @@ public class DrugArchive {
 	 * -Vince L-G
 	 */
 
+	/*
+	 * public Drug getDrug(int din) throws DrugNotFoundException { for (Drug
+	 * drug : drugs) { if (drug.getDin() == din) { return drug; } }
+	 * 
+	 * throw new DrugNotFoundException(String.format(
+	 * "Cannot find 'Medicament' with id '%s'.", din)); }
+	 */
+
 	public Drug getDrug(int din) throws DrugNotFoundException {
-		for (Drug drug : drugs) {
-			if (drug.getDin() == din) {
-				return drug;
-			}
+		Drug drug = EM.getEntityManager().find(Drug.class, din);
+		if (drug.getDin() == din) {
+			return drug;
 		}
 
 		throw new DrugNotFoundException(String.format(
 				"Cannot find 'Medicament' with id '%s'.", din));
+
 	}
 }

@@ -2,10 +2,10 @@ package ca.ulaval.glo4002.patient;
 
 import static org.junit.Assert.*;
 
+import java.util.Collection;
+
 import org.junit.Before;
 import org.junit.Test;
-
-import ca.ulaval.glo4002.patient.Patient;
 
 public class PatientTest {
 	private static final int ID_PATIENT = 1;
@@ -28,6 +28,10 @@ public class PatientTest {
 
 	@Test
 	public void addPrescriptionToPatient() {
+		Collection<Integer> presciptionId = null;
+		Integer idPrescription = 1;
+		presciptionId.add(idPrescription);
+		assertTrue(presciptionId.contains(idPrescription));
 		/*
 		 * TODO Check out whether we will update the database or add the
 		 * prescription to the object's ArrayList called PrecriptionId.
