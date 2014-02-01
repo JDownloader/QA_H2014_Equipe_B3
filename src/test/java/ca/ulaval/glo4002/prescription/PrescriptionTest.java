@@ -70,10 +70,4 @@ public class PrescriptionTest {
 	public void UnePrescriptionCompleteEstValide() {
 		assertTrue(filledPrescription.isValid());
 	}
-
-	@Test
-	void APrescriptionHasBeenAdded() {
-		filledPrescription.addPrescription(filledPrescription);
-		// manque à faire une assert @vince
-	}
 }
