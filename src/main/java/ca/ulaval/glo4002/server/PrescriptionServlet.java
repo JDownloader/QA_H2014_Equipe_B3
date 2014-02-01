@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import ca.ulaval.glo4002.drug.Drug;
 import ca.ulaval.glo4002.drug.DrugNotFoundException;
 import ca.ulaval.glo4002.exceptions.InvalidDateFormatException;
+import ca.ulaval.glo4002.patient.Patient;
 import ca.ulaval.glo4002.prescription.Prescription;
 import ca.ulaval.glo4002.staff.StaffMember;
 
@@ -38,6 +39,7 @@ public class PrescriptionServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	private boolean badRequest = false;
+	private int currentPatientId = -1;
 
 	private static final String CONTENT_TYPE = "application/json; charset=UTF-8";
 	private static final String ENCODING = "UTF-8";
@@ -48,6 +50,8 @@ public class PrescriptionServlet extends HttpServlet {
 	private static final String NULL_NAME = "";
 	private static final String DATE_PARAMETER = "date";
 	private static final String RENEWAL_PARAMETER = "renouvellements";
+
+	private static final int WRONG_PATIENT_ID = -1;
 
 	private static final String CODE_PARAMETER = "code";
 	private static final String INVALID_PRESCRIPTION_CODE = "PRES001";
@@ -62,15 +66,15 @@ public class PrescriptionServlet extends HttpServlet {
 		StringWriter writer = new StringWriter();
 		IOUtils.copy(requestBody, writer, ENCODING);
 		String requestString = writer.toString();
-
-		// fetchUrlPatientNumber(request);
-
-		parseJsonObject(requestString);
-
-		if (badRequest == true)
-			sendBadRequestMessage(response);
-		else
-			sendCreatedMessage(response);
+		fetchUrlPatientNumber(request, response);
+		if (checkUrl(request)==true) {
+			parseJsonObject(requestString);
+			if (badRequest == true)
+				sendBadRequestMessage(response);
+			else
+				sendCreatedMessage(response);
+		} else
+			response.sendError(HttpServletResponse.SC_NOT_FOUND, "Wrong URL");
 	}
 
 	public void parseJsonObject(String jsonRequest) {
@@ -92,9 +96,11 @@ public class PrescriptionServlet extends HttpServlet {
 	public void verifyWhichPrescriptionToCreate(Integer din, String name,
 			Integer staffMember, int renewals, String date) {
 		if (din != 0 && name == "") {
-			createPrescriptionWithDin(din, name, staffMember, renewals, date);
+			int prescriptionId = createPrescriptionWithDin(din, name, staffMember, renewals, date);
+			addPrescriptionToPatient(prescriptionId, currentPatientId);
 		} else if (din == 0 && name != "") {
-			createPrescriptionWithName(din, name, staffMember, renewals, date);
+			int prescriptionId = createPrescriptionWithName(din, name, staffMember, renewals, date);
+			addPrescriptionToPatient(prescriptionId, currentPatientId);
 		}
 	}
 
@@ -162,45 +168,67 @@ public class PrescriptionServlet extends HttpServlet {
 		requestResponse.setStatus(HttpServletResponse.SC_CREATED);
 	}
 
-	public void createPrescriptionWithDin(Integer din, String name,
+	public int createPrescriptionWithDin(Integer din, String name,
 			Integer staffMember, int renewals, String date) {
 		StaffMember requestedStaffMember = new StaffMember(staffMember);
+		int prescriptionId = -1;
 		try {
 			Drug requestedDrug = HospitalServer.archiveDrug.getDrug(din);
 			Prescription requestedPrescription = new Prescription(
 					requestedDrug, requestedStaffMember);
 			requestedPrescription.setDate(date);
 			requestedPrescription.setRenewal(renewals);
-			HospitalServer.archivePrescription
-					.addPrescription(requestedPrescription);
+			prescriptionId = requestedPrescription.getId();
 		} catch (DrugNotFoundException | InvalidDateFormatException
 				| ParseException e) {
 			badRequest = true;
 			e.printStackTrace();
 		}
+		return prescriptionId;
 	}
 
-	public void createPrescriptionWithName(Integer din, String name,
+	public int createPrescriptionWithName(Integer din, String name,
 			Integer staffMember, int renewals, String date) {
 		StaffMember requestedStaffMember = new StaffMember(staffMember);
-		{
 			Drug requestedDrug = new Drug(name);
 			Prescription requestedPrescription = new Prescription(
 					requestedDrug, requestedStaffMember);
 			try {
 				requestedPrescription.setDate(date);
 				requestedPrescription.setRenewal(renewals);
-				HospitalServer.archivePrescription
-						.addPrescription(requestedPrescription);
 			} catch (InvalidDateFormatException | ParseException e) {
 				badRequest = true;
 				e.printStackTrace();
 			}
+		return requestedPrescription.getId();
+	}
+
+	public void fetchUrlPatientNumber(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String pathInfo = request.getPathInfo();
+		int afterSlash = pathInfo.indexOf("p");
+		String patientNumber = pathInfo.substring(1, afterSlash - 1);
+		int patientId = Integer.parseInt(patientNumber);
+		if (HospitalServer.idsList.contains(patientId)) {
+			currentPatientId = patientId;
+		} else {
+			response.sendError(HttpServletResponse.SC_NOT_FOUND, "Patient does not exist");
 		}
 	}
 
-	public void fetchUrlPatientNumber(HttpServletRequest request) {
+	public void addPrescriptionToPatient(int idPrescription, int idPatient) {
+		int patientIndex = HospitalServer.idsList.indexOf(idPatient);
+		Patient currentPatient = HospitalServer.patientsList.get(patientIndex);
+		//TODO call good method to add prescription
+		//currentPatient.addPrescription(idPrescription);
+	}
+
+	public boolean checkUrl(HttpServletRequest request) {
 		String pathInfo = request.getPathInfo();
-		System.out.printf(pathInfo);
+		int afterSlash = pathInfo.indexOf("p");
+		String prescriptionsString = pathInfo.substring(afterSlash);
+		if (prescriptionsString.equals("prescriptions")) {
+			return true;
+		} else
+			return false;
 	}
 }

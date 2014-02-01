@@ -20,7 +20,7 @@ public class Patient {
 	private int id;
 
 	@Transient
-	private static int idMax = 0;
+	private static Integer idMax = 0;
 
 	@OneToMany(targetEntity = Prescription.class, cascade = CascadeType.ALL)
 	@JoinColumn(name = "PRES_ID")
