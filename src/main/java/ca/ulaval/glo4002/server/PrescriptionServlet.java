@@ -184,13 +184,14 @@ public class PrescriptionServlet extends HttpServlet {
 			requestedPrescription.setDate(date);
 			requestedPrescription.setRenewal(renewals);
 			prescriptionId = requestedPrescription.getId();
+			EM.persist(requestedStaffMember);
+			EM.persist(requestedDrug);
 			EM.persist(requestedPrescription);
 		} catch (DrugNotFoundException | InvalidDateFormatException
 				| ParseException e) {
 			badRequest = true;
 		}
 		return prescriptionId;
-
 	}
 
 	public Integer createPrescriptionWithName(Integer din, String name,
@@ -206,6 +207,9 @@ public class PrescriptionServlet extends HttpServlet {
 			badRequest = true;
 			e.printStackTrace();
 		}
+		EM.persist(requestedStaffMember);
+		EM.persist(requestedDrug);
+		EM.persist(requestedPrescription);
 		return requestedPrescription.getId();
 	}
 

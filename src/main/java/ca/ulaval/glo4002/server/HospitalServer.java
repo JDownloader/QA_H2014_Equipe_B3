@@ -38,7 +38,6 @@ public class HospitalServer extends HttpServlet {
 			ServletHolder prescriptionHolder = new ServletHolder(
 					PrescriptionServlet.class);
 			servletContextHandler.addServlet(prescriptionHolder, "/patient/*");
-
 			server.start();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -54,14 +53,18 @@ public class HospitalServer extends HttpServlet {
 		StaffMember staffUn = new StaffMember(MAGIC_VALUE_ONE);
 		StaffMember staffDeux = new StaffMember(MAGIC_VALUE_TWO);
 
-		/*
-		 * patientsList.add(patientUn); patientsList.add(patientDeux);
-		 * patientsList.add(patientTrois); Integer idPatientUn =
-		 * patientsList.get(0).getId(); Integer idPatientDeux =
-		 * patientsList.get(1).getId(); Integer idPatientTrois =
-		 * patientsList.get(2).getId(); idsList.add(idPatientUn);
-		 * idsList.add(idPatientDeux); idsList.add(idPatientTrois);
-		 */
+		
+		 /*patientsList.add(patientUn); 
+		 patientsList.add(patientDeux);
+		 
+		 //patientsList.add(patientTrois); 
+		 Integer idPatientUn = patientsList.get(0).getId(); 
+		 Integer idPatientDeux = patientsList.get(1).getId(); //Integer idPatientTrois =
+		 //patientsList.get(2).getId(); idsList.add(idPatientUn);
+		 idsList.add(idPatientUn); 
+		 idsList.add(idPatientDeux);
+		 System.out.print(idsList);*/
+		 
 
 		/*
 		 * Il faut ajouter dans la BD les patients pour que ca fonctionne
