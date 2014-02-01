@@ -99,7 +99,6 @@ public class PrescriptionServlet extends HttpServlet {
 		if (din != 0 && name == "") {
 			Integer prescriptionId = createPrescriptionWithDin(din, name,
 					staffMember, renewals, date);
-			// System.out.println(currentPatientId + prescriptionId);
 			addPrescriptionToPatient(prescriptionId, currentPatientId);
 
 		} else if (din == 0 && name != "") {
