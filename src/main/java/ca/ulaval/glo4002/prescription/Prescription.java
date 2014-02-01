@@ -31,6 +31,8 @@ import ca.ulaval.glo4002.utils.Validate;
 public class Prescription {
 	// TODO refactor idMax dans l<archive
 
+	private static final int UNSPECIFIED = -1;
+
 	@Transient
 	private static int idMax = 0;
 
@@ -44,7 +46,7 @@ public class Prescription {
 	private Drug drug;
 
 	@Column(name = "RENEWAL", nullable = false)
-	private int renewal = -1;
+	private int renewal = UNSPECIFIED;
 
 	@Column(name = "DATE", nullable = false)
 	private Date date;
@@ -72,8 +74,7 @@ public class Prescription {
 		calculateValid();
 	}
 
-	public void setDate(String date) throws InvalidDateFormatException,
-			ParseException {
+	public void setDate(String date) throws InvalidDateFormatException, ParseException {
 		if (Validate.validateDate(date)) {
 			this.date = new SimpleDateFormat("yyyy-MM-dd").parse(date);
 		}
