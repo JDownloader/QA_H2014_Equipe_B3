@@ -50,8 +50,8 @@ public class HospitalServer extends HttpServlet {
 		Patient patientUn = new Patient();
 		Patient patientDeux = new Patient();
 		Patient patientTrois = new Patient();
-		StaffMember staffUn = new StaffMember(MAGIC_VALUE_ONE);
-		StaffMember staffDeux = new StaffMember(MAGIC_VALUE_TWO);
+		//StaffMember staffUn = new StaffMember(MAGIC_VALUE_ONE);
+		//StaffMember staffDeux = new StaffMember(MAGIC_VALUE_TWO);
 
 		
 		 /*patientsList.add(patientUn); 
@@ -77,8 +77,8 @@ public class HospitalServer extends HttpServlet {
 		EM.getEntityManager().persist(patientUn);
 		EM.getEntityManager().persist(patientDeux);
 		EM.getEntityManager().persist(patientTrois);
-		EM.getEntityManager().persist(staffUn);
-		EM.getEntityManager().persist(staffDeux);
+		//EM.getEntityManager().persist(staffUn);
+		//EM.getEntityManager().persist(staffDeux);
 		EM.getUserTransaction().commit();
 	}
 }

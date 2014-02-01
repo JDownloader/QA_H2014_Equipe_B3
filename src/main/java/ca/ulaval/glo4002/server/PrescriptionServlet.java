@@ -184,9 +184,14 @@ public class PrescriptionServlet extends HttpServlet {
 			requestedPrescription.setDate(date);
 			requestedPrescription.setRenewal(renewals);
 			prescriptionId = requestedPrescription.getId();
-			EM.persist(requestedStaffMember);
-			EM.persist(requestedDrug);
-			EM.persist(requestedPrescription);
+			if (EM.getEntityManager().find(StaffMember.class, staffMember) != null
+					|| EM.getEntityManager().find(Drug.class, din) != null) {
+				EM.persist(requestedPrescription);
+			} else {
+				EM.persist(requestedStaffMember);
+				EM.persist(requestedDrug);
+				EM.persist(requestedPrescription);
+			}
 		} catch (DrugNotFoundException | InvalidDateFormatException
 				| ParseException e) {
 			badRequest = true;
@@ -207,9 +212,14 @@ public class PrescriptionServlet extends HttpServlet {
 			badRequest = true;
 			e.printStackTrace();
 		}
-		EM.persist(requestedStaffMember);
-		EM.persist(requestedDrug);
-		EM.persist(requestedPrescription);
+		if (EM.getEntityManager().find(StaffMember.class, staffMember) != null
+				|| EM.getEntityManager().find(Drug.class, din) != null) {
+			EM.persist(requestedPrescription);
+		} else {
+			EM.persist(requestedStaffMember);
+			EM.persist(requestedDrug);
+			EM.persist(requestedPrescription);
+		}
 		return requestedPrescription.getId();
 	}
 
