@@ -75,15 +75,18 @@ public class PrescriptionServlet extends HttpServlet {
 			badRequest = true;
 			return;
 		}
+
+		// Do we really need that? We can actually pass the parsed Json object
 		Integer din = fetchDinInJson(parsedJson);
 		String name = fetchNameInJson(parsedJson);
 		Integer staffMember = fetchStaffMemberInJson(parsedJson);
 		int renewals = fetchRenewalsInJson(parsedJson);
 		String date = fetchDateInJson(parsedJson);
+
+		// Don't need further validation, only call a single method
 		if (din != null && name == null) {
 			createPrescriptionWithDin(din, name, staffMember, renewals, date);
-		}
-		else if(din == null && name != null){
+		} else if (din == null && name != null) {
 			createPrescriptionWithName(din, name, staffMember, renewals, date);
 		}
 	}
@@ -105,8 +108,8 @@ public class PrescriptionServlet extends HttpServlet {
 	public boolean validateDinAndName(JSONObject jsonRequest) {
 		boolean validJson = true;
 		if ((jsonRequest.has(DIN_PARAMETER) && jsonRequest.has(NAME_PARAMETER))
-				|| (!jsonRequest.has(DIN_PARAMETER)
-				&& !jsonRequest.has(NAME_PARAMETER)))
+				|| (!jsonRequest.has(DIN_PARAMETER) && !jsonRequest
+						.has(NAME_PARAMETER)))
 			validJson = false;
 		return validJson;
 	}
@@ -124,15 +127,21 @@ public class PrescriptionServlet extends HttpServlet {
 	}
 
 	public Integer fetchStaffMemberInJson(JSONObject jsonRequest) {
-		return jsonRequest.getInt(STAFF_MEMBER_PARAMETER);
+		if (jsonRequest.has(STAFF_MEMBER_PARAMETER))
+			return jsonRequest.getInt(STAFF_MEMBER_PARAMETER);
+		return null;
 	}
 
 	public String fetchDateInJson(JSONObject jsonRequest) {
-		return jsonRequest.getString(DATE_PARAMETER);
+		if (jsonRequest.has(DATE_PARAMETER))
+			return jsonRequest.getString(DATE_PARAMETER);
+		return null;
 	}
 
-	public int fetchRenewalsInJson(JSONObject jsonRequest) {
-		return jsonRequest.getInt(RENEWAL_PARAMETER);
+	public Integer fetchRenewalsInJson(JSONObject jsonRequest) {
+		if (jsonRequest.has(RENEWAL_PARAMETER))
+			return jsonRequest.getInt(RENEWAL_PARAMETER);
+		return null;
 	}
 
 	public void sendBadRequestMessage(HttpServletResponse requestResponse)
@@ -149,6 +158,38 @@ public class PrescriptionServlet extends HttpServlet {
 		requestResponse.setStatus(HttpServletResponse.SC_CREATED);
 	}
 
+	// TODO merge the prescription creation methods
+	// Possibility of just passing a prescription request object? Means less
+	// parameters.
+	public void createPrescription(JSONObject jsonRequest) {
+		Drug requestedDrug;
+		if (jsonRequest.has(DIN_PARAMETER)) {
+			try {
+				requestedDrug = HospitalServer.archiveDrug.getDrug(jsonRequest
+						.getInt(DIN_PARAMETER));
+			} catch (DrugNotFoundException e) {
+				badRequest = true;
+				return;
+			}
+		} else {
+			requestedDrug = new Drug(jsonRequest.getString(NAME_PARAMETER));
+		}
+
+		StaffMember requestedStaffMember = new StaffMember(
+				jsonRequest.getInt(STAFF_MEMBER_PARAMETER));
+		Prescription requestedPrescription = new Prescription(requestedDrug,
+				requestedStaffMember);
+		// Exception handling?
+		requestedPrescription.setDate(jsonRequest.getString(DATE_PARAMETER));
+		requestedPrescription.setRenewal(jsonRequest.getInt(RENEWAL_PARAMETER));
+		HospitalServer.archivePrescription
+				.addPrescription(requestedPrescription);
+	}
+
+	/*
+	 * method should not verify the date : that's up to another method parsing
+	 * is already done : there should be no parsing exception
+	 */
 	public void createPrescriptionWithDin(Integer din, String name,
 			Integer staffMember, int renewals, String date) {
 		StaffMember requestedStaffMember = new StaffMember(staffMember);
@@ -168,10 +209,14 @@ public class PrescriptionServlet extends HttpServlet {
 		}
 	}
 
+	/*
+	 * method should not verify the date : that's up to another method parsing
+	 * is already done : there should be no parsing exception
+	 */
 	public void createPrescriptionWithName(Integer din, String name,
 			Integer staffMember, int renewals, String date) {
 		StaffMember requestedStaffMember = new StaffMember(staffMember);
-		 {
+		{
 			Drug requestedDrug = new Drug(name);
 			Prescription requestedPrescription = new Prescription(
 					requestedDrug, requestedStaffMember);
@@ -186,8 +231,8 @@ public class PrescriptionServlet extends HttpServlet {
 					.addPrescription(requestedPrescription);
 		}
 	}
-	
-	public void fetchUrlPatientNumber(HttpServletRequest request){
+
+	public void fetchUrlPatientNumber(HttpServletRequest request) {
 		String pathInfo = request.getPathInfo();
 		System.out.println(pathInfo);
 	}
