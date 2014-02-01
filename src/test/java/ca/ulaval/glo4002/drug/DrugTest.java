@@ -27,11 +27,11 @@ public class DrugTest {
 		assertNotNull(new Drug(NAME_OF_DRUG));
 	}
 
-	@Test
-	public void unNouveauMedicamentAUnIdUnique() {
-		Drug autreMedicament = new Drug("other drug");
-		assertTrue(autreMedicament.getId() != drug.getId());
-	}
+	/*
+	 * @Test public void unNouveauMedicamentAUnIdUnique() { Drug autreMedicament
+	 * = new Drug("other drug"); assertTrue(autreMedicament.getId() !=
+	 * drug.getId()); }
+	 */
 
 	@Test
 	public void unNouveauMedicamentSansDinRetourneUnDinNull() {

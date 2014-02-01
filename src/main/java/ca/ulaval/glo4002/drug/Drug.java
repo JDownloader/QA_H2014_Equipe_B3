@@ -6,23 +6,24 @@ import javax.persistence.Id;
 
 @Entity(name = "DRUG")
 public class Drug {
-	private static int idMax = 0;
+	// private static int idMax = 0;
 
 	private static final int NULL_DIN = 0;
 
-	@Id
-	@Column(name = "DRUG_ID", nullable = false)
-	private int id;
+	/*
+	 * @Column(name = "DRUG_ID", nullable = false) private int id;
+	 */
 
-	@Column(name = "DIN", nullable = false)
+	@Id
+	@Column(name = "DIN")
 	private int din;
 
-	@Column(name = "DRUG_NAME", nullable = false)
+	@Column(name = "DRUG_NAME")
 	private String name;
 
-	//Deux constructeurs: un avec le din et un avec le nom
+	// Deux constructeurs: un avec le din et un avec le nom
 	public Drug(int din, String name) {
-		incrementAutoId();
+		// incrementAutoId();
 
 		this.din = din;
 		this.name = name;
@@ -32,14 +33,11 @@ public class Drug {
 		this(NULL_DIN, name);
 	}
 
-	private void incrementAutoId() {
-		id = idMax;
-		idMax++;
-	}
-
-	public int getId() {
-		return this.id;
-	}
+	/*
+	 * private void incrementAutoId() { id = idMax; idMax++; }
+	 * 
+	 * public int getId() { return this.id; }
+	 */
 
 	public int getDin() {
 		return this.din;

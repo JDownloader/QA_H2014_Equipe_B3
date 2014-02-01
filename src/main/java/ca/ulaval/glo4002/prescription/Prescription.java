@@ -15,7 +15,6 @@ import javax.persistence.Transient;
 import ca.ulaval.glo4002.drug.Drug;
 import ca.ulaval.glo4002.exceptions.InvalidDateFormatException;
 import ca.ulaval.glo4002.staff.StaffMember;
-import ca.ulaval.glo4002.utils.validate;
 
 /* CODE REVIEW 25/01/2014
  * - "renouvellement = -1": Magic number... Je définirais la constante suivante: UNSPECIFIED = -1
@@ -31,11 +30,11 @@ public class Prescription {
 	// TODO refactor idMax dans l<archive
 
 	@Transient
-	private static int idMax = 0;
+	private static int idMax = 1;
 
 	@Id
 	@Column(name = "PRES_ID", nullable = false)
-	private int id;
+	private Integer id;
 
 	@ManyToOne()
 	@ElementCollection(targetClass = Drug.class)
@@ -62,7 +61,7 @@ public class Prescription {
 		this.prescriber = staff;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
@@ -73,9 +72,9 @@ public class Prescription {
 
 	public void setDate(String date) throws InvalidDateFormatException,
 			ParseException {
-		if (validate.validateDate(date)) {
-			this.date = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-		}
+		// if (validate.validateDate(date)) {
+		this.date = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+		// }
 		calculateValid();
 	}
 
@@ -88,6 +87,15 @@ public class Prescription {
 	public boolean isValid() {
 		return this.isValid;
 	}
+
+	/*
+	 * public void addPrescription(Prescription prescription) {
+	 * EM.getUserTransaction().begin();
+	 * EM.getEntityManager().persist(prescription);
+	 * EM.getUserTransaction().commit();
+	 * 
+	 * }
+	 */
 
 	private void incrementAutoId() {
 		this.id = idMax;

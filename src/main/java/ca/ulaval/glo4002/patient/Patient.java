@@ -1,16 +1,14 @@
 package ca.ulaval.glo4002.patient;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Transient;
-
-import ca.ulaval.glo4002.prescription.Prescription;
 
 @Entity(name = "Patient")
 public class Patient {
@@ -22,9 +20,9 @@ public class Patient {
 	@Transient
 	private static Integer idMax = 0;
 
-	@OneToMany(targetEntity = Prescription.class, cascade = CascadeType.ALL)
+	@ElementCollection()
 	@JoinColumn(name = "PRES_ID")
-	private List<Integer> presciptionId;
+	private List<Integer> presciptionId = new ArrayList<Integer>();
 
 	public Patient() {
 		incrementAutoId();
@@ -34,8 +32,15 @@ public class Patient {
 		return id;
 	}
 
-	public void addPrescription(int idPrescription) {
+	public void addPrescription(Integer idPrescription) {
+		// try {
+		// EM.getUserTransaction().begin();
 		presciptionId.add(idPrescription);
+		// EM.getUserTransaction().commit();
+		/*
+		 * } catch (Exception e) { System.out.print("poop" + idPrescription); }
+		 */
+
 	}
 
 	private void incrementAutoId() {
