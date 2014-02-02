@@ -31,43 +31,43 @@ public class PrescriptionTest {
 	}
 
 	@Test
-	public void unePrescriptionEstCree() {
+	public void aPrescriptionHasBeenCreated() {
 		assertNotNull(emptyPrescription);
 	}
 
 	@Test
-	public void unePrescriptionAUnIdUnique() {
+	public void aPrescriptionHasAUniqueId() {
 		Prescription otherPrescription = new Prescription(A_DRUG,
 				A_STAFF_MEMBER);
 		assertFalse(emptyPrescription.getId() == otherPrescription.getId());
 	}
 
 	@Test(expected = InvalidDateFormatException.class)
-	public void unePrescriptionNePrendPasLeMauvaisFormatDeDate()
+	public void aPrescriptionDoesntTakeABadDateFormat()
 			throws InvalidDateFormatException, ParseException {
 		emptyPrescription.setDate(A_WRONG_DATE);
 	}
 
 	@Test
-	public void unePrescriptionVideNestPasValide() {
+	public void anEmptyPrescriptionIsntValid() {
 		assertFalse(emptyPrescription.isValid());
 	}
 
 	@Test
-	public void onPeutAjouterUnRenouvellementAUnePrescription() {
+	public void weCantAddAnUpdatetoAPrescription() {
 		emptyPrescription.setRenewal(A_RENEWAL);
 		assertFalse(emptyPrescription.isValid());
 	}
 
 	@Test
-	public void onPeutAjouterUneDateAUnePrescription()
+	public void weCantAddADateToAPrescription()
 			throws InvalidDateFormatException, ParseException {
 		emptyPrescription.setDate(NOW);
 		assertFalse(emptyPrescription.isValid());
 	}
 
 	@Test
-	public void UnePrescriptionCompleteEstValide() {
+	public void aCompletePrescriptionIsValid() {
 		assertTrue(filledPrescription.isValid());
 	}
 }
