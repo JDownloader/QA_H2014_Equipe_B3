@@ -27,12 +27,12 @@ public class InterventionArchiveTest {
 	}
 	
 	@Test
-	public void aNewInterventionArchiveIsBeingCreated() {
+	public void newInterventionArchiveIsBeingCreated() {
 		assertNotNull(interventionArchive);
 	}
 	
 	@Test
-	public void aNewInterventionIsBeingAddedWithoutThrowingAnException() {
+	public void newInterventionIsBeingAddedWithoutThrowingAnException() {
 		interventionArchive.addIntervention(interventionMock);
 	}
 	
@@ -48,7 +48,7 @@ public class InterventionArchiveTest {
 	}
 	
 	@Test(expected = InterventionNotFoundException.class)
-	public void interventionArchiveThrowsAnExceptionWhenRetrievingAnUnexistingInterventionId() throws InterventionNotFoundException {
+	public void throwsAnExceptionWhenRetrievingAnUnexistingInterventionId() throws InterventionNotFoundException {
 		interventionArchive.getIntervention(UNEXISTING_INTERVENTION_ID);
 	}
 }

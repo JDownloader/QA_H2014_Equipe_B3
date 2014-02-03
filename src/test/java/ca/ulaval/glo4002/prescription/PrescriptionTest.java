@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ca.ulaval.glo4002.drug.Drug;
+import ca.ulaval.glo4002.exceptions.InterventionNotFoundException;
 import ca.ulaval.glo4002.exceptions.InvalidDateFormatException;
 import ca.ulaval.glo4002.staff.StaffMember;
 
@@ -31,43 +32,45 @@ public class PrescriptionTest {
 	}
 
 	@Test
-	public void aPrescriptionHasBeenCreated() {
+	public void canBeCreated() {
 		assertNotNull(emptyPrescription);
 	}
 
 	@Test
-	public void aPrescriptionHasAUniqueId() {
+	public void verifyIdIsUnique() {
 		Prescription otherPrescription = new Prescription(A_DRUG,
 				A_STAFF_MEMBER);
 		assertFalse(emptyPrescription.getId() == otherPrescription.getId());
 	}
 
 	@Test(expected = InvalidDateFormatException.class)
-	public void aPrescriptionDoesntTakeABadDateFormat()
+	public void throwsExceptionWhenBadDateFormat()
 			throws InvalidDateFormatException, ParseException {
 		emptyPrescription.setDate(A_WRONG_DATE);
+		//TODO: Wrong
 	}
 
 	@Test
-	public void anEmptyPrescriptionIsntValid() {
+	public void verifyEmptyIsntValid() {
 		assertFalse(emptyPrescription.isValid());
 	}
 
-	@Test
-	public void weCantAddAnUpdatetoAPrescription() {
+	@Test(expected=InterventionNotFoundException.class)
+	public void thowsExceptionWhenSetRenewalForEmpty() {
 		emptyPrescription.setRenewal(A_RENEWAL);
-		assertFalse(emptyPrescription.isValid());
+		//assertFalse(emptyPrescription.isValid());
+		////TODO: Wrong, should throw error
 	}
 
 	@Test
-	public void weCantAddADateToAPrescription()
+	public void verifyDateCanBeSet()
 			throws InvalidDateFormatException, ParseException {
 		emptyPrescription.setDate(NOW);
 		assertFalse(emptyPrescription.isValid());
 	}
 
-	@Test
-	public void aCompletePrescriptionIsValid() {
+	@Test//TODO: Wrong ça dépend de l'ordre
+	public void verifyIsValid() {
 		assertTrue(filledPrescription.isValid());
 	}
 }

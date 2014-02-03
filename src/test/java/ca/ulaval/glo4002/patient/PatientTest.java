@@ -15,12 +15,12 @@ public class PatientTest {
 	}
 
 	@Test
-	public void emptyConstructorPatient() {
+	public void canBeCreated() {
 		assertNotNull(myPatient);
 	}
 
 	@Test
-	public void getIdPatient() {
+	public void verifyIdIsRealId() {
 		assertEquals(ID_PATIENT, myPatient.getId());
 	}
 

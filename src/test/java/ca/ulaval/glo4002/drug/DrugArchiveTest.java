@@ -29,34 +29,34 @@ public class DrugArchiveTest {
 	public ExpectedException exception = ExpectedException.none();
 
 	@Test(expected = FileNotFoundException.class)
-	public void DrugArchiveThrowsExceptionWhenFileNotFound() throws IOException, FileNotFoundException, BadFileFormatException {
+	public void throwsExceptionWhenFileNotFound() throws IOException, FileNotFoundException, BadFileFormatException {
 		new DrugArchive(new FileReader(UNEXISTING_DRUG_FILENAME));
 	}
 
 	@Test(expected = BadFileFormatException.class)
-	public void DrugArchiveThrowsExceptionWhenBadFileFormat() throws IOException, FileNotFoundException, BadFileFormatException {
+	public void throwsExceptionWhenBadFileFormat() throws IOException, FileNotFoundException, BadFileFormatException {
 		new DrugArchive(new StringReader(DRUG_FILE_CONTENT_W_MISSING_VALUES));
 	}
 
 	@Test(expected = BadFileFormatException.class)
-	public void DrugArchiveThrowsExceptionWhenBadFileFormat2() throws IOException, FileNotFoundException, BadFileFormatException {
+	public void throwsExceptionWhenBadFileFormat2() throws IOException, FileNotFoundException, BadFileFormatException {
 		new DrugArchive(new StringReader(DRUG_FILE_CONTENT_W_INVALID_DIN));
 	}
 
 	@Test
-	public void DrugArchiveLoadsFileWithoutThrowingException() throws IOException, FileNotFoundException, BadFileFormatException {
+	public void loadsFileWithoutThrowingException() throws IOException, FileNotFoundException, BadFileFormatException {
 		new DrugArchive(new StringReader(DRUG_FILE_CONTENT_VALID));
 	}
 
 	@Test
-	public void DrugArchiveLoadsFileCorrectly() throws IOException, FileNotFoundException, BadFileFormatException, DrugNotFoundException {
+	public void loadsFileCorrectly() throws IOException, FileNotFoundException, BadFileFormatException, DrugNotFoundException {
 		DrugArchive drugArchive = new DrugArchive(new StringReader(DRUG_FILE_CONTENT_VALID));
 		Drug medicament = drugArchive.getDrug(TRIFLUOPERAZINE_DIN);
 		assertEquals("TRIFLUOPERAZINE", medicament.getName());
 	}
 
 	@Test(expected = DrugNotFoundException.class)
-	public void DrugArchiveThrowsExceptionWhenRequestingUnexistingDin() throws IOException, FileNotFoundException, BadFileFormatException,
+	public void throwsExceptionWhenRequestingUnexistingDin() throws IOException, FileNotFoundException, BadFileFormatException,
 	                DrugNotFoundException {
 		DrugArchive drugArchive = new DrugArchive(new StringReader(DRUG_FILE_CONTENT_VALID));
 		drugArchive.getDrug(INVALID_DIN);

@@ -16,12 +16,12 @@ public class StaffMemberTest {
 	}
 
 	@Test
-	public void emptyConstructorOfStaffMember() {
+	public void canBeCreated() {
 		assertNotNull(myStaffMember);
 	}
 
 	@Test
-	public void getIdOfStaffMember() {
+	public void verifyIdIsRealId() {
 		assertEquals(ID_NUMBER, myStaffMember.getId());
 	}
 
