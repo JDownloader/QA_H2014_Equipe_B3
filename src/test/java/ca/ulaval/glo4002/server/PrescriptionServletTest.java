@@ -4,13 +4,13 @@ import org.junit.Test;
 
 public class PrescriptionServletTest {
 
-	private static final Integer VALID_DIN = 02240541;
-	private static final Integer NULL_DIN = 0;
-	private static final String VALID_NAME = "ADVIL NIGHTTIME LIQUI";
-	private static final String NULL_NAME = "";
-	private static final Integer STAFF_MEMBER = 000000;
-	private static final int RENEWALS = 0;
-	private static final String DATE = "2001-07-04T12:08:56";
+//	private static final Integer VALID_DIN = 02240541;
+//	private static final Integer NULL_DIN = 0;
+//	private static final String VALID_NAME = "ADVIL NIGHTTIME LIQUI";
+//	private static final String NULL_NAME = "";
+//	private static final Integer STAFF_MEMBER = 000000;
+//	private static final int RENEWALS = 0;
+//	private static final String DATE = "2001-07-04T12:08:56";
 	PrescriptionServlet testServlet = new PrescriptionServlet();
 
 	@Test

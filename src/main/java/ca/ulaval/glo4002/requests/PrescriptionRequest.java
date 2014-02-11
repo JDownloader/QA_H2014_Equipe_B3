@@ -1,8 +1,8 @@
-package ca.ulaval.glo4002.server;
+package ca.ulaval.glo4002.requests;
 
 import org.json.JSONObject;
 
-public class PrescriptionRequest extends Request {
+public class PrescriptionRequest implements Request {
 
 	private static final String DIN_PARAMETER = "din";
 	private static final String STAFF_MEMBER_PARAMETER = "intervenant";

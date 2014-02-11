@@ -19,6 +19,7 @@ import ca.ulaval.glo4002.exceptions.InvalidDateFormatException;
 import ca.ulaval.glo4002.patient.Patient;
 import ca.ulaval.glo4002.persistence.EM;
 import ca.ulaval.glo4002.prescription.Prescription;
+import ca.ulaval.glo4002.requests.PrescriptionRequest;
 import ca.ulaval.glo4002.staff.StaffMember;
 
 public class PrescriptionServlet extends HttpServlet {
@@ -29,20 +30,12 @@ public class PrescriptionServlet extends HttpServlet {
 
 	private static final String CONTENT_TYPE = "application/json; charset=UTF-8";
 	private static final String ENCODING = "UTF-8";
-	private static final String DIN_PARAMETER = "din";
-	private static final Integer NULL_DIN = 0;
-	private static final String STAFF_MEMBER_PARAMETER = "intervenant";
-	private static final String NAME_PARAMETER = "nom";
-	private static final String NULL_NAME = "";
-	private static final String DATE_PARAMETER = "date";
-	private static final String RENEWAL_PARAMETER = "renouvellements";
-
-	private static final int WRONG_PATIENT_ID = -1;
-
+	
 	private static final String CODE_PARAMETER = "code";
 	private static final String INVALID_PRESCRIPTION_CODE = "PRES001";
 	private static final String MESSAGE_PARAMETER = "message";
 	private static final String MESSAGE = "La prescription est invalide";
+	private static final String WRONG_URL_MESSAGE = "Wrong URL";
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -60,35 +53,27 @@ public class PrescriptionServlet extends HttpServlet {
 			else
 				sendCreatedMessage(response);
 		} else
-			response.sendError(HttpServletResponse.SC_NOT_FOUND, "Wrong URL");
+			response.sendError(HttpServletResponse.SC_NOT_FOUND, WRONG_URL_MESSAGE);
 	}
 
 	public void parseJsonObject(String jsonRequest) {
-		JSONObject parsedJson = fetchJsonObject(jsonRequest);
-		if (!validateJsonObject(parsedJson)) {
+		JSONObject parsedJson = this.fetchJsonObject(jsonRequest);
+		PrescriptionRequest myRequest = new PrescriptionRequest(parsedJson);
+		if (!myRequest.isValid())
 			badRequest = true;
-		} else {
+		else {
 			badRequest = false;
-			Integer din = fetchDinInJson(parsedJson);
-			String name = fetchNameInJson(parsedJson);
-			Integer staffMember = fetchStaffMemberInJson(parsedJson);
-			int renewals = fetchRenewalsInJson(parsedJson);
-			String date = fetchDateInJson(parsedJson);
-			verifyWhichPrescriptionToCreate(din, name, staffMember, renewals,
-					date);
+			verifyWhichPrescriptionToCreate(myRequest);
 		}
 	}
 
-	public void verifyWhichPrescriptionToCreate(Integer din, String name,
-			Integer staffMember, Integer renewals, String date) {
-		if (din != 0 && name == "") {
-			Integer prescriptionId = createPrescriptionWithDin(din, name,
-					staffMember, renewals, date);
-			addPrescriptionToPatient(prescriptionId, currentPatientId);
 
-		} else if (din == 0 && name != "") {
-			Integer prescriptionId = createPrescriptionWithName(din, name,
-					staffMember, renewals, date);
+	public void verifyWhichPrescriptionToCreate(PrescriptionRequest myRequest) {
+		if (myRequest.getDin() != 0 && myRequest.getName() == "") {
+			int prescriptionId = createPrescriptionWithDin(myRequest);
+			addPrescriptionToPatient(prescriptionId, currentPatientId);
+		} else if (myRequest.getDin() == 0 && myRequest.getName() != "") {
+			int prescriptionId = createPrescriptionWithName(myRequest);
 			addPrescriptionToPatient(prescriptionId, currentPatientId);
 		}
 	}
@@ -96,52 +81,6 @@ public class PrescriptionServlet extends HttpServlet {
 	public JSONObject fetchJsonObject(String jsonRequest) {
 		JSONObject objectBody = new JSONObject(jsonRequest);
 		return objectBody;
-	}
-
-	public boolean validateJsonObject(JSONObject jsonRequest) {
-		if (validateDinAndName(jsonRequest)
-				&& jsonRequest.has(STAFF_MEMBER_PARAMETER)
-				&& jsonRequest.has(DATE_PARAMETER)
-				&& jsonRequest.has(RENEWAL_PARAMETER)) {
-			return true;
-		}
-		return false;
-	}
-
-	public boolean validateDinAndName(JSONObject jsonRequest) {
-		boolean validJson = true;
-		if ((jsonRequest.has(DIN_PARAMETER) && jsonRequest.has(NAME_PARAMETER))
-				|| (!jsonRequest.has(DIN_PARAMETER) && !jsonRequest
-						.has(NAME_PARAMETER))) {
-			validJson = false;
-		}
-		return validJson;
-	}
-
-	public Integer fetchDinInJson(JSONObject jsonRequest) {
-		if (jsonRequest.has(DIN_PARAMETER)) {
-			return jsonRequest.getInt(DIN_PARAMETER);
-		}
-		return NULL_DIN;
-	}
-
-	public String fetchNameInJson(JSONObject jsonRequest) {
-		if (jsonRequest.has(NAME_PARAMETER)) {
-			return jsonRequest.getString(NAME_PARAMETER);
-		}
-		return NULL_NAME;
-	}
-
-	public Integer fetchStaffMemberInJson(JSONObject jsonRequest) {
-		return jsonRequest.getInt(STAFF_MEMBER_PARAMETER);
-	}
-
-	public String fetchDateInJson(JSONObject jsonRequest) {
-		return jsonRequest.getString(DATE_PARAMETER);
-	}
-
-	public Integer fetchRenewalsInJson(JSONObject jsonRequest) {
-		return jsonRequest.getInt(RENEWAL_PARAMETER);
 	}
 
 	public void sendBadRequestMessage(HttpServletResponse requestResponse)
@@ -158,16 +97,15 @@ public class PrescriptionServlet extends HttpServlet {
 		requestResponse.setStatus(HttpServletResponse.SC_CREATED);
 	}
 
-	public Integer createPrescriptionWithDin(Integer din, String name,
-			Integer staffMember, Integer renewals, String date) {
-		StaffMember requestedStaffMember = new StaffMember(staffMember);
+	public Integer createPrescriptionWithDin(PrescriptionRequest myRequest) {
+		StaffMember requestedStaffMember = new StaffMember(myRequest.getStaffMember());
 		Integer prescriptionId = 1;
 		try {
-			Drug requestedDrug = HospitalServer.archiveDrug.getDrug(din);
+			Drug requestedDrug = HospitalServer.archiveDrug.getDrug(myRequest.getDin());
 			Prescription requestedPrescription = new Prescription(
 					requestedDrug, requestedStaffMember);
-			requestedPrescription.setDate(date);
-			requestedPrescription.setRenewal(renewals);
+			requestedPrescription.setDate(myRequest.getDate());
+			requestedPrescription.setRenewal(myRequest.getRenewals());
 			prescriptionId = requestedPrescription.getId();
 			if (EM.getEntityManager().find(StaffMember.class,
 					requestedStaffMember.getId()) != null) {
@@ -183,22 +121,24 @@ public class PrescriptionServlet extends HttpServlet {
 		return prescriptionId;
 	}
 
-	public Integer createPrescriptionWithName(Integer din, String name,
-			Integer staffMember, Integer renewals, String date) {
-		StaffMember requestedStaffMember = new StaffMember(staffMember);
-		Drug requestedDrug = new Drug(name);
-		Prescription requestedPrescription = new Prescription(requestedDrug,
-				requestedStaffMember);
+	public Integer createPrescriptionWithName(PrescriptionRequest myRequest) {
+
+		//WAAAAAAY TOO LONG
+		StaffMember requestedStaffMember = new StaffMember(myRequest.getStaffMember());
+		Drug requestedDrug = new Drug(myRequest.getName());
+		Prescription requestedPrescription = new Prescription(requestedDrug,requestedStaffMember);
+		
 		try {
-			requestedPrescription.setDate(date);
-			requestedPrescription.setRenewal(renewals);
+			// Why need setters after using the constructor?
+			requestedPrescription.setDate(myRequest.getDate());
+			requestedPrescription.setRenewal(myRequest.getRenewals());
 		} catch (InvalidDateFormatException | ParseException e) {
 			badRequest = true;
-			e.printStackTrace();
 		}
+		
 		if (EM.getEntityManager().find(StaffMember.class,
 				requestedStaffMember.getId()) != null
-				|| EM.getEntityManager().find(Drug.class, din) != null) {
+				|| EM.getEntityManager().find(Drug.class, myRequest.getDin()) != null) {
 			EM.persist(requestedPrescription);
 		} else {
 			EM.persist(requestedStaffMember);

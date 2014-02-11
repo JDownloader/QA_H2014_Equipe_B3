@@ -1,10 +1,12 @@
-package ca.ulaval.glo4002.server;
+package ca.ulaval.glo4002.requests;
 
 import static org.junit.Assert.*;
 
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
+
+import ca.ulaval.glo4002.requests.PrescriptionRequest;
 
 public class prescriptionRequestTest {
 	private PrescriptionRequest myPrescriptionRequest;

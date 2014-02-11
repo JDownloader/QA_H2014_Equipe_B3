@@ -1,5 +1,5 @@
-package ca.ulaval.glo4002.server;
+package ca.ulaval.glo4002.requests;
 
-public class Request {
-
+public interface Request {
+	public boolean isValid();
 }
