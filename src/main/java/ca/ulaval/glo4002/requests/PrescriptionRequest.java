@@ -62,8 +62,8 @@ public class PrescriptionRequest implements Request {
 	}
 
 	public boolean validateDinAndName() {
-		if ((!this.name.isEmpty() && !(this.din < 0))
-				|| (this.name.isEmpty() && this.din < 0))
+		if ((!this.name.isEmpty() && (this.din < 0))
+				|| (this.name.isEmpty() && !(this.din < 0)))
 			return false;
 		return true;
 	}

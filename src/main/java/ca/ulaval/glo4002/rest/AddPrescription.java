@@ -22,12 +22,8 @@ public class AddPrescription {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response post(String message) {
-		//TODO Complete the method appropriately
-		//Fetch the JSON object passed by the POST request
-		JSONObject jsonReceived = new JSONObject(message);
-		//From that JSON, create a PrescriptionRequest
-		PrescriptionRequest addedPrescription = new PrescriptionRequest(jsonReceived);
+	public Response post(final JSONObject input) {
+		PrescriptionRequest addedPrescription = new PrescriptionRequest(input);
 		if(addedPrescription.isValid())
 			return Response.status(Status.CREATED).build();
 		else {
