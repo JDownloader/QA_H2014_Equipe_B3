@@ -16,16 +16,16 @@ public class AddPrescriptionTest {
 	static final Response badRequest = Response.status(Status.BAD_REQUEST).build();
 	static final Response goodRequest = Response.status(Status.CREATED).build();
 	
-	static final JSONObject goodJson = new JSONObject("{ \"intervenant\": \"000000\", "
+	static final String goodJson = "{ \"intervenant\": \"000000\", "
 								+ "\"date\": \"2001-07-04T12:08:56\", "
 								+ "\"renouvellements\": \"0\", "
-								+ "\"din\": \"02240541\"}");
+								+ "\"din\": \"02240541\"}";
 	
-	static final JSONObject badJson = new JSONObject("{ \"intervenant\": \"000000\", "
+	static final String badJson = "{ \"intervenant\": \"000000\", "
 								+ "\"date\": \"2001-07-04T12:08:56\", "
 								+ "\"renouvellements\": \"0\", "
 								+ "\"din\": \"02240541\", "
-								+ "\"nom\": \"ADVIL NIGHTTIME LIQUI\" }");
+								+ "\"nom\": \"ADVIL NIGHTTIME LIQUI\" }";
 
 	static final AddPrescription myAddPrescription = new AddPrescription();
 	
