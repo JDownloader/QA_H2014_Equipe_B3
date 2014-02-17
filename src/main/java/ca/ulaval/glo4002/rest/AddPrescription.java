@@ -54,15 +54,6 @@ public class AddPrescription extends Rest<PrescriptionRequest> {
 		updatePatient(transaction, prescriptionRequest, prescription);
 	}
 
-	private Drug updateAndPersistDrug(DataAccessTransaction transaction, PrescriptionRequest prescriptionRequest) throws BadRequestException {
-		DrugDAO drugDAO = new DrugDAO(transaction);
-		try {
-			return drugDAO.get(new Din(prescriptionRequest.getDin()));
-		} catch (ItemNotFoundException e) {
-			throw new BadRequestException("PRES001", e.getMessage());
-		}
-	}
-
 	private Prescription createPrescription(DataAccessTransaction transaction, PrescriptionRequest prescriptionRequest) throws BadRequestException {
 		PrescriptionDAO prescriptionDAO = new PrescriptionDAO(transaction);
 		Prescription.Builder prescriptionBuilder = new Prescription.Builder();
@@ -71,12 +62,21 @@ public class AddPrescription extends Rest<PrescriptionRequest> {
 		prescriptionBuilder.prescriber(new StaffMember(prescriptionRequest.getStaffMember()));
 		prescriptionBuilder.drugName(prescriptionRequest.getDrugName());
 		if (prescriptionRequest.hasDin()) {
-			Drug drug = updateAndPersistDrug(transaction, prescriptionRequest);
+			Drug drug = getDrug(transaction, prescriptionRequest);
 			prescriptionBuilder.drug(drug);	
 		}
 		Prescription prescription = prescriptionBuilder.build();
 		prescriptionDAO.create(prescription);
 		return prescription;
+	}
+	
+	private Drug getDrug(DataAccessTransaction transaction, PrescriptionRequest prescriptionRequest) throws BadRequestException {
+		DrugDAO drugDAO = new DrugDAO(transaction);
+		try {
+			return drugDAO.get(new Din(prescriptionRequest.getDin()));
+		} catch (ItemNotFoundException e) {
+			throw new BadRequestException("PRES001", e.getMessage());
+		}
 	}
 
 	private void updatePatient(DataAccessTransaction transaction, PrescriptionRequest prescriptionRequest, Prescription prescription) {
