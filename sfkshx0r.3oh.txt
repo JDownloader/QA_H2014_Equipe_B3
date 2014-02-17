@@ -1,0 +1,62 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch BDRefactor2
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	deleted:    src/main/java/ca/ulaval/glo4002/drug/DrugArchive.java
+#	deleted:    src/main/java/ca/ulaval/glo4002/exceptions/DrugNotFoundException.java
+#	deleted:    src/main/java/ca/ulaval/glo4002/exceptions/InterventionNotFoundException.java
+#	deleted:    src/main/java/ca/ulaval/glo4002/exceptions/InvalidDateFormatException.java
+#	deleted:    src/main/java/ca/ulaval/glo4002/intervention/InterventionArchive.java
+#	deleted:    src/main/java/ca/ulaval/glo4002/persistence/EM.java
+#	deleted:    src/main/java/ca/ulaval/glo4002/prescription/PrescriptionArchive.java
+#	deleted:    src/main/java/ca/ulaval/glo4002/utils/Validate.java
+#	deleted:    src/test/java/ca/ulaval/glo4002/intervention/InterventionArchiveTest.java
+#	renamed:    src/test/java/ca/ulaval/glo4002/utils/ValidateTest.java -> src/test/java/ca/ulaval/glo4002/utils/CustomDateParserTest.java
+#
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#	modified:   src/main/java/ca/ulaval/glo4002/drug/Drug.java
+#	modified:   src/main/java/ca/ulaval/glo4002/exceptions/BadFileFormatException.java
+#	modified:   src/main/java/ca/ulaval/glo4002/intervention/Intervention.java
+#	modified:   src/main/java/ca/ulaval/glo4002/patient/Patient.java
+#	modified:   src/main/java/ca/ulaval/glo4002/prescription/Prescription.java
+#	modified:   src/main/java/ca/ulaval/glo4002/requests/PrescriptionRequest.java
+#	modified:   src/main/java/ca/ulaval/glo4002/requests/Request.java
+#	modified:   src/main/java/ca/ulaval/glo4002/rest/AddPrescription.java
+#	modified:   src/main/java/ca/ulaval/glo4002/server/HospitalServer.java
+#	modified:   src/main/java/ca/ulaval/glo4002/staff/StaffMember.java
+#	modified:   src/main/java/ca/ulaval/glo4002/staff/Surgeon.java
+#	modified:   src/main/resources/META-INF/persistence.xml
+#	modified:   src/test/java/ca/ulaval/glo4002/drug/DrugArchiveTest.java
+#	modified:   src/test/java/ca/ulaval/glo4002/drug/DrugTest.java
+#	modified:   src/test/java/ca/ulaval/glo4002/intervention/InterventionTest.java
+#	modified:   src/test/java/ca/ulaval/glo4002/patient/PatientTest.java
+#	modified:   src/test/java/ca/ulaval/glo4002/prescription/PrescriptionTest.java
+#	modified:   src/test/java/ca/ulaval/glo4002/rest/AddPrescriptionTest.java
+#	modified:   src/test/java/ca/ulaval/glo4002/staff/StaffMemberTest.java
+#	modified:   src/test/java/ca/ulaval/glo4002/utils/CustomDateParserTest.java
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	src/main/java/ca/ulaval/glo4002/dao/
+#	src/main/java/ca/ulaval/glo4002/drug/Din.java
+#	src/main/java/ca/ulaval/glo4002/drug/DrugArchive.java
+#	src/main/java/ca/ulaval/glo4002/drug/DrugDAO.java
+#	src/main/java/ca/ulaval/glo4002/drug/IDrugDAO.java
+#	src/main/java/ca/ulaval/glo4002/exceptions/BadRequestException.java
+#	src/main/java/ca/ulaval/glo4002/exceptions/ItemNotFoundException.java
+#	src/main/java/ca/ulaval/glo4002/intervention/IInterventionDAO.java
+#	src/main/java/ca/ulaval/glo4002/intervention/InterventionDAO.java
+#	src/main/java/ca/ulaval/glo4002/patient/IPatientDAO.java
+#	src/main/java/ca/ulaval/glo4002/patient/PatientDAO.java
+#	src/main/java/ca/ulaval/glo4002/prescription/IPrescriptionDAO.java
+#	src/main/java/ca/ulaval/glo4002/prescription/PrescriptionDAO.java
+#	src/main/java/ca/ulaval/glo4002/rest/Rest.java
+#	src/main/java/ca/ulaval/glo4002/utils/
+

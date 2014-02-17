@@ -6,46 +6,35 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class DrugTest {
-	private static final int NULL_DIN = 0;
+	private static final Din NULL_DIN = null;
 
 	private static final String NAME_OF_DRUG = "Drug";
-	private static final int DIN_OF_DRUG = 5;
+	private static final Din DIN_OF_DRUG = new Din(5);
 	Drug drug;
 
 	@Before
 	public void init() {
-		drug = new Drug(DIN_OF_DRUG, NAME_OF_DRUG);
+		drug = new Drug.Builder().din(DIN_OF_DRUG).name(NAME_OF_DRUG).build();
 	}
 
 	@Test
-	public void unNouveauMedicamentEstCree() {
-		assertNotNull(drug);
-	}
-
-	@Test
-	public void unNouveauMedicamentSansDinEstCree() {
-		assertNotNull(new Drug(NAME_OF_DRUG));
-	}
-
-	/*
-	 * @Test public void unNouveauMedicamentAUnIdUnique() { Drug autreMedicament
-	 * = new Drug("other drug"); assertTrue(autreMedicament.getId() !=
-	 * drug.getId()); }
-	 */
-
-	@Test
-	public void unNouveauMedicamentSansDinRetourneUnDinNull() {
-		Drug medicamentSansDin = new Drug("drug without DIN");
+	public void aNewDrugWithoutDinReturnsANullDin() {
+		Drug medicamentSansDin = new Drug.Builder().name("drug without Din").build();
 		assertEquals(NULL_DIN, medicamentSansDin.getDin());
 	}
-
+	
+	@Test(expected = IllegalStateException.class)
+	public void disallowsEmptyNameAndNullDin() {
+		drug = new Drug.Builder().build();
+	}
+	
 	@Test
-	public void unNouveauMedicamentRetourneLeBonNom() {
+	public void returnsTheCorrectName() {
 		assertEquals(NAME_OF_DRUG, drug.getName());
 	}
 
 	@Test
-	public void unNouveauMedicamentRetourneLeBonDin() {
+	public void returnsTheCorrectDin() {
 		assertEquals(DIN_OF_DRUG, drug.getDin());
 	}
 }

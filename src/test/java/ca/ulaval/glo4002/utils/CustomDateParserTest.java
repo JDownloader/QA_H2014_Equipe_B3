@@ -1,29 +1,23 @@
 package ca.ulaval.glo4002.utils;
 
-import static org.junit.Assert.*;
-
 import java.text.ParseException;
+import java.util.Date;
 
 import org.junit.Test;
 
-import ca.ulaval.glo4002.exceptions.InvalidDateFormatException;
+public class CustomDateParserTest {
 
-public class ValidateTest {
-	
 	public static final String VALID_DATE = "2001-07-04T12:08:56";
 	public static final String INVALID_DATE = "28-04-1989234-23";
-	
-	@Test(expected = InvalidDateFormatException.class)
-	public void invalidDateReturnExeption()
-			throws InvalidDateFormatException, ParseException {
-		Validate.validateDate(INVALID_DATE);
+
+	@Test(expected = ParseException.class)
+	public void invalidDateReturnExeption() throws ParseException {
+		CustomDateParser.parseDate(INVALID_DATE);
 	}
-	
+
 	@Test
-	public void validDateReturnTrue()
-			throws InvalidDateFormatException, ParseException {
-		boolean result = Validate.validateDate(VALID_DATE);
-		assertTrue(result);
+	public void validatesDateCorrectly() throws ParseException {
+		Date date = CustomDateParser.parseDate(VALID_DATE);
 	}
 
 }
