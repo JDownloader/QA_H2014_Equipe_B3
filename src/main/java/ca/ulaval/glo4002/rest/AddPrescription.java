@@ -50,8 +50,8 @@ public class AddPrescription extends Rest<PrescriptionRequest> {
 	}
 
 	protected void executeDaoTransactions(DataAccessTransaction transaction, PrescriptionRequest prescriptionRequest) throws BadRequestException {
-		Prescription prescription = createAndPersistPrescription(transaction, prescriptionRequest);
-		updateAndPersistPatient(transaction, prescriptionRequest, prescription);
+		Prescription prescription = createPrescription(transaction, prescriptionRequest);
+		updatePatient(transaction, prescriptionRequest, prescription);
 	}
 
 	private Drug updateAndPersistDrug(DataAccessTransaction transaction, PrescriptionRequest prescriptionRequest) throws BadRequestException {
@@ -63,7 +63,7 @@ public class AddPrescription extends Rest<PrescriptionRequest> {
 		}
 	}
 
-	private Prescription createAndPersistPrescription(DataAccessTransaction transaction, PrescriptionRequest prescriptionRequest) throws BadRequestException {
+	private Prescription createPrescription(DataAccessTransaction transaction, PrescriptionRequest prescriptionRequest) throws BadRequestException {
 		PrescriptionDAO prescriptionDAO = new PrescriptionDAO(transaction);
 		Prescription.Builder prescriptionBuilder = new Prescription.Builder();
 		prescriptionBuilder.date(prescriptionRequest.getDate());
@@ -79,7 +79,7 @@ public class AddPrescription extends Rest<PrescriptionRequest> {
 		return prescription;
 	}
 
-	private void updateAndPersistPatient(DataAccessTransaction transaction, PrescriptionRequest prescriptionRequest, Prescription prescription) {
+	private void updatePatient(DataAccessTransaction transaction, PrescriptionRequest prescriptionRequest, Prescription prescription) {
 		PatientDAO patientDAO = new PatientDAO(transaction);
 		Patient patient;
 
