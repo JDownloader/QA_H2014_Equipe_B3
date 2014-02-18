@@ -58,6 +58,10 @@ public class Intervention {
 	@ManyToOne()
 	@JoinColumn(name = "PATIENT", nullable = false)
 	private Patient patient;
+	
+	protected Intervention() {
+		
+	}
 
 	public Intervention(Builder builder) {
 		this.description = builder.description;

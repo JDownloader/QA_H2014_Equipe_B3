@@ -41,8 +41,7 @@ public class Prescription {
 	@Column(name = "STAFF_MEMBER", nullable = false)
 	private StaffMember staffMember;
 
-	@SuppressWarnings("unused")
-	private Prescription() {
+	protected Prescription() {
 		
 	}
 	

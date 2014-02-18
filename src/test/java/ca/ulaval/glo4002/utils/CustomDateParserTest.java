@@ -1,7 +1,6 @@
 package ca.ulaval.glo4002.utils;
 
 import java.text.ParseException;
-import java.util.Date;
 
 import org.junit.Test;
 
@@ -17,7 +16,7 @@ public class CustomDateParserTest {
 
 	@Test
 	public void validatesDateCorrectly() throws ParseException {
-		Date date = CustomDateParser.parseDate(VALID_DATE);
+		CustomDateParser.parseDate(VALID_DATE);
 	}
 
 }

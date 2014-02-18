@@ -11,7 +11,7 @@ import javax.persistence.JoinColumn;
 
 import ca.ulaval.glo4002.prescription.Prescription;
 
-@Entity(name = "Patient")
+@Entity(name = "PATIENT")
 public class Patient {
 
 	@Id
@@ -22,8 +22,7 @@ public class Patient {
 	@JoinColumn(name = "PATIENT")
 	private List<Prescription> presciptions = new ArrayList<Prescription>();
 
-	@SuppressWarnings("unused")
-	private Patient() {
+	protected Patient() {
 		
 	}
 	

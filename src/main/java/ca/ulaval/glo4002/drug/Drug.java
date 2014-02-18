@@ -15,8 +15,7 @@ public class Drug {
 	@Column(name = "DRUG_NAME")
 	private String name = null;
 	
-	@SuppressWarnings("unused")
-	private Drug() {
+	protected Drug() {
 		
 	}
 

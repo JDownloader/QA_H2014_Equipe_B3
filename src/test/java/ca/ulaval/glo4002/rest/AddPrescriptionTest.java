@@ -5,8 +5,6 @@ import static org.junit.Assert.*;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.json.JSONObject;
-import org.junit.Before;
 import org.junit.Test;
 
 public class AddPrescriptionTest {
