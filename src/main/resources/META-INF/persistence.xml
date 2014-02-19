@@ -25,7 +25,6 @@
       <property name="hibernate.id.new_generator_mappings" value="true" />
       <property name="hibernate.connection.url" value="jdbc:h2:~/QA_H2014" />
       <property name="hibernate.connection.username" value="sa" />
-
     </properties>
   </persistence-unit>
 </persistence>

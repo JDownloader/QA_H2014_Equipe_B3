@@ -7,22 +7,17 @@ import org.junit.Test;
 
 public class StaffMemberTest {
 
-	private static final int ID_NUMBER = 0;
-	private StaffMember myStaffMember;
+	private static final int A_LICENSE_NUMBER = 50;
+	private StaffMember staffMember;
 
 	@Before
 	public void init() {
-		myStaffMember = new StaffMember(0);
+		staffMember = new StaffMember(A_LICENSE_NUMBER);
 	}
-
+	
 	@Test
-	public void canBeCreated() {
-		assertNotNull(myStaffMember);
-	}
-
-	@Test
-	public void verifyIdIsRealId() {
-		assertEquals(ID_NUMBER, myStaffMember.getId());
+	public void staffReturnsTheCorrectLicenseNumber() {
+		assertEquals(A_LICENSE_NUMBER, staffMember.getLicenseNumber());
 	}
 
 }

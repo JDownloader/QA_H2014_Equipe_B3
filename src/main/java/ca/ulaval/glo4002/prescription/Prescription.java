@@ -1,89 +1,99 @@
 package ca.ulaval.glo4002.prescription;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
+
+import org.h2.util.StringUtils;
 
 import ca.ulaval.glo4002.drug.Drug;
-import ca.ulaval.glo4002.exceptions.InvalidDateFormatException;
 import ca.ulaval.glo4002.staff.StaffMember;
-import ca.ulaval.glo4002.utils.Validate;
 
 @Entity(name = "PRESCRIPTION")
 public class Prescription {
 
 	private static final int UNSPECIFIED = -1;
 
-	@Transient
-	private static int idMax = 0;
-
 	@Id
-	@Column(name = "PRES_ID", nullable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "PRESCRIPTION_ID", nullable = false)
 	private int id;
 
 	@ManyToOne()
-	@ElementCollection(targetClass = Drug.class)
-	@JoinColumn(name = "DRUG", nullable = false)
+	@JoinColumn(name = "DRUG", nullable = true)
 	private Drug drug;
+	
+	@Column(name = "DRUG_NAME", nullable = true)
+	private String drugName = null;
 
-	@Column(name = "RENEWAL", nullable = false)
-	private int renewal = UNSPECIFIED;
+	@Column(name = "RENEWALS", nullable = false)
+	private int renewals = UNSPECIFIED;
 
 	@Column(name = "DATE", nullable = false)
 	private Date date;
 
-	@ManyToOne()
-	@ElementCollection(targetClass = StaffMember.class)
-	@JoinColumn(name = "STAFF_MEMBER", nullable = false)
-	private StaffMember prescriber;
+	@Column(name = "STAFF_MEMBER", nullable = false)
+	private StaffMember staffMember;
 
-	@Transient
-	private boolean isValid = false;
-
-	public Prescription(Drug drug, StaffMember staff) {
-		incrementAutoId();
-		this.drug = drug;
-		this.prescriber = staff;
+	protected Prescription() {
+		
 	}
-
-	public int getId() {
-		return id;
+	
+	public Prescription(Builder builder) {
+		this.drug = builder.drug;
+		this.drugName = builder.drugName;
+		this.staffMember = builder.staffMember;
+		this.renewals = builder.renewals;
+		this.date = builder.date;
 	}
-
-	public void setRenewal(int renewal) {
-		this.renewal = renewal;
-		calculateValid();
-	}
-
-	public void setDate(String date) throws InvalidDateFormatException,
-			ParseException {
-		if (Validate.validateDate(date)) {
-			this.date = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+	
+	public static class Builder {
+		private Drug drug = null;
+		private String drugName = null;
+		private int renewals = UNSPECIFIED;
+		private Date date = null;
+		private StaffMember staffMember = null;
+		
+		public Builder drug(Drug drug) {
+			this.drug = drug;
+			return this;
 		}
-		calculateValid();
-	}
-
-	private void calculateValid() {
-		if ((renewal >= 0) && (date != null)) {
-			this.isValid = true;
+		
+		public Builder drugName(String drugName) {
+			this.drugName = drugName;
+			return this;
 		}
-	}
-
-	public boolean isValid() {
-		return this.isValid;
-	}
-
-	private void incrementAutoId() {
-		this.id = idMax;
-		idMax++;
-	}
-
+		
+		public Builder renewals(int renewals) {
+			this.renewals = renewals;
+			return this;
+		}
+		
+		public Builder date(Date date) {
+			this.date = date;
+			return this;
+		}
+		
+		public Builder prescriber(StaffMember prescriber) {
+			this.staffMember = prescriber;
+			return this;
+		}
+		
+		public Prescription build() {
+			Prescription prescription = new Prescription(this);
+			if (staffMember == null
+					|| renewals == UNSPECIFIED
+					|| date == null
+					|| (drug == null && StringUtils.isNullOrEmpty(drugName))) {
+				throw new IllegalStateException();
+			}
+            return prescription;
+        }
+    }
 }

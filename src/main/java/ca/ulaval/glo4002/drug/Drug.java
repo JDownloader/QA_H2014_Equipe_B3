@@ -4,30 +4,51 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import org.h2.util.StringUtils;
+
 @Entity(name = "DRUG")
 public class Drug {
-
-	private static final int NULL_DIN = 0;
-
 	@Id
 	@Column(name = "DIN")
-	private int din;
+	private Din din = null;
 
 	@Column(name = "DRUG_NAME")
-	private String name;
-
-	// Deux constructeurs: un avec le din et un avec le nom
-	public Drug(int din, String name) {
-
-		this.din = din;
-		this.name = name;
+	private String name = null;
+	
+	protected Drug() {
+		
 	}
 
-	public Drug(String name) {
-		this(NULL_DIN, name);
+	public Drug(Builder builder) {
+		this.din = builder.din;
+		this.name = builder.name;
 	}
+	
+	public static class Builder {
+		private Din din = null;
+		private String name = null;
+		
+		public Builder din(Din din) {
+			this.din = din;
+			return this;
+		}
+		
+		public Builder name(String name) {
+			this.name = name;
+			return this;
+		}
+		
+		public Drug build() {
+			Drug drug = new Drug(this);
+			if (din == null 
+					&& StringUtils.isNullOrEmpty(name)) {
+				throw new IllegalStateException();
+			}
+            return drug;
+        }
+    }
 
-	public int getDin() {
+	public Din getDin() {
 		return this.din;
 	}
 

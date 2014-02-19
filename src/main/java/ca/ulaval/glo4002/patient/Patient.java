@@ -8,36 +8,33 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Transient;
 
-@Entity(name = "Patient")
+import ca.ulaval.glo4002.prescription.Prescription;
+
+@Entity(name = "PATIENT")
 public class Patient {
 
 	@Id
-	@Column(name = "PATIENT_ID")
-	private int id;
-
-	@Transient
-	private static Integer idMax = 0;
+	@Column(name = "PATIENT_ID", nullable = false)
+	private int id = 0;
 
 	@ElementCollection()
-	@JoinColumn(name = "PRES_ID")
-	private List<Integer> presciptionId = new ArrayList<Integer>();
+	@JoinColumn(name = "PATIENT")
+	private List<Prescription> presciptions = new ArrayList<Prescription>();
 
-	public Patient() {
-		incrementAutoId();
+	protected Patient() {
+		
 	}
-
+	
+	public Patient(int id) {
+		this.id = id;
+	}
+	
 	public int getId() {
 		return id;
 	}
 
-	public void addPrescription(Integer idPrescription) {
-		presciptionId.add(idPrescription);
-	}
-
-	private void incrementAutoId() {
-		this.id = idMax;
-		idMax++;
+	public void addPrescription(Prescription prescription) {
+		presciptions.add(prescription);
 	}
 }

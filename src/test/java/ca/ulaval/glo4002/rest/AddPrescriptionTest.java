@@ -5,13 +5,11 @@ import static org.junit.Assert.*;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.json.JSONObject;
-import org.junit.Before;
 import org.junit.Test;
 
 public class AddPrescriptionTest {
 	
-	//TODO : Complete the test for AddPrescription
+	//TODO : Complete the test for AddPrescription. Mock the DAOs for it to work.
 	
 	static final Response badRequest = Response.status(Status.BAD_REQUEST).build();
 	static final Response goodRequest = Response.status(Status.CREATED).build();

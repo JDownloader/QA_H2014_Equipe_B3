@@ -1,22 +1,18 @@
 package ca.ulaval.glo4002.staff;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import java.io.Serializable;
 
-@Entity(name = "STAFF")
-public class StaffMember {
+public class StaffMember implements Serializable {
 
-	@Id
-	@Column(name = "STAFF_ID", nullable = false)
-	private int id;
+	private static final long serialVersionUID = -3735794353190959996L;
 
-	public StaffMember(int id) {
-		this.id = id;
+	private int licenseNumber;
+	
+	public StaffMember(int licenseNumber) {
+		this.licenseNumber = licenseNumber;
 	}
 
-	public int getId() {
-		return this.id;
+	public int getLicenseNumber() {
+		return this.licenseNumber;
 	}
-
 }
