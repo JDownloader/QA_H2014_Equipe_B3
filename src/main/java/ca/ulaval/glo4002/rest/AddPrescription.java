@@ -34,7 +34,6 @@ public class AddPrescription {
 			JSONObject prescriptionError = new JSONObject();
 			prescriptionError.append("code", "PRES001").append("message","Votre requête est invalide ou malformée.");
 			return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(prescriptionError.toString()).build();
-		}
-		
+		}	
 	}
 }

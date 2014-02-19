@@ -74,13 +74,18 @@ public class PrescriptionRequest implements Request {
 
 	public boolean validateDinAndName() {
 		if ((!this.name.isEmpty() && (this.din < 0))
-				|| (this.name.isEmpty() && !(this.din < 0)))
+				|| ((this.name.isEmpty() && !(this.din < 0))) && (this.validateDin()))
 			return false;
 		return true;
 	}
 
 	public boolean validateDate() {
 		// TODO complete the validateDate() method; must verify the format. 
+		return true;
+	}
+	
+	public boolean validateDin() {
+		//TODO must verify if DIN is valid in drug.txt file
 		return true;
 	}
 }
