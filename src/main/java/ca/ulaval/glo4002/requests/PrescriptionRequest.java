@@ -33,10 +33,9 @@ public class PrescriptionRequest implements Request {
 		this.renewals = jsonRequest.getInt(RENEWAL_PARAMETER);
 		this.date = CustomDateParser.parseDate(jsonRequest.getString(DATE_PARAMETER));
 		this.patientNumber = jsonRequest.getInt(PATIENT_PARAMETER);
-		validateRequestParameters();
 	}
 
-	private void validateRequestParameters() {
+	public void validateRequestParameters() {
 		if (!this.validateDinAndName() || this.staffMember < 0 || this.renewals < 0 || this.patientNumber < 0) {
 			throw new IllegalArgumentException("Invalid parameters were supplied to the request.");
 		}

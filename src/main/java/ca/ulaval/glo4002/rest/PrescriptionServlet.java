@@ -9,6 +9,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,7 +28,7 @@ import ca.ulaval.glo4002.requests.PrescriptionRequest;
 import ca.ulaval.glo4002.staff.StaffMember;
 
 @Path("patient/{patient_number: [0-9]+}/prescriptions/")
-public class AddPrescription extends Rest<PrescriptionRequest> {
+public class PrescriptionServlet extends Rest<PrescriptionRequest> {
 
 	@PathParam("patient_number")
 	private int patientNumber;
@@ -37,16 +38,18 @@ public class AddPrescription extends Rest<PrescriptionRequest> {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response post(final String input) {
 		PrescriptionRequest prescriptionRequest = null;
-
 		try {
 			JSONObject jsonRequest = new JSONObject(input);
 			jsonRequest.put("patient", String.valueOf(patientNumber));
 			prescriptionRequest = new PrescriptionRequest(jsonRequest);
+			prescriptionRequest.validateRequestParameters();
 		} catch (JSONException | ParseException | IllegalArgumentException e) {
-			return buildBadRequestResponse("PRES001", e.getMessage());
+			JSONObject prescriptionError = new JSONObject();
+			prescriptionError.append("code", "PRES001").append("message", "La requête contient des informations invalides et/ou est malformée");
+			return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(prescriptionError.toString()).build();
 		}
-
-		return executeTransaction(prescriptionRequest);
+		return Response.status(Status.CREATED).build();
+		//return executeTransaction(prescriptionRequest); 
 	}
 
 	protected void executeDaoTransactions(DataAccessTransaction transaction, PrescriptionRequest prescriptionRequest) throws BadRequestException {
