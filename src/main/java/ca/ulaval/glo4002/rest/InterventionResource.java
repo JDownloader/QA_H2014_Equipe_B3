@@ -2,6 +2,7 @@ package ca.ulaval.glo4002.rest;
 
 import java.text.ParseException;
 
+import javax.persistence.EntityManager;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -13,7 +14,13 @@ import javax.ws.rs.core.Response.Status;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
+import ca.ulaval.glo4002.persistence.drug.HibernateDrugRepository;
+import ca.ulaval.glo4002.persistence.patient.HibernatePatientRepository;
+import ca.ulaval.glo4002.persistence.prescription.HibernatePrescriptionRepository;
 import ca.ulaval.glo4002.rest.requests.InterventionRequest;
+import ca.ulaval.glo4002.services.prescription.PrescriptionService;
+import ca.ulaval.glo4002.services.prescription.PrescriptionServiceBuilder;
 
 @Path("interventions/")
 public class InterventionResource {
@@ -21,18 +28,22 @@ public class InterventionResource {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	//TODO Service Interface to separate DAO methods from rest objects
+	
 	public Response post(final String input){
+		JSONObject interventionError = new JSONObject();
 		try {
 			JSONObject jsonRequest = new JSONObject(input);
 			InterventionRequest interventionRequest = new InterventionRequest(jsonRequest);
 			interventionRequest.validateStatus();
 			interventionRequest.validateType();
+			if(!interventionRequest.validatePatientId()){
+				interventionError.append("code", "INT002").append("message", "Le patient est inexistant");
+				return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(interventionError.toString()).build();
+			}
 		} catch (JSONException | ParseException | IllegalArgumentException e) {
-			JSONObject interventionError = new JSONObject();
 			interventionError.append("code", "INT001").append("message", "La requête contient des informations invalides et/ou est malformée");
 			return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(interventionError.toString()).build();
-		}
+	}
 		return Response.status(Status.CREATED).build();
 	}
 	

@@ -6,6 +6,7 @@ import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ca.ulaval.glo4002.domain.patient.PatientRepository;
 import ca.ulaval.glo4002.utils.CustomDateParser;
 
 public class InterventionRequest {
@@ -73,6 +74,17 @@ public class InterventionRequest {
 	public void validateStatus(){
 		if(this.status != "PLANIFIEE" || this.status != "EN_COURS" || this.status != "TERMINEE" || this.status != "ANNULEE" || this.status != "REPORTEE"){
 			throw new IllegalArgumentException("The intervention status is invalid.");
+		}
+	}
+	
+	PatientRepository patientRepository;
+	
+	public boolean validatePatientId(){
+		if(!patientRepository.equals(patient)){
+			return false;
+		}
+		else{
+			return true;
 		}
 	}
 }

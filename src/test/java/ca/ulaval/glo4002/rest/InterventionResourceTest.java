@@ -16,14 +16,14 @@ public class InterventionResourceTest {
 			+ "\"date\": \"0000-00-00T24:01:00\", "
 			+ "\"salle\": \"blocB\", "
 			+ "\"type\": \"OEIL\", "
-			+ "\"status\": \"EN_COURS\", "
+			+ "\"statut\": \"EN_COURS\", "
 			+ "\"patient\": \"1\" }";
 	static final String badJson = "{ \"description\": \"Cataracte à l'oeil gauche\", "
 			+ "\"chirurgien\": \"101224\", "
 			+ "\"date\": \"0000-00-00T24:01:00\", "
 			+ "\"salle\": \"blocB\", "
 			+ "\"type\": \"MAUVAIS_TYPE\", "
-			+ "\"status\": \"EN_COURS\", "
+			+ "\"statut\": \"EN_COURS\", "
 			+ "\"patient\": \"1\" }";
 	
 	static final InterventionResource myInterventionServlet = new InterventionResource();
