@@ -1,17 +1,19 @@
-package ca.ulaval.glo4002.intervention;
+package ca.ulaval.glo4002.domain.intervention;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import ca.ulaval.glo4002.domain.intervention.Intervention;
+
 public class InterventionTest {
 	
-	Intervention.Builder interventionBuilder;
+	InterventionBuilder interventionBuilder;
 	
 	//TODO: Make Intervention tests.
 
 	@Before
 	public void init() {
-		interventionBuilder = new Intervention.Builder();
+		interventionBuilder = new InterventionBuilder();
 	}
 	
 	@Test

@@ -1,7 +1,13 @@
-package ca.ulaval.glo4002.patient;
+package ca.ulaval.glo4002.domain.patient;
 
-import ca.ulaval.glo4002.dao.IDataAccessObject;
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 
-public interface IPatientDAO extends IDataAccessObject<Integer, Patient> {
-	//Define object-specific DAO methods here.
+public interface PatientRepository {
+	
+	public void create(Patient patient) throws EntityExistsException;
+	
+	public void update(Patient patient);
+	
+	public Patient get(int id) throws EntityNotFoundException;
 }

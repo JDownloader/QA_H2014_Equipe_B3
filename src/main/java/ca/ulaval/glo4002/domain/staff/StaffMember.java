@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.staff;
+package ca.ulaval.glo4002.domain.staff;
 
 import java.io.Serializable;
 

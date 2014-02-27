@@ -13,13 +13,10 @@ import javax.ws.rs.core.Response.Status;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ca.ulaval.glo4002.dao.DataAccessTransaction;
-import ca.ulaval.glo4002.exceptions.BadRequestException;
-import ca.ulaval.glo4002.intervention.Intervention;
-import ca.ulaval.glo4002.requests.InterventionRequest;
+import ca.ulaval.glo4002.rest.requests.InterventionRequest;
 
 @Path("interventions/")
-public class InterventionServlet extends Rest<InterventionRequest>{
+public class InterventionResource {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -39,11 +36,6 @@ public class InterventionServlet extends Rest<InterventionRequest>{
 		return Response.status(Status.CREATED).build();
 	}
 	
-	@Override
-	protected void executeDaoTransactions(DataAccessTransaction transaction,
-			InterventionRequest request) throws BadRequestException {
-		//TODO complete DAO method
-		
-	}
+	//TODO complete class, based on same pattern as PrescriptionResource and PrescriptionService.
 
 }

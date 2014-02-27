@@ -7,9 +7,9 @@ import javax.ws.rs.core.Response.Status;
 
 import org.junit.Test;
 
-public class PrescriptionServletTest {
+public class PrescriptionResourceTest {
 	
-	//TODO : Complete the test for PrescriptionServlet. Mock the DAOs for it to work.
+	//TODO : Complete the test for PrescriptionServlet. Mock the Repositories for it to work.
 	
 	static final Response badRequest = Response.status(Status.BAD_REQUEST).build();
 	static final Response goodRequest = Response.status(Status.CREATED).build();
@@ -25,7 +25,7 @@ public class PrescriptionServletTest {
 								+ "\"din\": \"02240541\", "
 								+ "\"nom\": \"ADVIL NIGHTTIME LIQUI\" }";
 
-	static final PrescriptionServlet myPrescriptionServlet = new PrescriptionServlet();
+	static final PrescriptionResource myPrescriptionServlet = new PrescriptionResource();
 	
 	@Test
 	public void sendInAGoodRequest() {

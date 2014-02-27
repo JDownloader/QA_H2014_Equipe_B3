@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.requests;
+package ca.ulaval.glo4002.rest.requests;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 import ca.ulaval.glo4002.utils.CustomDateParser;
 
-public class PrescriptionRequest implements Request {
+public class PrescriptionRequest {
 
 	private static final int UNSPECIFIED_VALUE = -1;
 	private static final String DIN_PARAMETER = "din";

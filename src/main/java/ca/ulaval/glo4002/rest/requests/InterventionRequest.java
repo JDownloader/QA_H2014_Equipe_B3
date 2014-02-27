@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.requests;
+package ca.ulaval.glo4002.rest.requests;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 import ca.ulaval.glo4002.utils.CustomDateParser;
 
-public class InterventionRequest implements Request {
+public class InterventionRequest {
 
 	private static final String DESCRIPTION_PARAMETER = "description";
 	private static final String SURGEON_PARAMETER = "chirurgien";

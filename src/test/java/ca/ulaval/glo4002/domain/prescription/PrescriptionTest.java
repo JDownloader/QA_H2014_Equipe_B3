@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.prescription;
+package ca.ulaval.glo4002.domain.prescription;
 
 import org.junit.Before;
 

@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.patient;
+package ca.ulaval.glo4002.domain.patient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 
-import ca.ulaval.glo4002.prescription.Prescription;
+import ca.ulaval.glo4002.domain.prescription.Prescription;
 
 @Entity(name = "PATIENT")
 public class Patient {

@@ -7,7 +7,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.junit.Test;
 
-public class InterventionServletTest {
+public class InterventionResourceTest {
 
 	static final Response badRequest = Response.status(Status.BAD_REQUEST).build();
 	static final Response goodRequest = Response.status(Status.CREATED).build();
@@ -26,7 +26,7 @@ public class InterventionServletTest {
 			+ "\"status\": \"EN_COURS\", "
 			+ "\"patient\": \"1\" }";
 	
-	static final InterventionServlet myInterventionServlet = new InterventionServlet();
+	static final InterventionResource myInterventionServlet = new InterventionResource();
 	
 	@Test
 	public void sendInAGoodRequest(){

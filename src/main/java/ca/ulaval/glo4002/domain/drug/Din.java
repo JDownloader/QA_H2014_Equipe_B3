@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.drug;
+package ca.ulaval.glo4002.domain.drug;
 
 import java.io.Serializable;
 

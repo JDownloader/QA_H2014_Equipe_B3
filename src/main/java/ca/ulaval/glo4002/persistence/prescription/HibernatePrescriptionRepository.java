@@ -1,29 +1,22 @@
-package ca.ulaval.glo4002.prescription;
+package ca.ulaval.glo4002.persistence.prescription;
 
-import ca.ulaval.glo4002.dao.DataAccessObject;
-import ca.ulaval.glo4002.dao.DataAccessTransaction;
+import javax.persistence.EntityManager;
 
-public class PrescriptionDAO extends DataAccessObject implements IPrescriptionDAO {
-	DataAccessTransaction transaction = null;
+import ca.ulaval.glo4002.domain.prescription.Prescription;
+import ca.ulaval.glo4002.domain.prescription.PrescriptionRepository;
+import ca.ulaval.glo4002.persistence.HibernateRepository;
+
+public class HibernatePrescriptionRepository extends HibernateRepository implements PrescriptionRepository {
 	
-	
-	public PrescriptionDAO(DataAccessTransaction transaction) {
-		this.transaction = transaction;
-	}
-	
-	public void create(Prescription entity) {
-		transaction.getEntityManager().persist(entity);
+	public void create(Prescription prescription) {
+		entityManager.persist(prescription);
 	}
 
-	public void update(Prescription entity) {
-		throw new UnsupportedOperationException();
+	public HibernatePrescriptionRepository() {
+		super();
 	}
 
-	public void delete(Prescription entity) {
-		throw new UnsupportedOperationException();
-	}
-	
-	public Prescription get(Integer id) {
-		throw new UnsupportedOperationException();
+	public HibernatePrescriptionRepository(EntityManager entityManager) {
+		super(entityManager);
 	}
 }

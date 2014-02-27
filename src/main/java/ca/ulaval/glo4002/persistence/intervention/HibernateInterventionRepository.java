@@ -1,29 +1,22 @@
-package ca.ulaval.glo4002.intervention;
+package ca.ulaval.glo4002.persistence.intervention;
 
-import ca.ulaval.glo4002.dao.DataAccessObject;
-import ca.ulaval.glo4002.dao.DataAccessTransaction;
+import javax.persistence.EntityManager;
 
-public class InterventionDAO extends DataAccessObject implements IInterventionDAO {
-	DataAccessTransaction transaction = null;
+import ca.ulaval.glo4002.domain.intervention.Intervention;
+import ca.ulaval.glo4002.domain.intervention.InterventionRepository;
+import ca.ulaval.glo4002.persistence.HibernateRepository;
+
+public class HibernateInterventionRepository extends HibernateRepository implements InterventionRepository {
 	
-	
-	public InterventionDAO(DataAccessTransaction transaction) {
-		this.transaction = transaction;
+	public HibernateInterventionRepository() {
+		super();
 	}
-	
+
+	public HibernateInterventionRepository(EntityManager entityManager) {
+		super(entityManager);
+	}
+
 	public void create(Intervention entity) {
-		transaction.getEntityManager().persist(entity);
-	}
-
-	public void update(Intervention entity) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void delete(Intervention entity) {
-		throw new UnsupportedOperationException();
-	}
-	
-	public Intervention get(Integer id) {
-		throw new UnsupportedOperationException();
+		entityManager.persist(entity);
 	}
 }

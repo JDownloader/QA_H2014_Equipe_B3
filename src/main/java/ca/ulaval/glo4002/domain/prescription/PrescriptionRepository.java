@@ -1,7 +1,7 @@
-package ca.ulaval.glo4002.prescription;
+package ca.ulaval.glo4002.domain.prescription;
 
-import ca.ulaval.glo4002.dao.IDataAccessObject;
+import javax.persistence.EntityExistsException;
 
-public interface IPrescriptionDAO extends IDataAccessObject<Integer, Prescription> {
-	//Define object-specific DAO methods here.
+public interface PrescriptionRepository {
+	public void create(Prescription prescription) throws EntityExistsException;
 }

@@ -1,7 +1,7 @@
-package ca.ulaval.glo4002.intervention;
+package ca.ulaval.glo4002.domain.intervention;
 
-import ca.ulaval.glo4002.dao.IDataAccessObject;
+import javax.persistence.EntityExistsException;
 
-public interface IInterventionDAO extends IDataAccessObject<Integer, Intervention> {
-	//Define object-specific DAO methods here.
+public interface InterventionRepository {
+	public void create(Intervention intervention) throws EntityExistsException;
 }

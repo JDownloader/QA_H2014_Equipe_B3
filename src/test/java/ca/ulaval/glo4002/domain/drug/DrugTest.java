@@ -1,9 +1,12 @@
-package ca.ulaval.glo4002.drug;
+package ca.ulaval.glo4002.domain.drug;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import ca.ulaval.glo4002.domain.drug.Din;
+import ca.ulaval.glo4002.domain.drug.Drug;
 
 public class DrugTest {
 	private static final Din NULL_DIN = null;
@@ -14,18 +17,18 @@ public class DrugTest {
 
 	@Before
 	public void init() {
-		drug = new Drug.Builder().din(DIN_OF_DRUG).name(NAME_OF_DRUG).build();
+		drug = new DrugBuilder().din(DIN_OF_DRUG).name(NAME_OF_DRUG).build();
 	}
 
 	@Test
 	public void aNewDrugWithoutDinReturnsANullDin() {
-		Drug medicamentSansDin = new Drug.Builder().name("drug without Din").build();
+		Drug medicamentSansDin = new DrugBuilder().name("drug without Din").build();
 		assertEquals(NULL_DIN, medicamentSansDin.getDin());
 	}
 	
 	@Test(expected = IllegalStateException.class)
 	public void disallowsEmptyNameAndNullDin() {
-		drug = new Drug.Builder().build();
+		drug = new DrugBuilder().build();
 	}
 	
 	@Test

@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.patient;
+package ca.ulaval.glo4002.domain.patient;
 
 import org.junit.Before;
 

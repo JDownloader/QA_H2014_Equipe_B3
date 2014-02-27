@@ -1,8 +1,13 @@
-package ca.ulaval.glo4002.drug;
+package ca.ulaval.glo4002.domain.drug;
 
-import ca.ulaval.glo4002.dao.IDataAccessObject;
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 
-public interface IDrugDAO extends IDataAccessObject<Din, Drug> {
-
-
+public interface DrugRepository {
+	
+	public void create(Drug drug) throws EntityExistsException;
+	
+	public Drug get(Din din) throws EntityNotFoundException;
+	
+	
 }

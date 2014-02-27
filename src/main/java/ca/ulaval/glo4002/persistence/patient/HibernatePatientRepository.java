@@ -1,32 +1,35 @@
-package ca.ulaval.glo4002.patient;
+package ca.ulaval.glo4002.persistence.patient;
 
-import ca.ulaval.glo4002.dao.DataAccessObject;
-import ca.ulaval.glo4002.dao.DataAccessTransaction;
-import ca.ulaval.glo4002.exceptions.ItemNotFoundException;
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 
-public class PatientDAO extends DataAccessObject implements IPatientDAO {
-	DataAccessTransaction transaction = null;
+import ca.ulaval.glo4002.domain.patient.Patient;
+import ca.ulaval.glo4002.domain.patient.PatientRepository;
+import ca.ulaval.glo4002.persistence.HibernateRepository;
+
+public class HibernatePatientRepository extends HibernateRepository implements PatientRepository {
 	
-	public PatientDAO(DataAccessTransaction transaction) {
-		this.transaction= transaction;
-	}
-	
-	public void create(Patient entity) {
-		transaction.getEntityManager().persist(entity);
+	public HibernatePatientRepository() {
+		super();
 	}
 
-	public void update(Patient entity) {
-		transaction.getEntityManager().merge(entity);
+	public HibernatePatientRepository(EntityManager entityManager) {
+		super(entityManager);
 	}
 
-	public void delete(Patient entity) {
-		throw new UnsupportedOperationException();
+	public void create(Patient patient) throws EntityExistsException {
+		entityManager.persist(patient);
+	}
+
+	public void update(Patient patient) {
+		entityManager.merge(patient);
 	}
 	
-	public Patient get(Integer id) throws ItemNotFoundException {
-		Patient patient = transaction.getEntityManager().find(Patient.class, id);
+	public Patient get(int id) throws EntityNotFoundException {
+		Patient patient = entityManager.find(Patient.class, id);
 		if (patient == null) {
-			throw new ItemNotFoundException(String.format("Cannot find Patient with id '%s'.", id));
+			throw new EntityNotFoundException(String.format("Cannot find Patient with id '%s'.", id));
 		}
 		return patient;
 	}

@@ -1,9 +1,11 @@
-package ca.ulaval.glo4002.staff;
+package ca.ulaval.glo4002.domain.staff;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import ca.ulaval.glo4002.domain.staff.StaffMember;
 
 public class StaffMemberTest {
 
