@@ -69,7 +69,7 @@ public class PrescriptionService {
 	
 	private Drug getDrug(AddPrescriptionRequest prescriptionRequest) throws BadRequestException {
 		try {
-			return drugRepository.get(new Din(prescriptionRequest.getDin()));
+			return drugRepository.getByDin(new Din(prescriptionRequest.getDin()));
 		} catch (EntityNotFoundException e) {
 			throw new BadRequestException("PRES001", e.getMessage());
 		}
@@ -83,7 +83,7 @@ public class PrescriptionService {
 	
 	private Patient getPatient(AddPrescriptionRequest prescriptionRequest) throws BadRequestException {
 		try {
-			return patientRepository.get(prescriptionRequest.getPatientNumber());
+			return patientRepository.getById(prescriptionRequest.getPatientNumber());
 		} catch (EntityNotFoundException e) {
 			throw new BadRequestException("PRES001", e.getMessage());
 		}

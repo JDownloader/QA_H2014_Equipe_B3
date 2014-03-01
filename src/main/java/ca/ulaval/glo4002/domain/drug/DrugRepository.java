@@ -7,7 +7,7 @@ public interface DrugRepository {
 	
 	public void create(Drug drug) throws EntityExistsException;
 	
-	public Drug get(Din din) throws EntityNotFoundException;
+	public Drug getByDin(Din din) throws EntityNotFoundException;
 	
 	
 }

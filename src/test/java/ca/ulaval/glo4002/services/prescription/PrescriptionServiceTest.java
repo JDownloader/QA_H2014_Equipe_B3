@@ -78,8 +78,8 @@ public class PrescriptionServiceTest {
 	}
 	
 	private void stubRepositoryMethods() {
-		when(drugRepositoryMock.get(any(Din.class))).thenReturn(drugMock);
-		when(patientRepositoryMock.get(anyInt())).thenReturn(patientMock);
+		when(drugRepositoryMock.getByDin(any(Din.class))).thenReturn(drugMock);
+		when(patientRepositoryMock.getById(anyInt())).thenReturn(patientMock);
 	}
 	
 	private void stubEntityTransactionsMethods() {
@@ -90,7 +90,7 @@ public class PrescriptionServiceTest {
 	public void verifyAddPrescriptionCallsCorrectRepositoryMethods() {
 		prescriptionService.addPrescription(addPrescriptionRequestMock);
 		
-		verify(drugRepositoryMock).get(any(Din.class));
+		verify(drugRepositoryMock).getByDin(any(Din.class));
 		verify(prescriptionRepositoryMock).create(any(Prescription.class));
 		verify(patientRepositoryMock).update(patientMock);
 	}
@@ -108,7 +108,7 @@ public class PrescriptionServiceTest {
 		
 		prescriptionService.addPrescription(addPrescriptionRequestMock);
 		
-		verify(drugRepositoryMock, never()).get(any(Din.class));
+		verify(drugRepositoryMock, never()).getByDin(any(Din.class));
 		verify(prescriptionRepositoryMock).create(any(Prescription.class));
 		verify(patientRepositoryMock).update(patientMock);
 	}
@@ -124,7 +124,7 @@ public class PrescriptionServiceTest {
 	
 	@Test
 	public void verifyTransactionRollsbackOnError() {
-		when(drugRepositoryMock.get(any(Din.class))).thenThrow(new EntityNotFoundException());
+		when(drugRepositoryMock.getByDin(any(Din.class))).thenThrow(new EntityNotFoundException());
 		
 		prescriptionService.addPrescription(addPrescriptionRequestMock);
 		
@@ -133,7 +133,7 @@ public class PrescriptionServiceTest {
 	
 	@Test
 	public void returnsInvalidResponseWhenSpecifyingNonExistingDrugDin() {
-		when(drugRepositoryMock.get(any(Din.class))).thenThrow(new EntityNotFoundException());
+		when(drugRepositoryMock.getByDin(any(Din.class))).thenThrow(new EntityNotFoundException());
 		
 		Response response = prescriptionService.addPrescription(addPrescriptionRequestMock);
 		
@@ -143,7 +143,7 @@ public class PrescriptionServiceTest {
 	
 	@Test
 	public void returnsInvalidResponseWhenSpecifyingNonExistingPatientNumber() {
-		when(patientRepositoryMock.get(anyInt())).thenThrow(new EntityNotFoundException());
+		when(patientRepositoryMock.getById(anyInt())).thenThrow(new EntityNotFoundException());
 		
 		Response response = prescriptionService.addPrescription(addPrescriptionRequestMock);
 		
