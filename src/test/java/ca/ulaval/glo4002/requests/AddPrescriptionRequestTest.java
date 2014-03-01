@@ -4,7 +4,7 @@ import org.json.JSONObject;
 import org.mockito.Mock;
 
 //@RunWith(MockitoJUnitRunner.class)
-public class PrescriptionRequestTest {
+public class AddPrescriptionRequestTest {
 	
 	static final int SAMPLE_DIN = 0;
 	static final String SAMPLE_NAME = "SAMPLE";
