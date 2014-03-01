@@ -6,7 +6,7 @@ import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
+import static org.mockito.Mockito.*;
 
 import ca.ulaval.glo4002.domain.drug.Drug;
 import ca.ulaval.glo4002.domain.staff.StaffMember;
@@ -23,8 +23,8 @@ public class PrescriptionTest {
 	
 	@Before
 	public void setup()  {
-		drugMock = Mockito.mock(Drug.class);
-		staffMemberMock = Mockito.mock(StaffMember.class);
+		drugMock = mock(Drug.class);
+		staffMemberMock = mock(StaffMember.class);
 		prescriptionWithDrug = new PrescriptionBuilder().drug(drugMock).date(A_DATE).prescriber(staffMemberMock).allowedRenewalCount(A_NUMBER_OF_RENEWALS).build();
 		prescriptionWithDrugName = new PrescriptionBuilder().drugName(A_DRUG_NAME).date(A_DATE).prescriber(staffMemberMock).allowedRenewalCount(A_NUMBER_OF_RENEWALS).build();
 	}

@@ -10,7 +10,7 @@ import javax.ws.rs.core.Response.Status;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ca.ulaval.glo4002.rest.requests.InterventionRequest;
+import ca.ulaval.glo4002.rest.requests.CreateInterventionRequest;
 
 @Path("interventions/")
 public class InterventionResource {
@@ -21,7 +21,7 @@ public class InterventionResource {
 	
 	public Response post(String request){
 		JSONObject interventionError = new JSONObject();
-		InterventionRequest interventionRequest = null;
+		CreateInterventionRequest interventionRequest = null;
 		try {
 			interventionRequest = getInterventionRequest(request);
 			if(!interventionRequest.validatePatientId()){
@@ -35,9 +35,9 @@ public class InterventionResource {
 		return Response.status(Status.CREATED).build();
 	}
 	
-	private InterventionRequest getInterventionRequest(String request) throws JSONException, ParseException {
+	private CreateInterventionRequest getInterventionRequest(String request) throws JSONException, ParseException {
 		JSONObject jsonRequest = new JSONObject(request);
-		InterventionRequest interventionRequest = new InterventionRequest(jsonRequest);
+		CreateInterventionRequest interventionRequest = new CreateInterventionRequest(jsonRequest);
 		interventionRequest.validateStatus();
 		interventionRequest.validateType();
 		return interventionRequest;

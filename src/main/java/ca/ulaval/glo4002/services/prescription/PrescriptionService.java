@@ -10,7 +10,7 @@ import ca.ulaval.glo4002.domain.patient.*;
 import ca.ulaval.glo4002.domain.prescription.*;
 import ca.ulaval.glo4002.domain.staff.StaffMember;
 import ca.ulaval.glo4002.exceptions.BadRequestException;
-import ca.ulaval.glo4002.rest.requests.PrescriptionRequest;
+import ca.ulaval.glo4002.rest.requests.AddPrescriptionRequest;
 import ca.ulaval.glo4002.rest.utils.BadRequestJsonResponseBuilder;
 
 public class PrescriptionService {
@@ -26,7 +26,7 @@ public class PrescriptionService {
 		this.patientRepository = builder.patientRepository;
 	}
 	
-	public Response addPrescription(PrescriptionRequest prescriptionRequest) {
+	public Response addPrescription(AddPrescriptionRequest prescriptionRequest) {
 		Response response = null;
 
 		try {
@@ -47,12 +47,12 @@ public class PrescriptionService {
 		return response;
 	}
 	
-	protected void doAddPrescription(PrescriptionRequest prescriptionRequest) throws BadRequestException {
+	protected void doAddPrescription(AddPrescriptionRequest prescriptionRequest) throws BadRequestException {
 		Prescription prescription = createPrescription(prescriptionRequest);
 		updatePatient(prescriptionRequest, prescription);
 	}
 
-	private Prescription createPrescription(PrescriptionRequest prescriptionRequest) throws BadRequestException {
+	private Prescription createPrescription(AddPrescriptionRequest prescriptionRequest) throws BadRequestException {
 		PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder();
 		prescriptionBuilder.date(prescriptionRequest.getDate());
 		prescriptionBuilder.allowedRenewalCount(prescriptionRequest.getRenewals());
@@ -67,7 +67,7 @@ public class PrescriptionService {
 		return prescription;
 	}
 	
-	private Drug getDrug(PrescriptionRequest prescriptionRequest) throws BadRequestException {
+	private Drug getDrug(AddPrescriptionRequest prescriptionRequest) throws BadRequestException {
 		try {
 			return drugRepository.get(new Din(prescriptionRequest.getDin()));
 		} catch (EntityNotFoundException e) {
@@ -75,13 +75,13 @@ public class PrescriptionService {
 		}
 	}
 
-	private void updatePatient(PrescriptionRequest prescriptionRequest, Prescription prescription) throws BadRequestException {
+	private void updatePatient(AddPrescriptionRequest prescriptionRequest, Prescription prescription) throws BadRequestException {
 		Patient patient = getPatient(prescriptionRequest);
 		patient.addPrescription(prescription);
 		patientRepository.update(patient);
 	}
 	
-	private Patient getPatient(PrescriptionRequest prescriptionRequest) throws BadRequestException {
+	private Patient getPatient(AddPrescriptionRequest prescriptionRequest) throws BadRequestException {
 		try {
 			return patientRepository.get(prescriptionRequest.getPatientNumber());
 		} catch (EntityNotFoundException e) {

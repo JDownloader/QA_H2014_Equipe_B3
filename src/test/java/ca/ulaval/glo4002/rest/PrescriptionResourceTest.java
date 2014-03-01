@@ -1,40 +1,36 @@
 package ca.ulaval.glo4002.rest;
 
-import static org.junit.Assert.*;
-
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
+import org.json.JSONObject;
+import org.junit.Before;
 import org.junit.Test;
+
+import static org.mockito.Mockito.*;
+import ca.ulaval.glo4002.rest.requests.AddPrescriptionRequest;
+import ca.ulaval.glo4002.rest.requests.AddPrescriptionRequestFactory;
+import ca.ulaval.glo4002.services.prescription.PrescriptionService;
 
 public class PrescriptionResourceTest {
 	
-	//TODO : Complete the test for PrescriptionServlet. Mock the Repositories for it to work.
+	private static final String A_JSON_REQUEST = "{attrib: value}";
 	
-	static final Response badRequest = Response.status(Status.BAD_REQUEST).build();
-	static final Response goodRequest = Response.status(Status.CREATED).build();
+	private PrescriptionService prescriptionServiceMock;
+	private AddPrescriptionRequest addPrescriptionRequestMock;
+	private AddPrescriptionRequestFactory addPrescriptionRequestFactoryMock;
+	private PrescriptionResource prescriptionResource;
 	
-	static final String goodJson = "{ \"intervenant\": \"000000\", "
-								+ "\"date\": \"2001-07-04T12:08:56\", "
-								+ "\"renouvellements\": \"0\", "
-								+ "\"din\": \"02240541\"}";
-	
-	static final String badJson = "{ \"intervenant\": \"000000\", "
-								+ "\"date\": \"2001-07-04T12:08:56\", "
-								+ "\"renouvellements\": \"0\", "
-								+ "\"din\": \"02240541\", "
-								+ "\"nom\": \"ADVIL NIGHTTIME LIQUI\" }";
-
-	static final PrescriptionResource myPrescriptionServlet = new PrescriptionResource();
-	
-	@Test
-	public void sendInAGoodRequest() {
-		assertEquals(goodRequest.getStatus(), myPrescriptionServlet.post(goodJson).getStatus());
+	@Before
+	public void setup() throws Exception {
+		prescriptionServiceMock = mock(PrescriptionService.class);
+		addPrescriptionRequestMock = mock(AddPrescriptionRequest.class);
+		addPrescriptionRequestFactoryMock = mock(AddPrescriptionRequestFactory.class);
+		when(addPrescriptionRequestFactoryMock.createAddprescriptionRequest(any(JSONObject.class))).thenReturn(addPrescriptionRequestMock);
+		prescriptionResource = new PrescriptionResource(prescriptionServiceMock, addPrescriptionRequestFactoryMock);
 	}
 	
 	@Test
-	public void sendInABadRequest() {
-		assertEquals(badRequest.getStatus(), myPrescriptionServlet.post(badJson).getStatus());
+	public void handlesPostRequestsCorrectly() {
+		prescriptionResource.post(A_JSON_REQUEST);
+		verify(prescriptionServiceMock).addPrescription(addPrescriptionRequestMock);
 	}
 	
 }

@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
+import static org.mockito.Mockito.*;
 
 import ca.ulaval.glo4002.domain.prescription.Prescription;
 import ca.ulaval.glo4002.exceptions.ItemNotFoundException;
@@ -26,7 +26,7 @@ public class PatientTest {
 	
 	@Test
 	public void addsPrescriptionCorrectly() throws ItemNotFoundException {
-		Prescription prescriptionMock = Mockito.mock(Prescription.class);
+		Prescription prescriptionMock = mock(Prescription.class);
 		patient.addPrescription(prescriptionMock);
 		assertTrue(patient.hasPrescription(prescriptionMock));
 	}
