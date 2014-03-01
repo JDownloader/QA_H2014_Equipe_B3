@@ -62,10 +62,9 @@ public class PrescriptionResource {
 	
 	private AddPrescriptionRequest getPrescriptionRequest(String request) throws JSONException, ParseException {
 		JSONObject jsonRequest = new JSONObject(request);
-		jsonRequest.put("patient", String.valueOf(patientNumber));
-		
-		AddPrescriptionRequest prescriptionRequest = addPrescriptionRequestFactory.createAddprescriptionRequest(jsonRequest);
-		prescriptionRequest.validateRequestParameters();
+		String patientNumberParameter = String.valueOf(patientNumber);
+				
+		AddPrescriptionRequest prescriptionRequest = addPrescriptionRequestFactory.createAddprescriptionRequest(jsonRequest, patientNumberParameter);
 		
 		return prescriptionRequest;
 	}

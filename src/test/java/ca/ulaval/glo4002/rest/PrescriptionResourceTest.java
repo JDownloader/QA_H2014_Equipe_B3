@@ -11,7 +11,7 @@ import ca.ulaval.glo4002.services.prescription.PrescriptionService;
 
 public class PrescriptionResourceTest {
 	
-	private static final String A_JSON_REQUEST = "{attrib: value}";
+	private static final String SAMPLE_JSON_REQUEST = "{attrib: value}";
 	
 	private PrescriptionService prescriptionServiceMock;
 	private AddPrescriptionRequest addPrescriptionRequestMock;
@@ -23,13 +23,13 @@ public class PrescriptionResourceTest {
 		prescriptionServiceMock = mock(PrescriptionService.class);
 		addPrescriptionRequestMock = mock(AddPrescriptionRequest.class);
 		addPrescriptionRequestFactoryMock = mock(AddPrescriptionRequestFactory.class);
-		when(addPrescriptionRequestFactoryMock.createAddprescriptionRequest(any(JSONObject.class))).thenReturn(addPrescriptionRequestMock);
+		when(addPrescriptionRequestFactoryMock.createAddprescriptionRequest(any(JSONObject.class), anyString())).thenReturn(addPrescriptionRequestMock);
 		prescriptionResource = new PrescriptionResource(prescriptionServiceMock, addPrescriptionRequestFactoryMock);
 	}
 	
 	@Test
 	public void handlesPostRequestsCorrectly() {
-		prescriptionResource.post(A_JSON_REQUEST);
+		prescriptionResource.post(SAMPLE_JSON_REQUEST);
 		verify(prescriptionServiceMock).addPrescription(addPrescriptionRequestMock);
 	}
 	

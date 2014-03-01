@@ -17,7 +17,6 @@ public class AddPrescriptionRequest {
 	private static final String DRUG_NAME_PARAMETER = "nom";
 	private static final String DATE_PARAMETER = "date";
 	private static final String RENEWAL_PARAMETER = "renouvellements";
-	private static final String PATIENT_PARAMETER = "patient";
 
 	private int din;
 	private String drugName;
@@ -26,22 +25,23 @@ public class AddPrescriptionRequest {
 	private Date date;
 	private int patientNumber;
 
-	public AddPrescriptionRequest(JSONObject jsonRequest) throws JSONException, ParseException {
+	public AddPrescriptionRequest(JSONObject jsonRequest, String patientNumberParameter) throws JSONException, ParseException {
 		this.din = jsonRequest.optInt(DIN_PARAMETER, UNSPECIFIED_VALUE);
 		this.drugName = jsonRequest.optString(DRUG_NAME_PARAMETER);
 		this.staffMember = jsonRequest.getInt(STAFF_MEMBER_PARAMETER);
 		this.renewals = jsonRequest.getInt(RENEWAL_PARAMETER);
 		this.date = CustomDateParser.parseDate(jsonRequest.getString(DATE_PARAMETER));
-		this.patientNumber = jsonRequest.getInt(PATIENT_PARAMETER);
+		this.patientNumber = Integer.parseInt(patientNumberParameter);
+		validateRequestParameters();
 	}
 
-	public void validateRequestParameters() {
+	private void validateRequestParameters() {
 		if (!this.validateDinAndName() || this.staffMember < 0 || this.renewals < 0 || this.patientNumber < 0) {
 			throw new IllegalArgumentException("Invalid parameters were supplied to the request.");
 		}
 	}
 
-	public boolean validateDinAndName() {
+	private boolean validateDinAndName() {
 		return StringUtils.isNullOrEmpty(this.drugName) ^ (this.din < 0);
 	}
 

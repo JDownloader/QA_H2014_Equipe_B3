@@ -11,17 +11,17 @@ import ca.ulaval.glo4002.exceptions.ItemNotFoundException;
 
 public class PatientTest {
 	
-	private static final int ID_OF_PATIENT = 3;
+	private static final int SAMPLE_PATIENT_ID = 3;
 	private Patient patient;
 
 	@Before
 	public void setup() {
-		patient = new Patient(ID_OF_PATIENT);
+		patient = new Patient(SAMPLE_PATIENT_ID);
 	}
 	
 	@Test
 	public void returnsTheCorrectId() {
-		assertEquals(ID_OF_PATIENT, patient.getId());
+		assertEquals(SAMPLE_PATIENT_ID, patient.getId());
 	}
 	
 	@Test
