@@ -3,32 +3,35 @@ package ca.ulaval.glo4002.rest.requests;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MarkNewInstrumentAsUsedRequest {
-	private String typecode;
-	private String status;
-	private String serialNumber;
-	
-	public MarkNewInstrumentAsUsedRequest(JSONObject jsonRequest) throws Exception {
-		try {
-			this.typecode = jsonRequest.getString("typecode");
-			this.status = jsonRequest.getString("statut");
-			this.serialNumber = jsonRequest.getString("noserie");
-		} catch (JSONException e) {
-			throw e;
-		}
-		
-	}
+import ca.ulaval.glo4002.exceptions.BadRequestException;
 
-	public String getTypecode() {
-		return typecode;
+public class MarkNewInstrumentRequest extends MarkInstrumentRequest {
+	
+	public MarkNewInstrumentRequest(JSONObject jsonRequest) throws BadRequestException {
+		buildObject(jsonRequest);
+		validateRequestParameters();
 	}
 	
-	public String getStatus() {
-		return status;
+	private void buildObject(JSONObject jsonRequest) throws BadRequestException {
+		try {
+			this.typecode = jsonRequest.getString(TYPECODE_PARAMETER);
+			this.status = jsonRequest.getString(STATUS_PARAMETER);
+			initializeSerialNumber(jsonRequest);
+		} catch (JSONException e) {
+			throw new BadRequestException(INVALID_OR_INCOMPLETE_REQUEST_CODE,INVALID_OR_INCOMPLETE_REQUEST_MESSAGE);
+		}
 	}
 	
-	public String getSerialNumber() {
-		return serialNumber;
+	private void initializeSerialNumber(JSONObject jsonRequest) throws BadRequestException {
+		try {
+			this.serialNumber = jsonRequest.getString(SERIAL_NUMBER_PARAMETER);
+		} catch (JSONException e) {
+			
+		}
+	}
+	
+	void validateRequestParameters() throws BadRequestException {
+		validateStatus();
 	}
 	
 }
