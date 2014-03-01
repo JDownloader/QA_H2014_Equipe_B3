@@ -1,0 +1,55 @@
+package ca.ulaval.glo4002.requests;
+
+import static org.junit.Assert.*;
+
+import org.json.JSONObject;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import ca.ulaval.glo4002.exceptions.BadRequestException;
+import ca.ulaval.glo4002.rest.requests.MarkExistingInstrumentRequest;
+
+public class MarkExistingInstrumentRequestTest {
+	
+	private JSONObject myJsonRequest;
+	private MarkExistingInstrumentRequest myRequest;
+
+	@Rule public ExpectedException thrown=ExpectedException.none();
+	
+	@Test
+	public void buildValidRequest() throws BadRequestException {
+		myJsonRequest = new JSONObject("{ \"statut\":\"SOUILLE\", \"noserie\":\"23562543-3635345\" }");
+		
+		myRequest = new MarkExistingInstrumentRequest(myJsonRequest);
+	}
+	
+	@Test
+	public void doNotBuildEmptyRequest() throws BadRequestException {
+		thrown.expect(BadRequestException.class);
+		myJsonRequest = new JSONObject("{}");
+		
+		myRequest = new MarkExistingInstrumentRequest(myJsonRequest);
+	}
+	
+	@Test
+	public void doNotBuildWithInvalidStatus() {
+		assertTrue(false);
+	}
+	
+	@Test
+	public void buildWithDirtyStatus() {
+		assertTrue(false);
+	}
+	
+	@Test
+	public void buildWithUsedOnPatientStatus() {
+		assertTrue(false);
+	}
+	
+	@Test
+	public void buildWithUnusedStatus() {
+		assertTrue(false);
+	}
+	
+}
