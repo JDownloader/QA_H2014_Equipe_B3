@@ -2,8 +2,7 @@ package ca.ulaval.glo4002.persistence.prescription;
 
 import javax.persistence.EntityManager;
 
-import ca.ulaval.glo4002.domain.prescription.Prescription;
-import ca.ulaval.glo4002.domain.prescription.PrescriptionRepository;
+import ca.ulaval.glo4002.domain.prescription.*;
 import ca.ulaval.glo4002.persistence.HibernateRepository;
 
 public class HibernatePrescriptionRepository extends HibernateRepository implements PrescriptionRepository {

@@ -5,12 +5,7 @@ import java.io.IOException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 
 import ca.ulaval.glo4002.entitymanager.EntityManagerFactoryProvider;
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;

@@ -3,11 +3,7 @@ package ca.ulaval.glo4002.rest;
 import java.text.ParseException;
 
 import javax.persistence.EntityManager;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -20,8 +16,7 @@ import ca.ulaval.glo4002.persistence.patient.HibernatePatientRepository;
 import ca.ulaval.glo4002.persistence.prescription.HibernatePrescriptionRepository;
 import ca.ulaval.glo4002.rest.requests.PrescriptionRequest;
 import ca.ulaval.glo4002.rest.utils.BadRequestJsonResponseBuilder;
-import ca.ulaval.glo4002.services.prescription.PrescriptionService;
-import ca.ulaval.glo4002.services.prescription.PrescriptionServiceBuilder;
+import ca.ulaval.glo4002.services.prescription.*;
 
 @Path("patient/{patient_number: [0-9]+}/prescriptions/")
 public class PrescriptionResource {

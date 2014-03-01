@@ -2,8 +2,7 @@ package ca.ulaval.glo4002.persistence.intervention;
 
 import javax.persistence.EntityManager;
 
-import ca.ulaval.glo4002.domain.intervention.Intervention;
-import ca.ulaval.glo4002.domain.intervention.InterventionRepository;
+import ca.ulaval.glo4002.domain.intervention.*;
 import ca.ulaval.glo4002.persistence.HibernateRepository;
 
 public class HibernateInterventionRepository extends HibernateRepository implements InterventionRepository {

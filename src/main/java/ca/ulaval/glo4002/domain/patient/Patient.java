@@ -3,11 +3,7 @@ package ca.ulaval.glo4002.domain.patient;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+import javax.persistence.*;
 
 import ca.ulaval.glo4002.domain.prescription.Prescription;
 

@@ -6,10 +6,7 @@ import java.io.Reader;
 import javax.persistence.EntityManager;
 
 import au.com.bytecode.opencsv.CSVReader;
-import ca.ulaval.glo4002.domain.drug.Din;
-import ca.ulaval.glo4002.domain.drug.Drug;
-import ca.ulaval.glo4002.domain.drug.DrugBuilder;
-import ca.ulaval.glo4002.domain.drug.DrugRepository;
+import ca.ulaval.glo4002.domain.drug.*;
 import ca.ulaval.glo4002.exceptions.BadFileFormatException;
 
 public class DrugRepositoryFiller {

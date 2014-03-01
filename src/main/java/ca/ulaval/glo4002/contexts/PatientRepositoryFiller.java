@@ -2,8 +2,7 @@ package ca.ulaval.glo4002.contexts;
 
 import javax.persistence.EntityManager;
 
-import ca.ulaval.glo4002.domain.patient.Patient;
-import ca.ulaval.glo4002.domain.patient.PatientRepository;
+import ca.ulaval.glo4002.domain.patient.*;
 
 public class PatientRepositoryFiller {
 	

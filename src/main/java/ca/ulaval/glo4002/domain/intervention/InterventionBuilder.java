@@ -2,8 +2,7 @@ package ca.ulaval.glo4002.domain.intervention;
 
 import java.util.Date;
 
-import ca.ulaval.glo4002.domain.intervention.Intervention.Status;
-import ca.ulaval.glo4002.domain.intervention.Intervention.Type;
+import ca.ulaval.glo4002.domain.intervention.Intervention.*;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
 
 public class InterventionBuilder {

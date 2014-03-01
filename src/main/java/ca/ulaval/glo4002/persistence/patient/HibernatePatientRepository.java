@@ -4,8 +4,7 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 
-import ca.ulaval.glo4002.domain.patient.Patient;
-import ca.ulaval.glo4002.domain.patient.PatientRepository;
+import ca.ulaval.glo4002.domain.patient.*;
 import ca.ulaval.glo4002.persistence.HibernateRepository;
 
 public class HibernatePatientRepository extends HibernateRepository implements PatientRepository {

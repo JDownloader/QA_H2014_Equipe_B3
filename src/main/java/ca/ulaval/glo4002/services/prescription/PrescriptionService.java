@@ -5,14 +5,9 @@ import javax.persistence.EntityTransaction;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import ca.ulaval.glo4002.domain.drug.Din;
-import ca.ulaval.glo4002.domain.drug.Drug;
-import ca.ulaval.glo4002.domain.drug.DrugRepository;
-import ca.ulaval.glo4002.domain.patient.Patient;
-import ca.ulaval.glo4002.domain.patient.PatientRepository;
-import ca.ulaval.glo4002.domain.prescription.Prescription;
-import ca.ulaval.glo4002.domain.prescription.PrescriptionBuilder;
-import ca.ulaval.glo4002.domain.prescription.PrescriptionRepository;
+import ca.ulaval.glo4002.domain.drug.*;
+import ca.ulaval.glo4002.domain.patient.*;
+import ca.ulaval.glo4002.domain.prescription.*;
 import ca.ulaval.glo4002.domain.staff.StaffMember;
 import ca.ulaval.glo4002.exceptions.BadRequestException;
 import ca.ulaval.glo4002.rest.requests.PrescriptionRequest;
