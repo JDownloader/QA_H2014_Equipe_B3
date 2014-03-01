@@ -2,7 +2,6 @@ package ca.ulaval.glo4002.domain.intervention;
 
 import java.util.Date;
 
-import ca.ulaval.glo4002.domain.intervention.Intervention.*;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
 
 public class InterventionBuilder {
@@ -10,8 +9,8 @@ public class InterventionBuilder {
 	protected Surgeon surgeon = null;
 	protected Date date = null;
 	protected String room = null;
-	protected Type type = null;
-	protected Status status = null;
+	protected InterventionType type = null;
+	protected InterventionStatus status = null;
 	
 	public InterventionBuilder description(String description) {
 		this.description = description;
@@ -33,18 +32,18 @@ public class InterventionBuilder {
 		return this;
 	}
 	
-	public InterventionBuilder type(Type type) {
+	public InterventionBuilder type(InterventionType type) {
 		this.type = type;
 		return this;
 	}
 	
-	public InterventionBuilder status(Status status) {
+	public InterventionBuilder status(InterventionStatus status) {
 		this.status = status;
 		return this;
 	}
 	
 	public InterventionBuilder status(String statusName) throws IllegalArgumentException {
-		for (Status status : Status.values()) {
+		for (InterventionStatus status : InterventionStatus.values()) {
 			if (status.toString().compareToIgnoreCase(statusName) == 0) {
 				this.status = status;
 				return this;

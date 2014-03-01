@@ -25,29 +25,11 @@ public class Intervention {
 	@Column(name = "ROOM", nullable = false)
 	private String room;
 
-	public enum Type {
-		OEIL, COEUR, MOELLE, ONCOLOGIQUE, AUTRE;
-
-		@Override
-		public String toString() {
-			return super.toString();
-		}
-	}
-
 	@Column(name = "TYPE", nullable = false)
-	private Type type;
-
-	public enum Status {
-		PLANIFIEE, EN_COURS, TERMINEE, ANNULEE, REPORTEE;
-
-		@Override
-		public String toString() {
-			return super.toString();
-		}
-	}
+	private InterventionType type;
 
 	@Column(name = "STATUS", nullable = false)
-	private Status status;
+	private InterventionStatus status;
 
 	@ManyToOne()
 	@JoinColumn(name = "PATIENT", nullable = false)

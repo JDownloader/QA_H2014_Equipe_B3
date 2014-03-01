@@ -3,8 +3,6 @@ package ca.ulaval.glo4002.domain.intervention;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.ulaval.glo4002.domain.intervention.Intervention;
-
 public class InterventionTest {
 	
 	InterventionBuilder interventionBuilder;
@@ -18,20 +16,20 @@ public class InterventionTest {
 	
 	@Test
 	public void newInterventionCanSetTypeWithoutThrowingAnException() {
-		interventionBuilder.type(Intervention.Type.OEIL);
-		interventionBuilder.type(Intervention.Type.COEUR);
-		interventionBuilder.type(Intervention.Type.MOELLE);
-		interventionBuilder.type(Intervention.Type.ONCOLOGIQUE);
-		interventionBuilder.type(Intervention.Type.AUTRE);
+		interventionBuilder.type(InterventionType.OEIL);
+		interventionBuilder.type(InterventionType.COEUR);
+		interventionBuilder.type(InterventionType.MOELLE);
+		interventionBuilder.type(InterventionType.ONCOLOGIQUE);
+		interventionBuilder.type(InterventionType.AUTRE);
 	}
 	
 	@Test
 	public void newInterventionCanSetStatusWithoutThrowingAnException() {
-		interventionBuilder.status(Intervention.Status.PLANIFIEE);
-		interventionBuilder.status(Intervention.Status.EN_COURS);
-		interventionBuilder.status(Intervention.Status.TERMINEE);
-		interventionBuilder.status(Intervention.Status.ANNULEE);
-		interventionBuilder.status(Intervention.Status.REPORTEE);
+		interventionBuilder.status(InterventionStatus.PLANIFIEE);
+		interventionBuilder.status(InterventionStatus.EN_COURS);
+		interventionBuilder.status(InterventionStatus.TERMINEE);
+		interventionBuilder.status(InterventionStatus.ANNULEE);
+		interventionBuilder.status(InterventionStatus.REPORTEE);
 	}
 	
 	@Test
