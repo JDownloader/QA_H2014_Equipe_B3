@@ -2,6 +2,7 @@ package ca.ulaval.glo4002.rest;
 
 import java.text.ParseException;
 
+import javax.persistence.EntityManager;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -10,39 +11,57 @@ import javax.ws.rs.core.Response.Status;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
+import ca.ulaval.glo4002.exceptions.BadRequestException;
+import ca.ulaval.glo4002.persistence.intervention.HibernateInterventionRepository;
 import ca.ulaval.glo4002.rest.requests.CreateInterventionRequest;
+import ca.ulaval.glo4002.rest.requests.CreateInterventionRequestFactory;
+import ca.ulaval.glo4002.rest.utils.BadRequestJsonResponseBuilder;
+import ca.ulaval.glo4002.services.intervention.InterventionService;
+import ca.ulaval.glo4002.services.intervention.InterventionServiceBuilder;
 
 @Path("interventions/")
 public class InterventionResource {
-
+	private InterventionService service;
+	private CreateInterventionRequestFactory createInterventionRequestFactory;
+	
+	public InterventionResource() {
+		EntityManager entityManager = new EntityManagerProvider().getEntityManager();
+		
+		InterventionServiceBuilder interventionServiceBuilder = new InterventionServiceBuilder();
+		interventionServiceBuilder.entityTransaction(entityManager.getTransaction());
+		interventionServiceBuilder.interventionRepository(new HibernateInterventionRepository());
+		this.service = new InterventionService(interventionServiceBuilder);
+		
+		this.createInterventionRequestFactory = new CreateInterventionRequestFactory();
+	}
+	
+	public InterventionResource(InterventionService service, CreateInterventionRequestFactory createInterventionRequestFactory) {
+		this.service = service;
+		this.createInterventionRequestFactory = createInterventionRequestFactory;
+	}
+	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	
 	public Response post(String request){
-		JSONObject interventionError = new JSONObject();
-		CreateInterventionRequest interventionRequest = null;
 		try {
-			interventionRequest = getInterventionRequest(request);
-			if(!interventionRequest.validatePatientId()){
-				interventionError.append("code", "INT002").append("message", "Le patient est inexistant");
-				return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(interventionError.toString()).build();
-			}
-		} catch (JSONException | IllegalArgumentException | ParseException e) {
-			interventionError.append("code", "INT001").append("message", "La requête contient des informations invalides et/ou est malformée");
-			return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(interventionError.toString()).build();
-	}
-		return Response.status(Status.CREATED).build();
+			CreateInterventionRequest interventionRequest = getInterventionRequest(request);
+			service.createIntervention(interventionRequest); 
+			return Response.status(Status.CREATED).build();
+		} catch (JSONException | ParseException | IllegalArgumentException e) {
+			return BadRequestJsonResponseBuilder.build("PRES001", "La requête contient des informations invalides et/ou est malformée");
+		} catch (BadRequestException e) {
+			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());
+		} catch (Exception e) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 	
 	private CreateInterventionRequest getInterventionRequest(String request) throws JSONException, ParseException {
 		JSONObject jsonRequest = new JSONObject(request);
-		CreateInterventionRequest interventionRequest = new CreateInterventionRequest(jsonRequest);
-		interventionRequest.validateStatus();
-		interventionRequest.validateType();
+		CreateInterventionRequest interventionRequest = createInterventionRequestFactory.createCreateInterventionRequest(jsonRequest);
 		return interventionRequest;
 	}
-	
-	//TODO complete class, based on same pattern as PrescriptionResource and PrescriptionService.
 
 }

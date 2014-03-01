@@ -6,7 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class AddPrescriptionRequestFactory {
-	public AddPrescriptionRequest createAddprescriptionRequest(JSONObject jsonRequest, String patientNumberParameter) throws JSONException, ParseException {
+	public AddPrescriptionRequest createAddPrescriptionRequest(JSONObject jsonRequest, String patientNumberParameter) throws JSONException, ParseException {
 		return new AddPrescriptionRequest(jsonRequest, patientNumberParameter);
 	}
 }

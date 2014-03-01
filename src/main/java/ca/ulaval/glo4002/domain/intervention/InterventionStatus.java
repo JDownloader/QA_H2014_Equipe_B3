@@ -1,10 +1,12 @@
 package ca.ulaval.glo4002.domain.intervention;
 
-public enum InterventionStatus {
-	PLANIFIEE(1), EN_COURS(2), TERMINEE(3), ANNULEE(4), REPORTEE(5);
-	private int value;
+import java.io.Serializable;
+
+public enum InterventionStatus implements Serializable {
+	PLANIFIEE("Planifiee"), EN_COURS("En cours"), TERMINEE("Terminee"), ANNULEE("Annulee"), REPORTEE("Reportee");
+	private String value;
 	
-	private InterventionStatus(int value) {
+	private InterventionStatus(String value) {
         this.value = value;
     }
 	
@@ -13,8 +15,16 @@ public enum InterventionStatus {
 		return super.toString();
 	}
 	
-	public int getValue() {
+	public String getValue() {
 		return value;
 	}
 	
+	public static InterventionStatus fromString(String statusName) {
+		for (InterventionStatus interventionStatus : InterventionStatus.values()) {
+			if (statusName.compareToIgnoreCase(interventionStatus.getValue()) == 0) {
+				return interventionStatus;
+			}
+		}
+		throw new IllegalArgumentException(String.format("%s is not a valid value for enumeration InterventionStatus.", statusName));
+	}
 }

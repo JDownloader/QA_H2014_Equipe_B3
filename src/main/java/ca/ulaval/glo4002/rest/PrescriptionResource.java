@@ -68,7 +68,7 @@ public class PrescriptionResource {
 		JSONObject jsonRequest = new JSONObject(request);
 		String patientNumberParameter = String.valueOf(patientNumber);
 				
-		AddPrescriptionRequest prescriptionRequest = addPrescriptionRequestFactory.createAddprescriptionRequest(jsonRequest, patientNumberParameter);
+		AddPrescriptionRequest prescriptionRequest = addPrescriptionRequestFactory.createAddPrescriptionRequest(jsonRequest, patientNumberParameter);
 		return prescriptionRequest;
 	}
 }
