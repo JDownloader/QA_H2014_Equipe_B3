@@ -16,21 +16,25 @@ public class Patient {
 
 	@ElementCollection()
 	@JoinColumn(name = "PATIENT")
-	private List<Prescription> presciptions = new ArrayList<Prescription>();
+	private List<Prescription> prescriptions = new ArrayList<Prescription>();
 
 	protected Patient() {
-		
+		// Required for Hibernate.
 	}
-	
+
 	public Patient(int id) {
 		this.id = id;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
 
 	public void addPrescription(Prescription prescription) {
-		presciptions.add(prescription);
+		prescriptions.add(prescription);
+	}
+
+	public boolean hasPrescription(Prescription prescription) {
+		return prescriptions.contains(prescription);
 	}
 }

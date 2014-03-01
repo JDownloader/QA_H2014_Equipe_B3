@@ -13,22 +13,22 @@ public class DrugTest {
 
 	private static final String NAME_OF_DRUG = "Drug";
 	private static final Din DIN_OF_DRUG = new Din(5);
-	Drug drug;
+	private Drug drug;
 
 	@Before
-	public void init() {
+	public void setup() {
 		drug = new DrugBuilder().din(DIN_OF_DRUG).name(NAME_OF_DRUG).build();
 	}
 
 	@Test
-	public void aNewDrugWithoutDinReturnsANullDin() {
-		Drug medicamentSansDin = new DrugBuilder().name("drug without Din").build();
-		assertEquals(NULL_DIN, medicamentSansDin.getDin());
+	public void newDrugWithNoDinReturnsNullDin() {
+		Drug drugWithNoDin = new DrugBuilder().name("drug without Din").build();
+		assertEquals(NULL_DIN, drugWithNoDin.getDin());
 	}
 	
 	@Test(expected = IllegalStateException.class)
-	public void disallowsEmptyNameAndNullDin() {
-		drug = new DrugBuilder().build();
+	public void disallowsUnspecifiedNameAndDin() {
+		new DrugBuilder().build();
 	}
 	
 	@Test

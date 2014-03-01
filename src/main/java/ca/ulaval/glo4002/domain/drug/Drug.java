@@ -14,7 +14,7 @@ public class Drug {
 	private String name = null;
 	
 	protected Drug() {
-		
+		//Required for Hibernate.
 	}
 
 	public Drug(DrugBuilder builder) {

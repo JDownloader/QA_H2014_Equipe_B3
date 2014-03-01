@@ -2,7 +2,7 @@ package ca.ulaval.glo4002.domain.prescription;
 
 import java.util.Date;
 
-import org.h2.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import ca.ulaval.glo4002.domain.drug.Drug;
 import ca.ulaval.glo4002.domain.staff.StaffMember;
@@ -12,7 +12,7 @@ public class PrescriptionBuilder {
 	
 	protected Drug drug = null;
 	protected String drugName = null;
-	protected int renewals = UNSPECIFIED;
+	protected int allowedNumberOfRenewal = UNSPECIFIED;
 	protected Date date = null;
 	protected StaffMember staffMember = null;
 	
@@ -26,8 +26,8 @@ public class PrescriptionBuilder {
 		return this;
 	}
 	
-	public PrescriptionBuilder renewals(int renewals) {
-		this.renewals = renewals;
+	public PrescriptionBuilder allowedRenewalCount(int allowedNumberOfRenewal) {
+		this.allowedNumberOfRenewal = allowedNumberOfRenewal;
 		return this;
 	}
 	
@@ -44,9 +44,9 @@ public class PrescriptionBuilder {
 	public Prescription build() {
 		Prescription prescription = new Prescription(this);
 		if (staffMember == null
-				|| renewals == UNSPECIFIED
+				|| allowedNumberOfRenewal == UNSPECIFIED
 				|| date == null
-				|| (drug == null && StringUtils.isNullOrEmpty(drugName))) {
+				|| (drug == null && StringUtils.isBlank(drugName))) {
 			throw new IllegalStateException();
 		}
         return prescription;

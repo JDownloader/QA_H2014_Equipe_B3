@@ -36,7 +36,7 @@ public class Intervention {
 	private Patient patient;
 	
 	protected Intervention() {
-		
+		//Required for Hibernate.
 	}
 
 	public Intervention(InterventionBuilder builder) {

@@ -13,7 +13,7 @@ public class StaffMemberTest {
 	private StaffMember staffMember;
 
 	@Before
-	public void init() {
+	public void setup() {
 		staffMember = new StaffMember(A_LICENSE_NUMBER);
 	}
 	

@@ -22,6 +22,9 @@ public class HibernateDrugRepository extends HibernateRepository implements Drug
 	
 	public Drug get(Din din) throws EntityNotFoundException {
 		Drug drug = entityManager.find(Drug.class, din);
+		if (drug == null) {
+			throw new EntityNotFoundException(String.format("Cannot find Drug with din '%s'.", din));
+		}
 		return drug;
 	}
 }

@@ -55,7 +55,7 @@ public class PrescriptionService {
 	private Prescription createPrescription(PrescriptionRequest prescriptionRequest) throws BadRequestException {
 		PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder();
 		prescriptionBuilder.date(prescriptionRequest.getDate());
-		prescriptionBuilder.renewals(prescriptionRequest.getRenewals());
+		prescriptionBuilder.allowedRenewalCount(prescriptionRequest.getRenewals());
 		prescriptionBuilder.prescriber(new StaffMember(prescriptionRequest.getStaffMember()));
 		prescriptionBuilder.drugName(prescriptionRequest.getDrugName());
 		if (prescriptionRequest.hasDin()) {
