@@ -10,6 +10,15 @@ public class BadRequestException extends Exception {
 		this.internalCode = internalCode;
 	}
 	
+	public BadRequestException(String internalCode) {
+		super();
+		this.internalCode = internalCode;
+	}
+	
+	public BadRequestException() {
+		super();
+	}
+	
 	public String getInternalCode() {
 		return internalCode;
 	}

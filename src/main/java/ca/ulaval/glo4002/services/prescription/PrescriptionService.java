@@ -2,8 +2,6 @@ package ca.ulaval.glo4002.services.prescription;
 
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityTransaction;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 
 import ca.ulaval.glo4002.domain.drug.*;
 import ca.ulaval.glo4002.domain.patient.*;
@@ -11,7 +9,6 @@ import ca.ulaval.glo4002.domain.prescription.*;
 import ca.ulaval.glo4002.domain.staff.StaffMember;
 import ca.ulaval.glo4002.exceptions.BadRequestException;
 import ca.ulaval.glo4002.rest.requests.AddPrescriptionRequest;
-import ca.ulaval.glo4002.rest.utils.BadRequestJsonResponseBuilder;
 
 public class PrescriptionService {
 	private PrescriptionRepository prescriptionRepository;
@@ -26,25 +23,17 @@ public class PrescriptionService {
 		this.patientRepository = builder.patientRepository;
 	}
 	
-	public Response addPrescription(AddPrescriptionRequest prescriptionRequest) {
-		Response response = null;
-
+	public void addPrescription(AddPrescriptionRequest prescriptionRequest) throws BadRequestException {
 		try {
 			entityTransaction.begin();
 			doAddPrescription(prescriptionRequest);
 			entityTransaction.commit();
-			response = Response.status(Status.CREATED).build();
-		} catch (BadRequestException e) {
-			response = BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());
 		} catch (Exception e) {
-			response = Response.status(Status.INTERNAL_SERVER_ERROR).build();
-		} finally {
 			if (entityTransaction.isActive()) {
 				entityTransaction.rollback();
 			}
+			throw e;
 		}
-
-		return response;
 	}
 	
 	protected void doAddPrescription(AddPrescriptionRequest prescriptionRequest) throws BadRequestException {

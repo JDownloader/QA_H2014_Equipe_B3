@@ -1,10 +1,15 @@
 package ca.ulaval.glo4002.rest;
 
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import ca.ulaval.glo4002.exceptions.BadRequestException;
 import ca.ulaval.glo4002.rest.requests.AddPrescriptionRequest;
 import ca.ulaval.glo4002.rest.requests.AddPrescriptionRequestFactory;
 import ca.ulaval.glo4002.services.prescription.PrescriptionService;
@@ -28,9 +33,24 @@ public class PrescriptionResourceTest {
 	}
 	
 	@Test
-	public void handlesPostRequestsCorrectly() {
+	public void handlesPostRequestsCorrectly() throws BadRequestException {
 		prescriptionResource.post(SAMPLE_JSON_REQUEST);
 		verify(prescriptionServiceMock).addPrescription(addPrescriptionRequestMock);
+	}
+	
+	@Test
+	public void returnsCreatedResponse() throws BadRequestException {
+		Response response = prescriptionResource.post(SAMPLE_JSON_REQUEST);
+		assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
+	}
+	
+	@Test
+	public void returnsInvalidResponseWhenSpecifyingInvalidRequest() throws BadRequestException {
+		doThrow(new BadRequestException()).when(prescriptionServiceMock).addPrescription(addPrescriptionRequestMock);
+		
+		Response response = prescriptionResource.post(SAMPLE_JSON_REQUEST);
+		
+		assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
 	}
 	
 }

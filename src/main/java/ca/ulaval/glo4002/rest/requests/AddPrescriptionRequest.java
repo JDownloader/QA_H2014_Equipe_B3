@@ -25,7 +25,7 @@ public class AddPrescriptionRequest {
 	private Date date;
 	private int patientNumber;
 
-	public AddPrescriptionRequest(JSONObject jsonRequest, String patientNumberParameter) throws JSONException, ParseException {
+	public AddPrescriptionRequest(JSONObject jsonRequest, String patientNumberParameter) throws JSONException, ParseException, IllegalArgumentException {
 		this.din = jsonRequest.optInt(DIN_PARAMETER, UNSPECIFIED_VALUE);
 		this.drugName = jsonRequest.optString(DRUG_NAME_PARAMETER);
 		this.staffMember = jsonRequest.getInt(STAFF_MEMBER_PARAMETER);

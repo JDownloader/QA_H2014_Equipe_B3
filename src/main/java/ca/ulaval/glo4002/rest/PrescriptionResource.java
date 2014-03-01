@@ -6,11 +6,13 @@ import javax.persistence.EntityManager;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
+import ca.ulaval.glo4002.exceptions.BadRequestException;
 import ca.ulaval.glo4002.persistence.drug.HibernateDrugRepository;
 import ca.ulaval.glo4002.persistence.patient.HibernatePatientRepository;
 import ca.ulaval.glo4002.persistence.prescription.HibernatePrescriptionRepository;
@@ -49,15 +51,17 @@ public class PrescriptionResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response post(String request) {
-		AddPrescriptionRequest prescriptionRequest = null;
-		
 		try {
-			prescriptionRequest = getPrescriptionRequest(request);
-		} catch (Exception e) {
+			AddPrescriptionRequest prescriptionRequest = getPrescriptionRequest(request);
+			service.addPrescription(prescriptionRequest); 
+			return Response.status(Status.CREATED).build();
+		} catch (JSONException | ParseException | IllegalArgumentException e) {
 			return BadRequestJsonResponseBuilder.build("PRES001", "La requête contient des informations invalides et/ou est malformée");
+		} catch (BadRequestException e) {
+			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());
+		} catch (Exception e) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 		}
-		
-		return service.addPrescription(prescriptionRequest); 
 	}
 	
 	private AddPrescriptionRequest getPrescriptionRequest(String request) throws JSONException, ParseException {
@@ -65,7 +69,6 @@ public class PrescriptionResource {
 		String patientNumberParameter = String.valueOf(patientNumber);
 				
 		AddPrescriptionRequest prescriptionRequest = addPrescriptionRequestFactory.createAddprescriptionRequest(jsonRequest, patientNumberParameter);
-		
 		return prescriptionRequest;
 	}
 }

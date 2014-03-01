@@ -4,13 +4,10 @@ import java.util.Date;
 
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityTransaction;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 
 import org.junit.*;
 import org.mockito.*;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import ca.ulaval.glo4002.domain.drug.Din;
 import ca.ulaval.glo4002.domain.drug.Drug;
@@ -19,6 +16,7 @@ import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
 import ca.ulaval.glo4002.domain.prescription.Prescription;
 import ca.ulaval.glo4002.domain.prescription.PrescriptionRepository;
+import ca.ulaval.glo4002.exceptions.BadRequestException;
 import ca.ulaval.glo4002.rest.requests.AddPrescriptionRequest;
 
 public class PrescriptionServiceTest {
@@ -87,7 +85,7 @@ public class PrescriptionServiceTest {
 	}
 	
 	@Test
-	public void verifyAddPrescriptionCallsCorrectRepositoryMethods() {
+	public void verifyAddPrescriptionCallsCorrectRepositoryMethods() throws BadRequestException {
 		prescriptionService.addPrescription(addPrescriptionRequestMock);
 		
 		verify(drugRepositoryMock).getByDin(any(Din.class));
@@ -96,14 +94,12 @@ public class PrescriptionServiceTest {
 	}
 	
 	@Test
-	public void verifyAddPrescriptionReturnsCorrectResponse() {
-		Response response = prescriptionService.addPrescription(addPrescriptionRequestMock);
-		
-		assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
+	public void verifyAddPrescriptionReturnsCorrectResponse() throws BadRequestException {
+		prescriptionService.addPrescription(addPrescriptionRequestMock);
 	}
 	
 	@Test
-	public void verifyAddPrescriptionWithNoDinCallsCorrectRepositoryMethods() {
+	public void verifyAddPrescriptionWithNoDinCallsCorrectRepositoryMethods() throws BadRequestException {
 		when(addPrescriptionRequestMock.hasDin()).thenReturn(false);
 		
 		prescriptionService.addPrescription(addPrescriptionRequestMock);
@@ -114,7 +110,7 @@ public class PrescriptionServiceTest {
 	}
 	
 	@Test
-	public void verifyTransactionHandling() {
+	public void verifyTransactionHandling() throws BadRequestException {
 		prescriptionService.addPrescription(addPrescriptionRequestMock);
 		InOrder inOrder = inOrder(entityTransactionMock);
 		
@@ -122,32 +118,21 @@ public class PrescriptionServiceTest {
 		inOrder.verify(entityTransactionMock).commit();
 	}
 	
-	@Test
-	public void verifyTransactionRollsbackOnError() {
+	@Test(expected = BadRequestException.class)
+	public void throwsWhenSpecifyingNonExistingDrugDin() throws BadRequestException {
 		when(drugRepositoryMock.getByDin(any(Din.class))).thenThrow(new EntityNotFoundException());
 		
 		prescriptionService.addPrescription(addPrescriptionRequestMock);
-		
+
 		verify(entityTransactionMock).rollback();
 	}
 	
-	@Test
-	public void returnsInvalidResponseWhenSpecifyingNonExistingDrugDin() {
-		when(drugRepositoryMock.getByDin(any(Din.class))).thenThrow(new EntityNotFoundException());
-		
-		Response response = prescriptionService.addPrescription(addPrescriptionRequestMock);
-		
-		assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
-		verify(entityTransactionMock).rollback();
-	}
-	
-	@Test
-	public void returnsInvalidResponseWhenSpecifyingNonExistingPatientNumber() {
+	@Test(expected = BadRequestException.class)
+	public void throwsWhenSpecifyingNonExistingPatientNumber() throws BadRequestException {
 		when(patientRepositoryMock.getById(anyInt())).thenThrow(new EntityNotFoundException());
 		
-		Response response = prescriptionService.addPrescription(addPrescriptionRequestMock);
-		
-		assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+		prescriptionService.addPrescription(addPrescriptionRequestMock);
+
 		verify(entityTransactionMock).rollback();
 	}
 }
