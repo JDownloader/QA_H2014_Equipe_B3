@@ -1,6 +1,10 @@
 package ca.ulaval.glo4002.utils;
 
+import static org.junit.Assert.*;
+
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.junit.Test;
 
@@ -16,7 +20,8 @@ public class CustomDateParserTest {
 
 	@Test
 	public void validatesDateCorrectly() throws ParseException {
-		CustomDateParser.parseDate(VALID_DATE);
+		Date parsedValidDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse("2001-07-04T12:08:56");
+		assertEquals(parsedValidDate, CustomDateParser.parseDate(VALID_DATE));
 	}
 
 }
