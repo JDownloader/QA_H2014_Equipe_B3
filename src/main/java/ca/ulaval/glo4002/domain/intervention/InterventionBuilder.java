@@ -2,6 +2,7 @@ package ca.ulaval.glo4002.domain.intervention;
 
 import java.util.Date;
 
+import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
 
 public class InterventionBuilder {
@@ -11,6 +12,7 @@ public class InterventionBuilder {
 	protected String room = null;
 	protected InterventionType type = null;
 	protected InterventionStatus status = null;
+	protected Patient patient = null;
 	
 	public InterventionBuilder description(String description) {
 		this.description = description;
@@ -42,16 +44,9 @@ public class InterventionBuilder {
 		return this;
 	}
 	
-	public InterventionBuilder status(String statusName) throws IllegalArgumentException {
-		for (InterventionStatus status : InterventionStatus.values()) {
-			if (status.toString().compareToIgnoreCase(statusName) == 0) {
-				this.status = status;
-				return this;
-			}
-		}
-
-		throw new IllegalArgumentException(
-				"The specified status value is invalid.");
+	public InterventionBuilder patient(Patient patient) {
+		this.patient = patient;
+		return this;
 	}
 	
 	public Intervention build() {
