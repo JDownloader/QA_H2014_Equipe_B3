@@ -7,7 +7,6 @@ import org.mockito.*;
 
 import static org.mockito.Mockito.*;
 import ca.ulaval.glo4002.domain.drug.DrugRepository;
-import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.requestparsers.drug.DrugSearchRequestParser;
 
 public class DrugServiceTest {
@@ -17,7 +16,7 @@ public class DrugServiceTest {
 	private EntityTransaction entityTransactionMock;
 	private DrugService drugService;
 	
-	private DrugSearchRequestParser drugSearchRequestMock;
+	private DrugSearchRequestParser drugSearchRequestParserMock;
 	
 	@Before
 	public void setup()  {
@@ -30,7 +29,7 @@ public class DrugServiceTest {
 	private void createMocks() {
 		drugRepositoryMock = mock(DrugRepository.class);
 		entityTransactionMock = mock(EntityTransaction.class);
-		drugSearchRequestMock = mock(DrugSearchRequestParser.class);
+		drugSearchRequestParserMock = mock(DrugSearchRequestParser.class);
 	}
 	
 	private void buildInterventionService() {
@@ -41,7 +40,7 @@ public class DrugServiceTest {
 	}
 	
 	private void stubCreateInterventionRequestMockMethods() {
-		when(drugSearchRequestMock.getName()).thenReturn(SAMPLE_DRUG_NAME);
+		when(drugSearchRequestParserMock.getName()).thenReturn(SAMPLE_DRUG_NAME);
 	}
 	
 	private void stubEntityTransactionsMethods() {
@@ -49,19 +48,28 @@ public class DrugServiceTest {
 	}
 	
 	@Test
-	public void verifySearchDrugCallsCorrectRepositoryMethods() throws ServiceRequestException {
-		drugService.searchDrug(drugSearchRequestMock);
+	public void verifySearchDrugCallsCorrectRepositoryMethods() throws Exception {
+		drugService.searchDrug(drugSearchRequestParserMock);
 		
 		verify(drugRepositoryMock).findByName(SAMPLE_DRUG_NAME);
 	}
 	
 	@Test
-	public void verifySearchDrugTransactionHandling() throws ServiceRequestException {
-		drugService.searchDrug(drugSearchRequestMock);
+	public void verifySearchDrugTransactionHandling() throws Exception {
+		drugService.searchDrug(drugSearchRequestParserMock);
 		InOrder inOrder = inOrder(entityTransactionMock);
 		
 		inOrder.verify(entityTransactionMock).begin();
 		inOrder.verify(entityTransactionMock).commit();
+	}
+	
+	@Test(expected = Exception.class)
+	public void verifySearchDrugThrowsWhenSpecifyingNonExistingPatientNumber() throws Exception {
+		when(drugRepositoryMock.findByName(anyString())).thenThrow(new Exception());
+		
+		drugService.searchDrug(drugSearchRequestParserMock);
+
+		verify(entityTransactionMock).rollback();
 	}
 	
 }

@@ -35,7 +35,7 @@ public class PrescriptionServiceTest {
 	private Drug drugMock;
 	private Patient patientMock;
 	private PrescriptionService prescriptionService;
-	private AddPrescriptionRequestParser addPrescriptionRequestMock;
+	private AddPrescriptionRequestParser addPrescriptionRequestParserMock;
 	
 	@Before
 	public void setup()  {
@@ -53,7 +53,7 @@ public class PrescriptionServiceTest {
 		drugMock = mock(Drug.class);
 		patientMock = mock(Patient.class);
 		entityTransactionMock = mock(EntityTransaction.class);
-		addPrescriptionRequestMock = mock(AddPrescriptionRequestParser.class);
+		addPrescriptionRequestParserMock = mock(AddPrescriptionRequestParser.class);
 	}
 	
 	private void buildPrescriptionService() {
@@ -66,17 +66,17 @@ public class PrescriptionServiceTest {
 	}
 	
 	private void stubAddPrescriptionRequestMockMethods() {
-		when(addPrescriptionRequestMock.hasDin()).thenReturn(true);
-		when(addPrescriptionRequestMock.getDin()).thenReturn(SAMPLE_DIN_PARAMETER);
-		when(addPrescriptionRequestMock.getStaffMember()).thenReturn(SAMPLE_STAFF_MEMBER_PARAMETER);
-		when(addPrescriptionRequestMock.getPatientNumber()).thenReturn(SAMPLE_PATIENT_NUMBER_PARAMETER);
-		when(addPrescriptionRequestMock.getRenewals()).thenReturn(SAMPLE_RENEWALS_PARAMETER);
-		when(addPrescriptionRequestMock.getDate()).thenReturn(SAMPLE_DATE);
+		when(addPrescriptionRequestParserMock.hasDin()).thenReturn(true);
+		when(addPrescriptionRequestParserMock.getDin()).thenReturn(SAMPLE_DIN_PARAMETER);
+		when(addPrescriptionRequestParserMock.getStaffMember()).thenReturn(SAMPLE_STAFF_MEMBER_PARAMETER);
+		when(addPrescriptionRequestParserMock.getPatientNumber()).thenReturn(SAMPLE_PATIENT_NUMBER_PARAMETER);
+		when(addPrescriptionRequestParserMock.getRenewals()).thenReturn(SAMPLE_RENEWALS_PARAMETER);
+		when(addPrescriptionRequestParserMock.getDate()).thenReturn(SAMPLE_DATE);
 	}
 	
 	private void stubAddPrescriptionRequestMockMethodsWithNoDin() {
-		when(addPrescriptionRequestMock.hasDin()).thenReturn(false);
-		when(addPrescriptionRequestMock.getDrugName()).thenReturn(SAMPLE_DRUG_NAME_PARAMETER);
+		when(addPrescriptionRequestParserMock.hasDin()).thenReturn(false);
+		when(addPrescriptionRequestParserMock.getDrugName()).thenReturn(SAMPLE_DRUG_NAME_PARAMETER);
 	}
 	
 	private void stubRepositoryMethods() {
@@ -90,7 +90,7 @@ public class PrescriptionServiceTest {
 	
 	@Test
 	public void verifyAddPrescriptionWithDinCallsCorrectRepositoryMethods() throws ServiceRequestException {
-		prescriptionService.addPrescription(addPrescriptionRequestMock);
+		prescriptionService.addPrescription(addPrescriptionRequestParserMock);
 		
 		verify(drugRepositoryMock).getByDin(any(Din.class));
 		verify(prescriptionRepositoryMock).create(any(Prescription.class));
@@ -101,7 +101,7 @@ public class PrescriptionServiceTest {
 	public void verifyAddPrescriptionWithNoDinCallsCorrectRepositoryMethods() throws ServiceRequestException {
 		stubAddPrescriptionRequestMockMethodsWithNoDin();
 		
-		prescriptionService.addPrescription(addPrescriptionRequestMock);
+		prescriptionService.addPrescription(addPrescriptionRequestParserMock);
 		
 		verify(drugRepositoryMock, never()).getByDin(any(Din.class));
 		verify(prescriptionRepositoryMock).create(any(Prescription.class));
@@ -110,7 +110,7 @@ public class PrescriptionServiceTest {
 	
 	@Test
 	public void verifyAddPrescriptionTransactionHandling() throws ServiceRequestException {
-		prescriptionService.addPrescription(addPrescriptionRequestMock);
+		prescriptionService.addPrescription(addPrescriptionRequestParserMock);
 		InOrder inOrder = inOrder(entityTransactionMock);
 		
 		inOrder.verify(entityTransactionMock).begin();
@@ -121,7 +121,7 @@ public class PrescriptionServiceTest {
 	public void verifyAddPrescriptionThrowsWhenSpecifyingNonExistingDrugDin() throws ServiceRequestException {
 		when(drugRepositoryMock.getByDin(any(Din.class))).thenThrow(new EntityNotFoundException());
 		
-		prescriptionService.addPrescription(addPrescriptionRequestMock);
+		prescriptionService.addPrescription(addPrescriptionRequestParserMock);
 
 		verify(entityTransactionMock).rollback();
 	}
@@ -130,7 +130,7 @@ public class PrescriptionServiceTest {
 	public void verifyAddPrescriptionThrowsWhenSpecifyingNonExistingPatientNumber() throws ServiceRequestException {
 		when(patientRepositoryMock.getById(anyInt())).thenThrow(new EntityNotFoundException());
 		
-		prescriptionService.addPrescription(addPrescriptionRequestMock);
+		prescriptionService.addPrescription(addPrescriptionRequestParserMock);
 
 		verify(entityTransactionMock).rollback();
 	}

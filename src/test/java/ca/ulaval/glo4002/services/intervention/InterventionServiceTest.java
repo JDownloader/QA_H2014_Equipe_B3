@@ -7,13 +7,10 @@ import javax.persistence.EntityTransaction;
 
 import org.junit.*;
 import org.mockito.*;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import ca.ulaval.glo4002.domain.intervention.*;
 import ca.ulaval.glo4002.domain.patient.*;
@@ -39,7 +36,7 @@ public class InterventionServiceTest {
 	private Patient patientMock;
 	private InterventionService interventionService;
 	
-	private CreateInterventionRequestParser createInterventionRequestMock;
+	private CreateInterventionRequestParser createInterventionRequestParserMock;
 	
 	@Before
 	public void setup()  {
@@ -56,7 +53,7 @@ public class InterventionServiceTest {
 		surgicalToolRepositoryMock = mock(SurgicalToolRepository.class);
 		patientMock = mock(Patient.class);
 		entityTransactionMock = mock(EntityTransaction.class);
-		createInterventionRequestMock = mock(CreateInterventionRequestParser.class);
+		createInterventionRequestParserMock = mock(CreateInterventionRequestParser.class);
 	}
 	
 	private void buildInterventionService() {
@@ -69,13 +66,13 @@ public class InterventionServiceTest {
 	}
 	
 	private void stubCreateInterventionRequestMockMethods() {
-		when(createInterventionRequestMock.getDate()).thenReturn(SAMPLE_DATE);
-		when(createInterventionRequestMock.getDescription()).thenReturn(SAMPLE_DESCRIPTION);
-		when(createInterventionRequestMock.getPatient()).thenReturn(SAMPLE_PATIENT);
-		when(createInterventionRequestMock.getRoom()).thenReturn(SAMPLE_ROOM);
-		when(createInterventionRequestMock.getStatus()).thenReturn(SAMPLE_STATUS);
-		when(createInterventionRequestMock.getSurgeon()).thenReturn(SAMPLE_SURGEON);
-		when(createInterventionRequestMock.getType()).thenReturn(SAMPLE_TYPE);
+		when(createInterventionRequestParserMock.getDate()).thenReturn(SAMPLE_DATE);
+		when(createInterventionRequestParserMock.getDescription()).thenReturn(SAMPLE_DESCRIPTION);
+		when(createInterventionRequestParserMock.getPatient()).thenReturn(SAMPLE_PATIENT);
+		when(createInterventionRequestParserMock.getRoom()).thenReturn(SAMPLE_ROOM);
+		when(createInterventionRequestParserMock.getStatus()).thenReturn(SAMPLE_STATUS);
+		when(createInterventionRequestParserMock.getSurgeon()).thenReturn(SAMPLE_SURGEON);
+		when(createInterventionRequestParserMock.getType()).thenReturn(SAMPLE_TYPE);
 	}
 	
 	private void stubRepositoryMethods() {
@@ -88,7 +85,7 @@ public class InterventionServiceTest {
 	
 	@Test
 	public void verifyCreateInterventionCallsCorrectRepositoryMethods() throws ServiceRequestException {
-		interventionService.createIntervention(createInterventionRequestMock);
+		interventionService.createIntervention(createInterventionRequestParserMock);
 		
 		verify(patientRepositoryMock).getById(SAMPLE_PATIENT);
 		verify(interventionRepositoryMock).create(any(Intervention.class));
@@ -96,7 +93,7 @@ public class InterventionServiceTest {
 	
 	@Test
 	public void verifyCreateInterventionTransactionHandling() throws ServiceRequestException {
-		interventionService.createIntervention(createInterventionRequestMock);
+		interventionService.createIntervention(createInterventionRequestParserMock);
 		InOrder inOrder = inOrder(entityTransactionMock);
 		
 		inOrder.verify(entityTransactionMock).begin();
@@ -107,7 +104,7 @@ public class InterventionServiceTest {
 	public void verifyCreateInterventionThrowsWhenSpecifyingNonExistingPatientNumber() throws ServiceRequestException {
 		when(patientRepositoryMock.getById(anyInt())).thenThrow(new EntityNotFoundException());
 		
-		interventionService.createIntervention(createInterventionRequestMock);
+		interventionService.createIntervention(createInterventionRequestParserMock);
 
 		verify(entityTransactionMock).rollback();
 	}
