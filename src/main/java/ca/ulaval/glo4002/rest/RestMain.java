@@ -23,8 +23,8 @@ import ca.ulaval.glo4002.rest.filters.EntityManagerContextFilter;
 import com.sun.jersey.spi.container.servlet.ServletContainer;
 
 public class RestMain {
-	
-	private static final int HTTP_SERVER_PORT = 8080;
+	private static RestConfig restConfig = RestConfig.getInstance();
+	private static final int HTTP_SERVER_PORT = restConfig.getInt("SERVER_PORT", 8080);
 	private static final String DRUG_FILE_PATH = "data/drug.txt";
 
 	public static void main(String[] args) throws Exception {

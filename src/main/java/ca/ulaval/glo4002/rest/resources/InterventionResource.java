@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.rest;
+package ca.ulaval.glo4002.rest.resources;
 
 import javax.persistence.EntityManager;
 import javax.ws.rs.*;

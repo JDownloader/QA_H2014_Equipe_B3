@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.rest;
+package ca.ulaval.glo4002.rest.resources;
 
 import static org.junit.Assert.*;
 
@@ -18,6 +18,8 @@ import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.CreateSurgicalToolRequ
 import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.CreateSurgicalToolRequestParserFactory;
 import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.ModifySurgicalToolRequestParser;
 import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.ModifySurgicalToolRequestParserFactory;
+import ca.ulaval.glo4002.rest.resources.InterventionResource;
+import ca.ulaval.glo4002.rest.resources.InterventionResourceBuilder;
 import ca.ulaval.glo4002.services.intervention.InterventionService;
 
 import org.mockito.runners.MockitoJUnitRunner;

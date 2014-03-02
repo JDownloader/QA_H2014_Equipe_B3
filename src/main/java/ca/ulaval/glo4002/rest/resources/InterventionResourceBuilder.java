@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.rest;
+package ca.ulaval.glo4002.rest.resources;
 
 import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParserFactory;
 import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.CreateSurgicalToolRequestParserFactory;

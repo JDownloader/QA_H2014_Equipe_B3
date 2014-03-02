@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.server;
+package ca.ulaval.glo4002.rest;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,23 +7,23 @@ import java.io.FileInputStream;
 import java.util.prefs.InvalidPreferencesFormatException;
 import java.util.prefs.Preferences;
 
-public class HospitalConfig {
-	private static HospitalConfig instance = null;
+public class RestConfig {
+	private static RestConfig instance = null;
 	private Preferences prefs;
-	
-	protected HospitalConfig(Preferences prefs) {
+
+	public RestConfig(Preferences prefs) {
 		this.prefs = prefs;
 		try {
-			InputStream is = new BufferedInputStream(new FileInputStream("HospitalConfig.xml"));
+			InputStream is = new BufferedInputStream(new FileInputStream("RestConfig.xml"));
 			Preferences.importPreferences(is);
-		} catch ( InvalidPreferencesFormatException e) {
+		} catch (InvalidPreferencesFormatException e) {
 		} catch (IOException e) {
 		}
 	}
-	
-	public static HospitalConfig getInstance() {
-		if(instance == null) {
-			instance = new HospitalConfig(Preferences.userRoot().node("HospitalConfig"));
+
+	public static RestConfig getInstance() {
+		if (instance == null) {
+			instance = new RestConfig(Preferences.userRoot().node("RestConfig"));
 		}
 		return instance;
 	}

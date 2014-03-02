@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.server;
+package ca.ulaval.glo4002.rest;
 
 import static org.junit.Assert.*;
 
@@ -9,16 +9,16 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import ca.ulaval.glo4002.server.HospitalConfig;
+import ca.ulaval.glo4002.rest.RestConfig;
 
-public class HospitalConfigTest {
-	private HospitalConfig myConfig;
+public class RestConfigTest {
+	private RestConfig myConfig;
 	@Mock private Preferences prefs = Mockito.mock(Preferences.class);
 	
 	
 	@Before
 	public void init() {
-		myConfig = new HospitalConfig(prefs);
+		myConfig = new RestConfig(prefs);
 	}
 
 	@Test

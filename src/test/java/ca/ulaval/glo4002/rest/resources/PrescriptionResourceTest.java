@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.rest;
+package ca.ulaval.glo4002.rest.resources;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -12,6 +12,7 @@ import static org.mockito.Mockito.*;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.requestparsers.prescription.AddPrescriptionRequestParser;
 import ca.ulaval.glo4002.rest.requestparsers.prescription.AddPrescriptionRequestParserFactory;
+import ca.ulaval.glo4002.rest.resources.PrescriptionResource;
 import ca.ulaval.glo4002.services.prescription.PrescriptionService;
 
 public class PrescriptionResourceTest {
