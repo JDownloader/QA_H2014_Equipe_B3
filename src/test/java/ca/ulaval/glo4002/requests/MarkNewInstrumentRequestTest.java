@@ -18,7 +18,7 @@ public class MarkNewInstrumentRequestTest {
 	
 	@Test
 	public void buildValidObject() throws BadRequestException {
-		aValidRequest = new JSONObject("{\"typecode\": \"IT72353\", \"statut\": \"UTILISE_PATIENT\", \"noserie\" : \"23562543-3635345\" }");
+		aValidRequest = new JSONObject("{\"typecode\": \"IT72353\", \"statut\": \"UTILISE_PATIENT\", \"noserie\" : \"23562543-3635345\", \"nointervention\":\"0\" }");
 		
 		myRequest = new MarkNewInstrumentRequest(aValidRequest);
 	}
@@ -34,7 +34,7 @@ public class MarkNewInstrumentRequestTest {
 	@Test
 	public void doNotBuildWithoutTypecode() throws BadRequestException {
 		thrown.expect(BadRequestException.class);
-		anInvalidRequest = new JSONObject("{\"statut\": \"UTILISE_PATIENT\", \"noserie\" : \"23562543-3635345\" }");
+		anInvalidRequest = new JSONObject("{\"statut\": \"UTILISE_PATIENT\", \"noserie\" : \"23562543-3635345\", \"nointervention\":\"0\" }");
 		
 		myRequest = new MarkNewInstrumentRequest(anInvalidRequest);
 	}
@@ -42,35 +42,35 @@ public class MarkNewInstrumentRequestTest {
 	@Test
 	public void doNotBuildWithoutStatus() throws BadRequestException {
 		thrown.expect(BadRequestException.class);
-		anInvalidRequest = new JSONObject("{\"typecode\": \"IT72353\", \"noserie\" : \"23562543-3635345\" }");
+		anInvalidRequest = new JSONObject("{\"typecode\": \"IT72353\", \"noserie\" : \"23562543-3635345\", \"nointervention\":\"0\" }");
 		
 		myRequest = new MarkNewInstrumentRequest(anInvalidRequest);
 	}
 	
 	@Test
 	public void buildWithoutSerialNumber() throws BadRequestException {
-		anInvalidRequest = new JSONObject("{\"typecode\": \"IT72353\", \"statut\": \"UTILISE_PATIENT\"}");
+		anInvalidRequest = new JSONObject("{\"typecode\": \"IT72353\", \"statut\": \"UTILISE_PATIENT\", \"nointervention\":\"0\"}");
 		
 		myRequest = new MarkNewInstrumentRequest(anInvalidRequest);
 	}
 
 	@Test
 	public void buildObjectWithUsedOnPatientStatus() throws BadRequestException {
-		aValidRequest = new JSONObject("{\"typecode\": \"IT72353\", \"statut\": \"UTILISE_PATIENT\", \"noserie\" : \"23562543-3635345\"}");
+		aValidRequest = new JSONObject("{\"typecode\": \"IT72353\", \"statut\": \"UTILISE_PATIENT\", \"noserie\" : \"23562543-3635345\", \"nointervention\":\"0\"}");
 		
 		myRequest = new MarkNewInstrumentRequest(aValidRequest);
 	}
 	
 	@Test
 	public void buildObjectWithDirtyStatus() throws BadRequestException {
-		aValidRequest = new JSONObject("{\"typecode\": \"IT72353\", \"statut\": \"SOUILLE\", \"noserie\" : \"23562543-3635345\"}");
+		aValidRequest = new JSONObject("{\"typecode\": \"IT72353\", \"statut\": \"SOUILLE\", \"noserie\" : \"23562543-3635345\", \"nointervention\":\"0\"}");
 		
 		myRequest = new MarkNewInstrumentRequest(aValidRequest);
 	}
 	
 	@Test
 	public void buildObjectWithUnusedStatus() throws BadRequestException {
-		aValidRequest = new JSONObject("{\"typecode\": \"IT72353\", \"statut\": \"INUTILISE\", \"noserie\" : \"23562543-3635345\"}");
+		aValidRequest = new JSONObject("{\"typecode\": \"IT72353\", \"statut\": \"INUTILISE\", \"noserie\" : \"23562543-3635345\", \"nointervention\":\"0\"}");
 		
 		myRequest = new MarkNewInstrumentRequest(aValidRequest);
 	}
@@ -78,7 +78,7 @@ public class MarkNewInstrumentRequestTest {
 	@Test
 	public void doNotBuildObjectWithBadStatus() throws BadRequestException {
 		thrown.expect(BadRequestException.class);
-		anInvalidRequest = new JSONObject("{\"typecode\": \"IT72353\", \"statut\": \"AUTRE\", \"noserie\" : \"23562543-3635345\"}");
+		anInvalidRequest = new JSONObject("{\"typecode\": \"IT72353\", \"statut\": \"AUTRE\", \"noserie\" : \"23562543-3635345\", \"nointervention\":\"0\"}");
 		
 		myRequest = new MarkNewInstrumentRequest(anInvalidRequest);
 	}

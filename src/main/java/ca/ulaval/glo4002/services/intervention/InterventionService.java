@@ -19,40 +19,38 @@ public class InterventionService {
 		this.interventionRepository = builder.interventionRepository;
 	}
 	
-	public Response markNewInstrument(MarkNewInstrumentRequest request) {
-		Response response = null;
+	public void markNewInstrument(MarkNewInstrumentRequest request) throws BadRequestException {
 		try {
 			entityTransaction.begin();
 			doMarkNewInstrument(request);
 			entityTransaction.commit();
 		} catch (BadRequestException exception) {
-			response = BadRequestJsonResponseBuilder.build(exception.getInternalCode(), exception.getMessage());
-		} finally {
 			if(entityTransaction.isActive())
 				entityTransaction.rollback();
+			throw exception;
 		}
 		
-		return response;
+		if(entityTransaction.isActive())
+			entityTransaction.rollback();
 	}
 	
 	private void doMarkNewInstrument(MarkNewInstrumentRequest request) throws BadRequestException {
 		//TODO
 	}
 	
-	public Response markExistingInstrument(MarkExistingInstrumentRequest request) {
-		Response response = null;
+	public void markExistingInstrument(MarkExistingInstrumentRequest request) throws BadRequestException {
 		try {
 			entityTransaction.begin();
 			doMarkExistingInstrument(request);
 			entityTransaction.commit();
 		} catch (BadRequestException exception) {
-			response = BadRequestJsonResponseBuilder.build(exception.getInternalCode(), exception.getMessage());
-		} finally {
 			if(entityTransaction.isActive())
 				entityTransaction.rollback();
+			throw exception;
 		}
-
-		return response;
+		
+		if(entityTransaction.isActive())
+			entityTransaction.rollback();
 	}
 	
 	private void doMarkExistingInstrument(MarkExistingInstrumentRequest request) throws BadRequestException {

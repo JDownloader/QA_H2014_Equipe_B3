@@ -19,6 +19,7 @@ public class MarkExistingInstrumentRequest extends MarkInstrumentRequest {
 		try {
 			this.status = jsonRequest.getString("statut");
 			this.serialNumber = jsonRequest.getString("noserie");
+			this.interventionId = jsonRequest.getInt(INTERVENTION_NUMBER_PARAMETER);
 		} catch (JSONException e) {
 			throw new BadRequestException("INT010", "données invalides ou incomplètes");
 		}

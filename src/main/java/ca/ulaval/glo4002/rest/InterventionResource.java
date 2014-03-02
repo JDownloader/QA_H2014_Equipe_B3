@@ -6,6 +6,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -23,7 +24,15 @@ import ca.ulaval.glo4002.services.intervention.InterventionService;
 
 @Path("interventions/")
 public class InterventionResource {
+	public String INTERVENTION_NUMBER_PARAMETER = "nointervention";
+	public String INSTRUMENT_NUMBER_PARAMETER = "noserie";
+	
 	private InterventionService service;
+	
+	@PathParam("intervention_number")
+	private int interventionNumber;
+	@PathParam("instrument_number")
+	private String instrumentNumber;
 	
 	public InterventionResource() {
 		//TODO
@@ -33,7 +42,6 @@ public class InterventionResource {
 		this.service = service;
 	}
 	
-	//TODO this user story should be renamed and should communicate with the service layer
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -65,8 +73,9 @@ public class InterventionResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response markNewInstrument(String request) {
-		Response response = BadRequestJsonResponseBuilder.build("INT010", "Données invalides ou incomplètes");
-		JSONObject jsonRequest = new JSONObject(request); 
+		Response response = null;
+		JSONObject jsonRequest = new JSONObject(request);
+		jsonRequest.put(INTERVENTION_NUMBER_PARAMETER, interventionNumber);
 		MarkNewInstrumentRequest myRequest;
 		
 		try {
@@ -82,15 +91,14 @@ public class InterventionResource {
 			return returnResponseWhenException(exception);
 		}
 		
-		response = buildCreatedResponseForMarkNewInstrument();
+		response = buildCreatedResponseForMarkNewInstrument(myRequest);
 		
 		return response;
 	}
 	
-	private static Response buildCreatedResponseForMarkNewInstrument() {
-		//TODO include actual path
+	private static Response buildCreatedResponseForMarkNewInstrument(MarkNewInstrumentRequest myRequest) {
 		JSONObject jsonResponse = new JSONObject();
-		jsonResponse.append("Location", "/intervention/$NO_INTERVENTION$/instruments/$TYPE_CODE$/$SERIE_OU_NOUNIQUE$");
+		jsonResponse.append("Location", "/intervention/" + myRequest.INTERVENTION_NUMBER_PARAMETER + "/instruments/" + myRequest.TYPECODE_PARAMETER + "/" + myRequest.SERIAL_NUMBER_PARAMETER);
 		
 		return Response.status(Status.CREATED).type(MediaType.APPLICATION_JSON).entity(jsonResponse.toString()).build();
 	}
@@ -99,17 +107,25 @@ public class InterventionResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response markExistingInstrument(String request) {
-		Response response = BadRequestJsonResponseBuilder.build("INT010", "Données invalides ou incomplètes");
+		Response response = null;
 		JSONObject jsonRequest = new JSONObject(request); 
+		jsonRequest.put(INTERVENTION_NUMBER_PARAMETER, interventionNumber);
+		jsonRequest.put(INSTRUMENT_NUMBER_PARAMETER, instrumentNumber);
+		MarkExistingInstrumentRequest myRequest;
+		
 		
 		try {
-			MarkExistingInstrumentRequest myRequest = new MarkExistingInstrumentRequest(jsonRequest);
+			myRequest = new MarkExistingInstrumentRequest(jsonRequest);
 		}
 		catch (BadRequestException exception) {
 			return returnResponseWhenException(exception);
 		}
 		
-		//TODO call service layer
+		try {
+			service.markExistingInstrument(myRequest);
+		} catch (BadRequestException exception) {
+			return returnResponseWhenException(exception);
+		}
 		
 		response = buildOkResponseForMarkExistingInstrument();
 		

@@ -19,7 +19,7 @@ public class MarkExistingInstrumentRequestTest {
 	
 	@Test
 	public void buildValidRequest() throws BadRequestException {
-		myJsonRequest = new JSONObject("{ \"statut\":\"SOUILLE\", \"noserie\":\"23562543-3635345\" }");
+		myJsonRequest = new JSONObject("{ \"statut\":\"SOUILLE\", \"noserie\":\"23562543-3635345\", \"nointervention\":\"0\" }");
 		
 		myRequest = new MarkExistingInstrumentRequest(myJsonRequest);
 	}
@@ -35,34 +35,34 @@ public class MarkExistingInstrumentRequestTest {
 	@Test
 	public void doNotBuildWithInvalidStatus() throws BadRequestException {
 		thrown.expect(BadRequestException.class);
-		myJsonRequest = new JSONObject("{ \"statut\":\"AUTRE\", \"noserie\":\"23562543-3635345\" }");
+		myJsonRequest = new JSONObject("{ \"statut\":\"AUTRE\", \"noserie\":\"23562543-3635345\", \"nointervention\":\"0\" }");
 		
 		myRequest = new MarkExistingInstrumentRequest(myJsonRequest);
 	}
 	
 	@Test
 	public void buildWithDirtyStatus() throws BadRequestException {
-		myJsonRequest = new JSONObject("{ \"statut\":\"SOUILLE\", \"noserie\":\"23562543-3635345\" }");
+		myJsonRequest = new JSONObject("{ \"statut\":\"SOUILLE\", \"noserie\":\"23562543-3635345\", \"nointervention\":\"0\" }");
 		
 		myRequest = new MarkExistingInstrumentRequest(myJsonRequest);
 	}
 	
 	@Test
 	public void buildWithUsedOnPatientStatus() throws BadRequestException {
-		myJsonRequest = new JSONObject("{ \"statut\":\"UTILISE_PATIENT\", \"noserie\":\"23562543-3635345\" }");
+		myJsonRequest = new JSONObject("{ \"statut\":\"UTILISE_PATIENT\", \"noserie\":\"23562543-3635345\", \"nointervention\":\"0\" }");
 		
 		myRequest = new MarkExistingInstrumentRequest(myJsonRequest);
 	}
 	
 	@Test
 	public void buildWithUnusedStatus() throws BadRequestException {
-		myJsonRequest = new JSONObject("{ \"statut\":\"INUTILISE\", \"noserie\":\"23562543-3635345\" }");
+		myJsonRequest = new JSONObject("{ \"statut\":\"INUTILISE\", \"noserie\":\"23562543-3635345\", \"nointervention\":\"0\" }");
 		
 		myRequest = new MarkExistingInstrumentRequest(myJsonRequest);
 	}
 	
 	@Test
 	public void doNotModifyTypeCode() throws BadRequestException {
-		myJsonRequest = new JSONObject("{ \"statut\":\"INUTILISE\", \"noserie\":\"23562543-3635345\", \"typecode\":\"IT72353\" }");
+		myJsonRequest = new JSONObject("{ \"statut\":\"INUTILISE\", \"noserie\":\"23562543-3635345\", \"typecode\":\"IT72353\", \"nointervention\":\"0\" }");
 	}
 }

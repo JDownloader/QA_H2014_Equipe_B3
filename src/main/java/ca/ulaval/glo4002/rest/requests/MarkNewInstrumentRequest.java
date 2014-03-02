@@ -16,6 +16,7 @@ public class MarkNewInstrumentRequest extends MarkInstrumentRequest {
 		try {
 			this.typecode = jsonRequest.getString(TYPECODE_PARAMETER);
 			this.status = jsonRequest.getString(STATUS_PARAMETER);
+			this.interventionId = jsonRequest.getInt(INTERVENTION_NUMBER_PARAMETER);
 			initializeSerialNumber(jsonRequest);
 		} catch (JSONException e) {
 			throw new BadRequestException(INVALID_OR_INCOMPLETE_REQUEST_CODE,INVALID_OR_INCOMPLETE_REQUEST_MESSAGE);
@@ -26,7 +27,7 @@ public class MarkNewInstrumentRequest extends MarkInstrumentRequest {
 		try {
 			this.serialNumber = jsonRequest.getString(SERIAL_NUMBER_PARAMETER);
 		} catch (JSONException e) {
-			
+			this.serialNumber = null;
 		}
 	}
 	

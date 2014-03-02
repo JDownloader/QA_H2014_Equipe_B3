@@ -3,6 +3,7 @@ package ca.ulaval.glo4002.rest.requests;
 import ca.ulaval.glo4002.exceptions.BadRequestException;
 
 public abstract class MarkInstrumentRequest {
+	public String INTERVENTION_NUMBER_PARAMETER = "nointervention";
 	public String STATUS_PARAMETER = "statut";
 	public String SERIAL_NUMBER_PARAMETER = "noserie";
 	public String TYPECODE_PARAMETER = "typecode";
@@ -17,6 +18,7 @@ public abstract class MarkInstrumentRequest {
 	protected String status;
 	protected String typecode;
 	protected String serialNumber;
+	protected int interventionId;
 	
 	protected void validateStatus() throws BadRequestException {
 		if(!(this.status.equals(DIRTY_STATUS)
