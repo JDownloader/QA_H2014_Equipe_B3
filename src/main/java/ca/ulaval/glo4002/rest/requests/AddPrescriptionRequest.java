@@ -36,8 +36,14 @@ public class AddPrescriptionRequest {
 	}
 
 	private void validateRequestParameters() {
-		if (!this.validateDinAndName() || this.staffMember < 0 || this.renewals < 0 || this.patientNumber < 0) {
-			throw new IllegalArgumentException("Invalid parameters were supplied to the request.");
+		if (this.staffMember < 0) {
+			throw new IllegalArgumentException("Parameter 'intervenant' must be greater or equal to 0.");
+		} else if (this.renewals < 0) {
+			throw new IllegalArgumentException("Parameter 'renouvellements' must be greater or equal to 0.");
+		} else if (this.renewals < 0) {
+			throw new IllegalArgumentException("Path parameter '$NO_PATIENT$' must be greater or equal to 0.");
+		} else if (!this.validateDinAndName()) {
+			throw new IllegalArgumentException("Either parameter 'din' or 'nom' must be specified, but not both.");
 		}
 	}
 

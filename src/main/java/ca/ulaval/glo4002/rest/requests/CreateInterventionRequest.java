@@ -42,8 +42,14 @@ public class CreateInterventionRequest {
 	}
 	
 	private void validateRequestParameters() {
-		if (StringUtils.isBlank(this.description) || this.surgeon < 0 || StringUtils.isBlank(this.room) || this.patient < 0) {
-			throw new IllegalArgumentException("Invalid parameters were supplied to the request.");
+		if (this.surgeon < 0) {
+			throw new IllegalArgumentException("Parameter 'chirurgien' must be greater or equal to 0.");
+		} else if (this.patient < 0) {
+			throw new IllegalArgumentException("Parameter 'patient' must be greater or equal to 0.");
+		} else if (StringUtils.isBlank(this.description)) {
+			throw new IllegalArgumentException("Parameter 'description' must not be blank.");
+		} else if (StringUtils.isBlank(this.room)) {
+			throw new IllegalArgumentException("Parameter 'salle' must not be blank.");
 		}
 	}
 	

@@ -58,7 +58,7 @@ public class InterventionService {
 		try {
 			return patientRepository.getById(interventionRequest.getPatient());
 		} catch (EntityNotFoundException e) {
-			throw new BadRequestException("INT002", "Erreur - Patient inexistant");
+			throw new BadRequestException("INT002", e.getMessage());
 		}
 	}
 	

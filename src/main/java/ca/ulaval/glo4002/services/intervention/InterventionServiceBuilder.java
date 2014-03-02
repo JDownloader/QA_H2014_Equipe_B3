@@ -26,12 +26,12 @@ public class InterventionServiceBuilder {
 	}
 	
 	public InterventionService build() {
-		InterventionService prescriptionService = new InterventionService(this);
+		InterventionService interventionService = new InterventionService(this);
 		if (interventionRepository == null 
 				|| patientRepository == null 
 				|| entityTransaction == null) {
 			throw new IllegalStateException();
 		}
-        return prescriptionService;
+        return interventionService;
     }
 }
