@@ -46,24 +46,25 @@ public class PrescriptionResourceTest {
 	}
 	
 	@Test
-	public void handlesPostRequestsCorrectly() throws ServiceRequestException {
+	public void verifyAddPrescriptionCallsServiceMethodsCorrectly() throws ServiceRequestException {
 		prescriptionResource.post(SAMPLE_JSON_REQUEST);
 		verify(prescriptionServiceMock).addPrescription(addPrescriptionRequestParserMock);
 	}
 	
 	@Test
-	public void returnsCreatedResponse() throws ServiceRequestException {
+	public void verifyAddPrescriptionReturnsCreatedResponse() throws ServiceRequestException {
 		Response response = prescriptionResource.post(SAMPLE_JSON_REQUEST);
 		assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
 	}
 	
 	@Test
-	public void returnsInvalidResponseWhenSpecifyingInvalidRequest() throws ServiceRequestException {
+	public void verifyAddPrescriptionReturnsInvalidResponseWhenSpecifyingInvalidRequest() throws ServiceRequestException {
 		doThrow(new ServiceRequestException()).when(prescriptionServiceMock).addPrescription(addPrescriptionRequestParserMock);
 		
-		Response response = prescriptionResource.post(SAMPLE_JSON_REQUEST);
+		Response expectedResponse = Response.status(Status.BAD_REQUEST).build();
+		Response receivedResponse = prescriptionResource.post(SAMPLE_JSON_REQUEST);
 		
-		assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
 	}
 	
 }

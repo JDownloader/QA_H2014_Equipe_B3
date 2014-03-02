@@ -20,6 +20,7 @@ import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.ModifySurgicalToolRequ
 import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.ModifySurgicalToolRequestParserFactory;
 import ca.ulaval.glo4002.rest.resources.InterventionResource;
 import ca.ulaval.glo4002.rest.resources.InterventionResourceBuilder;
+import ca.ulaval.glo4002.rest.utils.BadRequestJsonResponseBuilder;
 import ca.ulaval.glo4002.services.intervention.InterventionService;
 
 import org.mockito.runners.MockitoJUnitRunner;
@@ -29,6 +30,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class InterventionResourceTest {
 
 	private static final String SAMPLE_JSON_REQUEST = "{attrib: value}";
+	private static final String SAMPLE_ERROR_CODE = "INT001";
+	private static final String SAMPLE_ERROR_MESSAGE = "A message";
 
 	private InterventionService interventionServiceMock;
 	private CreateInterventionRequestParser createInterventionRequestParserMock;
@@ -72,141 +75,68 @@ public class InterventionResourceTest {
 	}
 
 	@Test
-	public void handlesPostRequestsCorrectly() throws ServiceRequestException {
+	public void verifyCreateInterventionCallsServiceMethodsCorrectly() throws ServiceRequestException {
 		interventionResource.post(SAMPLE_JSON_REQUEST);
 		verify(interventionServiceMock).createIntervention(createInterventionRequestParserMock);
 	}
 
 	@Test
-	public void returnsCreatedResponse() throws ServiceRequestException {
+	public void verifyCreateInterventionReturnsCreatedResponse() throws ServiceRequestException {
 		Response response = interventionResource.post(SAMPLE_JSON_REQUEST);
 		assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
 	}
 
 	@Test
-	public void returnsInvalidResponseWhenSpecifyingInvalidRequest() throws ServiceRequestException {
+	public void verifyCreateInterventionReturnsInvalidResponseWhenSpecifyingInvalidRequest() throws ServiceRequestException {
 		doThrow(new ServiceRequestException()).when(interventionServiceMock).createIntervention(createInterventionRequestParserMock);
 
-		Response response = interventionResource.post(SAMPLE_JSON_REQUEST);
+		Response expectedResponse = Response.status(Status.BAD_REQUEST).build();
+		Response receivedResponse = interventionResource.post(SAMPLE_JSON_REQUEST);
 
-		assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
+	}
+	
+	@Test
+	public void verifyCreateSurgicalToolCallsServiceMethodsCorrectly() throws ServiceRequestException {
+		interventionResource.createSurgicalTool(SAMPLE_JSON_REQUEST);
+		verify(interventionServiceMock).createSurgicalTool(createSurgicalToolRequestParserMock);
 	}
 
-	//user story 3
+	@Test
+	public void verifyCreateSurgicalToolReturnsCreatedResponse() throws ServiceRequestException {
+		Response response = interventionResource.createSurgicalTool(SAMPLE_JSON_REQUEST);
+		assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
+	}
 
-//	private Response expectedResponse;
-//	private Response receivedResponse;
-//	private String request;
-//
-//	private String VALID_MARK_NEW_INSTRUMENT = "{\"typecode\": \"IT72353\", \"statut\": \"UTILISE_PATIENT\", \"noserie\" : \"23562543-3635345\"}";
-//	private String VALID_MARK_EXISTING_INSTRUMENT = "{\"statut\": \"UTILISE_PATIENT\", \"noserie\" : \"23562543-3635345\"}";
+	@Test
+	public void verifyCreateSurgicalToolReturnsInvalidResponseWhenSpecifyingInvalidRequest() throws ServiceRequestException {
+		doThrow(new ServiceRequestException()).when(interventionServiceMock).createSurgicalTool(createSurgicalToolRequestParserMock);
 
-//	@Mock
-//	private SurgicalToolService service;
-//	@Mock
-//	private InterventionService interventionService;
-//	@Mock
-//	private MarkNewInstrumentRequestParser markNewInstrumentRequest;
-//	@Mock
-//	private MarkExistingInstrumentRequestParser markExistingInstrumentRequest;
-//	@InjectMocks
-//	private InterventionResource testServlet;
-//
-//	@Before
-//	public void init() {
-//		service = mock(SurgicalToolService.class);
-//		testServlet = new InterventionResource(interventionService,service);
-//		markExistingInstrumentRequest = mock(MarkExistingInstrumentRequestParser.class);
-//		markNewInstrumentRequest = mock(MarkNewInstrumentRequestParser.class);
-//	}
-//
-//	@Test
-//	public void markNewInstrumentWhenValidRequest() {
-//		request = VALID_MARK_NEW_INSTRUMENT;
-//		expectedResponse = Response.status(Status.CREATED).build();
-//
-//		receivedResponse = testServlet.createSurgicalTool(request);
-//
-//		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
-//	}
-//
-//	@Test
-//	public void doNotMarkNewInstrumentWhenInvalidRequest() {
-//		request = "{}";
-//		expectedResponse = Response.status(Status.BAD_REQUEST).build();
-//
-//		receivedResponse = testServlet.createSurgicalTool(request);
-//
-//		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
-//	}
-//
-//	@Test
-//	public void markExistingInstrumentWhenValidRequest() {
-//		request = "{\"statut\": \"UTILISE_PATIENT\", \"noserie\" : \"23562543-3635345\"}";
-//		expectedResponse = Response.status(Status.BAD_REQUEST).build();
-//
-//		receivedResponse = testServlet.createSurgicalTool(request);
-//
-//		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
-//	}
-//
-//	@Test
-//	public void doNotMarkExistingInstrumentWhenInvalidRequest() {
-//		request = "{}";
-//		expectedResponse = Response.status(Status.BAD_REQUEST).build();
-//
-//		receivedResponse = testServlet.createSurgicalTool(request);
-//
-//		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
-//	}
-//
-//	private ServiceRequestException noSerialNumber = new ServiceRequestException(
-//			"INT011", "numéro de série déjà utilisé");
-//
-//	@Test
-//	public void dontMarkInstrumentWithAlreadyUsedSerialNumber()
-//			throws ServiceRequestException {
-//		Mockito.doThrow(noSerialNumber).when(service)
-//				.createSurgicalTool(Mockito.any(MarkNewInstrumentRequestParser.class));
-//		request = VALID_MARK_NEW_INSTRUMENT;
-//		expectedResponse = Response.status(Status.BAD_REQUEST).build();
-//
-//		receivedResponse = testServlet.createSurgicalTool(request);
-//
-//		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
-//	}
-//
-//	private ServiceRequestException noAnonymousType = new ServiceRequestException(
-//			"INT012", "requiert numéro de série");
-//
-//	@Test
-//	public void dontMarkInstrumentWithNoAnonymousTypeWithoutSerialNumber()
-//			throws ServiceRequestException {
-//		Mockito.doThrow(noAnonymousType).when(service)
-//				.createSurgicalTool(Mockito.any(MarkNewInstrumentRequestParser.class));
-//		request = VALID_MARK_NEW_INSTRUMENT;
-//		expectedResponse = Response.status(Status.BAD_REQUEST).build();
-//
-//		receivedResponse = testServlet.createSurgicalTool(request);
-//
-//		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
-//	}
-//
-//	private ServiceRequestException doesNotExist = new ServiceRequestException(
-//			"INT010", "données invalides ou incomplètes");
-//
-//	@Test
-//	public void dontMarkExistingInstrumentIfDoesNotActuallyExistInDatabase()
-//			throws ServiceRequestException {
-//		Mockito.doThrow(doesNotExist)
-//				.when(service)
-//				.modifySurgicalTool(
-//						Mockito.any(MarkExistingInstrumentRequestParser.class));
-//		request = VALID_MARK_EXISTING_INSTRUMENT;
-//		expectedResponse = Response.status(Status.BAD_REQUEST).build();
-//
-//		receivedResponse = testServlet.modifySurgicalTool(request);
-//
-//		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
-//	}
+		Response expectedResponse = Response.status(Status.BAD_REQUEST).build();
+		Response receivedResponse = interventionResource.createSurgicalTool(SAMPLE_JSON_REQUEST);
+
+		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
+	}
+	
+	@Test
+	public void verifyModifySurgicalToolCallsServiceMethodsCorrectly() throws ServiceRequestException {
+		interventionResource.modifySurgicalTool(SAMPLE_JSON_REQUEST);
+		verify(interventionServiceMock).modifySurgicalTool(modifySurgicalToolRequestParserMock);
+	}
+
+	@Test
+	public void verifyModifySurgicalToolReturnsOkResponse() throws ServiceRequestException {
+		Response response = interventionResource.modifySurgicalTool(SAMPLE_JSON_REQUEST);
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void verifyModifySurgicalToolReturnsInvalidResponseWhenSpecifyingInvalidRequest() throws ServiceRequestException {
+		doThrow(new ServiceRequestException()).when(interventionServiceMock).modifySurgicalTool(modifySurgicalToolRequestParserMock);
+
+		Response expectedResponse = Response.status(Status.BAD_REQUEST).build();
+		Response receivedResponse = interventionResource.modifySurgicalTool(SAMPLE_JSON_REQUEST);
+
+		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
+	}
 }

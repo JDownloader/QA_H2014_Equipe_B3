@@ -43,23 +43,24 @@ private static final String SAMPLE_JSON_REQUEST = "{attrib: value}";
 	}
 	
 	@Test
-	public void handlesPostRequestsCorrectly() throws Exception {
+	public void verifySearchDrugCallsServiceMethodsCorrectly() throws Exception {
 		drugResource.post(SAMPLE_JSON_REQUEST);
 		verify(drugServiceMock).searchDrug(drugSearchRequestParserMock);
 	}
 	
 	@Test
-	public void returnsCreatedResponse() throws ServiceRequestException {
+	public void verifySearchDrugReturnsCreatedResponse() throws ServiceRequestException {
 		Response response = drugResource.post(SAMPLE_JSON_REQUEST);
 		assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
 	}
 	
 	@Test
-	public void returnsInvalidResponseWhenSpecifyingInvalidRequest() throws Exception {
+	public void verifySearchDrugReturnsInvalidResponseWhenSpecifyingInvalidRequest() throws Exception {
 		doThrow(new ServiceRequestException()).when(drugServiceMock).searchDrug(drugSearchRequestParserMock);
 		
-		Response response = drugResource.post(SAMPLE_JSON_REQUEST);
+		Response expectedResponse = Response.status(Status.BAD_REQUEST).build();
+		Response receivedResponse = drugResource.post(SAMPLE_JSON_REQUEST);
 		
-		assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
 	}
 }
