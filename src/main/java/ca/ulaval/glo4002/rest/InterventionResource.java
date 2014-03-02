@@ -35,7 +35,7 @@ public class InterventionResource {
 	private String instrumentNumber;
 	
 	public InterventionResource() {
-		//TODO
+
 	}
 	
 	public InterventionResource(InterventionService service) {
@@ -74,12 +74,10 @@ public class InterventionResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response markNewInstrument(String request) {
 		Response response = null;
-		JSONObject jsonRequest = new JSONObject(request);
-		jsonRequest.put(INTERVENTION_NUMBER_PARAMETER, interventionNumber);
 		MarkNewInstrumentRequest myRequest;
 		
 		try {
-			myRequest = new MarkNewInstrumentRequest(jsonRequest);
+			myRequest = buildNewInstrumentRequest(request);
 		}
 		catch (BadRequestException exception) { 
 			return returnResponseWhenException(exception);
@@ -96,6 +94,13 @@ public class InterventionResource {
 		return response;
 	}
 	
+	private MarkNewInstrumentRequest buildNewInstrumentRequest(String request) throws BadRequestException {
+		JSONObject jsonRequest = new JSONObject(request);
+		jsonRequest.put(INTERVENTION_NUMBER_PARAMETER, interventionNumber);
+		MarkNewInstrumentRequest myRequest = new MarkNewInstrumentRequest(jsonRequest);
+		return myRequest;
+	}
+	
 	private static Response buildCreatedResponseForMarkNewInstrument(MarkNewInstrumentRequest myRequest) {
 		JSONObject jsonResponse = new JSONObject();
 		jsonResponse.append("Location", "/intervention/" + myRequest.INTERVENTION_NUMBER_PARAMETER + "/instruments/" + myRequest.TYPECODE_PARAMETER + "/" + myRequest.SERIAL_NUMBER_PARAMETER);
@@ -108,14 +113,10 @@ public class InterventionResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response markExistingInstrument(String request) {
 		Response response = null;
-		JSONObject jsonRequest = new JSONObject(request); 
-		jsonRequest.put(INTERVENTION_NUMBER_PARAMETER, interventionNumber);
-		jsonRequest.put(INSTRUMENT_NUMBER_PARAMETER, instrumentNumber);
 		MarkExistingInstrumentRequest myRequest;
 		
-		
 		try {
-			myRequest = new MarkExistingInstrumentRequest(jsonRequest);
+			myRequest = buildExistingIntrumentRequest(request);
 		}
 		catch (BadRequestException exception) {
 			return returnResponseWhenException(exception);
@@ -130,6 +131,14 @@ public class InterventionResource {
 		response = buildOkResponseForMarkExistingInstrument();
 		
 		return response;
+	}
+	
+	private MarkExistingInstrumentRequest buildExistingIntrumentRequest(String request) throws BadRequestException {
+		JSONObject jsonRequest = new JSONObject(request); 
+		jsonRequest.put(INTERVENTION_NUMBER_PARAMETER, interventionNumber);
+		jsonRequest.put(INSTRUMENT_NUMBER_PARAMETER, instrumentNumber);
+		MarkExistingInstrumentRequest myRequest = new MarkExistingInstrumentRequest(jsonRequest);
+		return myRequest;
 	}
 	
 	private Response buildOkResponseForMarkExistingInstrument() {

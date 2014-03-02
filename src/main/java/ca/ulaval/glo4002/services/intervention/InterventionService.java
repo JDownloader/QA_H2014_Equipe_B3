@@ -25,13 +25,11 @@ public class InterventionService {
 			doMarkNewInstrument(request);
 			entityTransaction.commit();
 		} catch (BadRequestException exception) {
+			throw exception;
+		} finally {
 			if(entityTransaction.isActive())
 				entityTransaction.rollback();
-			throw exception;
 		}
-		
-		if(entityTransaction.isActive())
-			entityTransaction.rollback();
 	}
 	
 	private void doMarkNewInstrument(MarkNewInstrumentRequest request) throws BadRequestException {
@@ -44,13 +42,11 @@ public class InterventionService {
 			doMarkExistingInstrument(request);
 			entityTransaction.commit();
 		} catch (BadRequestException exception) {
+			throw exception;
+		} finally {
 			if(entityTransaction.isActive())
 				entityTransaction.rollback();
-			throw exception;
 		}
-		
-		if(entityTransaction.isActive())
-			entityTransaction.rollback();
 	}
 	
 	private void doMarkExistingInstrument(MarkExistingInstrumentRequest request) throws BadRequestException {
