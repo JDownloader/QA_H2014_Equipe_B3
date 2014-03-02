@@ -12,6 +12,7 @@ import ca.ulaval.glo4002.utils.CustomDateParser;
 public class AddPrescriptionRequestParser {
 
 	private static final int UNSPECIFIED_VALUE = -1;
+	private static final String PATIENT_NUMBER_PARAMETER_NAME = "nopatient";
 	private static final String DIN_PARAMETER_NAME = "din";
 	private static final String STAFF_MEMBER_PARAMETER_NAME = "intervenant";
 	private static final String DRUG_NAME_PARAMETER_NAME = "nom";
@@ -25,9 +26,9 @@ public class AddPrescriptionRequestParser {
 	private Date date;
 	private int patientNumber;
 
-	public AddPrescriptionRequestParser(JSONObject jsonRequest, String patientNumberParameter) throws RequestParseException {
+	public AddPrescriptionRequestParser(JSONObject jsonRequest) throws RequestParseException {
 		try {
-			parseParameters(jsonRequest, patientNumberParameter);
+			parseParameters(jsonRequest);
 		}
 		catch(Exception e) {
 			throw new RequestParseException("Invalid parameters were supplied to the request.");
@@ -36,13 +37,13 @@ public class AddPrescriptionRequestParser {
 		validateParameterSemantics();
 	}
 
-	private void parseParameters(JSONObject jsonRequest, String patientNumberParameter) throws ParseException {
+	private void parseParameters(JSONObject jsonRequest) throws ParseException {
 		this.din = jsonRequest.optInt(DIN_PARAMETER_NAME, UNSPECIFIED_VALUE);
 		this.drugName = jsonRequest.optString(DRUG_NAME_PARAMETER_NAME);
 		this.staffMember = jsonRequest.getInt(STAFF_MEMBER_PARAMETER_NAME);
 		this.renewals = jsonRequest.getInt(RENEWAL_PARAMETER_NAME);
 		this.date = CustomDateParser.parseDate(jsonRequest.getString(DATE_PARAMETER_NAME));
-		this.patientNumber = Integer.parseInt(patientNumberParameter);
+		this.patientNumber = jsonRequest.getInt(PATIENT_NUMBER_PARAMETER_NAME);
 	}
 
 	private void validateParameterSemantics() throws RequestParseException {

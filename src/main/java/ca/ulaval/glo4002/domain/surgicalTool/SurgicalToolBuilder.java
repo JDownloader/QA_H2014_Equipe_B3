@@ -2,15 +2,12 @@ package ca.ulaval.glo4002.domain.surgicaltool;
 
 public class SurgicalToolBuilder {
 	
-	private int UNSPECIFIED_INTERVENTION = -5;
-	
-	protected String typecode;
+	protected String typeCode;
 	protected String serialNumber;
-	protected String status;
-	protected int interventionId;
+	protected SurgicalToolStatus status;
 	
-	public SurgicalToolBuilder typecode(String typecode) {
-		this.typecode = typecode;
+	public SurgicalToolBuilder typecode(String typeCode) {
+		this.typeCode = typeCode;
 		return this;
 	}
 	
@@ -19,23 +16,16 @@ public class SurgicalToolBuilder {
 		return this;
 	}
 	
-	public SurgicalToolBuilder status(String status) {
+	public SurgicalToolBuilder status(SurgicalToolStatus status) {
 		this.status = status;
-		return this;
-	}
-	
-	public SurgicalToolBuilder interventionId(int interventionId) {
-		this.interventionId = interventionId;
 		return this;
 	}
 	
 	public SurgicalTool build() {
 		SurgicalTool surgicalTool = new SurgicalTool(this);
-	
-		//TODO review to make sure this is accurate
-		if(typecode.isEmpty()
-			|| status.isEmpty()
-			|| interventionId == UNSPECIFIED_INTERVENTION) {
+
+		if(typeCode.isEmpty()
+			|| status == null) {
 			throw new IllegalStateException();
 		}
 		

@@ -27,14 +27,18 @@ public class PrescriptionResource {
 	public PrescriptionResource() {
 		EntityManager entityManager = new EntityManagerProvider().getEntityManager();
 		
+		buildPrescriptionService(entityManager);
+		
+		this.addPrescriptionRequestParserFactory = new AddPrescriptionRequestParserFactory();
+	}
+
+	private void buildPrescriptionService(EntityManager entityManager) {
 		PrescriptionServiceBuilder prescriptionServiceBuilder = new PrescriptionServiceBuilder();
 		prescriptionServiceBuilder.entityTransaction(entityManager.getTransaction());
 		prescriptionServiceBuilder.prescriptionRepository(new HibernatePrescriptionRepository());
 		prescriptionServiceBuilder.drugRepository(new HibernateDrugRepository());
 		prescriptionServiceBuilder.patientRepository(new HibernatePatientRepository());	
 		this.service = new PrescriptionService(prescriptionServiceBuilder);
-		
-		this.addPrescriptionRequestParserFactory = new AddPrescriptionRequestParserFactory();
 	}
 	
 	public PrescriptionResource(PrescriptionService service, AddPrescriptionRequestParserFactory addPrescriptionRequestParserFactory) {
@@ -64,9 +68,9 @@ public class PrescriptionResource {
 	
 	private AddPrescriptionRequestParser getRequestParser(String request) throws RequestParseException {
 		JSONObject jsonRequest = new JSONObject(request);
-		String patientNumberParameter = String.valueOf(patientNumber);
+		jsonRequest.put("nopatient", String.valueOf(patientNumber));
 				
-		AddPrescriptionRequestParser prescriptionParserRequest = addPrescriptionRequestParserFactory.getParser(jsonRequest, patientNumberParameter);
+		AddPrescriptionRequestParser prescriptionParserRequest = addPrescriptionRequestParserFactory.getParser(jsonRequest);
 		return prescriptionParserRequest;
 	}
 }

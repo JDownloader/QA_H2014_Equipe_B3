@@ -1,11 +1,14 @@
 package ca.ulaval.glo4002.domain.intervention;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 
 import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
+import ca.ulaval.glo4002.domain.surgicaltool.SurgicalTool;
 
 @Entity(name = "INTERVENTION")
 public class Intervention {
@@ -34,6 +37,10 @@ public class Intervention {
 	@ManyToOne()
 	@JoinColumn(name = "PATIENT", nullable = false)
 	private Patient patient;
+	
+	@ElementCollection()
+	@JoinColumn(name = "INTERVENTION")
+	private List<SurgicalTool> surgicalTools = new ArrayList<SurgicalTool>();
 	
 	protected Intervention() {
 		//Required for Hibernate.
@@ -75,5 +82,13 @@ public class Intervention {
 	
 	public Patient getPatient() {
 		return patient;
+	}
+	
+	public void addSurgicalTool(SurgicalTool surgicalTool) {
+		surgicalTools.add(surgicalTool);
+	}
+	
+	public boolean hasSurgicalTool(SurgicalTool surgicalTool) {
+		return surgicalTools.contains(surgicalTool);
 	}
 }

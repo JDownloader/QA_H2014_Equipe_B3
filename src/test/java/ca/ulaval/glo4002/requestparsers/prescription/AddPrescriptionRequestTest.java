@@ -36,11 +36,12 @@ public class AddPrescriptionRequestTest {
 		jsonRequest.put("date", SAMPLE_DATE_PARAMETER);
 		jsonRequest.put("renouvellements", SAMPLE_RENEWALS_PARAMETER);
 		jsonRequest.put("din", SAMPLE_DIN_PARAMETER);
+		jsonRequest.put("nopatient", SAMPLE_PATIENT_NUMBER_PARAMETER);
 		createPrescriptionRequest();
 	}
 	
 	private void createPrescriptionRequest() throws Exception {
-		addPrescriptionRequest = new AddPrescriptionRequestParser(jsonRequest, SAMPLE_PATIENT_NUMBER_PARAMETER);
+		addPrescriptionRequest = new AddPrescriptionRequestParser(jsonRequest);
 	}
 	
 	@Test
@@ -105,7 +106,8 @@ public class AddPrescriptionRequestTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void disallowsNegativePatientParameter() throws Exception {
-		new AddPrescriptionRequestParser(jsonRequest, "-1");
+		jsonRequest.put("nopatient", "-1");
+		createPrescriptionRequest();
 	}
 
 	@Test(expected = ParseException.class)
@@ -134,7 +136,8 @@ public class AddPrescriptionRequestTest {
 	
 	@Test
 	public void allowsMinimumPatientNumberParameter() throws Exception {
-		new AddPrescriptionRequestParser(jsonRequest, MIN_PATIENT_NUMBER_PARAMETER);
+		jsonRequest.put("nopatient", MIN_PATIENT_NUMBER_PARAMETER);
+		createPrescriptionRequest();
 	}
 	
 	@Test

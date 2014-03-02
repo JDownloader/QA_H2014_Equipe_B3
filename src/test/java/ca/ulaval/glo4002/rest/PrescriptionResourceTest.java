@@ -19,23 +19,35 @@ public class PrescriptionResourceTest {
 	private static final String SAMPLE_JSON_REQUEST = "{attrib: value}";
 	
 	private PrescriptionService prescriptionServiceMock;
-	private AddPrescriptionRequestParser addPrescriptionRequestMock;
-	private AddPrescriptionRequestParserFactory addPrescriptionRequestFactoryMock;
+	private AddPrescriptionRequestParser addPrescriptionRequestParserMock;
+	private AddPrescriptionRequestParserFactory addPrescriptionRequestParserFactoryMock;
 	private PrescriptionResource prescriptionResource;
 	
 	@Before
 	public void setup() throws Exception {
+		createMocks();
+		stubMethods();
+		buildPrescriptionResource();
+	}
+	
+	private void createMocks() {
 		prescriptionServiceMock = mock(PrescriptionService.class);
-		addPrescriptionRequestMock = mock(AddPrescriptionRequestParser.class);
-		addPrescriptionRequestFactoryMock = mock(AddPrescriptionRequestParserFactory.class);
-		when(addPrescriptionRequestFactoryMock.getParser(any(JSONObject.class), anyString())).thenReturn(addPrescriptionRequestMock);
-		prescriptionResource = new PrescriptionResource(prescriptionServiceMock, addPrescriptionRequestFactoryMock);
+		addPrescriptionRequestParserMock = mock(AddPrescriptionRequestParser.class);
+		addPrescriptionRequestParserFactoryMock = mock(AddPrescriptionRequestParserFactory.class);
+	}
+	
+	private void stubMethods() throws Exception {
+		when(addPrescriptionRequestParserFactoryMock.getParser(any(JSONObject.class))).thenReturn(addPrescriptionRequestParserMock);
+	}
+	
+	private void buildPrescriptionResource() {
+		prescriptionResource = new PrescriptionResource(prescriptionServiceMock, addPrescriptionRequestParserFactoryMock);
 	}
 	
 	@Test
 	public void handlesPostRequestsCorrectly() throws ServiceRequestException {
 		prescriptionResource.post(SAMPLE_JSON_REQUEST);
-		verify(prescriptionServiceMock).addPrescription(addPrescriptionRequestMock);
+		verify(prescriptionServiceMock).addPrescription(addPrescriptionRequestParserMock);
 	}
 	
 	@Test
@@ -46,7 +58,7 @@ public class PrescriptionResourceTest {
 	
 	@Test
 	public void returnsInvalidResponseWhenSpecifyingInvalidRequest() throws ServiceRequestException {
-		doThrow(new ServiceRequestException()).when(prescriptionServiceMock).addPrescription(addPrescriptionRequestMock);
+		doThrow(new ServiceRequestException()).when(prescriptionServiceMock).addPrescription(addPrescriptionRequestParserMock);
 		
 		Response response = prescriptionResource.post(SAMPLE_JSON_REQUEST);
 		

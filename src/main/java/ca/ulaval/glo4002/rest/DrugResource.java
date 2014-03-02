@@ -28,12 +28,16 @@ public class DrugResource {
 	public DrugResource() {
 		EntityManager entityManager = new EntityManagerProvider().getEntityManager();
 		
+		buildDrugService(entityManager);
+		
+		this.drugSearchRequestParserFactory = new DrugSearchRequestParserFactory();
+	}
+
+	private void buildDrugService(EntityManager entityManager) {
 		DrugServiceBuilder drugServiceBuilder = new DrugServiceBuilder();
 		drugServiceBuilder.entityTransaction(entityManager.getTransaction());
 		drugServiceBuilder.drugRepository(new HibernateDrugRepository());
 		this.service = new DrugService(drugServiceBuilder);
-		
-		this.drugSearchRequestParserFactory = new DrugSearchRequestParserFactory();
 	}
 	
 	public DrugResource(DrugService service, DrugSearchRequestParserFactory drugSearchRequestParserFactory) {

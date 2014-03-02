@@ -37,11 +37,12 @@ public class PrescriptionService {
 	}
 	
 	protected void doAddPrescription(AddPrescriptionRequestParser requestParser) throws ServiceRequestException {
-		Prescription prescription = createPrescription(requestParser);
+		Prescription prescription = buildPrescription(requestParser);
+		prescriptionRepository.create(prescription);
 		updatePatient(requestParser, prescription);
 	}
 
-	private Prescription createPrescription(AddPrescriptionRequestParser requestParser) throws ServiceRequestException {
+	private Prescription buildPrescription(AddPrescriptionRequestParser requestParser) throws ServiceRequestException {
 		PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder();
 		prescriptionBuilder.date(requestParser.getDate());
 		prescriptionBuilder.allowedNumberOfRenewal(requestParser.getRenewals());
@@ -52,7 +53,6 @@ public class PrescriptionService {
 			prescriptionBuilder.drug(drug);	
 		}
 		Prescription prescription = prescriptionBuilder.build();
-		prescriptionRepository.create(prescription);
 		return prescription;
 	}
 	
