@@ -45,6 +45,35 @@ public class Intervention {
 		this.date = builder.date;
 		this.room = builder.room;
 		this.type = builder.type;
+		this.patient = builder.patient;
 		this.status = builder.status;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	public Surgeon getSurgeon() {
+		return surgeon;
+	}
+	
+	public Date getDate() {
+		return date;
+	}
+	
+	public String getRoom() {
+		return room;
+	}
+	
+	public InterventionType getType() {
+		return type;
+	}
+	
+	public InterventionStatus getStatus() {
+		return status;
+	}
+	
+	public Patient getPatient() {
+		return patient;
 	}
 }

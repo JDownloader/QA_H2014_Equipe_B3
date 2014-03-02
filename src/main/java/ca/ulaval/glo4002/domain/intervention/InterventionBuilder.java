@@ -2,6 +2,8 @@ package ca.ulaval.glo4002.domain.intervention;
 
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+
 import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
 
@@ -51,12 +53,12 @@ public class InterventionBuilder {
 	
 	public Intervention build() {
 		Intervention intervention = new Intervention(this);
-		if (description == null
+		if (StringUtils.isBlank(description)
 				|| surgeon == null
 				|| date == null
-				|| room == null
+				|| StringUtils.isBlank(room)
 				|| type == null
-				|| room == null) {
+				|| patient == null) {
 			throw new IllegalStateException();
 		}
         return intervention;

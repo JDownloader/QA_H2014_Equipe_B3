@@ -26,7 +26,7 @@ public class PrescriptionBuilder {
 		return this;
 	}
 	
-	public PrescriptionBuilder allowedRenewalCount(int allowedNumberOfRenewal) {
+	public PrescriptionBuilder allowedNumberOfRenewal(int allowedNumberOfRenewal) {
 		this.allowedNumberOfRenewal = allowedNumberOfRenewal;
 		return this;
 	}
@@ -36,8 +36,8 @@ public class PrescriptionBuilder {
 		return this;
 	}
 	
-	public PrescriptionBuilder prescriber(StaffMember prescriber) {
-		this.staffMember = prescriber;
+	public PrescriptionBuilder staffMember(StaffMember staffMember) {
+		this.staffMember = staffMember;
 		return this;
 	}
 	
@@ -46,7 +46,7 @@ public class PrescriptionBuilder {
 		if (staffMember == null
 				|| allowedNumberOfRenewal == UNSPECIFIED
 				|| date == null
-				|| (drug == null && StringUtils.isBlank(drugName))) {
+				|| !(drug == null ^ StringUtils.isBlank(drugName))) {
 			throw new IllegalStateException();
 		}
         return prescription;

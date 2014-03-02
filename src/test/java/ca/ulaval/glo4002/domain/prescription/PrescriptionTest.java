@@ -12,8 +12,7 @@ import ca.ulaval.glo4002.domain.drug.Drug;
 import ca.ulaval.glo4002.domain.staff.StaffMember;
 
 public class PrescriptionTest {
-	private Prescription prescriptionWithDrug;
-	private Prescription prescriptionWithDrugName;
+	private Prescription prescription;
 	private Drug drugMock;
 	private StaffMember staffMemberMock;
 	
@@ -25,38 +24,50 @@ public class PrescriptionTest {
 	public void setup()  {
 		drugMock = mock(Drug.class);
 		staffMemberMock = mock(StaffMember.class);
-		prescriptionWithDrug = new PrescriptionBuilder().drug(drugMock).date(SAMPLE_DATE).prescriber(staffMemberMock).allowedRenewalCount(SAMPLE_NUMBER_OF_RENEWALS).build();
-		prescriptionWithDrugName = new PrescriptionBuilder().drugName(SAMPLE_DRUG_NAME).date(SAMPLE_DATE).prescriber(staffMemberMock).allowedRenewalCount(SAMPLE_NUMBER_OF_RENEWALS).build();
+		
+		PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder().drug(drugMock);
+		prescription = buildCommonParameters(prescriptionBuilder).build();
+
+	}
+	
+	private PrescriptionBuilder buildCommonParameters(PrescriptionBuilder prescriptionBuilder) {
+		prescriptionBuilder.date(SAMPLE_DATE);
+		prescriptionBuilder.staffMember(staffMemberMock);
+		prescriptionBuilder.allowedNumberOfRenewal(SAMPLE_NUMBER_OF_RENEWALS);
+		return prescriptionBuilder;
 	}
 	
 	@Test
 	public void comparesIdCorrectly() {
-		int prescriptionId = prescriptionWithDrug.getId();
-		assertTrue(prescriptionWithDrug.compareId(prescriptionId));
+		int prescriptionId = prescription.getId();
+		assertTrue(prescription.compareId(prescriptionId));
 	}
 	
 	@Test
 	public void returnsDrugCorrectly() {
-		assertSame(drugMock, prescriptionWithDrug.getDrug());
+		assertSame(drugMock, prescription.getDrug());
 	}
 	
 	@Test
 	public void returnsDrugNameCorrectly() {
+		PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder().drugName(SAMPLE_DRUG_NAME);
+		Prescription prescriptionWithDrugName = buildCommonParameters(prescriptionBuilder).build();
+		
 		assertEquals(SAMPLE_DRUG_NAME, prescriptionWithDrugName.getDrugName());
 	}
 	
 	@Test
 	public void returnsAllowedNumberOfRenewalsCorrectly() {
-		assertEquals(SAMPLE_NUMBER_OF_RENEWALS, prescriptionWithDrug.getAllowedNumberOfRenewal());
+		assertEquals(SAMPLE_NUMBER_OF_RENEWALS, prescription.getAllowedNumberOfRenewal());
 	}
 	
 	@Test
 	public void returnsDateCorrectly() {
-		assertEquals(SAMPLE_DATE, prescriptionWithDrug.getDate());
+		assertEquals(SAMPLE_DATE, prescription.getDate());
 	}
 	
 	@Test
 	public void returnsStaffMemberCorrectly() {
-		assertSame(staffMemberMock, prescriptionWithDrug.getStaffMember());
+		assertSame(staffMemberMock, prescription.getStaffMember());
 	}
 }
