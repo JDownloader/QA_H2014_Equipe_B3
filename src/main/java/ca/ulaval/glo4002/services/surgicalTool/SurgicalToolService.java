@@ -3,6 +3,7 @@ package ca.ulaval.glo4002.services.surgicalTool;
 import javax.persistence.EntityTransaction;
 
 import ca.ulaval.glo4002.domain.intervention.InterventionRepository;
+import ca.ulaval.glo4002.domain.surgicalTool.SurgicalTool;
 import ca.ulaval.glo4002.domain.surgicalTool.SurgicalToolRepository;
 import ca.ulaval.glo4002.exceptions.BadRequestException;
 import ca.ulaval.glo4002.rest.requests.MarkExistingInstrumentRequest;
