@@ -40,7 +40,7 @@ public class PrescriptionServiceTest {
 	@Before
 	public void setup()  {
 		createMocks();
-		buildPrescription(); 
+		buildPrescriptionService(); 
 		stubAddPrescriptionRequestMockMethods();
 		stubRepositoryMethods();
 		stubEntityTransactionsMethods();
@@ -56,7 +56,7 @@ public class PrescriptionServiceTest {
 		addPrescriptionRequestMock = mock(AddPrescriptionRequest.class);
 	}
 	
-	private void buildPrescription() {
+	private void buildPrescriptionService() {
 		PrescriptionServiceBuilder prescriptionServiceBuilder = new PrescriptionServiceBuilder();
 		prescriptionServiceBuilder.prescriptionRepository(prescriptionRepositoryMock);
 		prescriptionServiceBuilder.drugRepository(drugRepositoryMock);
@@ -68,11 +68,15 @@ public class PrescriptionServiceTest {
 	private void stubAddPrescriptionRequestMockMethods() {
 		when(addPrescriptionRequestMock.hasDin()).thenReturn(true);
 		when(addPrescriptionRequestMock.getDin()).thenReturn(SAMPLE_DIN_PARAMETER);
-		when(addPrescriptionRequestMock.getDrugName()).thenReturn(SAMPLE_DRUG_NAME_PARAMETER);
 		when(addPrescriptionRequestMock.getStaffMember()).thenReturn(SAMPLE_STAFF_MEMBER_PARAMETER);
 		when(addPrescriptionRequestMock.getPatientNumber()).thenReturn(SAMPLE_PATIENT_NUMBER_PARAMETER);
 		when(addPrescriptionRequestMock.getRenewals()).thenReturn(SAMPLE_RENEWALS_PARAMETER);
 		when(addPrescriptionRequestMock.getDate()).thenReturn(SAMPLE_DATE);
+	}
+	
+	private void stubAddPrescriptionRequestMockMethodsWithNoDin() {
+		when(addPrescriptionRequestMock.hasDin()).thenReturn(false);
+		when(addPrescriptionRequestMock.getDrugName()).thenReturn(SAMPLE_DRUG_NAME_PARAMETER);
 	}
 	
 	private void stubRepositoryMethods() {
@@ -85,7 +89,7 @@ public class PrescriptionServiceTest {
 	}
 	
 	@Test
-	public void verifyAddPrescriptionCallsCorrectRepositoryMethods() throws BadRequestException {
+	public void verifyAddPrescriptionWithDinCallsCorrectRepositoryMethods() throws BadRequestException {
 		prescriptionService.addPrescription(addPrescriptionRequestMock);
 		
 		verify(drugRepositoryMock).getByDin(any(Din.class));
@@ -100,7 +104,7 @@ public class PrescriptionServiceTest {
 	
 	@Test
 	public void verifyAddPrescriptionWithNoDinCallsCorrectRepositoryMethods() throws BadRequestException {
-		when(addPrescriptionRequestMock.hasDin()).thenReturn(false);
+		stubAddPrescriptionRequestMockMethodsWithNoDin();
 		
 		prescriptionService.addPrescription(addPrescriptionRequestMock);
 		
