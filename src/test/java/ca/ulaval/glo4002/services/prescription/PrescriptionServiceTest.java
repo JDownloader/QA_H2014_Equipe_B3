@@ -16,7 +16,7 @@ import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
 import ca.ulaval.glo4002.domain.prescription.Prescription;
 import ca.ulaval.glo4002.domain.prescription.PrescriptionRepository;
-import ca.ulaval.glo4002.exceptions.BadRequestException;
+import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.requestparsers.prescription.AddPrescriptionRequestParser;
 
 public class PrescriptionServiceTest {
@@ -89,7 +89,7 @@ public class PrescriptionServiceTest {
 	}
 	
 	@Test
-	public void verifyAddPrescriptionWithDinCallsCorrectRepositoryMethods() throws BadRequestException {
+	public void verifyAddPrescriptionWithDinCallsCorrectRepositoryMethods() throws ServiceRequestException {
 		prescriptionService.addPrescription(addPrescriptionRequestMock);
 		
 		verify(drugRepositoryMock).getByDin(any(Din.class));
@@ -98,7 +98,7 @@ public class PrescriptionServiceTest {
 	}
 	
 	@Test
-	public void verifyAddPrescriptionWithNoDinCallsCorrectRepositoryMethods() throws BadRequestException {
+	public void verifyAddPrescriptionWithNoDinCallsCorrectRepositoryMethods() throws ServiceRequestException {
 		stubAddPrescriptionRequestMockMethodsWithNoDin();
 		
 		prescriptionService.addPrescription(addPrescriptionRequestMock);
@@ -109,7 +109,7 @@ public class PrescriptionServiceTest {
 	}
 	
 	@Test
-	public void verifyAddPrescriptionTransactionHandling() throws BadRequestException {
+	public void verifyAddPrescriptionTransactionHandling() throws ServiceRequestException {
 		prescriptionService.addPrescription(addPrescriptionRequestMock);
 		InOrder inOrder = inOrder(entityTransactionMock);
 		
@@ -117,8 +117,8 @@ public class PrescriptionServiceTest {
 		inOrder.verify(entityTransactionMock).commit();
 	}
 	
-	@Test(expected = BadRequestException.class)
-	public void verifyAddPrescriptionThrowsWhenSpecifyingNonExistingDrugDin() throws BadRequestException {
+	@Test(expected = ServiceRequestException.class)
+	public void verifyAddPrescriptionThrowsWhenSpecifyingNonExistingDrugDin() throws ServiceRequestException {
 		when(drugRepositoryMock.getByDin(any(Din.class))).thenThrow(new EntityNotFoundException());
 		
 		prescriptionService.addPrescription(addPrescriptionRequestMock);
@@ -126,8 +126,8 @@ public class PrescriptionServiceTest {
 		verify(entityTransactionMock).rollback();
 	}
 	
-	@Test(expected = BadRequestException.class)
-	public void verifyAddPrescriptionThrowsWhenSpecifyingNonExistingPatientNumber() throws BadRequestException {
+	@Test(expected = ServiceRequestException.class)
+	public void verifyAddPrescriptionThrowsWhenSpecifyingNonExistingPatientNumber() throws ServiceRequestException {
 		when(patientRepositoryMock.getById(anyInt())).thenThrow(new EntityNotFoundException());
 		
 		prescriptionService.addPrescription(addPrescriptionRequestMock);

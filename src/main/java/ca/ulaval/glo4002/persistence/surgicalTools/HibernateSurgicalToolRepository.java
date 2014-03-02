@@ -2,8 +2,8 @@ package ca.ulaval.glo4002.persistence.surgicalTools;
 
 import javax.persistence.EntityManager;
 
-import ca.ulaval.glo4002.domain.surgicalTool.SurgicalTool;
-import ca.ulaval.glo4002.domain.surgicalTool.SurgicalToolRepository;
+import ca.ulaval.glo4002.domain.surgicaltool.SurgicalTool;
+import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolRepository;
 import ca.ulaval.glo4002.persistence.HibernateRepository;
 
 public class HibernateSurgicalToolRepository extends HibernateRepository implements SurgicalToolRepository {

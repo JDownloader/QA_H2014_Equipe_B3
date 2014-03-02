@@ -1,6 +1,6 @@
 package ca.ulaval.glo4002.rest.requestparsers.surgicaltool;
 
-import ca.ulaval.glo4002.exceptions.BadRequestException;
+import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 
 public abstract class MarkInstrumentRequestParser {
 	public String INTERVENTION_NUMBER_PARAMETER = "nointervention";
@@ -20,14 +20,14 @@ public abstract class MarkInstrumentRequestParser {
 	protected String serialNumber;
 	protected int interventionId;
 	
-	protected void validateStatus() throws BadRequestException {
+	protected void validateStatus() throws ServiceRequestException {
 		if(!(this.status.equals(DIRTY_STATUS)
 			|| this.status.equals(USED_ON_PATIENT_STATUS)
 			|| this.status.equals(UNUSED_STATUS)))
-			throw new BadRequestException(INVALID_OR_INCOMPLETE_REQUEST_CODE,INVALID_OR_INCOMPLETE_REQUEST_MESSAGE);
+			throw new ServiceRequestException(INVALID_OR_INCOMPLETE_REQUEST_CODE,INVALID_OR_INCOMPLETE_REQUEST_MESSAGE);
 	}
 	
-	abstract void validateRequestParameters() throws BadRequestException;
+	abstract void validateRequestParameters() throws ServiceRequestException;
 	
 	public String getTypecode() {
 		return this.typecode;

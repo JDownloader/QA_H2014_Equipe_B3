@@ -7,7 +7,7 @@ import org.mockito.*;
 
 import static org.mockito.Mockito.*;
 import ca.ulaval.glo4002.domain.drug.DrugRepository;
-import ca.ulaval.glo4002.exceptions.BadRequestException;
+import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.requestparsers.drug.DrugSearchRequestParser;
 
 public class DrugServiceTest {
@@ -49,14 +49,14 @@ public class DrugServiceTest {
 	}
 	
 	@Test
-	public void verifySearchDrugCallsCorrectRepositoryMethods() throws BadRequestException {
+	public void verifySearchDrugCallsCorrectRepositoryMethods() throws ServiceRequestException {
 		drugService.searchDrug(drugSearchRequestMock);
 		
 		verify(drugRepositoryMock).findByName(SAMPLE_DRUG_NAME);
 	}
 	
 	@Test
-	public void verifySearchDrugTransactionHandling() throws BadRequestException {
+	public void verifySearchDrugTransactionHandling() throws ServiceRequestException {
 		drugService.searchDrug(drugSearchRequestMock);
 		InOrder inOrder = inOrder(entityTransactionMock);
 		

@@ -1,6 +1,5 @@
 package ca.ulaval.glo4002.rest;
 
-import java.text.ParseException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -12,7 +11,8 @@ import org.json.*;
 
 import ca.ulaval.glo4002.domain.drug.Drug;
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
-import ca.ulaval.glo4002.exceptions.BadRequestException;
+import ca.ulaval.glo4002.exceptions.ServiceRequestException;
+import ca.ulaval.glo4002.exceptions.RequestParseException;
 import ca.ulaval.glo4002.persistence.drug.HibernateDrugRepository;
 import ca.ulaval.glo4002.rest.requestparsers.drug.DrugSearchRequestParser;
 import ca.ulaval.glo4002.rest.requestparsers.drug.DrugSearchRequestParserFactory;
@@ -49,18 +49,16 @@ public class DrugResource {
 			DrugSearchRequestParser drugSearchRequest = getDrugSearchRequestParser(request);
 			List<Drug> drugResults = service.searchDrug(drugSearchRequest); 
 			return buildDrugResultResponse(drugResults);
-		} catch (JSONException | ParseException e) {
-			return BadRequestJsonResponseBuilder.build("DIN001", "Invalid parameters were supplied to the request.");
-		} catch (IllegalArgumentException e) {
+		} catch (RequestParseException e) {
 			return BadRequestJsonResponseBuilder.build("DIN001", e.getMessage());
-		} catch (BadRequestException e) {
+		} catch (ServiceRequestException e) {
 			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());
 		} catch (Exception e) {
 			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
 	
-	private DrugSearchRequestParser getDrugSearchRequestParser(String request) throws JSONException, ParseException {
+	private DrugSearchRequestParser getDrugSearchRequestParser(String request) throws RequestParseException {
 		JSONObject jsonRequest = new JSONObject(request);
 		DrugSearchRequestParser interventionRequestParser = drugSearchRequestParserFactory.getParser(jsonRequest);
 		return interventionRequestParser;

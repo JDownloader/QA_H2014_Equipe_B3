@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-import ca.ulaval.glo4002.exceptions.BadRequestException;
+import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.requestparsers.prescription.AddPrescriptionRequestParser;
 import ca.ulaval.glo4002.rest.requestparsers.prescription.AddPrescriptionRequestParserFactory;
 import ca.ulaval.glo4002.services.prescription.PrescriptionService;
@@ -33,20 +33,20 @@ public class PrescriptionResourceTest {
 	}
 	
 	@Test
-	public void handlesPostRequestsCorrectly() throws BadRequestException {
+	public void handlesPostRequestsCorrectly() throws ServiceRequestException {
 		prescriptionResource.post(SAMPLE_JSON_REQUEST);
 		verify(prescriptionServiceMock).addPrescription(addPrescriptionRequestMock);
 	}
 	
 	@Test
-	public void returnsCreatedResponse() throws BadRequestException {
+	public void returnsCreatedResponse() throws ServiceRequestException {
 		Response response = prescriptionResource.post(SAMPLE_JSON_REQUEST);
 		assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
 	}
 	
 	@Test
-	public void returnsInvalidResponseWhenSpecifyingInvalidRequest() throws BadRequestException {
-		doThrow(new BadRequestException()).when(prescriptionServiceMock).addPrescription(addPrescriptionRequestMock);
+	public void returnsInvalidResponseWhenSpecifyingInvalidRequest() throws ServiceRequestException {
+		doThrow(new ServiceRequestException()).when(prescriptionServiceMock).addPrescription(addPrescriptionRequestMock);
 		
 		Response response = prescriptionResource.post(SAMPLE_JSON_REQUEST);
 		

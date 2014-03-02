@@ -4,7 +4,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityTransaction;
 
 import ca.ulaval.glo4002.domain.intervention.InterventionRepository;
-import ca.ulaval.glo4002.exceptions.BadRequestException;
+import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.domain.intervention.Intervention;
 import ca.ulaval.glo4002.domain.intervention.InterventionBuilder;
 import ca.ulaval.glo4002.domain.patient.Patient;
@@ -23,7 +23,7 @@ public class InterventionService {
 		this.patientRepository = builder.patientRepository;
 	}
 	
-	public void createIntervention(CreateInterventionRequestParser requestParser) throws BadRequestException {
+	public void createIntervention(CreateInterventionRequestParser requestParser) throws ServiceRequestException {
 		try {
 			entityTransaction.begin();
 			doCreateIntervention(requestParser);
@@ -36,7 +36,7 @@ public class InterventionService {
 		}
 	}
 	
-	protected void doCreateIntervention(CreateInterventionRequestParser requestParser) throws BadRequestException {
+	protected void doCreateIntervention(CreateInterventionRequestParser requestParser) throws ServiceRequestException {
 		InterventionBuilder interventionBuilder = new InterventionBuilder();
 		interventionBuilder.date(requestParser.getDate());
 		interventionBuilder.description(requestParser.getDescription());
@@ -51,11 +51,11 @@ public class InterventionService {
 		interventionRepository.create(intervention);
 	}
 	
-	private Patient getPatient(CreateInterventionRequestParser requestParser) throws BadRequestException {
+	private Patient getPatient(CreateInterventionRequestParser requestParser) throws ServiceRequestException {
 		try {
 			return patientRepository.getById(requestParser.getPatient());
 		} catch (EntityNotFoundException e) {
-			throw new BadRequestException("INT002", e.getMessage());
+			throw new ServiceRequestException("INT002", e.getMessage());
 		}
 	}
 	

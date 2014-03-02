@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import ca.ulaval.glo4002.domain.intervention.*;
 import ca.ulaval.glo4002.domain.patient.*;
-import ca.ulaval.glo4002.exceptions.BadRequestException;
+import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParser;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -83,7 +83,7 @@ public class InterventionServiceTest {
 	}
 	
 	@Test
-	public void verifyCreateInterventionCallsCorrectRepositoryMethods() throws BadRequestException {
+	public void verifyCreateInterventionCallsCorrectRepositoryMethods() throws ServiceRequestException {
 		interventionService.createIntervention(createInterventionRequestMock);
 		
 		verify(patientRepositoryMock).getById(SAMPLE_PATIENT);
@@ -91,7 +91,7 @@ public class InterventionServiceTest {
 	}
 	
 	@Test
-	public void verifyCreateInterventionTransactionHandling() throws BadRequestException {
+	public void verifyCreateInterventionTransactionHandling() throws ServiceRequestException {
 		interventionService.createIntervention(createInterventionRequestMock);
 		InOrder inOrder = inOrder(entityTransactionMock);
 		
@@ -99,8 +99,8 @@ public class InterventionServiceTest {
 		inOrder.verify(entityTransactionMock).commit();
 	}
 	
-	@Test(expected = BadRequestException.class)
-	public void verifyCreateInterventionThrowsWhenSpecifyingNonExistingPatientNumber() throws BadRequestException {
+	@Test(expected = ServiceRequestException.class)
+	public void verifyCreateInterventionThrowsWhenSpecifyingNonExistingPatientNumber() throws ServiceRequestException {
 		when(patientRepositoryMock.getById(anyInt())).thenThrow(new EntityNotFoundException());
 		
 		interventionService.createIntervention(createInterventionRequestMock);

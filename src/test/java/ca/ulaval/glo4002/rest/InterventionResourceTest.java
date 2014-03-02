@@ -10,13 +10,13 @@ import org.junit.*;
 import org.junit.runner.RunWith;
 
 import static org.mockito.Mockito.*;
-import ca.ulaval.glo4002.exceptions.BadRequestException;
+import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParser;
 import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParserFactory;
 import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.MarkExistingInstrumentRequestParser;
 import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.MarkNewInstrumentRequestParser;
 import ca.ulaval.glo4002.services.intervention.InterventionService;
-import ca.ulaval.glo4002.services.surgicalTool.SurgicalToolService;
+import ca.ulaval.glo4002.services.surgicaltool.SurgicalToolService;
 
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -44,20 +44,20 @@ public class InterventionResourceTest {
 	}
 
 	@Test
-	public void handlesPostRequestsCorrectly() throws BadRequestException {
+	public void handlesPostRequestsCorrectly() throws ServiceRequestException {
 		interventionResource.post(SAMPLE_JSON_REQUEST);
 		verify(interventionServiceMock).createIntervention(createInterventionRequestMock);
 	}
 
 	@Test
-	public void returnsCreatedResponse() throws BadRequestException {
+	public void returnsCreatedResponse() throws ServiceRequestException {
 		Response response = interventionResource.post(SAMPLE_JSON_REQUEST);
 		assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
 	}
 
 	@Test
-	public void returnsInvalidResponseWhenSpecifyingInvalidRequest() throws BadRequestException {
-		doThrow(new BadRequestException()).when(interventionServiceMock).createIntervention(createInterventionRequestMock);
+	public void returnsInvalidResponseWhenSpecifyingInvalidRequest() throws ServiceRequestException {
+		doThrow(new ServiceRequestException()).when(interventionServiceMock).createIntervention(createInterventionRequestMock);
 
 		Response response = interventionResource.post(SAMPLE_JSON_REQUEST);
 
@@ -132,12 +132,12 @@ public class InterventionResourceTest {
 		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
 	}
 
-	private BadRequestException noSerialNumber = new BadRequestException(
+	private ServiceRequestException noSerialNumber = new ServiceRequestException(
 			"INT011", "numéro de série déjà utilisé");
 
 	@Test
 	public void dontMarkInstrumentWithAlreadyUsedSerialNumber()
-			throws BadRequestException {
+			throws ServiceRequestException {
 		Mockito.doThrow(noSerialNumber).when(service)
 				.markNewInstrument(Mockito.any(MarkNewInstrumentRequestParser.class));
 		request = VALID_MARK_NEW_INSTRUMENT;
@@ -148,12 +148,12 @@ public class InterventionResourceTest {
 		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
 	}
 
-	private BadRequestException noAnonymousType = new BadRequestException(
+	private ServiceRequestException noAnonymousType = new ServiceRequestException(
 			"INT012", "requiert numéro de série");
 
 	@Test
 	public void dontMarkInstrumentWithNoAnonymousTypeWithoutSerialNumber()
-			throws BadRequestException {
+			throws ServiceRequestException {
 		Mockito.doThrow(noAnonymousType).when(service)
 				.markNewInstrument(Mockito.any(MarkNewInstrumentRequestParser.class));
 		request = VALID_MARK_NEW_INSTRUMENT;
@@ -164,12 +164,12 @@ public class InterventionResourceTest {
 		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
 	}
 
-	private BadRequestException doesNotExist = new BadRequestException(
+	private ServiceRequestException doesNotExist = new ServiceRequestException(
 			"INT010", "données invalides ou incomplètes");
 
 	@Test
 	public void dontMarkExistingInstrumentIfDoesNotActuallyExistInDatabase()
-			throws BadRequestException {
+			throws ServiceRequestException {
 		Mockito.doThrow(doesNotExist)
 				.when(service)
 				.markExistingInstrument(

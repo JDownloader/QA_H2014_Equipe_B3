@@ -4,19 +4,19 @@ import java.text.ParseException;
 import java.util.Date;
 
 import org.h2.util.StringUtils;
-import org.json.JSONException;
 import org.json.JSONObject;
 
+import ca.ulaval.glo4002.exceptions.RequestParseException;
 import ca.ulaval.glo4002.utils.CustomDateParser;
 
 public class AddPrescriptionRequestParser {
 
 	private static final int UNSPECIFIED_VALUE = -1;
-	private static final String DIN_PARAMETER = "din";
-	private static final String STAFF_MEMBER_PARAMETER = "intervenant";
-	private static final String DRUG_NAME_PARAMETER = "nom";
-	private static final String DATE_PARAMETER = "date";
-	private static final String RENEWAL_PARAMETER = "renouvellements";
+	private static final String DIN_PARAMETER_NAME = "din";
+	private static final String STAFF_MEMBER_PARAMETER_NAME = "intervenant";
+	private static final String DRUG_NAME_PARAMETER_NAME = "nom";
+	private static final String DATE_PARAMETER_NAME = "date";
+	private static final String RENEWAL_PARAMETER_NAME = "renouvellements";
 
 	private int din;
 	private String drugName;
@@ -25,25 +25,35 @@ public class AddPrescriptionRequestParser {
 	private Date date;
 	private int patientNumber;
 
-	public AddPrescriptionRequestParser(JSONObject jsonRequest, String patientNumberParameter) throws JSONException, ParseException, IllegalArgumentException {
-		this.din = jsonRequest.optInt(DIN_PARAMETER, UNSPECIFIED_VALUE);
-		this.drugName = jsonRequest.optString(DRUG_NAME_PARAMETER);
-		this.staffMember = jsonRequest.getInt(STAFF_MEMBER_PARAMETER);
-		this.renewals = jsonRequest.getInt(RENEWAL_PARAMETER);
-		this.date = CustomDateParser.parseDate(jsonRequest.getString(DATE_PARAMETER));
-		this.patientNumber = Integer.parseInt(patientNumberParameter);
-		validateRequestParameters();
+	public AddPrescriptionRequestParser(JSONObject jsonRequest, String patientNumberParameter) throws RequestParseException {
+		try {
+			parseParameters(jsonRequest, patientNumberParameter);
+		}
+		catch(Exception e) {
+			throw new RequestParseException("Invalid parameters were supplied to the request.");
+		}
+		
+		validateParameterSemantics();
 	}
 
-	private void validateRequestParameters() {
+	private void parseParameters(JSONObject jsonRequest, String patientNumberParameter) throws ParseException {
+		this.din = jsonRequest.optInt(DIN_PARAMETER_NAME, UNSPECIFIED_VALUE);
+		this.drugName = jsonRequest.optString(DRUG_NAME_PARAMETER_NAME);
+		this.staffMember = jsonRequest.getInt(STAFF_MEMBER_PARAMETER_NAME);
+		this.renewals = jsonRequest.getInt(RENEWAL_PARAMETER_NAME);
+		this.date = CustomDateParser.parseDate(jsonRequest.getString(DATE_PARAMETER_NAME));
+		this.patientNumber = Integer.parseInt(patientNumberParameter);
+	}
+
+	private void validateParameterSemantics() throws RequestParseException {
 		if (this.staffMember < 0) {
-			throw new IllegalArgumentException("Parameter 'intervenant' must be greater or equal to 0.");
+			throw new RequestParseException ("Parameter 'intervenant' must be greater or equal to 0.");
 		} else if (this.renewals < 0) {
-			throw new IllegalArgumentException("Parameter 'renouvellements' must be greater or equal to 0.");
+			throw new RequestParseException ("Parameter 'renouvellements' must be greater or equal to 0.");
 		} else if (this.renewals < 0) {
-			throw new IllegalArgumentException("Path parameter '$NO_PATIENT$' must be greater or equal to 0.");
+			throw new RequestParseException ("Path parameter '$NO_PATIENT$' must be greater or equal to 0.");
 		} else if (!this.validateDinAndName()) {
-			throw new IllegalArgumentException("Either parameter 'din' or 'nom' must be specified, but not both.");
+			throw new RequestParseException ("Either parameter 'din' or 'nom' must be specified, but not both.");
 		}
 	}
 

@@ -1,9 +1,9 @@
-package ca.ulaval.glo4002.services.surgicalTool;
+package ca.ulaval.glo4002.services.surgicaltool;
 
 import javax.persistence.EntityTransaction;
 
 import ca.ulaval.glo4002.domain.intervention.InterventionRepository;
-import ca.ulaval.glo4002.domain.surgicalTool.SurgicalToolRepository;
+import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolRepository;
 
 public class SurgicalToolServiceBuilder {
 	protected SurgicalToolRepository surgicalToolRepository = null;

@@ -1,18 +1,16 @@
 package ca.ulaval.glo4002.rest;
 
-import java.text.ParseException;
-
 import javax.persistence.EntityManager;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
-import ca.ulaval.glo4002.exceptions.BadRequestException;
+import ca.ulaval.glo4002.exceptions.RequestParseException;
+import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.persistence.drug.HibernateDrugRepository;
 import ca.ulaval.glo4002.persistence.patient.HibernatePatientRepository;
 import ca.ulaval.glo4002.persistence.prescription.HibernatePrescriptionRepository;
@@ -55,18 +53,16 @@ public class PrescriptionResource {
 			AddPrescriptionRequestParser prescriptionRequest = getPrescriptionRequestParser(request);
 			service.addPrescription(prescriptionRequest); 
 			return Response.status(Status.CREATED).build();
-		} catch (JSONException | ParseException e) {
-			return BadRequestJsonResponseBuilder.build("PRES001", "Invalid parameters were supplied to the request.");
-		} catch (IllegalArgumentException e) {
+		} catch (RequestParseException e) {
 			return BadRequestJsonResponseBuilder.build("PRES001", e.getMessage());
-		} catch (BadRequestException e) {
+		} catch (ServiceRequestException e) {
 			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());
 		} catch (Exception e) {
 			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
 	
-	private AddPrescriptionRequestParser getPrescriptionRequestParser(String request) throws JSONException, ParseException {
+	private AddPrescriptionRequestParser getPrescriptionRequestParser(String request) throws RequestParseException {
 		JSONObject jsonRequest = new JSONObject(request);
 		String patientNumberParameter = String.valueOf(patientNumber);
 				
