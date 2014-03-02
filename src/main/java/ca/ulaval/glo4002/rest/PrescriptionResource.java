@@ -50,8 +50,8 @@ public class PrescriptionResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response post(String request) {
 		try {
-			AddPrescriptionRequestParser prescriptionRequest = getPrescriptionRequestParser(request);
-			service.addPrescription(prescriptionRequest); 
+			AddPrescriptionRequestParser requestParser = getRequestParser(request);
+			service.addPrescription(requestParser); 
 			return Response.status(Status.CREATED).build();
 		} catch (RequestParseException e) {
 			return BadRequestJsonResponseBuilder.build("PRES001", e.getMessage());
@@ -62,7 +62,7 @@ public class PrescriptionResource {
 		}
 	}
 	
-	private AddPrescriptionRequestParser getPrescriptionRequestParser(String request) throws RequestParseException {
+	private AddPrescriptionRequestParser getRequestParser(String request) throws RequestParseException {
 		JSONObject jsonRequest = new JSONObject(request);
 		String patientNumberParameter = String.valueOf(patientNumber);
 				

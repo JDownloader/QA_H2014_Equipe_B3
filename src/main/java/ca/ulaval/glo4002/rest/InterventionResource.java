@@ -63,8 +63,8 @@ public class InterventionResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response post(String request){
 		try {
-			CreateInterventionRequestParser interventionRequest = getInterventionRequestParser(request);
-			service.createIntervention(interventionRequest); 
+			CreateInterventionRequestParser requestParser = requestParser(request);
+			service.createIntervention(requestParser); 
 			return Response.status(Status.CREATED).build();
 		} catch (RequestParseException e) {
 			return BadRequestJsonResponseBuilder.build("INT001", e.getMessage());
@@ -75,7 +75,7 @@ public class InterventionResource {
 		}
 	}
 	
-	private CreateInterventionRequestParser getInterventionRequestParser(String request) throws RequestParseException {
+	private CreateInterventionRequestParser requestParser(String request) throws RequestParseException {
 		JSONObject jsonRequest = new JSONObject(request);
 		CreateInterventionRequestParser interventionRequestParser = createInterventionRequestParserFactory.getParser(jsonRequest);
 		return interventionRequestParser;

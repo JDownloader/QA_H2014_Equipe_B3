@@ -46,8 +46,8 @@ public class DrugResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response post(String request){
 		try {
-			DrugSearchRequestParser drugSearchRequest = getDrugSearchRequestParser(request);
-			List<Drug> drugResults = service.searchDrug(drugSearchRequest); 
+			DrugSearchRequestParser requestParser = getRequestParser(request);
+			List<Drug> drugResults = service.searchDrug(requestParser); 
 			return buildDrugResultResponse(drugResults);
 		} catch (RequestParseException e) {
 			return BadRequestJsonResponseBuilder.build("DIN001", e.getMessage());
@@ -58,7 +58,7 @@ public class DrugResource {
 		}
 	}
 	
-	private DrugSearchRequestParser getDrugSearchRequestParser(String request) throws RequestParseException {
+	private DrugSearchRequestParser getRequestParser(String request) throws RequestParseException {
 		JSONObject jsonRequest = new JSONObject(request);
 		DrugSearchRequestParser interventionRequestParser = drugSearchRequestParserFactory.getParser(jsonRequest);
 		return interventionRequestParser;
