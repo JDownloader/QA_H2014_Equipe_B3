@@ -1,12 +1,14 @@
 package ca.ulaval.glo4002.domain.surgicaltool;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class SurgicalToolBuilder {
 	
 	protected String typeCode;
 	protected String serialNumber;
 	protected SurgicalToolStatus status;
 	
-	public SurgicalToolBuilder typecode(String typeCode) {
+	public SurgicalToolBuilder typeCode(String typeCode) {
 		this.typeCode = typeCode;
 		return this;
 	}
@@ -24,7 +26,7 @@ public class SurgicalToolBuilder {
 	public SurgicalTool build() {
 		SurgicalTool surgicalTool = new SurgicalTool(this);
 
-		if(typeCode.isEmpty()
+		if(StringUtils.isBlank(typeCode)
 			|| status == null) {
 			throw new IllegalStateException();
 		}

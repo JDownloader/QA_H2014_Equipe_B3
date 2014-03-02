@@ -90,7 +90,7 @@ public class InterventionService {
 		SurgicalToolBuilder surgicalToolBuilder = new SurgicalToolBuilder();
 		surgicalToolBuilder.serialNumber(requestParser.getSerialNumber());
 		surgicalToolBuilder.status(requestParser.getStatus());
-		surgicalToolBuilder.typecode(requestParser.getTypeCode());
+		surgicalToolBuilder.typeCode(requestParser.getTypeCode());
 		
 		SurgicalTool surgicalTool = surgicalToolBuilder.build();
 		return surgicalTool;

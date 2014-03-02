@@ -23,7 +23,9 @@ public class CreateInterventionRequestParserTest {
 	private static final int SAMPLE_PATIENT_PARAMETER = 2;
 	private static final int SAMPLE_SURGEON_PARAMETER = 101224;
 	private static final String SAMPLE_STATUS_PARAMETER = "en_cours";
+	private static final String INVALID_STATUS_PARAMETER = "invalid";
 	private static final String SAMPLE_TYPE_PARAMETER = "moelle";
+	private static final String INVALID_TYPE_PARAMETER = "invalid";
 	private static final int MIN_PATIENT_PARAMETER = 2;
 	private static final int MIN_SURGEON_PARAMETER = 101224;
 	
@@ -90,6 +92,18 @@ public class CreateInterventionRequestParserTest {
 	@Test(expected = RequestParseException.class)
 	public void disallowsUnspecifiedTypeParameter() throws Exception {
 		jsonRequest.remove("type");
+		createRequestParser();
+	}
+	
+	@Test(expected = RequestParseException.class)
+	public void disallowsInvalidTypeParameter() throws Exception {
+		jsonRequest.put("type", INVALID_TYPE_PARAMETER);
+		createRequestParser();
+	}
+	
+	@Test(expected = RequestParseException.class)
+	public void disallowsInvalidStatusParameter() throws Exception {
+		jsonRequest.put("statut", INVALID_STATUS_PARAMETER);
 		createRequestParser();
 	}
 	

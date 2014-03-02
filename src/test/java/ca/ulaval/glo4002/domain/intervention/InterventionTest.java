@@ -8,6 +8,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
+import ca.ulaval.glo4002.domain.surgicaltool.SurgicalTool;
 
 public class InterventionTest {
 
@@ -76,5 +77,12 @@ public class InterventionTest {
 	@Test
 	public void returnsPatientCorrectly() {
 		assertSame(patientMock, intervention.getPatient());
+	}
+	
+	@Test
+	public void addsSurgicalToolCorrectly() {
+		SurgicalTool surgicalToolMock = mock(SurgicalTool.class);
+		intervention.addSurgicalTool(surgicalToolMock);
+		assertTrue(intervention.hasSurgicalTool(surgicalToolMock));
 	}
 }
