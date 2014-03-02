@@ -30,15 +30,18 @@ public abstract class MarkInstrumentRequest {
 	abstract void validateRequestParameters() throws BadRequestException;
 	
 	public String getTypecode() {
-		return typecode;
+		return this.typecode;
 	}
 	
 	public String getStatus() {
-		return status;
+		return this.status;
 	}
 	
 	public String getSerialNumber() {
-		return serialNumber;
+		return this.serialNumber;
 	}
 	
+	public int getInterventionId() {
+		return this.interventionId;
+	}
 }
