@@ -5,7 +5,7 @@ import java.text.ParseException;
 import org.json.*;
 
 public class DrugSearchRequestParserFactory {
-	public DrugSearchRequestParser createDrugSearchRequest(JSONObject jsonRequest) throws JSONException, ParseException {
+	public DrugSearchRequestParser getParser(JSONObject jsonRequest) throws JSONException, ParseException {
 		return new DrugSearchRequestParser(jsonRequest);
 	}
 }

@@ -18,10 +18,10 @@ public class DrugService {
 		this.drugRepository = builder.drugRepository;
 	}
 	
-	public List<Drug> searchDrug(DrugSearchRequestParser interventionRequest) throws BadRequestException {
+	public List<Drug> searchDrug(DrugSearchRequestParser requestParser) throws BadRequestException {
 		try {
 			entityTransaction.begin();
-			List<Drug> drugResults = doDrugSearch(interventionRequest);
+			List<Drug> drugResults = doDrugSearch(requestParser);
 			entityTransaction.commit();
 			return drugResults;
 		} catch (Exception e) {
@@ -32,7 +32,7 @@ public class DrugService {
 		}
 	}
 	
-	protected List<Drug> doDrugSearch(DrugSearchRequestParser interventionRequest) throws BadRequestException {
-		return drugRepository.findByName(interventionRequest.getName());
+	protected List<Drug> doDrugSearch(DrugSearchRequestParser requestParser) throws BadRequestException {
+		return drugRepository.findByName(requestParser.getName());
 	}
 }

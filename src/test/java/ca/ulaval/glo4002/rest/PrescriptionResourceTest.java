@@ -28,7 +28,7 @@ public class PrescriptionResourceTest {
 		prescriptionServiceMock = mock(PrescriptionService.class);
 		addPrescriptionRequestMock = mock(AddPrescriptionRequestParser.class);
 		addPrescriptionRequestFactoryMock = mock(AddPrescriptionRequestParserFactory.class);
-		when(addPrescriptionRequestFactoryMock.createAddPrescriptionRequest(any(JSONObject.class), anyString())).thenReturn(addPrescriptionRequestMock);
+		when(addPrescriptionRequestFactoryMock.getParser(any(JSONObject.class), anyString())).thenReturn(addPrescriptionRequestMock);
 		prescriptionResource = new PrescriptionResource(prescriptionServiceMock, addPrescriptionRequestFactoryMock);
 	}
 	

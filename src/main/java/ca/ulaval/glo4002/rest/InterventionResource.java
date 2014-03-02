@@ -31,7 +31,7 @@ public class InterventionResource {
 	
 	private InterventionService service;
 	private SurgicalToolService surgicalToolService;
-	private CreateInterventionRequestParserFactory createInterventionRequestFactory;
+	private CreateInterventionRequestParserFactory createInterventionRequestParserFactory;
 
 	@PathParam("intervention_number")
 	private int interventionNumber;
@@ -47,7 +47,7 @@ public class InterventionResource {
 		interventionServiceBuilder.patientRepository(new HibernatePatientRepository());
 		this.service = new InterventionService(interventionServiceBuilder);
 		
-		this.createInterventionRequestFactory = new CreateInterventionRequestParserFactory();
+		this.createInterventionRequestParserFactory = new CreateInterventionRequestParserFactory();
 	}
 	
 	public InterventionResource(InterventionService service, SurgicalToolService surgicalToolService) {
@@ -55,9 +55,9 @@ public class InterventionResource {
 		this.surgicalToolService = surgicalToolService;
 	}
 	
-	public InterventionResource(InterventionService service, CreateInterventionRequestParserFactory createInterventionRequestFactory) {
+	public InterventionResource(InterventionService service, CreateInterventionRequestParserFactory createInterventionRequestParserFactory) {
 		this.service = service;
-		this.createInterventionRequestFactory = createInterventionRequestFactory;
+		this.createInterventionRequestParserFactory = createInterventionRequestParserFactory;
 	}
 	
 	@POST
@@ -65,7 +65,7 @@ public class InterventionResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response post(String request){
 		try {
-			CreateInterventionRequestParser interventionRequest = getInterventionRequest(request);
+			CreateInterventionRequestParser interventionRequest = getInterventionRequestParser(request);
 			service.createIntervention(interventionRequest); 
 			return Response.status(Status.CREATED).build();
 		} catch (JSONException | ParseException e) {
@@ -79,10 +79,10 @@ public class InterventionResource {
 		}
 	}
 	
-	private CreateInterventionRequestParser getInterventionRequest(String request) throws JSONException, ParseException {
+	private CreateInterventionRequestParser getInterventionRequestParser(String request) throws JSONException, ParseException {
 		JSONObject jsonRequest = new JSONObject(request);
-		CreateInterventionRequestParser interventionRequest = createInterventionRequestFactory.createInterventionRequest(jsonRequest);
-		return interventionRequest;
+		CreateInterventionRequestParser interventionRequestParser = createInterventionRequestParserFactory.getParser(jsonRequest);
+		return interventionRequestParser;
 	}
 
 	@POST @Path("{intervention_number: [0-9]+}/instruments/")

@@ -24,7 +24,7 @@ import ca.ulaval.glo4002.services.prescription.*;
 @Path("patient/{patient_number: [0-9]+}/prescriptions/")
 public class PrescriptionResource {
 	private PrescriptionService service;
-	private AddPrescriptionRequestParserFactory addPrescriptionRequestFactory;
+	private AddPrescriptionRequestParserFactory addPrescriptionRequestParserFactory;
 	
 	public PrescriptionResource() {
 		EntityManager entityManager = new EntityManagerProvider().getEntityManager();
@@ -36,12 +36,12 @@ public class PrescriptionResource {
 		prescriptionServiceBuilder.patientRepository(new HibernatePatientRepository());	
 		this.service = new PrescriptionService(prescriptionServiceBuilder);
 		
-		this.addPrescriptionRequestFactory = new AddPrescriptionRequestParserFactory();
+		this.addPrescriptionRequestParserFactory = new AddPrescriptionRequestParserFactory();
 	}
 	
-	public PrescriptionResource(PrescriptionService service, AddPrescriptionRequestParserFactory addPrescriptionRequestFactory) {
+	public PrescriptionResource(PrescriptionService service, AddPrescriptionRequestParserFactory addPrescriptionRequestParserFactory) {
 		this.service = service;
-		this.addPrescriptionRequestFactory = addPrescriptionRequestFactory;
+		this.addPrescriptionRequestParserFactory = addPrescriptionRequestParserFactory;
 	}
 	
 	@PathParam("patient_number")
@@ -52,7 +52,7 @@ public class PrescriptionResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response post(String request) {
 		try {
-			AddPrescriptionRequestParser prescriptionRequest = getPrescriptionRequest(request);
+			AddPrescriptionRequestParser prescriptionRequest = getPrescriptionRequestParser(request);
 			service.addPrescription(prescriptionRequest); 
 			return Response.status(Status.CREATED).build();
 		} catch (JSONException | ParseException e) {
@@ -66,11 +66,11 @@ public class PrescriptionResource {
 		}
 	}
 	
-	private AddPrescriptionRequestParser getPrescriptionRequest(String request) throws JSONException, ParseException {
+	private AddPrescriptionRequestParser getPrescriptionRequestParser(String request) throws JSONException, ParseException {
 		JSONObject jsonRequest = new JSONObject(request);
 		String patientNumberParameter = String.valueOf(patientNumber);
 				
-		AddPrescriptionRequestParser prescriptionRequest = addPrescriptionRequestFactory.createAddPrescriptionRequest(jsonRequest, patientNumberParameter);
-		return prescriptionRequest;
+		AddPrescriptionRequestParser prescriptionParserRequest = addPrescriptionRequestParserFactory.getParser(jsonRequest, patientNumberParameter);
+		return prescriptionParserRequest;
 	}
 }

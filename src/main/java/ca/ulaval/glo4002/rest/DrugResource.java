@@ -23,7 +23,7 @@ import ca.ulaval.glo4002.services.drug.DrugServiceBuilder;
 @Path("medicaments/dins/")
 public class DrugResource {
 	private DrugService service;
-	private DrugSearchRequestParserFactory drugSearchRequestFactory;
+	private DrugSearchRequestParserFactory drugSearchRequestParserFactory;
 	
 	public DrugResource() {
 		EntityManager entityManager = new EntityManagerProvider().getEntityManager();
@@ -33,12 +33,12 @@ public class DrugResource {
 		drugServiceBuilder.drugRepository(new HibernateDrugRepository());
 		this.service = new DrugService(drugServiceBuilder);
 		
-		this.drugSearchRequestFactory = new DrugSearchRequestParserFactory();
+		this.drugSearchRequestParserFactory = new DrugSearchRequestParserFactory();
 	}
 	
-	public DrugResource(DrugService service, DrugSearchRequestParserFactory drugSearchRequestFactory) {
+	public DrugResource(DrugService service, DrugSearchRequestParserFactory drugSearchRequestParserFactory) {
 		this.service = service;
-		this.drugSearchRequestFactory = drugSearchRequestFactory;
+		this.drugSearchRequestParserFactory = drugSearchRequestParserFactory;
 	}
 	
 	@POST
@@ -46,7 +46,7 @@ public class DrugResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response post(String request){
 		try {
-			DrugSearchRequestParser drugSearchRequest = getDrugSearchRequest(request);
+			DrugSearchRequestParser drugSearchRequest = getDrugSearchRequestParser(request);
 			List<Drug> drugResults = service.searchDrug(drugSearchRequest); 
 			return buildDrugResultResponse(drugResults);
 		} catch (JSONException | ParseException e) {
@@ -60,10 +60,10 @@ public class DrugResource {
 		}
 	}
 	
-	private DrugSearchRequestParser getDrugSearchRequest(String request) throws JSONException, ParseException {
+	private DrugSearchRequestParser getDrugSearchRequestParser(String request) throws JSONException, ParseException {
 		JSONObject jsonRequest = new JSONObject(request);
-		DrugSearchRequestParser interventionRequest = drugSearchRequestFactory.createDrugSearchRequest(jsonRequest);
-		return interventionRequest;
+		DrugSearchRequestParser interventionRequestParser = drugSearchRequestParserFactory.getParser(jsonRequest);
+		return interventionRequestParser;
 	}
 	
 	private Response buildDrugResultResponse(List<Drug> drugs) {

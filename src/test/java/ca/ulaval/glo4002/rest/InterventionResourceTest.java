@@ -39,7 +39,7 @@ public class InterventionResourceTest {
 		interventionServiceMock = mock(InterventionService.class);
 		createInterventionRequestMock = mock(CreateInterventionRequestParser.class);
 		createInterventionRequestFactoryMock = mock(CreateInterventionRequestParserFactory.class);
-		when(createInterventionRequestFactoryMock.createInterventionRequest(any(JSONObject.class))).thenReturn(createInterventionRequestMock);
+		when(createInterventionRequestFactoryMock.getParser(any(JSONObject.class))).thenReturn(createInterventionRequestMock);
 		interventionResource = new InterventionResource(interventionServiceMock, createInterventionRequestFactoryMock);
 	}
 

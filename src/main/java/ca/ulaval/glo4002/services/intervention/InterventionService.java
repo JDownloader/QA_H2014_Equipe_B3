@@ -11,9 +11,6 @@ import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
 import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParser;
-import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.MarkExistingInstrumentRequestParser;
-import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.MarkNewInstrumentRequestParser;
-
 
 public class InterventionService {
 	private InterventionRepository interventionRepository;
@@ -26,10 +23,10 @@ public class InterventionService {
 		this.patientRepository = builder.patientRepository;
 	}
 	
-	public void createIntervention(CreateInterventionRequestParser interventionRequest) throws BadRequestException {
+	public void createIntervention(CreateInterventionRequestParser requestParser) throws BadRequestException {
 		try {
 			entityTransaction.begin();
-			doCreateIntervention(interventionRequest);
+			doCreateIntervention(requestParser);
 			entityTransaction.commit();
 		} catch (Exception e) {
 			if (entityTransaction.isActive()) {
@@ -39,24 +36,24 @@ public class InterventionService {
 		}
 	}
 	
-	protected void doCreateIntervention(CreateInterventionRequestParser interventionRequest) throws BadRequestException {
+	protected void doCreateIntervention(CreateInterventionRequestParser requestParser) throws BadRequestException {
 		InterventionBuilder interventionBuilder = new InterventionBuilder();
-		interventionBuilder.date(interventionRequest.getDate());
-		interventionBuilder.description(interventionRequest.getDescription());
-		interventionBuilder.room(interventionRequest.getRoom());
-		interventionBuilder.surgeon(new Surgeon(interventionRequest.getSurgeon()));
-		interventionBuilder.type(interventionRequest.getType());
-		interventionBuilder.status(interventionRequest.getStatus());
-		Patient patient = getPatient(interventionRequest);
+		interventionBuilder.date(requestParser.getDate());
+		interventionBuilder.description(requestParser.getDescription());
+		interventionBuilder.room(requestParser.getRoom());
+		interventionBuilder.surgeon(new Surgeon(requestParser.getSurgeon()));
+		interventionBuilder.type(requestParser.getType());
+		interventionBuilder.status(requestParser.getStatus());
+		Patient patient = getPatient(requestParser);
 		interventionBuilder.patient(patient);
 		
 		Intervention intervention = interventionBuilder.build();
 		interventionRepository.create(intervention);
 	}
 	
-	private Patient getPatient(CreateInterventionRequestParser interventionRequest) throws BadRequestException {
+	private Patient getPatient(CreateInterventionRequestParser requestParser) throws BadRequestException {
 		try {
-			return patientRepository.getById(interventionRequest.getPatient());
+			return patientRepository.getById(requestParser.getPatient());
 		} catch (EntityNotFoundException e) {
 			throw new BadRequestException("INT002", e.getMessage());
 		}
