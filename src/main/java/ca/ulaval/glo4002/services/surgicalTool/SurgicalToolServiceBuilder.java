@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.services.surgicalTools;
+package ca.ulaval.glo4002.services.surgicalTool;
 
 import javax.persistence.EntityTransaction;
 

@@ -14,6 +14,7 @@ import ca.ulaval.glo4002.exceptions.BadRequestException;
 import ca.ulaval.glo4002.rest.requests.CreateInterventionRequest;
 import ca.ulaval.glo4002.rest.requests.CreateInterventionRequestFactory;
 import ca.ulaval.glo4002.services.intervention.InterventionService;
+import ca.ulaval.glo4002.services.surgicalTool.SurgicalToolService;
 
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -74,7 +75,9 @@ public class InterventionResourceTest {
 	private String VALID_MARK_EXISTING_INSTRUMENT = "{\"statut\": \"UTILISE_PATIENT\", \"noserie\" : \"23562543-3635345\"}";
 
 	@Mock
-	private InterventionService service;
+	private SurgicalToolService service;
+	@Mock
+	private InterventionService interventionService;
 	@Mock
 	private MarkNewInstrumentRequest markNewInstrumentRequest;
 	@Mock
@@ -84,8 +87,8 @@ public class InterventionResourceTest {
 
 	@Before
 	public void init() {
-		service = mock(InterventionService.class);
-		testServlet = new InterventionResource(service);
+		service = mock(SurgicalToolService.class);
+		testServlet = new InterventionResource(interventionService,service);
 		markExistingInstrumentRequest = mock(MarkExistingInstrumentRequest.class);
 		markNewInstrumentRequest = mock(MarkNewInstrumentRequest.class);
 	}
