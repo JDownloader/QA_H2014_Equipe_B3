@@ -3,12 +3,12 @@ package ca.ulaval.glo4002.requestparsers.drug;
 import static org.junit.Assert.*;
 
 import org.json.JSONObject;
-import org.json.JSONException;
 import org.junit.*;
 
+import ca.ulaval.glo4002.exceptions.RequestParseException;
 import ca.ulaval.glo4002.rest.requestparsers.drug.DrugSearchRequestParser;
 
-public class DrugSearchRequestTest {
+public class DrugSearchRequestParserTest {
 	private static final String SAMPLE_NAME_PARAMETER = "drug_name";
 	
 	private DrugSearchRequestParser drugSearchRequest;
@@ -17,40 +17,40 @@ public class DrugSearchRequestTest {
 	@Before
 	public void setup() throws Exception {
 		jsonRequest.put("nom", SAMPLE_NAME_PARAMETER);
-		createDrugSearchRequest();
+		createRequestParser();
 	}
 	
-	private void createDrugSearchRequest() throws Exception {
+	private void createRequestParser() throws Exception {
 		drugSearchRequest = new DrugSearchRequestParser(jsonRequest);
 	}
 	
 	@Test
 	public void validatesGoodRequestCorrectly() throws Exception {
-		createDrugSearchRequest();
+		createRequestParser();
 	}
 	
-	@Test(expected = JSONException.class)
+	@Test(expected = RequestParseException.class)
 	public void disallowsUnspecifiedNameParameter() throws Exception {
 		jsonRequest.remove("nom");
-		createDrugSearchRequest();
+		createRequestParser();
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = RequestParseException.class)
 	public void disallowsBlankNameParameter() throws Exception {
 		jsonRequest.put("nom", "");
-		createDrugSearchRequest();
+		createRequestParser();
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = RequestParseException.class)
 	public void disallowsNameWith2CharactersParameter() throws Exception {
 		jsonRequest.put("nom", "ab");
-		createDrugSearchRequest();
+		createRequestParser();
 	}
 	
 	@Test
 	public void allowsNameWith3CharactersParameter() throws Exception {
 		jsonRequest.put("nom", "abc");
-		createDrugSearchRequest();
+		createRequestParser();
 	}
 	
 	@Test

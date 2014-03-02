@@ -51,7 +51,7 @@ public class AddPrescriptionRequestParser {
 			throw new RequestParseException ("Parameter 'intervenant' must be greater or equal to 0.");
 		} else if (this.renewals < 0) {
 			throw new RequestParseException ("Parameter 'renouvellements' must be greater or equal to 0.");
-		} else if (this.renewals < 0) {
+		} else if (this.patientNumber < 0) {
 			throw new RequestParseException ("Path parameter '$NO_PATIENT$' must be greater or equal to 0.");
 		} else if (!this.validateDinAndName()) {
 			throw new RequestParseException ("Either parameter 'din' or 'nom' must be specified, but not both.");

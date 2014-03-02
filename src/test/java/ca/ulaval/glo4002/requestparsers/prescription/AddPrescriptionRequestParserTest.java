@@ -2,17 +2,16 @@ package ca.ulaval.glo4002.requestparsers.prescription;
 
 import static org.junit.Assert.*;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.*;
 
 import ca.ulaval.glo4002.rest.requestparsers.prescription.AddPrescriptionRequestParser;
+import ca.ulaval.glo4002.exceptions.*;
 
-public class AddPrescriptionRequestTest {
+public class AddPrescriptionRequestParserTest {
 	
 	private static final String SAMPLE_DATE_PARAMETER = "2001-07-04T12:08:56";
 	private static final String SAMPLE_INVALID_DATE_PARAMETER = "2001-07-0412:08:56";
@@ -37,107 +36,107 @@ public class AddPrescriptionRequestTest {
 		jsonRequest.put("renouvellements", SAMPLE_RENEWALS_PARAMETER);
 		jsonRequest.put("din", SAMPLE_DIN_PARAMETER);
 		jsonRequest.put("nopatient", SAMPLE_PATIENT_NUMBER_PARAMETER);
-		createPrescriptionRequest();
+		createRequestParser();
 	}
 	
-	private void createPrescriptionRequest() throws Exception {
+	private void createRequestParser() throws Exception {
 		addPrescriptionRequest = new AddPrescriptionRequestParser(jsonRequest);
 	}
 	
 	@Test
 	public void validatesGoodRequestCorrectly() throws Exception {
-		createPrescriptionRequest();
+		createRequestParser();
 	}
 	
 	@Test
 	public void validatesGoodRequestWithDrugNameCorrectly() throws Exception {
 		swapDinForDrugName();
-		createPrescriptionRequest();
+		createRequestParser();
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = RequestParseException.class)
 	public void disallowsEmptyDrugName() throws Exception {
 		jsonRequest.remove("din");
 		jsonRequest.put("nom", "");
-		createPrescriptionRequest();
+		createRequestParser();
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = RequestParseException.class)
 	public void disallowsUnspecifiedDrugAndDrugNameParameters() throws Exception {
 		jsonRequest.remove("din");
-		createPrescriptionRequest();
+		createRequestParser();
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = RequestParseException.class)
 	public void disallowsDrugAndDrugNameParametersBothSpecified() throws Exception {
 		jsonRequest.put("nom", SAMPLE_DRUG_NAME_PARAMETER);
-		createPrescriptionRequest();
+		createRequestParser();
 	}
 	
-	@Test(expected = JSONException.class)
+	@Test(expected = RequestParseException.class)
 	public void disallowsUnspecifiedStaffMemberParameter() throws Exception {
 		jsonRequest.remove("intervenant");
-		createPrescriptionRequest();
+		createRequestParser();
 	}
 	
-	@Test(expected = JSONException.class)
+	@Test(expected = RequestParseException.class)
 	public void disallowsUnspecifiedRenewalsParameter() throws Exception {
 		jsonRequest.remove("renouvellements");
-		createPrescriptionRequest();
+		createRequestParser();
 	}
 	
 	@Test(expected = Exception.class)
 	public void disallowsUnspecifiedDateParameter() throws Exception {
 		jsonRequest.remove("date");
-		createPrescriptionRequest();
+		createRequestParser();
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = RequestParseException.class)
 	public void disallowsNegativeStaffMemberParameter() throws Exception {
 		jsonRequest.put("intervenant", "-1");
-		createPrescriptionRequest();
+		createRequestParser();
 	}
 	
 	@Test(expected = Exception.class)
 	public void disallowsNegativeRenewalsParameter() throws Exception {
 		jsonRequest.put("renouvellements", "-1");
-		createPrescriptionRequest();
+		createRequestParser();
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = RequestParseException.class)
 	public void disallowsNegativePatientParameter() throws Exception {
 		jsonRequest.put("nopatient", "-1");
-		createPrescriptionRequest();
+		createRequestParser();
 	}
 
-	@Test(expected = ParseException.class)
+	@Test(expected = RequestParseException.class)
 	public void disallowsInvalidDateParameter() throws Exception {
 		jsonRequest.put("date", SAMPLE_INVALID_DATE_PARAMETER);
-		createPrescriptionRequest();
+		createRequestParser();
 	}
 	
 	@Test
 	public void allowsMinimumDinParameter() throws Exception {
 		jsonRequest.put("din", MIN_DIN_PARAMETER);
-		createPrescriptionRequest();
+		createRequestParser();
 	}
 	
 	@Test
 	public void allowsMinimumStaffMemberParameter() throws Exception {
 		jsonRequest.put("intervenant", MIN_STAFF_MEMBER_PARAMETER);
-		createPrescriptionRequest();
+		createRequestParser();
 	}
 	
 	@Test
 	public void allowsMinimumRenewalsParameter() throws Exception {
 		jsonRequest.put("renouvellements", MIN_RENEWALS_PARAMETER);
-		createPrescriptionRequest();
+		createRequestParser();
 	}
 	
 	@Test
 	public void allowsMinimumPatientNumberParameter() throws Exception {
 		jsonRequest.put("nopatient", MIN_PATIENT_NUMBER_PARAMETER);
-		createPrescriptionRequest();
+		createRequestParser();
 	}
 	
 	@Test
@@ -153,7 +152,7 @@ public class AddPrescriptionRequestTest {
 	@Test
 	public void returnsCorrectDrugName() throws Exception {
 		swapDinForDrugName();
-		createPrescriptionRequest();
+		createRequestParser();
 		assertEquals(SAMPLE_DRUG_NAME_PARAMETER, addPrescriptionRequest.getDrugName());
 	}
 	

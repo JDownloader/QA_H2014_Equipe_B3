@@ -17,6 +17,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import ca.ulaval.glo4002.domain.intervention.*;
 import ca.ulaval.glo4002.domain.patient.*;
+import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolRepository;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParser;
 
@@ -33,6 +34,7 @@ public class InterventionServiceTest {
 	
 	private InterventionRepository interventionRepositoryMock;
 	private PatientRepository patientRepositoryMock;
+	private SurgicalToolRepository surgicalToolRepositoryMock;
 	private EntityTransaction entityTransactionMock;
 	private Patient patientMock;
 	private InterventionService interventionService;
@@ -51,6 +53,7 @@ public class InterventionServiceTest {
 	private void createMocks() {
 		interventionRepositoryMock = mock(InterventionRepository.class);
 		patientRepositoryMock = mock(PatientRepository.class);
+		surgicalToolRepositoryMock = mock(SurgicalToolRepository.class);
 		patientMock = mock(Patient.class);
 		entityTransactionMock = mock(EntityTransaction.class);
 		createInterventionRequestMock = mock(CreateInterventionRequestParser.class);
@@ -60,6 +63,7 @@ public class InterventionServiceTest {
 		InterventionServiceBuilder interventionServiceBuilder = new InterventionServiceBuilder();
 		interventionServiceBuilder.interventionRepository(interventionRepositoryMock);
 		interventionServiceBuilder.patientRepository(patientRepositoryMock);
+		interventionServiceBuilder.surgicalToolRepository(surgicalToolRepositoryMock);
 		interventionServiceBuilder.entityTransaction(entityTransactionMock);
 		interventionService = interventionServiceBuilder.build();
 	}
@@ -108,20 +112,20 @@ public class InterventionServiceTest {
 		verify(entityTransactionMock).rollback();
 	}
 
-	@Rule public ExpectedException thrown=ExpectedException.none();
-	
-	@Test
-	public void sendInAValidMarkNewInstrumentRequest() {
-		assertTrue(false);
-	}
-	
-	@Test
-	public void sendRequestForAlreadyFiledSerialNumber() {
-		assertTrue(false);
-	}
-	
-	@Test
-	public void sendInAValidMarkExistingRequest() {
-		assertTrue(false);
-	}
+//	@Rule public ExpectedException thrown=ExpectedException.none();
+//	
+//	@Test
+//	public void sendInAValidMarkNewInstrumentRequest() {
+//		assertTrue(false);
+//	}
+//	
+//	@Test
+//	public void sendRequestForAlreadyFiledSerialNumber() {
+//		assertTrue(false);
+//	}
+//	
+//	@Test
+//	public void sendInAValidMarkExistingRequest() {
+//		assertTrue(false);
+//	}
 }

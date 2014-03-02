@@ -2,20 +2,19 @@ package ca.ulaval.glo4002.requestparsers.intervention;
 
 import static org.junit.Assert.assertEquals;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
 import ca.ulaval.glo4002.domain.intervention.InterventionStatus;
 import ca.ulaval.glo4002.domain.intervention.InterventionType;
+import ca.ulaval.glo4002.exceptions.RequestParseException;
 import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParser;
 
-public class CreateInterventionRequestTest {
+public class CreateInterventionRequestParserTest {
 	
 	private static final String SAMPLE_DATE_PARAMETER = "2001-07-04T12:08:56";
 	private static final String SAMPLE_INVALID_DATE_PARAMETER = "2001-07-0412:08:56";
@@ -40,100 +39,100 @@ public class CreateInterventionRequestTest {
 		jsonRequest.put("type", SAMPLE_TYPE_PARAMETER);
 		jsonRequest.put("statut", SAMPLE_STATUS_PARAMETER);
 		jsonRequest.put("patient", SAMPLE_PATIENT_PARAMETER);
-		createInterventionRequest();
+		createRequestParser();
 	}
 	
-	private void createInterventionRequest() throws Exception {
+	private void createRequestParser() throws Exception {
 		createInterventionRequest = new CreateInterventionRequestParser(jsonRequest);
 	}
 	
 	@Test
 	public void validatesGoodRequestCorrectly() throws Exception {
-		createInterventionRequest();
+		createRequestParser();
 	}
 	
-	@Test(expected = JSONException.class)
+	@Test(expected = RequestParseException.class)
 	public void disallowsUnspecifiedDescriptionParameter() throws Exception {
 		jsonRequest.remove("description");
-		createInterventionRequest();
+		createRequestParser();
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = RequestParseException.class)
 	public void disallowsBlankDescriptionParameter() throws Exception {
 		jsonRequest.put("description", "");
-		createInterventionRequest();
+		createRequestParser();
 	}
 	
-	@Test(expected = JSONException.class)
+	@Test(expected = RequestParseException.class)
 	public void disallowsUnspecifiedSurgeonParameter() throws Exception {
 		jsonRequest.remove("chirurgien");
-		createInterventionRequest();
+		createRequestParser();
 	}
 	
-	@Test(expected = JSONException.class)
+	@Test(expected = RequestParseException.class)
 	public void disallowsUnspecifiedDateParameter() throws Exception {
 		jsonRequest.remove("date");
-		createInterventionRequest();
+		createRequestParser();
 	}
 	
-	@Test(expected = JSONException.class)
+	@Test(expected = RequestParseException.class)
 	public void disallowsUnspecifiedRoomParameter() throws Exception {
 		jsonRequest.remove("salle");
-		createInterventionRequest();
+		createRequestParser();
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = RequestParseException.class)
 	public void disallowsBlankRoomParameter() throws Exception {
 		jsonRequest.put("salle", "");
-		createInterventionRequest();
+		createRequestParser();
 	}
 	
-	@Test(expected = JSONException.class)
+	@Test(expected = RequestParseException.class)
 	public void disallowsUnspecifiedTypeParameter() throws Exception {
 		jsonRequest.remove("type");
-		createInterventionRequest();
+		createRequestParser();
 	}
 	
-	@Test(expected = JSONException.class)
+	@Test(expected = RequestParseException.class)
 	public void disallowsUnspecifiedPatientParameter() throws Exception {
 		jsonRequest.remove("patient");
-		createInterventionRequest();
+		createRequestParser();
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = RequestParseException.class)
 	public void disallowsNegativePatientParameter() throws Exception {
 		jsonRequest.put("patient", -1);
-		createInterventionRequest();
+		createRequestParser();
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = RequestParseException.class)
 	public void disallowsNegativeSurgeonParameter() throws Exception {
 		jsonRequest.put("chirurgien", -1);
-		createInterventionRequest();
+		createRequestParser();
 	}
 
-	@Test(expected = ParseException.class)
+	@Test(expected = RequestParseException.class)
 	public void disallowsInvalidDateParameter() throws Exception {
 		jsonRequest.put("date", SAMPLE_INVALID_DATE_PARAMETER);
-		createInterventionRequest();
+		createRequestParser();
 	}
 	
 	@Test
 	public void allowsUnspecifiedStatusParameter() throws Exception {
 		jsonRequest.remove("statut");
-		createInterventionRequest();
+		createRequestParser();
 	}
 	
 	@Test
 	public void allowsMinimumPatientParameter() throws Exception {
 		jsonRequest.put("patient", MIN_PATIENT_PARAMETER);
-		createInterventionRequest();
+		createRequestParser();
 	}
 	
 	@Test
 	public void allowsMinimumSurgeonParameter() throws Exception {
 		jsonRequest.put("chirurgien", MIN_SURGEON_PARAMETER);
-		createInterventionRequest();
+		createRequestParser();
 	}
 	
 	@Test
