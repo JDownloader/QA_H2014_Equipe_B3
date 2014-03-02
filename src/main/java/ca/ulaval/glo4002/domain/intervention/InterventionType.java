@@ -25,6 +25,6 @@ public enum InterventionType implements Serializable {
 				return interventionType;
 			}
 		}
-		throw new IllegalArgumentException(String.format("%s is not a valid value for enumeration InterventionStatus.", type));
+		throw new IllegalArgumentException(String.format("'%s' is not a valid value for enumeration InterventionStatus.", type));
 	}
 }

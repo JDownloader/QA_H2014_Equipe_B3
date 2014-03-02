@@ -3,6 +3,7 @@ package ca.ulaval.glo4002.rest.requests;
 import java.text.ParseException;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,33 +38,40 @@ public class CreateInterventionRequest {
 		String statusParameter = jsonRequest.optString(STATUS_PARAMETER);
 		this.status = InterventionStatus.fromString(statusParameter);
 		this.patient = jsonRequest.getInt(PATIENT_PARAMETER);
+		validateRequestParameters();
 	}
 	
-	public String getDescription(){
+	private void validateRequestParameters() {
+		if (StringUtils.isBlank(this.description) || this.surgeon < 0 || StringUtils.isBlank(this.room) || this.patient < 0) {
+			throw new IllegalArgumentException("Invalid parameters were supplied to the request.");
+		}
+	}
+	
+	public String getDescription() {
 		return this.description;
 	}
 	
-	public int getSurgeon(){
+	public int getSurgeon() {
 		return this.surgeon;
 	}
 	
-	public Date getDate(){
+	public Date getDate() {
 		return this.date;
 	}
 	
-	public String getRoom(){
+	public String getRoom() {
 		return this.room;
 	}
 	
-	public InterventionType getType(){
+	public InterventionType getType() {
 		return this.type;
 	}
 	
-	public InterventionStatus getStatus(){
+	public InterventionStatus getStatus() {
 		return this.status;
 	}
 	
-	public int getPatient(){
+	public int getPatient() {
 		return this.patient;
 	}
 }

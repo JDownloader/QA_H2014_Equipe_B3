@@ -3,7 +3,7 @@ package ca.ulaval.glo4002.domain.intervention;
 import java.io.Serializable;
 
 public enum InterventionStatus implements Serializable {
-	PLANIFIEE("Planifiee"), EN_COURS("En cours"), TERMINEE("Terminee"), ANNULEE("Annulee"), REPORTEE("Reportee");
+	PLANIFIEE("Planifiee"), EN_COURS("En_cours"), TERMINEE("Terminee"), ANNULEE("Annulee"), REPORTEE("Reportee"), UNDEFINED("");
 	private String value;
 	
 	private InterventionStatus(String value) {
@@ -25,6 +25,6 @@ public enum InterventionStatus implements Serializable {
 				return interventionStatus;
 			}
 		}
-		throw new IllegalArgumentException(String.format("%s is not a valid value for enumeration InterventionStatus.", statusName));
+		throw new IllegalArgumentException(String.format("'%s' is not a valid value for enumeration InterventionStatus.", statusName));
 	}
 }

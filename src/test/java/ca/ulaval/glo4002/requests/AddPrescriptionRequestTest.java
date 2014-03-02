@@ -36,105 +36,104 @@ public class AddPrescriptionRequestTest {
 		jsonRequest.put("date", SAMPLE_DATE_PARAMETER);
 		jsonRequest.put("renouvellements", SAMPLE_RENEWALS_PARAMETER);
 		jsonRequest.put("din", SAMPLE_DIN_PARAMETER);
-		createPrescription();
+		createPrescriptionRequest();
 	}
 	
-	private void createPrescription() throws Exception {
+	private void createPrescriptionRequest() throws Exception {
 		addPrescriptionRequest = new AddPrescriptionRequest(jsonRequest, SAMPLE_PATIENT_NUMBER_PARAMETER);
 	}
 	
 	@Test
 	public void validatesGoodRequestCorrectly() throws Exception {
-		createPrescription();
+		createPrescriptionRequest();
 	}
 	
 	@Test
 	public void validatesGoodRequestWithDrugNameCorrectly() throws Exception {
 		swapDinForDrugName();
-		createPrescription();
+		createPrescriptionRequest();
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void disallowsEmptyDrugName() throws Exception {
 		jsonRequest.remove("din");
 		jsonRequest.put("nom", "");
-		createPrescription();
+		createPrescriptionRequest();
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void disallowsUnspecifiedDrugAndDrugNameParameters() throws Exception {
 		jsonRequest.remove("din");
-		createPrescription();
+		createPrescriptionRequest();
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void disallowsDrugAndDrugNameParametersBothSpecified() throws Exception {
 		jsonRequest.put("nom", SAMPLE_DRUG_NAME_PARAMETER);
-		createPrescription();
+		createPrescriptionRequest();
 	}
 	
 	@Test(expected = JSONException.class)
 	public void disallowsUnspecifiedStaffMemberParameter() throws Exception {
 		jsonRequest.remove("intervenant");
-		createPrescription();
+		createPrescriptionRequest();
 	}
 	
 	@Test(expected = JSONException.class)
 	public void disallowsUnspecifiedRenewalsParameter() throws Exception {
 		jsonRequest.remove("renouvellements");
-		createPrescription();
+		createPrescriptionRequest();
 	}
 	
 	@Test(expected = Exception.class)
 	public void disallowsUnspecifiedDateParameter() throws Exception {
 		jsonRequest.remove("date");
-		createPrescription();
+		createPrescriptionRequest();
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void disallowsNegativeStaffMemberParameter() throws Exception {
 		jsonRequest.put("intervenant", "-1");
-		createPrescription();
+		createPrescriptionRequest();
 	}
 	
 	@Test(expected = Exception.class)
 	public void disallowsNegativeRenewalsParameter() throws Exception {
 		jsonRequest.put("renouvellements", "-1");
-		createPrescription();
+		createPrescriptionRequest();
 	}
 	
-	@Test(expected = JSONException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void disallowsNegativePatientParameter() throws Exception {
-		jsonRequest.remove("intervenant");
 		new AddPrescriptionRequest(jsonRequest, "-1");
 	}
 
 	@Test(expected = ParseException.class)
 	public void disallowsInvalidDateParameter() throws Exception {
 		jsonRequest.put("date", SAMPLE_INVALID_DATE_PARAMETER);
-		createPrescription();
+		createPrescriptionRequest();
 	}
 	
 	@Test
-	public void allowsMinimumDinValue() throws Exception {
+	public void allowsMinimumDinParameter() throws Exception {
 		jsonRequest.put("din", MIN_DIN_PARAMETER);
-		createPrescription();
+		createPrescriptionRequest();
 	}
 	
 	@Test
-	public void allowsMinimumStaffMemberValue() throws Exception {
+	public void allowsMinimumStaffMemberParameter() throws Exception {
 		jsonRequest.put("intervenant", MIN_STAFF_MEMBER_PARAMETER);
-		createPrescription();
+		createPrescriptionRequest();
 	}
 	
 	@Test
-	public void allowsMinimumRenewalsValue() throws Exception {
+	public void allowsMinimumRenewalsParameter() throws Exception {
 		jsonRequest.put("renouvellements", MIN_RENEWALS_PARAMETER);
-		createPrescription();
+		createPrescriptionRequest();
 	}
 	
 	@Test
-	public void allowsMinimumPatientNumberValue() throws Exception {
+	public void allowsMinimumPatientNumberParameter() throws Exception {
 		new AddPrescriptionRequest(jsonRequest, MIN_PATIENT_NUMBER_PARAMETER);
 	}
 	
@@ -151,7 +150,7 @@ public class AddPrescriptionRequestTest {
 	@Test
 	public void returnsCorrectDrugName() throws Exception {
 		swapDinForDrugName();
-		createPrescription();
+		createPrescriptionRequest();
 		assertEquals(SAMPLE_DRUG_NAME_PARAMETER, addPrescriptionRequest.getDrugName());
 	}
 	
