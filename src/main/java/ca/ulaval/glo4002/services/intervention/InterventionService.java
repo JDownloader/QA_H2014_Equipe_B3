@@ -10,9 +10,9 @@ import ca.ulaval.glo4002.domain.intervention.InterventionBuilder;
 import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
-import ca.ulaval.glo4002.rest.requests.CreateInterventionRequest;
-import ca.ulaval.glo4002.rest.requests.MarkExistingInstrumentRequest;
-import ca.ulaval.glo4002.rest.requests.MarkNewInstrumentRequest;
+import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParser;
+import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.MarkExistingInstrumentRequestParser;
+import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.MarkNewInstrumentRequestParser;
 
 
 public class InterventionService {
@@ -26,7 +26,7 @@ public class InterventionService {
 		this.patientRepository = builder.patientRepository;
 	}
 	
-	public void createIntervention(CreateInterventionRequest interventionRequest) throws BadRequestException {
+	public void createIntervention(CreateInterventionRequestParser interventionRequest) throws BadRequestException {
 		try {
 			entityTransaction.begin();
 			doCreateIntervention(interventionRequest);
@@ -39,7 +39,7 @@ public class InterventionService {
 		}
 	}
 	
-	protected void doCreateIntervention(CreateInterventionRequest interventionRequest) throws BadRequestException {
+	protected void doCreateIntervention(CreateInterventionRequestParser interventionRequest) throws BadRequestException {
 		InterventionBuilder interventionBuilder = new InterventionBuilder();
 		interventionBuilder.date(interventionRequest.getDate());
 		interventionBuilder.description(interventionRequest.getDescription());
@@ -54,7 +54,7 @@ public class InterventionService {
 		interventionRepository.create(intervention);
 	}
 	
-	private Patient getPatient(CreateInterventionRequest interventionRequest) throws BadRequestException {
+	private Patient getPatient(CreateInterventionRequestParser interventionRequest) throws BadRequestException {
 		try {
 			return patientRepository.getById(interventionRequest.getPatient());
 		} catch (EntityNotFoundException e) {

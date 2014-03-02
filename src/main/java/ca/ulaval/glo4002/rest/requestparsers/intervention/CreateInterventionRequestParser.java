@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.rest.requests;
+package ca.ulaval.glo4002.rest.requestparsers.intervention;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -11,7 +11,7 @@ import ca.ulaval.glo4002.domain.intervention.InterventionStatus;
 import ca.ulaval.glo4002.domain.intervention.InterventionType;
 import ca.ulaval.glo4002.utils.CustomDateParser;
 
-public class CreateInterventionRequest {
+public class CreateInterventionRequestParser {
 
 	private static final String DESCRIPTION_PARAMETER = "description";
 	private static final String SURGEON_PARAMETER = "chirurgien";
@@ -29,7 +29,7 @@ public class CreateInterventionRequest {
 	private InterventionStatus status;
 	private int patient;
 	
-	public CreateInterventionRequest(JSONObject jsonRequest) throws JSONException, ParseException{
+	public CreateInterventionRequestParser(JSONObject jsonRequest) throws JSONException, ParseException{
 		this.description = jsonRequest.getString(DESCRIPTION_PARAMETER);
 		this.surgeon = jsonRequest.getInt(SURGEON_PARAMETER);
 		this.date = CustomDateParser.parseDate(jsonRequest.getString(DATE_PARAMETER));

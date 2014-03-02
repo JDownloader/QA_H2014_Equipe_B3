@@ -18,7 +18,7 @@ import static org.mockito.Mockito.*;
 import ca.ulaval.glo4002.domain.intervention.*;
 import ca.ulaval.glo4002.domain.patient.*;
 import ca.ulaval.glo4002.exceptions.BadRequestException;
-import ca.ulaval.glo4002.rest.requests.CreateInterventionRequest;
+import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParser;
 
 @RunWith(MockitoJUnitRunner.class)
 public class InterventionServiceTest {
@@ -37,7 +37,7 @@ public class InterventionServiceTest {
 	private Patient patientMock;
 	private InterventionService interventionService;
 	
-	private CreateInterventionRequest createInterventionRequestMock;
+	private CreateInterventionRequestParser createInterventionRequestMock;
 	
 	@Before
 	public void setup()  {
@@ -53,7 +53,7 @@ public class InterventionServiceTest {
 		patientRepositoryMock = mock(PatientRepository.class);
 		patientMock = mock(Patient.class);
 		entityTransactionMock = mock(EntityTransaction.class);
-		createInterventionRequestMock = mock(CreateInterventionRequest.class);
+		createInterventionRequestMock = mock(CreateInterventionRequestParser.class);
 	}
 	
 	private void buildInterventionService() {

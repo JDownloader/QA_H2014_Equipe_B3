@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.requests;
+package ca.ulaval.glo4002.requestparsers.drug;
 
 import static org.junit.Assert.*;
 
@@ -6,12 +6,12 @@ import org.json.JSONObject;
 import org.json.JSONException;
 import org.junit.*;
 
-import ca.ulaval.glo4002.rest.requests.DrugSearchRequest;
+import ca.ulaval.glo4002.rest.requestparsers.drug.DrugSearchRequestParser;
 
 public class DrugSearchRequestTest {
 	private static final String SAMPLE_NAME_PARAMETER = "drug_name";
 	
-	private DrugSearchRequest drugSearchRequest;
+	private DrugSearchRequestParser drugSearchRequest;
 	private JSONObject jsonRequest = new JSONObject();
 	
 	@Before
@@ -21,7 +21,7 @@ public class DrugSearchRequestTest {
 	}
 	
 	private void createDrugSearchRequest() throws Exception {
-		drugSearchRequest = new DrugSearchRequest(jsonRequest);
+		drugSearchRequest = new DrugSearchRequestParser(jsonRequest);
 	}
 	
 	@Test

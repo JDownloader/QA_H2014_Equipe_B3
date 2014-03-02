@@ -8,7 +8,7 @@ import ca.ulaval.glo4002.domain.patient.*;
 import ca.ulaval.glo4002.domain.prescription.*;
 import ca.ulaval.glo4002.domain.staff.StaffMember;
 import ca.ulaval.glo4002.exceptions.BadRequestException;
-import ca.ulaval.glo4002.rest.requests.AddPrescriptionRequest;
+import ca.ulaval.glo4002.rest.requestparsers.prescription.AddPrescriptionRequestParser;
 
 public class PrescriptionService {
 	private PrescriptionRepository prescriptionRepository;
@@ -23,7 +23,7 @@ public class PrescriptionService {
 		this.patientRepository = builder.patientRepository;
 	}
 	
-	public void addPrescription(AddPrescriptionRequest prescriptionRequest) throws BadRequestException {
+	public void addPrescription(AddPrescriptionRequestParser prescriptionRequest) throws BadRequestException {
 		try {
 			entityTransaction.begin();
 			doAddPrescription(prescriptionRequest);
@@ -36,12 +36,12 @@ public class PrescriptionService {
 		}
 	}
 	
-	protected void doAddPrescription(AddPrescriptionRequest prescriptionRequest) throws BadRequestException {
+	protected void doAddPrescription(AddPrescriptionRequestParser prescriptionRequest) throws BadRequestException {
 		Prescription prescription = createPrescription(prescriptionRequest);
 		updatePatient(prescriptionRequest, prescription);
 	}
 
-	private Prescription createPrescription(AddPrescriptionRequest prescriptionRequest) throws BadRequestException {
+	private Prescription createPrescription(AddPrescriptionRequestParser prescriptionRequest) throws BadRequestException {
 		PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder();
 		prescriptionBuilder.date(prescriptionRequest.getDate());
 		prescriptionBuilder.allowedNumberOfRenewal(prescriptionRequest.getRenewals());
@@ -56,7 +56,7 @@ public class PrescriptionService {
 		return prescription;
 	}
 	
-	private Drug getDrug(AddPrescriptionRequest prescriptionRequest) throws BadRequestException {
+	private Drug getDrug(AddPrescriptionRequestParser prescriptionRequest) throws BadRequestException {
 		try {
 			return drugRepository.getByDin(new Din(prescriptionRequest.getDin()));
 		} catch (EntityNotFoundException e) {
@@ -64,13 +64,13 @@ public class PrescriptionService {
 		}
 	}
 
-	private void updatePatient(AddPrescriptionRequest prescriptionRequest, Prescription prescription) throws BadRequestException {
+	private void updatePatient(AddPrescriptionRequestParser prescriptionRequest, Prescription prescription) throws BadRequestException {
 		Patient patient = getPatient(prescriptionRequest);
 		patient.addPrescription(prescription);
 		patientRepository.update(patient);
 	}
 	
-	private Patient getPatient(AddPrescriptionRequest prescriptionRequest) throws BadRequestException {
+	private Patient getPatient(AddPrescriptionRequestParser prescriptionRequest) throws BadRequestException {
 		try {
 			return patientRepository.getById(prescriptionRequest.getPatientNumber());
 		} catch (EntityNotFoundException e) {

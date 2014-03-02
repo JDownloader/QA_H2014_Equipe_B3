@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.requests;
+package ca.ulaval.glo4002.requestparsers.prescription;
 
 import static org.junit.Assert.*;
 
@@ -10,7 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.*;
 
-import ca.ulaval.glo4002.rest.requests.AddPrescriptionRequest;
+import ca.ulaval.glo4002.rest.requestparsers.prescription.AddPrescriptionRequestParser;
 
 public class AddPrescriptionRequestTest {
 	
@@ -27,7 +27,7 @@ public class AddPrescriptionRequestTest {
 	private static final int MIN_STAFF_MEMBER_PARAMETER = 0;
 	private static final int MIN_DIN_PARAMETER = 0;
 	
-	private AddPrescriptionRequest addPrescriptionRequest;
+	private AddPrescriptionRequestParser addPrescriptionRequest;
 	private JSONObject jsonRequest = new JSONObject();
 	
 	@Before
@@ -40,7 +40,7 @@ public class AddPrescriptionRequestTest {
 	}
 	
 	private void createPrescriptionRequest() throws Exception {
-		addPrescriptionRequest = new AddPrescriptionRequest(jsonRequest, SAMPLE_PATIENT_NUMBER_PARAMETER);
+		addPrescriptionRequest = new AddPrescriptionRequestParser(jsonRequest, SAMPLE_PATIENT_NUMBER_PARAMETER);
 	}
 	
 	@Test
@@ -105,7 +105,7 @@ public class AddPrescriptionRequestTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void disallowsNegativePatientParameter() throws Exception {
-		new AddPrescriptionRequest(jsonRequest, "-1");
+		new AddPrescriptionRequestParser(jsonRequest, "-1");
 	}
 
 	@Test(expected = ParseException.class)
@@ -134,7 +134,7 @@ public class AddPrescriptionRequestTest {
 	
 	@Test
 	public void allowsMinimumPatientNumberParameter() throws Exception {
-		new AddPrescriptionRequest(jsonRequest, MIN_PATIENT_NUMBER_PARAMETER);
+		new AddPrescriptionRequestParser(jsonRequest, MIN_PATIENT_NUMBER_PARAMETER);
 	}
 	
 	@Test

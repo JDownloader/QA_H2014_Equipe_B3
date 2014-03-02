@@ -16,15 +16,15 @@ import ca.ulaval.glo4002.exceptions.BadRequestException;
 import ca.ulaval.glo4002.persistence.drug.HibernateDrugRepository;
 import ca.ulaval.glo4002.persistence.patient.HibernatePatientRepository;
 import ca.ulaval.glo4002.persistence.prescription.HibernatePrescriptionRepository;
-import ca.ulaval.glo4002.rest.requests.AddPrescriptionRequest;
-import ca.ulaval.glo4002.rest.requests.AddPrescriptionRequestFactory;
+import ca.ulaval.glo4002.rest.requestparsers.prescription.AddPrescriptionRequestParser;
+import ca.ulaval.glo4002.rest.requestparsers.prescription.AddPrescriptionRequestParserFactory;
 import ca.ulaval.glo4002.rest.utils.BadRequestJsonResponseBuilder;
 import ca.ulaval.glo4002.services.prescription.*;
 
 @Path("patient/{patient_number: [0-9]+}/prescriptions/")
 public class PrescriptionResource {
 	private PrescriptionService service;
-	private AddPrescriptionRequestFactory addPrescriptionRequestFactory;
+	private AddPrescriptionRequestParserFactory addPrescriptionRequestFactory;
 	
 	public PrescriptionResource() {
 		EntityManager entityManager = new EntityManagerProvider().getEntityManager();
@@ -36,10 +36,10 @@ public class PrescriptionResource {
 		prescriptionServiceBuilder.patientRepository(new HibernatePatientRepository());	
 		this.service = new PrescriptionService(prescriptionServiceBuilder);
 		
-		this.addPrescriptionRequestFactory = new AddPrescriptionRequestFactory();
+		this.addPrescriptionRequestFactory = new AddPrescriptionRequestParserFactory();
 	}
 	
-	public PrescriptionResource(PrescriptionService service, AddPrescriptionRequestFactory addPrescriptionRequestFactory) {
+	public PrescriptionResource(PrescriptionService service, AddPrescriptionRequestParserFactory addPrescriptionRequestFactory) {
 		this.service = service;
 		this.addPrescriptionRequestFactory = addPrescriptionRequestFactory;
 	}
@@ -52,7 +52,7 @@ public class PrescriptionResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response post(String request) {
 		try {
-			AddPrescriptionRequest prescriptionRequest = getPrescriptionRequest(request);
+			AddPrescriptionRequestParser prescriptionRequest = getPrescriptionRequest(request);
 			service.addPrescription(prescriptionRequest); 
 			return Response.status(Status.CREATED).build();
 		} catch (JSONException | ParseException e) {
@@ -66,11 +66,11 @@ public class PrescriptionResource {
 		}
 	}
 	
-	private AddPrescriptionRequest getPrescriptionRequest(String request) throws JSONException, ParseException {
+	private AddPrescriptionRequestParser getPrescriptionRequest(String request) throws JSONException, ParseException {
 		JSONObject jsonRequest = new JSONObject(request);
 		String patientNumberParameter = String.valueOf(patientNumber);
 				
-		AddPrescriptionRequest prescriptionRequest = addPrescriptionRequestFactory.createAddPrescriptionRequest(jsonRequest, patientNumberParameter);
+		AddPrescriptionRequestParser prescriptionRequest = addPrescriptionRequestFactory.createAddPrescriptionRequest(jsonRequest, patientNumberParameter);
 		return prescriptionRequest;
 	}
 }

@@ -7,7 +7,7 @@ import javax.persistence.EntityTransaction;
 import ca.ulaval.glo4002.domain.drug.Drug;
 import ca.ulaval.glo4002.domain.drug.DrugRepository;
 import ca.ulaval.glo4002.exceptions.BadRequestException;
-import ca.ulaval.glo4002.rest.requests.DrugSearchRequest;
+import ca.ulaval.glo4002.rest.requestparsers.drug.DrugSearchRequestParser;
 
 public class DrugService {
 	private DrugRepository drugRepository;
@@ -18,7 +18,7 @@ public class DrugService {
 		this.drugRepository = builder.drugRepository;
 	}
 	
-	public List<Drug> searchDrug(DrugSearchRequest interventionRequest) throws BadRequestException {
+	public List<Drug> searchDrug(DrugSearchRequestParser interventionRequest) throws BadRequestException {
 		try {
 			entityTransaction.begin();
 			List<Drug> drugResults = doDrugSearch(interventionRequest);
@@ -32,7 +32,7 @@ public class DrugService {
 		}
 	}
 	
-	protected List<Drug> doDrugSearch(DrugSearchRequest interventionRequest) throws BadRequestException {
+	protected List<Drug> doDrugSearch(DrugSearchRequestParser interventionRequest) throws BadRequestException {
 		return drugRepository.findByName(interventionRequest.getName());
 	}
 }

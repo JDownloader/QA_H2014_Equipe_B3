@@ -15,10 +15,10 @@ import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
 import ca.ulaval.glo4002.exceptions.BadRequestException;
 import ca.ulaval.glo4002.persistence.intervention.HibernateInterventionRepository;
 import ca.ulaval.glo4002.persistence.patient.HibernatePatientRepository;
-import ca.ulaval.glo4002.rest.requests.CreateInterventionRequest;
-import ca.ulaval.glo4002.rest.requests.CreateInterventionRequestFactory;
-import ca.ulaval.glo4002.rest.requests.MarkExistingInstrumentRequest;
-import ca.ulaval.glo4002.rest.requests.MarkNewInstrumentRequest;
+import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParser;
+import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParserFactory;
+import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.MarkExistingInstrumentRequestParser;
+import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.MarkNewInstrumentRequestParser;
 import ca.ulaval.glo4002.rest.utils.BadRequestJsonResponseBuilder;
 import ca.ulaval.glo4002.services.intervention.InterventionService;
 import ca.ulaval.glo4002.services.intervention.InterventionServiceBuilder;
@@ -31,7 +31,7 @@ public class InterventionResource {
 	
 	private InterventionService service;
 	private SurgicalToolService surgicalToolService;
-	private CreateInterventionRequestFactory createInterventionRequestFactory;
+	private CreateInterventionRequestParserFactory createInterventionRequestFactory;
 
 	@PathParam("intervention_number")
 	private int interventionNumber;
@@ -47,7 +47,7 @@ public class InterventionResource {
 		interventionServiceBuilder.patientRepository(new HibernatePatientRepository());
 		this.service = new InterventionService(interventionServiceBuilder);
 		
-		this.createInterventionRequestFactory = new CreateInterventionRequestFactory();
+		this.createInterventionRequestFactory = new CreateInterventionRequestParserFactory();
 	}
 	
 	public InterventionResource(InterventionService service, SurgicalToolService surgicalToolService) {
@@ -55,7 +55,7 @@ public class InterventionResource {
 		this.surgicalToolService = surgicalToolService;
 	}
 	
-	public InterventionResource(InterventionService service, CreateInterventionRequestFactory createInterventionRequestFactory) {
+	public InterventionResource(InterventionService service, CreateInterventionRequestParserFactory createInterventionRequestFactory) {
 		this.service = service;
 		this.createInterventionRequestFactory = createInterventionRequestFactory;
 	}
@@ -65,7 +65,7 @@ public class InterventionResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response post(String request){
 		try {
-			CreateInterventionRequest interventionRequest = getInterventionRequest(request);
+			CreateInterventionRequestParser interventionRequest = getInterventionRequest(request);
 			service.createIntervention(interventionRequest); 
 			return Response.status(Status.CREATED).build();
 		} catch (JSONException | ParseException e) {
@@ -79,9 +79,9 @@ public class InterventionResource {
 		}
 	}
 	
-	private CreateInterventionRequest getInterventionRequest(String request) throws JSONException, ParseException {
+	private CreateInterventionRequestParser getInterventionRequest(String request) throws JSONException, ParseException {
 		JSONObject jsonRequest = new JSONObject(request);
-		CreateInterventionRequest interventionRequest = createInterventionRequestFactory.createInterventionRequest(jsonRequest);
+		CreateInterventionRequestParser interventionRequest = createInterventionRequestFactory.createInterventionRequest(jsonRequest);
 		return interventionRequest;
 	}
 
@@ -90,7 +90,7 @@ public class InterventionResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response markNewInstrument(String request) {
 		Response response = null;
-		MarkNewInstrumentRequest myRequest;
+		MarkNewInstrumentRequestParser myRequest;
 		
 		try {
 			myRequest = buildNewInstrumentRequest(request);
@@ -110,14 +110,14 @@ public class InterventionResource {
 		return response;
 	}
 	
-	private MarkNewInstrumentRequest buildNewInstrumentRequest(String request) throws BadRequestException {
+	private MarkNewInstrumentRequestParser buildNewInstrumentRequest(String request) throws BadRequestException {
 		JSONObject jsonRequest = new JSONObject(request);
 		jsonRequest.put(INTERVENTION_NUMBER_PARAMETER, interventionNumber);
-		MarkNewInstrumentRequest myRequest = new MarkNewInstrumentRequest(jsonRequest);
+		MarkNewInstrumentRequestParser myRequest = new MarkNewInstrumentRequestParser(jsonRequest);
 		return myRequest;
 	}
 	
-	private static Response buildCreatedResponseForMarkNewInstrument(MarkNewInstrumentRequest myRequest) {
+	private static Response buildCreatedResponseForMarkNewInstrument(MarkNewInstrumentRequestParser myRequest) {
 		JSONObject jsonResponse = new JSONObject();
 		jsonResponse.append("Location", "/intervention/" + myRequest.INTERVENTION_NUMBER_PARAMETER + "/instruments/" + myRequest.TYPECODE_PARAMETER + "/" + myRequest.SERIAL_NUMBER_PARAMETER);
 		
@@ -129,7 +129,7 @@ public class InterventionResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response markExistingInstrument(String request) {
 		Response response = null;
-		MarkExistingInstrumentRequest myRequest;
+		MarkExistingInstrumentRequestParser myRequest;
 		
 		try {
 			myRequest = buildExistingIntrumentRequest(request);
@@ -149,11 +149,11 @@ public class InterventionResource {
 		return response;
 	}
 	
-	private MarkExistingInstrumentRequest buildExistingIntrumentRequest(String request) throws BadRequestException {
+	private MarkExistingInstrumentRequestParser buildExistingIntrumentRequest(String request) throws BadRequestException {
 		JSONObject jsonRequest = new JSONObject(request); 
 		jsonRequest.put(INTERVENTION_NUMBER_PARAMETER, interventionNumber);
 		jsonRequest.put(INSTRUMENT_NUMBER_PARAMETER, instrumentNumber);
-		MarkExistingInstrumentRequest myRequest = new MarkExistingInstrumentRequest(jsonRequest);
+		MarkExistingInstrumentRequestParser myRequest = new MarkExistingInstrumentRequestParser(jsonRequest);
 		return myRequest;
 	}
 	

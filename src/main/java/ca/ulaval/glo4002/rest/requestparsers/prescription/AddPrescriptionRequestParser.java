@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.rest.requests;
+package ca.ulaval.glo4002.rest.requestparsers.prescription;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 import ca.ulaval.glo4002.utils.CustomDateParser;
 
-public class AddPrescriptionRequest {
+public class AddPrescriptionRequestParser {
 
 	private static final int UNSPECIFIED_VALUE = -1;
 	private static final String DIN_PARAMETER = "din";
@@ -25,7 +25,7 @@ public class AddPrescriptionRequest {
 	private Date date;
 	private int patientNumber;
 
-	public AddPrescriptionRequest(JSONObject jsonRequest, String patientNumberParameter) throws JSONException, ParseException, IllegalArgumentException {
+	public AddPrescriptionRequestParser(JSONObject jsonRequest, String patientNumberParameter) throws JSONException, ParseException, IllegalArgumentException {
 		this.din = jsonRequest.optInt(DIN_PARAMETER, UNSPECIFIED_VALUE);
 		this.drugName = jsonRequest.optString(DRUG_NAME_PARAMETER);
 		this.staffMember = jsonRequest.getInt(STAFF_MEMBER_PARAMETER);

@@ -6,8 +6,8 @@ import ca.ulaval.glo4002.domain.intervention.InterventionRepository;
 import ca.ulaval.glo4002.domain.surgicalTool.SurgicalTool;
 import ca.ulaval.glo4002.domain.surgicalTool.SurgicalToolRepository;
 import ca.ulaval.glo4002.exceptions.BadRequestException;
-import ca.ulaval.glo4002.rest.requests.MarkExistingInstrumentRequest;
-import ca.ulaval.glo4002.rest.requests.MarkNewInstrumentRequest;
+import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.MarkExistingInstrumentRequestParser;
+import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.MarkNewInstrumentRequestParser;
 
 public class SurgicalToolService {
 	private SurgicalToolRepository surgicalToolRepository;
@@ -18,7 +18,7 @@ public class SurgicalToolService {
 		//TODO
 	}
 	
-	public void markNewInstrument(MarkNewInstrumentRequest request) throws BadRequestException {
+	public void markNewInstrument(MarkNewInstrumentRequestParser request) throws BadRequestException {
 		try {
 			entityTransaction.begin();
 			doMarkNewInstrument(request);
@@ -31,11 +31,11 @@ public class SurgicalToolService {
 		}
 	}
 	
-	private void doMarkNewInstrument(MarkNewInstrumentRequest request) throws BadRequestException {
+	private void doMarkNewInstrument(MarkNewInstrumentRequestParser request) throws BadRequestException {
 		//TODO
 	}
 	
-	public void markExistingInstrument(MarkExistingInstrumentRequest request) throws BadRequestException {
+	public void markExistingInstrument(MarkExistingInstrumentRequestParser request) throws BadRequestException {
 		try {
 			entityTransaction.begin();
 			doMarkExistingInstrument(request);
@@ -48,7 +48,7 @@ public class SurgicalToolService {
 		}
 	}
 	
-	private void doMarkExistingInstrument(MarkExistingInstrumentRequest request) throws BadRequestException {
+	private void doMarkExistingInstrument(MarkExistingInstrumentRequestParser request) throws BadRequestException {
 		//TODO
 	}
 }

@@ -8,7 +8,7 @@ import org.mockito.*;
 import static org.mockito.Mockito.*;
 import ca.ulaval.glo4002.domain.drug.DrugRepository;
 import ca.ulaval.glo4002.exceptions.BadRequestException;
-import ca.ulaval.glo4002.rest.requests.DrugSearchRequest;
+import ca.ulaval.glo4002.rest.requestparsers.drug.DrugSearchRequestParser;
 
 public class DrugServiceTest {
 	private static final String SAMPLE_DRUG_NAME = "drug_name";
@@ -17,7 +17,7 @@ public class DrugServiceTest {
 	private EntityTransaction entityTransactionMock;
 	private DrugService drugService;
 	
-	private DrugSearchRequest drugSearchRequestMock;
+	private DrugSearchRequestParser drugSearchRequestMock;
 	
 	@Before
 	public void setup()  {
@@ -30,7 +30,7 @@ public class DrugServiceTest {
 	private void createMocks() {
 		drugRepositoryMock = mock(DrugRepository.class);
 		entityTransactionMock = mock(EntityTransaction.class);
-		drugSearchRequestMock = mock(DrugSearchRequest.class);
+		drugSearchRequestMock = mock(DrugSearchRequestParser.class);
 	}
 	
 	private void buildInterventionService() {

@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.rest.requests;
+package ca.ulaval.glo4002.rest.requestparsers.drug;
 
 import java.text.ParseException;
 
@@ -6,12 +6,12 @@ import org.apache.commons.lang.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class DrugSearchRequest {
+public class DrugSearchRequestParser {
 	private static final String NAME_PARAMETER = "nom";
 	
 	private String name;
 	
-	public DrugSearchRequest(JSONObject jsonRequest) throws JSONException, ParseException{
+	public DrugSearchRequestParser(JSONObject jsonRequest) throws JSONException, ParseException{
 		this.name = jsonRequest.getString(NAME_PARAMETER);
 		validateRequestParameters();
 	}

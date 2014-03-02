@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.requests;
+package ca.ulaval.glo4002.requestparsers.intervention;
 
 import static org.junit.Assert.assertEquals;
 
@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import ca.ulaval.glo4002.domain.intervention.InterventionStatus;
 import ca.ulaval.glo4002.domain.intervention.InterventionType;
-import ca.ulaval.glo4002.rest.requests.CreateInterventionRequest;
+import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParser;
 
 public class CreateInterventionRequestTest {
 	
@@ -28,7 +28,7 @@ public class CreateInterventionRequestTest {
 	private static final int MIN_PATIENT_PARAMETER = 2;
 	private static final int MIN_SURGEON_PARAMETER = 101224;
 	
-	private CreateInterventionRequest createInterventionRequest;
+	private CreateInterventionRequestParser createInterventionRequest;
 	private JSONObject jsonRequest = new JSONObject();
 	
 	@Before
@@ -44,7 +44,7 @@ public class CreateInterventionRequestTest {
 	}
 	
 	private void createInterventionRequest() throws Exception {
-		createInterventionRequest = new CreateInterventionRequest(jsonRequest);
+		createInterventionRequest = new CreateInterventionRequestParser(jsonRequest);
 	}
 	
 	@Test

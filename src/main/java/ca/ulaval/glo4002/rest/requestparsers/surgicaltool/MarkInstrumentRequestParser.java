@@ -1,8 +1,8 @@
-package ca.ulaval.glo4002.rest.requests;
+package ca.ulaval.glo4002.rest.requestparsers.surgicaltool;
 
 import ca.ulaval.glo4002.exceptions.BadRequestException;
 
-public abstract class MarkInstrumentRequest {
+public abstract class MarkInstrumentRequestParser {
 	public String INTERVENTION_NUMBER_PARAMETER = "nointervention";
 	public String STATUS_PARAMETER = "statut";
 	public String SERIAL_NUMBER_PARAMETER = "noserie";

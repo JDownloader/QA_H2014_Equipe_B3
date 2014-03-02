@@ -14,8 +14,8 @@ import ca.ulaval.glo4002.domain.drug.Drug;
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
 import ca.ulaval.glo4002.exceptions.BadRequestException;
 import ca.ulaval.glo4002.persistence.drug.HibernateDrugRepository;
-import ca.ulaval.glo4002.rest.requests.DrugSearchRequest;
-import ca.ulaval.glo4002.rest.requests.DrugSearchRequestFactory;
+import ca.ulaval.glo4002.rest.requestparsers.drug.DrugSearchRequestParser;
+import ca.ulaval.glo4002.rest.requestparsers.drug.DrugSearchRequestParserFactory;
 import ca.ulaval.glo4002.rest.utils.BadRequestJsonResponseBuilder;
 import ca.ulaval.glo4002.services.drug.DrugService;
 import ca.ulaval.glo4002.services.drug.DrugServiceBuilder;
@@ -23,7 +23,7 @@ import ca.ulaval.glo4002.services.drug.DrugServiceBuilder;
 @Path("medicaments/dins/")
 public class DrugResource {
 	private DrugService service;
-	private DrugSearchRequestFactory drugSearchRequestFactory;
+	private DrugSearchRequestParserFactory drugSearchRequestFactory;
 	
 	public DrugResource() {
 		EntityManager entityManager = new EntityManagerProvider().getEntityManager();
@@ -33,10 +33,10 @@ public class DrugResource {
 		drugServiceBuilder.drugRepository(new HibernateDrugRepository());
 		this.service = new DrugService(drugServiceBuilder);
 		
-		this.drugSearchRequestFactory = new DrugSearchRequestFactory();
+		this.drugSearchRequestFactory = new DrugSearchRequestParserFactory();
 	}
 	
-	public DrugResource(DrugService service, DrugSearchRequestFactory drugSearchRequestFactory) {
+	public DrugResource(DrugService service, DrugSearchRequestParserFactory drugSearchRequestFactory) {
 		this.service = service;
 		this.drugSearchRequestFactory = drugSearchRequestFactory;
 	}
@@ -46,7 +46,7 @@ public class DrugResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response post(String request){
 		try {
-			DrugSearchRequest drugSearchRequest = getDrugSearchRequest(request);
+			DrugSearchRequestParser drugSearchRequest = getDrugSearchRequest(request);
 			List<Drug> drugResults = service.searchDrug(drugSearchRequest); 
 			return buildDrugResultResponse(drugResults);
 		} catch (JSONException | ParseException e) {
@@ -60,9 +60,9 @@ public class DrugResource {
 		}
 	}
 	
-	private DrugSearchRequest getDrugSearchRequest(String request) throws JSONException, ParseException {
+	private DrugSearchRequestParser getDrugSearchRequest(String request) throws JSONException, ParseException {
 		JSONObject jsonRequest = new JSONObject(request);
-		DrugSearchRequest interventionRequest = drugSearchRequestFactory.createDrugSearchRequest(jsonRequest);
+		DrugSearchRequestParser interventionRequest = drugSearchRequestFactory.createDrugSearchRequest(jsonRequest);
 		return interventionRequest;
 	}
 	

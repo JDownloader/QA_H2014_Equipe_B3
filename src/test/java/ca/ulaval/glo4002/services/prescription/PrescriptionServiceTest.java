@@ -17,7 +17,7 @@ import ca.ulaval.glo4002.domain.patient.PatientRepository;
 import ca.ulaval.glo4002.domain.prescription.Prescription;
 import ca.ulaval.glo4002.domain.prescription.PrescriptionRepository;
 import ca.ulaval.glo4002.exceptions.BadRequestException;
-import ca.ulaval.glo4002.rest.requests.AddPrescriptionRequest;
+import ca.ulaval.glo4002.rest.requestparsers.prescription.AddPrescriptionRequestParser;
 
 public class PrescriptionServiceTest {
 	
@@ -35,7 +35,7 @@ public class PrescriptionServiceTest {
 	private Drug drugMock;
 	private Patient patientMock;
 	private PrescriptionService prescriptionService;
-	private AddPrescriptionRequest addPrescriptionRequestMock;
+	private AddPrescriptionRequestParser addPrescriptionRequestMock;
 	
 	@Before
 	public void setup()  {
@@ -53,7 +53,7 @@ public class PrescriptionServiceTest {
 		drugMock = mock(Drug.class);
 		patientMock = mock(Patient.class);
 		entityTransactionMock = mock(EntityTransaction.class);
-		addPrescriptionRequestMock = mock(AddPrescriptionRequest.class);
+		addPrescriptionRequestMock = mock(AddPrescriptionRequestParser.class);
 	}
 	
 	private void buildPrescriptionService() {

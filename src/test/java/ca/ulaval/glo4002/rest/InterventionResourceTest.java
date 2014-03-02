@@ -11,8 +11,10 @@ import org.junit.runner.RunWith;
 
 import static org.mockito.Mockito.*;
 import ca.ulaval.glo4002.exceptions.BadRequestException;
-import ca.ulaval.glo4002.rest.requests.CreateInterventionRequest;
-import ca.ulaval.glo4002.rest.requests.CreateInterventionRequestFactory;
+import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParser;
+import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParserFactory;
+import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.MarkExistingInstrumentRequestParser;
+import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.MarkNewInstrumentRequestParser;
 import ca.ulaval.glo4002.services.intervention.InterventionService;
 import ca.ulaval.glo4002.services.surgicalTool.SurgicalToolService;
 
@@ -21,9 +23,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import ca.ulaval.glo4002.rest.requests.MarkExistingInstrumentRequest;
-import ca.ulaval.glo4002.rest.requests.MarkNewInstrumentRequest;
-
 
 @RunWith(MockitoJUnitRunner.class)
 public class InterventionResourceTest {
@@ -31,15 +30,15 @@ public class InterventionResourceTest {
 	private static final String SAMPLE_JSON_REQUEST = "{attrib: value}";
 
 	private InterventionService interventionServiceMock;
-	private CreateInterventionRequest createInterventionRequestMock;
-	private CreateInterventionRequestFactory createInterventionRequestFactoryMock;
+	private CreateInterventionRequestParser createInterventionRequestMock;
+	private CreateInterventionRequestParserFactory createInterventionRequestFactoryMock;
 	private InterventionResource interventionResource;
 
 	@Before
 	public void setup() throws Exception {
 		interventionServiceMock = mock(InterventionService.class);
-		createInterventionRequestMock = mock(CreateInterventionRequest.class);
-		createInterventionRequestFactoryMock = mock(CreateInterventionRequestFactory.class);
+		createInterventionRequestMock = mock(CreateInterventionRequestParser.class);
+		createInterventionRequestFactoryMock = mock(CreateInterventionRequestParserFactory.class);
 		when(createInterventionRequestFactoryMock.createInterventionRequest(any(JSONObject.class))).thenReturn(createInterventionRequestMock);
 		interventionResource = new InterventionResource(interventionServiceMock, createInterventionRequestFactoryMock);
 	}
@@ -79,9 +78,9 @@ public class InterventionResourceTest {
 	@Mock
 	private InterventionService interventionService;
 	@Mock
-	private MarkNewInstrumentRequest markNewInstrumentRequest;
+	private MarkNewInstrumentRequestParser markNewInstrumentRequest;
 	@Mock
-	private MarkExistingInstrumentRequest markExistingInstrumentRequest;
+	private MarkExistingInstrumentRequestParser markExistingInstrumentRequest;
 	@InjectMocks
 	private InterventionResource testServlet;
 
@@ -89,8 +88,8 @@ public class InterventionResourceTest {
 	public void init() {
 		service = mock(SurgicalToolService.class);
 		testServlet = new InterventionResource(interventionService,service);
-		markExistingInstrumentRequest = mock(MarkExistingInstrumentRequest.class);
-		markNewInstrumentRequest = mock(MarkNewInstrumentRequest.class);
+		markExistingInstrumentRequest = mock(MarkExistingInstrumentRequestParser.class);
+		markNewInstrumentRequest = mock(MarkNewInstrumentRequestParser.class);
 	}
 
 	@Test
@@ -140,7 +139,7 @@ public class InterventionResourceTest {
 	public void dontMarkInstrumentWithAlreadyUsedSerialNumber()
 			throws BadRequestException {
 		Mockito.doThrow(noSerialNumber).when(service)
-				.markNewInstrument(Mockito.any(MarkNewInstrumentRequest.class));
+				.markNewInstrument(Mockito.any(MarkNewInstrumentRequestParser.class));
 		request = VALID_MARK_NEW_INSTRUMENT;
 		expectedResponse = Response.status(Status.BAD_REQUEST).build();
 
@@ -156,7 +155,7 @@ public class InterventionResourceTest {
 	public void dontMarkInstrumentWithNoAnonymousTypeWithoutSerialNumber()
 			throws BadRequestException {
 		Mockito.doThrow(noAnonymousType).when(service)
-				.markNewInstrument(Mockito.any(MarkNewInstrumentRequest.class));
+				.markNewInstrument(Mockito.any(MarkNewInstrumentRequestParser.class));
 		request = VALID_MARK_NEW_INSTRUMENT;
 		expectedResponse = Response.status(Status.BAD_REQUEST).build();
 
@@ -174,7 +173,7 @@ public class InterventionResourceTest {
 		Mockito.doThrow(doesNotExist)
 				.when(service)
 				.markExistingInstrument(
-						Mockito.any(MarkExistingInstrumentRequest.class));
+						Mockito.any(MarkExistingInstrumentRequestParser.class));
 		request = VALID_MARK_EXISTING_INSTRUMENT;
 		expectedResponse = Response.status(Status.BAD_REQUEST).build();
 

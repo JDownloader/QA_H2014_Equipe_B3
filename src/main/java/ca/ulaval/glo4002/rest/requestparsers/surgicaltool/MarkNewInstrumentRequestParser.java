@@ -1,13 +1,13 @@
-package ca.ulaval.glo4002.rest.requests;
+package ca.ulaval.glo4002.rest.requestparsers.surgicaltool;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import ca.ulaval.glo4002.exceptions.BadRequestException;
 
-public class MarkNewInstrumentRequest extends MarkInstrumentRequest {
+public class MarkNewInstrumentRequestParser extends MarkInstrumentRequestParser {
 	
-	public MarkNewInstrumentRequest(JSONObject jsonRequest) throws BadRequestException {
+	public MarkNewInstrumentRequestParser(JSONObject jsonRequest) throws BadRequestException {
 		buildObject(jsonRequest);
 		validateRequestParameters();
 	}
