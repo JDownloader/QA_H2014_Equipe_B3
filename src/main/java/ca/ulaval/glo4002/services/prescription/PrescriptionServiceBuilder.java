@@ -7,10 +7,10 @@ import ca.ulaval.glo4002.domain.patient.PatientRepository;
 import ca.ulaval.glo4002.domain.prescription.PrescriptionRepository;
 
 public class PrescriptionServiceBuilder {
-	protected PrescriptionRepository prescriptionRepository;
-	protected DrugRepository drugRepository;
-	protected PatientRepository patientRepository;
-	protected EntityTransaction entityTransaction;
+	protected PrescriptionRepository prescriptionRepository = null;
+	protected DrugRepository drugRepository = null;
+	protected PatientRepository patientRepository = null;
+	protected EntityTransaction entityTransaction = null;
 	
 	public PrescriptionServiceBuilder prescriptionRepository(PrescriptionRepository prescriptionRepository) {
 		this.prescriptionRepository = prescriptionRepository;

@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
 import ca.ulaval.glo4002.exceptions.BadRequestException;
 import ca.ulaval.glo4002.persistence.intervention.HibernateInterventionRepository;
+import ca.ulaval.glo4002.persistence.patient.HibernatePatientRepository;
 import ca.ulaval.glo4002.rest.requests.CreateInterventionRequest;
 import ca.ulaval.glo4002.rest.requests.CreateInterventionRequestFactory;
 import ca.ulaval.glo4002.rest.utils.BadRequestJsonResponseBuilder;
@@ -31,6 +32,7 @@ public class InterventionResource {
 		InterventionServiceBuilder interventionServiceBuilder = new InterventionServiceBuilder();
 		interventionServiceBuilder.entityTransaction(entityManager.getTransaction());
 		interventionServiceBuilder.interventionRepository(new HibernateInterventionRepository());
+		interventionServiceBuilder.patientRepository(new HibernatePatientRepository());
 		this.service = new InterventionService(interventionServiceBuilder);
 		
 		this.createInterventionRequestFactory = new CreateInterventionRequestFactory();
@@ -50,7 +52,7 @@ public class InterventionResource {
 			service.createIntervention(interventionRequest); 
 			return Response.status(Status.CREATED).build();
 		} catch (JSONException | ParseException | IllegalArgumentException e) {
-			return BadRequestJsonResponseBuilder.build("PRES001", "La requête contient des informations invalides et/ou est malformée");
+			return BadRequestJsonResponseBuilder.build("INT001", "La requête contient des informations invalides et/ou est malformée");
 		} catch (BadRequestException e) {
 			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());
 		} catch (Exception e) {

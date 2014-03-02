@@ -5,36 +5,51 @@ import static org.junit.Assert.*;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.junit.Test;
+import org.json.JSONObject;
+import org.junit.*;
+
+import static org.mockito.Mockito.*;
+import ca.ulaval.glo4002.exceptions.BadRequestException;
+import ca.ulaval.glo4002.rest.requests.CreateInterventionRequest;
+import ca.ulaval.glo4002.rest.requests.CreateInterventionRequestFactory;
+import ca.ulaval.glo4002.services.intervention.InterventionService;
 
 public class InterventionResourceTest {
 
-	static final Response badRequest = Response.status(Status.BAD_REQUEST).build();
-	static final Response goodRequest = Response.status(Status.CREATED).build();
-	static final String goodJson = "{ \"description\": \"Cataracte à l'oeil gauche\", "
-			+ "\"chirurgien\": \"101224\", "
-			+ "\"date\": \"0000-00-00T24:01:00\", "
-			+ "\"salle\": \"blocB\", "
-			+ "\"type\": \"OEIL\", "
-			+ "\"statut\": \"EN_COURS\", "
-			+ "\"patient\": \"1\" }";
-	static final String badJson = "{ \"description\": \"Cataracte à l'oeil gauche\", "
-			+ "\"chirurgien\": \"101224\", "
-			+ "\"date\": \"0000-00-00T24:01:00\", "
-			+ "\"salle\": \"blocB\", "
-			+ "\"type\": \"MAUVAIS_TYPE\", "
-			+ "\"statut\": \"EN_COURS\", "
-			+ "\"patient\": \"1\" }";
-	
-	static final InterventionResource myInterventionServlet = new InterventionResource();
-	
-	@Test
-	public void sendInAGoodRequest(){
-		assertEquals(goodRequest.getStatus(), myInterventionServlet.post(goodJson).getStatus());
+	private static final String SAMPLE_JSON_REQUEST = "{attrib: value}";
+
+	private InterventionService interventionServiceMock;
+	private CreateInterventionRequest createInterventionRequestMock;
+	private CreateInterventionRequestFactory createInterventionRequestFactoryMock;
+	private InterventionResource interventionResource;
+
+	@Before
+	public void setup() throws Exception {
+		interventionServiceMock = mock(InterventionService.class);
+		createInterventionRequestMock = mock(CreateInterventionRequest.class);
+		createInterventionRequestFactoryMock = mock(CreateInterventionRequestFactory.class);
+		when(createInterventionRequestFactoryMock.createCreateInterventionRequest(any(JSONObject.class))).thenReturn(createInterventionRequestMock);
+		interventionResource = new InterventionResource(interventionServiceMock, createInterventionRequestFactoryMock);
 	}
-	
+
 	@Test
-	public void sendInABadRequest(){
-		assertEquals(badRequest.getStatus(), myInterventionServlet.post(badJson).getStatus());
+	public void handlesPostRequestsCorrectly() throws BadRequestException {
+		interventionResource.post(SAMPLE_JSON_REQUEST);
+		verify(interventionServiceMock).createIntervention(createInterventionRequestMock);
+	}
+
+	@Test
+	public void returnsCreatedResponse() throws BadRequestException {
+		Response response = interventionResource.post(SAMPLE_JSON_REQUEST);
+		assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void returnsInvalidResponseWhenSpecifyingInvalidRequest() throws BadRequestException {
+		doThrow(new BadRequestException()).when(interventionServiceMock).createIntervention(createInterventionRequestMock);
+
+		Response response = interventionResource.post(SAMPLE_JSON_REQUEST);
+
+		assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
 	}
 }

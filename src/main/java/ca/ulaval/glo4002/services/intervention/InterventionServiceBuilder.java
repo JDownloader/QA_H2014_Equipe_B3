@@ -6,9 +6,9 @@ import ca.ulaval.glo4002.domain.intervention.InterventionRepository;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
 
 public class InterventionServiceBuilder {
-	protected InterventionRepository interventionRepository;
-	protected PatientRepository patientRepository;
-	protected EntityTransaction entityTransaction;
+	protected InterventionRepository interventionRepository = null;
+	protected PatientRepository patientRepository = null;
+	protected EntityTransaction entityTransaction = null;
 	
 	public InterventionServiceBuilder interventionRepository(InterventionRepository prescriptionRepository) {
 		this.interventionRepository = prescriptionRepository;
