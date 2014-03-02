@@ -13,7 +13,7 @@ public class CreateSurgicalToolRequestTest {
 	
 	private static final int SAMPLE_INTERVENTION_NUMBER = 3;
 	private static final String SAMPLE_STATUS = "Terminee";
-	private static final String SAMPLE_SERIAL_NUMBER = "684518TF";
+	protected final String SAMPLE_SERIAL_NUMBER = "684518TF";
 	private static final String SAMPLE_TYPE_CODE = "56465T";
 	private static final int MIN_INTERVENTION_NUMBER = 0;
 	

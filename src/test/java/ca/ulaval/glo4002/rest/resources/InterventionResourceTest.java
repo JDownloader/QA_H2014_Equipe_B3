@@ -20,7 +20,6 @@ import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.ModifySurgicalToolRequ
 import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.ModifySurgicalToolRequestParserFactory;
 import ca.ulaval.glo4002.rest.resources.InterventionResource;
 import ca.ulaval.glo4002.rest.resources.InterventionResourceBuilder;
-import ca.ulaval.glo4002.rest.utils.BadRequestJsonResponseBuilder;
 import ca.ulaval.glo4002.services.intervention.InterventionService;
 
 import org.mockito.runners.MockitoJUnitRunner;
@@ -30,8 +29,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class InterventionResourceTest {
 
 	private static final String SAMPLE_JSON_REQUEST = "{attrib: value}";
-	private static final String SAMPLE_ERROR_CODE = "INT001";
-	private static final String SAMPLE_ERROR_MESSAGE = "A message";
+	private static final int SAMPLE_INTERVENTION_NUMBER = 3;
+	private static final String SAMPLE_SERIAL_NUMBER = "684518TF";
+	private static final String SAMPLE_TYPE_CODE = "56465T";
 
 	private InterventionService interventionServiceMock;
 	private CreateInterventionRequestParser createInterventionRequestParserMock;
@@ -98,13 +98,13 @@ public class InterventionResourceTest {
 	
 	@Test
 	public void verifyCreateSurgicalToolCallsServiceMethodsCorrectly() throws ServiceRequestException {
-		interventionResource.createSurgicalTool(SAMPLE_JSON_REQUEST);
+		interventionResource.createSurgicalTool(SAMPLE_JSON_REQUEST, SAMPLE_INTERVENTION_NUMBER);
 		verify(interventionServiceMock).createSurgicalTool(createSurgicalToolRequestParserMock);
 	}
 
 	@Test
 	public void verifyCreateSurgicalToolReturnsCreatedResponse() throws ServiceRequestException {
-		Response response = interventionResource.createSurgicalTool(SAMPLE_JSON_REQUEST);
+		Response response = interventionResource.createSurgicalTool(SAMPLE_JSON_REQUEST, SAMPLE_INTERVENTION_NUMBER);
 		assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
 	}
 
@@ -113,20 +113,20 @@ public class InterventionResourceTest {
 		doThrow(new ServiceRequestException()).when(interventionServiceMock).createSurgicalTool(createSurgicalToolRequestParserMock);
 
 		Response expectedResponse = Response.status(Status.BAD_REQUEST).build();
-		Response receivedResponse = interventionResource.createSurgicalTool(SAMPLE_JSON_REQUEST);
+		Response receivedResponse = interventionResource.createSurgicalTool(SAMPLE_JSON_REQUEST, SAMPLE_INTERVENTION_NUMBER);
 
 		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
 	}
 	
 	@Test
 	public void verifyModifySurgicalToolCallsServiceMethodsCorrectly() throws ServiceRequestException {
-		interventionResource.modifySurgicalTool(SAMPLE_JSON_REQUEST);
+		interventionResource.modifySurgicalTool(SAMPLE_JSON_REQUEST, SAMPLE_INTERVENTION_NUMBER, SAMPLE_TYPE_CODE, SAMPLE_SERIAL_NUMBER);
 		verify(interventionServiceMock).modifySurgicalTool(modifySurgicalToolRequestParserMock);
 	}
 
 	@Test
 	public void verifyModifySurgicalToolReturnsOkResponse() throws ServiceRequestException {
-		Response response = interventionResource.modifySurgicalTool(SAMPLE_JSON_REQUEST);
+		Response response = interventionResource.modifySurgicalTool(SAMPLE_JSON_REQUEST, SAMPLE_INTERVENTION_NUMBER, SAMPLE_TYPE_CODE, SAMPLE_SERIAL_NUMBER);
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}
 
@@ -135,7 +135,7 @@ public class InterventionResourceTest {
 		doThrow(new ServiceRequestException()).when(interventionServiceMock).modifySurgicalTool(modifySurgicalToolRequestParserMock);
 
 		Response expectedResponse = Response.status(Status.BAD_REQUEST).build();
-		Response receivedResponse = interventionResource.modifySurgicalTool(SAMPLE_JSON_REQUEST);
+		Response receivedResponse = interventionResource.modifySurgicalTool(SAMPLE_JSON_REQUEST, SAMPLE_INTERVENTION_NUMBER, SAMPLE_TYPE_CODE, SAMPLE_SERIAL_NUMBER);
 
 		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
 	}

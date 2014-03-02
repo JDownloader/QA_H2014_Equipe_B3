@@ -6,7 +6,8 @@ import org.json.JSONObject;
 import ca.ulaval.glo4002.exceptions.RequestParseException;
 
 public class ModifySurgicalToolRequestParser extends CreateSurgicalToolRequestParser {
-	public String NEW_SERIAL_NUMBER_PARAMETER_NAME = "nouveaunoserie";
+	public String SERIAL_NUMBER_PARAMETER_NAME = "serialNumberPathParameter";
+	public String NEW_SERIAL_NUMBER_PARAMETER_NAME = "noserie";
 	
 	protected String newSerialNumber;
 	
@@ -22,12 +23,13 @@ public class ModifySurgicalToolRequestParser extends CreateSurgicalToolRequestPa
 	}
 	
 	private void parseParameters(JSONObject jsonRequest) {
+		this.serialNumber = jsonRequest.optString(SERIAL_NUMBER_PARAMETER_NAME);
 		this.newSerialNumber = jsonRequest.getString(NEW_SERIAL_NUMBER_PARAMETER_NAME);
 	}
 	
 	private void validateParameterSemantics() throws RequestParseException {
 		if (StringUtils.isBlank(this.newSerialNumber)) {
-			throw new RequestParseException("Parameter 'noserie' must not be blank.");
+			throw new RequestParseException("Path parameter 'noserie' must not be blank.");
 		}
 	}
 	
@@ -35,4 +37,8 @@ public class ModifySurgicalToolRequestParser extends CreateSurgicalToolRequestPa
 		return this.newSerialNumber;
 	}
 
+	@Override
+	public boolean hasSerialNumber() {
+		return !StringUtils.isBlank(this.newSerialNumber);
+	}
 }

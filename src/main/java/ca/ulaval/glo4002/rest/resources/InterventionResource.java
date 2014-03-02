@@ -13,6 +13,7 @@ import ca.ulaval.glo4002.exceptions.RequestParseException;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.persistence.intervention.HibernateInterventionRepository;
 import ca.ulaval.glo4002.persistence.patient.HibernatePatientRepository;
+import ca.ulaval.glo4002.persistence.surgicaltool.HibernateSurgicalToolRepository;
 import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParser;
 import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParserFactory;
 import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.ModifySurgicalToolRequestParser;
@@ -32,13 +33,6 @@ public class InterventionResource {
 	private CreateInterventionRequestParserFactory createInterventionRequestParserFactory;
 	private CreateSurgicalToolRequestParserFactory createSurgicalToolRequestParserFactory;
 	private ModifySurgicalToolRequestParserFactory modifySurgicalToolRequestParserFactory;
-
-	@PathParam("intervention_number")
-	private int interventionNumber;
-	@PathParam("surgicalToolTypeCode")
-	private String surgicalToolTypeCode;
-	@PathParam("surgicalToolSerialNumber")
-	private String surgicalToolSerialNumber;
 	
 	public InterventionResource() {
 		EntityManager entityManager = new EntityManagerProvider().getEntityManager();
@@ -55,6 +49,7 @@ public class InterventionResource {
 		interventionServiceBuilder.entityTransaction(entityManager.getTransaction());
 		interventionServiceBuilder.interventionRepository(new HibernateInterventionRepository());
 		interventionServiceBuilder.patientRepository(new HibernatePatientRepository());
+		interventionServiceBuilder.surgicalToolRepository(new HibernateSurgicalToolRepository());
 		this.service = new InterventionService(interventionServiceBuilder);
 	}
 	
@@ -88,12 +83,13 @@ public class InterventionResource {
 		return interventionRequestParser;
 	}
 
-	@POST @Path("{intervention_number: [0-9]+}/instruments/")
+	@POST
+	@Path("{interventionNumber: [0-9]+}/instruments/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createSurgicalTool(String request) {
+	public Response createSurgicalTool(String request, @PathParam("interventionNumber") int interventionNumber) {
 		try {
-			CreateSurgicalToolRequestParser requestParser = getCreateSurgicalToolRequestParser(request);
+			CreateSurgicalToolRequestParser requestParser = getCreateSurgicalToolRequestParser(request, interventionNumber);
 			service.createSurgicalTool(requestParser); 
 			return Response.status(Status.CREATED).build();
 		} catch (RequestParseException e) {
@@ -105,7 +101,7 @@ public class InterventionResource {
 		}
 	}
 	
-	private CreateSurgicalToolRequestParser getCreateSurgicalToolRequestParser(String request) throws RequestParseException {
+	private CreateSurgicalToolRequestParser getCreateSurgicalToolRequestParser(String request, int interventionNumber) throws RequestParseException {
 		JSONObject jsonRequest = new JSONObject(request);
 		jsonRequest.put("nointervention", String.valueOf(interventionNumber));
 		
@@ -113,12 +109,15 @@ public class InterventionResource {
 		return requestParser;
 	}
 	
-	@PUT @Path("{intervention_number: [0-9]+}/instruments/{surgicalToolTypeCode}/{surgicalToolSerialNumber}")
+	@PUT
+	@Path("{interventionNumber: [0-9]+}/instruments/{surgicalToolTypeCode}/{surgicalToolSerialNumber}/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response modifySurgicalTool(String request) {
+	public Response modifySurgicalTool(String request, @PathParam("interventionNumber") int interventionNumber
+			, @PathParam("surgicalToolTypeCode") String surgicalToolTypeCode
+			, @PathParam("surgicalToolSerialNumber") String surgicalToolSerialNumber) {  //TODO: Check if not a cleaner way to do this.
 		try {
-			ModifySurgicalToolRequestParser requestParser = getModifySurgicalToolRequestParser(request);
+			ModifySurgicalToolRequestParser requestParser = getModifySurgicalToolRequestParser(request, interventionNumber, surgicalToolTypeCode, surgicalToolSerialNumber);
 			service.modifySurgicalTool(requestParser); 
 			return Response.status(Status.OK).build();
 		} catch (RequestParseException e) {
@@ -130,11 +129,11 @@ public class InterventionResource {
 		}
 	}
 	
-	private ModifySurgicalToolRequestParser getModifySurgicalToolRequestParser(String request) throws RequestParseException {
+	private ModifySurgicalToolRequestParser getModifySurgicalToolRequestParser(String request, int interventionNumber, String surgicalToolTypeCode, String surgicalToolSerialNumber) throws RequestParseException {
 		JSONObject jsonRequest = new JSONObject(request);
 		jsonRequest.put("nointervention", String.valueOf(interventionNumber));
 		jsonRequest.put("typecode", String.valueOf(surgicalToolTypeCode));
-		jsonRequest.put("serialNumber", String.valueOf(surgicalToolSerialNumber));
+		jsonRequest.put("serialNumberPathParameter", String.valueOf(surgicalToolSerialNumber));
 		
 		ModifySurgicalToolRequestParser requestParser = modifySurgicalToolRequestParserFactory.getParser(jsonRequest);
 		return requestParser;

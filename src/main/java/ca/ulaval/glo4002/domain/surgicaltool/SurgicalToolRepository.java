@@ -8,5 +8,8 @@ public interface SurgicalToolRepository {
 	
 	public void update(SurgicalTool surgicalTool);
 	
+	public SurgicalTool getById(int id) throws EntityNotFoundException;
+	
 	public SurgicalTool getBySerialNumber(String serialNumber) throws EntityNotFoundException;
+
 }

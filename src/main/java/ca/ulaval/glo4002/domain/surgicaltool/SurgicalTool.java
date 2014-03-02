@@ -2,11 +2,16 @@ package ca.ulaval.glo4002.domain.surgicaltool;
 
 import javax.persistence.*;
 
-@Entity(name="SurgicalTool")
+@Entity(name="SURGICAL_TOOL")
+@Table(name="SURGICAL_TOOL", uniqueConstraints = {@UniqueConstraint(columnNames={"SERIAL_NUMBER"})}, indexes = {@Index(name="SERIAL_NUMBER_IDX", columnList="SERIAL_NUMBER")})
 public class SurgicalTool {
 	
 	@Id
-	@Column(name = "SERIAL_NUMBER", nullable=true, unique=true)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "SURGICAL_TOOL_ID", nullable = false)
+	private int Id;
+
+	@Column(name = "SERIAL_NUMBER", nullable=true)
 	private String serialNumber;
 	
 	@Column(name = "CODE_TYPE", nullable=false)
