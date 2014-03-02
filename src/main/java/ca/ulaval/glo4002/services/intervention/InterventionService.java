@@ -134,7 +134,11 @@ public class InterventionService {
 		SurgicalTool surgicalTool = getSurgicalTool(requestParser);
 		surgicalTool.setSerialNumber(requestParser.getSerialNumber());
 		surgicalTool.setStatus(requestParser.getStatus());
-		surgicalToolRepository.update(surgicalTool);
+		try {
+			surgicalToolRepository.update(surgicalTool);
+		} catch (EntityExistsException e) {
+			throw new ServiceRequestException("INT011", String.format("A surgical tool with serial number '%s' already exists.", requestParser.getSerialNumber()));
+		}
 	}
 	
 	private SurgicalTool getSurgicalTool(ModifySurgicalToolRequestParser requestParser) throws ServiceRequestException {
@@ -147,7 +151,7 @@ public class InterventionService {
 
 
 	private void validateSerialNumberRequirement(CreateSurgicalToolRequestParser requestParser, Intervention intervention) throws ServiceRequestException {
-		if (requestParser.hasSerialNumber() 
+		if (!requestParser.hasSerialNumber() 
 				&& Arrays.asList(forbiddenInterventionTypesForAnonymousSurgicalTools).contains(intervention.getType())) {
 							throw new ServiceRequestException("INT012", "An anonymous surgical cannot be used with this type of intervention.");
 		}

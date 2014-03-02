@@ -2,6 +2,7 @@ package ca.ulaval.glo4002.services.intervention;
 
 import java.util.Date;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityTransaction;
 
@@ -14,9 +15,12 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.mockito.Mockito.*;
 import ca.ulaval.glo4002.domain.intervention.*;
 import ca.ulaval.glo4002.domain.patient.*;
+import ca.ulaval.glo4002.domain.surgicaltool.SurgicalTool;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolRepository;
+import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolStatus;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParser;
+import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.ModifySurgicalToolRequestParser;
 
 @RunWith(MockitoJUnitRunner.class)
 public class InterventionServiceTest {
@@ -25,24 +29,33 @@ public class InterventionServiceTest {
 	private static final String SAMPLE_DESCRIPTION = "description";
 	private static final String SAMPLE_ROOM = "room";
 	private static final InterventionType SAMPLE_TYPE = InterventionType.MOELLE;
-	private static final InterventionStatus SAMPLE_STATUS = InterventionStatus.EN_COURS;
+	private static final InterventionStatus SAMPLE_INTERVENTION_STATUS = InterventionStatus.EN_COURS;
 	private static final int SAMPLE_PATIENT = 2;
 	private static final int SAMPLE_SURGEON = 101224;
+	private static final int SAMPLE_INTERVENTION_NUMBER = 3;
+	private static final String SAMPLE_SERIAL_NUMBER = "684518TF";
+	private static final String SAMPLE_NEW_SERIAL_NUMBER = "684518TF";
+	private static final String SAMPLE_TYPE_CODE = "56465T";
+	private static final SurgicalToolStatus SAMPLE_SURGICAL_TOOL_STATUS = SurgicalToolStatus.TERMINEE;
 	
 	private InterventionRepository interventionRepositoryMock;
 	private PatientRepository patientRepositoryMock;
 	private SurgicalToolRepository surgicalToolRepositoryMock;
 	private EntityTransaction entityTransactionMock;
 	private Patient patientMock;
+	private SurgicalTool surgicalToolMock;
+	private Intervention interventionMock;
 	private InterventionService interventionService;
 	
 	private CreateInterventionRequestParser createInterventionRequestParserMock;
+	private ModifySurgicalToolRequestParser modifySurgicalToolRequestParserMock;
 	
 	@Before
 	public void setup()  {
 		createMocks();
 		buildInterventionService();
 		stubCreateInterventionRequestMockMethods();
+		stubModifySurgicalToolRequestMockMethods();
 		stubRepositoryMethods();
 		stubEntityTransactionsMethods();
 	}
@@ -52,8 +65,11 @@ public class InterventionServiceTest {
 		patientRepositoryMock = mock(PatientRepository.class);
 		surgicalToolRepositoryMock = mock(SurgicalToolRepository.class);
 		patientMock = mock(Patient.class);
+		interventionMock = mock(Intervention.class);
+		surgicalToolMock = mock(SurgicalTool.class);
 		entityTransactionMock = mock(EntityTransaction.class);
 		createInterventionRequestParserMock = mock(CreateInterventionRequestParser.class);
+		modifySurgicalToolRequestParserMock = mock(ModifySurgicalToolRequestParser.class);
 	}
 	
 	private void buildInterventionService() {
@@ -70,13 +86,24 @@ public class InterventionServiceTest {
 		when(createInterventionRequestParserMock.getDescription()).thenReturn(SAMPLE_DESCRIPTION);
 		when(createInterventionRequestParserMock.getPatient()).thenReturn(SAMPLE_PATIENT);
 		when(createInterventionRequestParserMock.getRoom()).thenReturn(SAMPLE_ROOM);
-		when(createInterventionRequestParserMock.getStatus()).thenReturn(SAMPLE_STATUS);
+		when(createInterventionRequestParserMock.getStatus()).thenReturn(SAMPLE_INTERVENTION_STATUS);
 		when(createInterventionRequestParserMock.getSurgeon()).thenReturn(SAMPLE_SURGEON);
 		when(createInterventionRequestParserMock.getType()).thenReturn(SAMPLE_TYPE);
 	}
 	
+	private void stubModifySurgicalToolRequestMockMethods() {
+		when(modifySurgicalToolRequestParserMock.getSerialNumber()).thenReturn(SAMPLE_SERIAL_NUMBER);
+		when(modifySurgicalToolRequestParserMock.hasSerialNumber()).thenReturn(true);
+		when(modifySurgicalToolRequestParserMock.getTypeCode()).thenReturn(SAMPLE_TYPE_CODE);
+		when(modifySurgicalToolRequestParserMock.getStatus()).thenReturn(SAMPLE_SURGICAL_TOOL_STATUS);
+		when(modifySurgicalToolRequestParserMock.getInterventionNumber()).thenReturn(SAMPLE_INTERVENTION_NUMBER);
+		when(modifySurgicalToolRequestParserMock.getNewSerialNumber()).thenReturn(SAMPLE_NEW_SERIAL_NUMBER);
+	}
+	
 	private void stubRepositoryMethods() {
 		when(patientRepositoryMock.getById(anyInt())).thenReturn(patientMock);
+		when(interventionRepositoryMock.getById(anyInt())).thenReturn(interventionMock);
+		when(surgicalToolRepositoryMock.getBySerialNumber(anyString())).thenReturn(surgicalToolMock);
 	}
 	
 	private void stubEntityTransactionsMethods() {
@@ -109,20 +136,77 @@ public class InterventionServiceTest {
 		verify(entityTransactionMock).rollback();
 	}
 
-//	@Rule public ExpectedException thrown=ExpectedException.none();
-//	
-//	@Test
-//	public void sendInAValidMarkNewInstrumentRequest() {
-//		assertTrue(false);
-//	}
-//	
-//	@Test
-//	public void sendRequestForAlreadyFiledSerialNumber() {
-//		assertTrue(false);
-//	}
-//	
-//	@Test
-//	public void sendInAValidMarkExistingRequest() {
-//		assertTrue(false);
-//	}
+	@Test
+	public void verifyCreateSurgicalToolCallsCorrectRepositoryMethods() throws ServiceRequestException {
+		interventionService.createSurgicalTool(modifySurgicalToolRequestParserMock);
+		
+		verify(interventionRepositoryMock).getById(SAMPLE_INTERVENTION_NUMBER);
+		verify(interventionRepositoryMock).update(any(Intervention.class));
+		verify(surgicalToolRepositoryMock).create(any(SurgicalTool.class));
+	}
+	
+	@Test
+	public void verifyCreateSurgicalToolTransactionHandling() throws ServiceRequestException {
+		interventionService.createSurgicalTool(modifySurgicalToolRequestParserMock);
+		InOrder inOrder = inOrder(entityTransactionMock);
+		
+		inOrder.verify(entityTransactionMock).begin();
+		inOrder.verify(entityTransactionMock).commit();
+	}
+	
+	@Test(expected = ServiceRequestException.class)
+	public void verifyCreateSurgicalToolThrowsWhenSerialNumberAlreadyExists() throws ServiceRequestException {
+		doThrow(new EntityExistsException()).when(surgicalToolRepositoryMock).create(any(SurgicalTool.class));
+		
+		interventionService.createSurgicalTool(modifySurgicalToolRequestParserMock);
+
+		verify(entityTransactionMock).rollback();
+	}
+	
+	@Test(expected = ServiceRequestException.class)
+	public void verifyCreateSurgicalToolThrowsWhenOmittingRequiredSerialNumber() throws ServiceRequestException {
+		when(modifySurgicalToolRequestParserMock.hasSerialNumber()).thenReturn(false);
+		when(interventionMock.getType()).thenReturn(InterventionType.COEUR);
+		
+		interventionService.createSurgicalTool(modifySurgicalToolRequestParserMock);
+
+		verify(entityTransactionMock).rollback();
+	}
+	
+	@Test
+	public void verifyModifySurgicalToolCallsCorrectRepositoryMethods() throws ServiceRequestException {
+		interventionService.modifySurgicalTool(modifySurgicalToolRequestParserMock);
+		
+		verify(surgicalToolRepositoryMock).getBySerialNumber(SAMPLE_SERIAL_NUMBER);
+		verify(interventionRepositoryMock).getById(SAMPLE_INTERVENTION_NUMBER);
+		verify(surgicalToolRepositoryMock).update(any(SurgicalTool.class));
+	}
+	
+	@Test
+	public void verifyModifySurgicalToolTransactionHandling() throws ServiceRequestException {
+		interventionService.modifySurgicalTool(modifySurgicalToolRequestParserMock);
+		InOrder inOrder = inOrder(entityTransactionMock);
+		
+		inOrder.verify(entityTransactionMock).begin();
+		inOrder.verify(entityTransactionMock).commit();
+	}
+	
+	@Test(expected = ServiceRequestException.class)
+	public void verifyModifySurgicalToolThrowsWhenSerialNumberAlreadyExists() throws ServiceRequestException {
+		doThrow(new EntityExistsException()).when(surgicalToolRepositoryMock).update(any(SurgicalTool.class));
+		
+		interventionService.modifySurgicalTool(modifySurgicalToolRequestParserMock);
+
+		verify(entityTransactionMock).rollback();
+	}
+	
+	@Test(expected = ServiceRequestException.class)
+	public void verifyModifySurgicalToolThrowsWhenOmittingRequiredSerialNumber() throws ServiceRequestException {
+		when(modifySurgicalToolRequestParserMock.hasSerialNumber()).thenReturn(false);
+		when(interventionMock.getType()).thenReturn(InterventionType.COEUR);
+		
+		interventionService.modifySurgicalTool(modifySurgicalToolRequestParserMock);
+
+		verify(entityTransactionMock).rollback();
+	}
 }
