@@ -105,7 +105,7 @@ public class InterventionService {
 	
 	private Intervention getIntervention(CreateSurgicalToolRequestParser requestParser) throws ServiceRequestException {
 		try {
-			return interventionRepository.getById(requestParser.getInterventionId());
+			return interventionRepository.getById(requestParser.getInterventionNumber());
 		} catch (EntityNotFoundException e) {
 			throw new ServiceRequestException("INT010", e.getMessage());
 		}

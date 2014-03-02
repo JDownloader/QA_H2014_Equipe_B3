@@ -26,7 +26,7 @@ public class AddPrescriptionRequestParserTest {
 	private static final int MIN_STAFF_MEMBER_PARAMETER = 0;
 	private static final int MIN_DIN_PARAMETER = 0;
 	
-	private AddPrescriptionRequestParser addPrescriptionRequest;
+	private AddPrescriptionRequestParser addPrescriptionRequestParser;
 	private JSONObject jsonRequest = new JSONObject();
 	
 	@Before
@@ -40,7 +40,7 @@ public class AddPrescriptionRequestParserTest {
 	}
 	
 	private void createRequestParser() throws Exception {
-		addPrescriptionRequest = new AddPrescriptionRequestParser(jsonRequest);
+		addPrescriptionRequestParser = new AddPrescriptionRequestParser(jsonRequest);
 	}
 	
 	@Test
@@ -141,40 +141,40 @@ public class AddPrescriptionRequestParserTest {
 	
 	@Test
 	public void hasDinReturnsCorrectValue() throws Exception {
-		assertTrue(addPrescriptionRequest.hasDin());
+		assertTrue(addPrescriptionRequestParser.hasDin());
 	}
 	
 	@Test
 	public void returnsCorrectDin() throws Exception {
-		assertEquals(SAMPLE_DIN_PARAMETER, addPrescriptionRequest.getDin());
+		assertEquals(SAMPLE_DIN_PARAMETER, addPrescriptionRequestParser.getDin());
 	}
 	
 	@Test
 	public void returnsCorrectDrugName() throws Exception {
 		swapDinForDrugName();
 		createRequestParser();
-		assertEquals(SAMPLE_DRUG_NAME_PARAMETER, addPrescriptionRequest.getDrugName());
+		assertEquals(SAMPLE_DRUG_NAME_PARAMETER, addPrescriptionRequestParser.getDrugName());
 	}
 	
 	@Test
 	public void returnsCorrectStaffMember() throws Exception {
-		assertEquals(SAMPLE_STAFF_MEMBER_PARAMETER, addPrescriptionRequest.getStaffMember());
+		assertEquals(SAMPLE_STAFF_MEMBER_PARAMETER, addPrescriptionRequestParser.getStaffMember());
 	}
 	
 	@Test
 	public void returnsCorrectPatientNumber() throws Exception {
-		assertEquals(SAMPLE_PATIENT_NUMBER, addPrescriptionRequest.getPatientNumber());
+		assertEquals(SAMPLE_PATIENT_NUMBER, addPrescriptionRequestParser.getPatientNumber());
 	}
 	
 	@Test
 	public void returnsCorrectRenewals() throws Exception {
-		assertEquals(SAMPLE_RENEWALS_PARAMETER, addPrescriptionRequest.getRenewals());
+		assertEquals(SAMPLE_RENEWALS_PARAMETER, addPrescriptionRequestParser.getRenewals());
 	}
 	
 	@Test
 	public void returnsCorrectDate() throws Exception {
 		Date sampleDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse("2001-07-04T12:08:56");
-		assertEquals(sampleDate, addPrescriptionRequest.getDate());
+		assertEquals(sampleDate, addPrescriptionRequestParser.getDate());
 	}
 	
 	private void swapDinForDrugName() {

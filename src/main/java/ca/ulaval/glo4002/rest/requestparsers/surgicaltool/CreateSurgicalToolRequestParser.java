@@ -29,9 +29,9 @@ public class CreateSurgicalToolRequestParser {
 	}
 	
 	private void parseParameters(JSONObject jsonRequest) {
-		this.status = SurgicalToolStatus.fromString(jsonRequest.optString(STATUS_PARAMETER_NAME));
+		this.status = SurgicalToolStatus.fromString(jsonRequest.getString(STATUS_PARAMETER_NAME));
 		this.typeCode = jsonRequest.getString(TYPECODE_PARAMETER_NAME);
-		this.serialNumber = jsonRequest.optString(TYPECODE_PARAMETER_NAME);
+		this.serialNumber = jsonRequest.optString(SERIAL_NUMBER_PARAMETER_NAME);
 		this.interventionNumber = jsonRequest.getInt(INTERVENTION_NUMBER_PARAMETER_NAME);
 	}
 	
@@ -59,7 +59,7 @@ public class CreateSurgicalToolRequestParser {
 		return !StringUtils.isBlank(this.serialNumber);
 	}
 	
-	public int getInterventionId() {
+	public int getInterventionNumber() {
 		return this.interventionNumber;
 	}
 }
