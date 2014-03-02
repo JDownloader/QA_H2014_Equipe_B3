@@ -11,13 +11,19 @@ import ca.ulaval.glo4002.domain.drug.Drug;
 public class DrugTest {
 	private static final Din NULL_DIN = null;
 
-	private static final String SAMPLE_DRUG_NAME = "Drug";
 	private static final Din SAMPLE_DIN = new Din(5);
+	private static final String SAMPLE_DRUG_NAME = "Drug";
+	private static final String SAMPLE_DESCRIPTION = "Description";
+	
 	private Drug drug;
 
 	@Before
 	public void setup() {
-		drug = new DrugBuilder().din(SAMPLE_DIN).name(SAMPLE_DRUG_NAME).build();
+		DrugBuilder drugBuilder = new DrugBuilder();
+		drugBuilder.din(SAMPLE_DIN);
+		drugBuilder.name(SAMPLE_DRUG_NAME);
+		drugBuilder.description(SAMPLE_DESCRIPTION);
+		drug = drugBuilder.build();
 	}
 
 	@Test
@@ -32,12 +38,17 @@ public class DrugTest {
 	}
 	
 	@Test
-	public void returnsTheCorrectName() {
+	public void returnsCorrectName() {
 		assertEquals(SAMPLE_DRUG_NAME, drug.getName());
 	}
 
 	@Test
-	public void returnsTheCorrectDin() {
+	public void returnsCorrectDin() {
 		assertEquals(SAMPLE_DIN, drug.getDin());
+	}
+	
+	@Test
+	public void returnsCorrectDescription() {
+		assertEquals(SAMPLE_DESCRIPTION, drug.getDescription());
 	}
 }

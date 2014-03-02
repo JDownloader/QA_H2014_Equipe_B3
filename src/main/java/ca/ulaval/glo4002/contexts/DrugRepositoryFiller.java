@@ -13,6 +13,7 @@ public class DrugRepositoryFiller {
 	
 	private static final int DRUG_IDENTIFICATION_NUMBER_COLUMN = 3;
 	private static final int BRAND_NAME_COLUMN = 4;
+	private static final int DESCRIPTOR_COLUMN = 5;
 	
 	public void fill(EntityManager entityManager, DrugRepository drugRepository, Reader reader) throws IOException, BadFileFormatException {
 		entityManager.getTransaction().begin();
@@ -36,6 +37,7 @@ public class DrugRepositoryFiller {
 			DrugBuilder drugBuilder = new DrugBuilder();
 			drugBuilder.din(new Din(Integer.parseInt(line[DRUG_IDENTIFICATION_NUMBER_COLUMN])));
 			drugBuilder.name(line[BRAND_NAME_COLUMN]);
+			drugBuilder.description(line[DESCRIPTOR_COLUMN]);
 			return drugBuilder.build();
 		} catch (NumberFormatException e) {
 			throw new BadFileFormatException(String.format("Could not parse line %d due to bad data format.", lineNumber));

@@ -68,8 +68,10 @@ public class InterventionResource {
 			CreateInterventionRequest interventionRequest = getInterventionRequest(request);
 			service.createIntervention(interventionRequest); 
 			return Response.status(Status.CREATED).build();
-		} catch (JSONException | ParseException | IllegalArgumentException e) {
-			return BadRequestJsonResponseBuilder.build("INT001", "La requête contient des informations invalides et/ou est malformée");
+		} catch (JSONException | ParseException e) {
+			return BadRequestJsonResponseBuilder.build("INT001", "Invalid parameters were supplied to the request.");
+		} catch (IllegalArgumentException e) {
+			return BadRequestJsonResponseBuilder.build("INT001", e.getMessage());
 		} catch (BadRequestException e) {
 			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());
 		} catch (Exception e) {
@@ -79,7 +81,7 @@ public class InterventionResource {
 	
 	private CreateInterventionRequest getInterventionRequest(String request) throws JSONException, ParseException {
 		JSONObject jsonRequest = new JSONObject(request);
-		CreateInterventionRequest interventionRequest = createInterventionRequestFactory.createCreateInterventionRequest(jsonRequest);
+		CreateInterventionRequest interventionRequest = createInterventionRequestFactory.createInterventionRequest(jsonRequest);
 		return interventionRequest;
 	}
 

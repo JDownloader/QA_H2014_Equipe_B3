@@ -6,7 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class CreateInterventionRequestFactory {
-	public CreateInterventionRequest createCreateInterventionRequest(JSONObject jsonRequest) throws JSONException, ParseException {
+	public CreateInterventionRequest createInterventionRequest(JSONObject jsonRequest) throws JSONException, ParseException {
 		return new CreateInterventionRequest(jsonRequest);
 	}
 }

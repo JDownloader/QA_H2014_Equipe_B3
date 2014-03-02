@@ -98,11 +98,6 @@ public class PrescriptionServiceTest {
 	}
 	
 	@Test
-	public void verifyAddPrescriptionReturnsCorrectResponse() throws BadRequestException {
-		prescriptionService.addPrescription(addPrescriptionRequestMock);
-	}
-	
-	@Test
 	public void verifyAddPrescriptionWithNoDinCallsCorrectRepositoryMethods() throws BadRequestException {
 		stubAddPrescriptionRequestMockMethodsWithNoDin();
 		
@@ -114,7 +109,7 @@ public class PrescriptionServiceTest {
 	}
 	
 	@Test
-	public void verifyTransactionHandling() throws BadRequestException {
+	public void verifyAddPrescriptionTransactionHandling() throws BadRequestException {
 		prescriptionService.addPrescription(addPrescriptionRequestMock);
 		InOrder inOrder = inOrder(entityTransactionMock);
 		
@@ -123,7 +118,7 @@ public class PrescriptionServiceTest {
 	}
 	
 	@Test(expected = BadRequestException.class)
-	public void throwsWhenSpecifyingNonExistingDrugDin() throws BadRequestException {
+	public void verifyAddPrescriptionThrowsWhenSpecifyingNonExistingDrugDin() throws BadRequestException {
 		when(drugRepositoryMock.getByDin(any(Din.class))).thenThrow(new EntityNotFoundException());
 		
 		prescriptionService.addPrescription(addPrescriptionRequestMock);
@@ -132,7 +127,7 @@ public class PrescriptionServiceTest {
 	}
 	
 	@Test(expected = BadRequestException.class)
-	public void throwsWhenSpecifyingNonExistingPatientNumber() throws BadRequestException {
+	public void verifyAddPrescriptionThrowsWhenSpecifyingNonExistingPatientNumber() throws BadRequestException {
 		when(patientRepositoryMock.getById(anyInt())).thenThrow(new EntityNotFoundException());
 		
 		prescriptionService.addPrescription(addPrescriptionRequestMock);

@@ -55,8 +55,10 @@ public class PrescriptionResource {
 			AddPrescriptionRequest prescriptionRequest = getPrescriptionRequest(request);
 			service.addPrescription(prescriptionRequest); 
 			return Response.status(Status.CREATED).build();
-		} catch (JSONException | ParseException | IllegalArgumentException e) {
-			return BadRequestJsonResponseBuilder.build("PRES001", "La requête contient des informations invalides et/ou est malformée");
+		} catch (JSONException | ParseException e) {
+			return BadRequestJsonResponseBuilder.build("PRES001", "Invalid parameters were supplied to the request.");
+		} catch (IllegalArgumentException e) {
+			return BadRequestJsonResponseBuilder.build("PRES001", e.getMessage());
 		} catch (BadRequestException e) {
 			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());
 		} catch (Exception e) {

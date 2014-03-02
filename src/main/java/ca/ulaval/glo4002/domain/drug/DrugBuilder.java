@@ -5,6 +5,7 @@ import org.h2.util.StringUtils;
 public class DrugBuilder {
 	public Din din;
 	public String name;
+	public String description;
 	
 	public DrugBuilder din(Din din) {
 		this.din = din;
@@ -13,6 +14,11 @@ public class DrugBuilder {
 	
 	public DrugBuilder name(String name) {
 		this.name = name;
+		return this;
+	}
+	
+	public DrugBuilder description(String description) {
+		this.description = description;
 		return this;
 	}
 	

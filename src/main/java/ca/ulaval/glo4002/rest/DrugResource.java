@@ -1,15 +1,16 @@
 package ca.ulaval.glo4002.rest;
 
 import java.text.ParseException;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.json.*;
 
+import ca.ulaval.glo4002.domain.drug.Drug;
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
 import ca.ulaval.glo4002.exceptions.BadRequestException;
 import ca.ulaval.glo4002.persistence.drug.HibernateDrugRepository;
@@ -46,10 +47,12 @@ public class DrugResource {
 	public Response post(String request){
 		try {
 			DrugSearchRequest drugSearchRequest = getDrugSearchRequest(request);
-			service.searchDrug(drugSearchRequest); 
-			return Response.status(Status.SERVICE_UNAVAILABLE).build(); //TODO
-		} catch (JSONException | ParseException | IllegalArgumentException e) {
-			return BadRequestJsonResponseBuilder.build("INT001", "La requête contient des informations invalides et/ou est malformée");
+			List<Drug> drugResults = service.searchDrug(drugSearchRequest); 
+			return buildDrugResultResponse(drugResults);
+		} catch (JSONException | ParseException e) {
+			return BadRequestJsonResponseBuilder.build("DIN001", "Invalid parameters were supplied to the request.");
+		} catch (IllegalArgumentException e) {
+			return BadRequestJsonResponseBuilder.build("DIN001", e.getMessage());
 		} catch (BadRequestException e) {
 			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());
 		} catch (Exception e) {
@@ -61,6 +64,20 @@ public class DrugResource {
 		JSONObject jsonRequest = new JSONObject(request);
 		DrugSearchRequest interventionRequest = drugSearchRequestFactory.createDrugSearchRequest(jsonRequest);
 		return interventionRequest;
+	}
+	
+	private Response buildDrugResultResponse(List<Drug> drugs) {
+		JSONArray jsonArray = new JSONArray();
+		
+		for(Drug drug : drugs) {
+			JSONObject jsonResponse = new JSONObject();
+			jsonResponse.append("din", drug.getDin().toString());
+			jsonResponse.append("nom", drug.getName());
+			jsonResponse.append("description", drug.getDescription());
+			jsonArray.put(jsonResponse);
+		}
+
+		return Response.status(Status.CREATED).type(MediaType.APPLICATION_JSON).entity(jsonArray.toString()).build();
 	}
 
 }
