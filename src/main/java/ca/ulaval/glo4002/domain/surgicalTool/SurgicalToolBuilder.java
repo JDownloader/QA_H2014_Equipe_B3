@@ -32,6 +32,7 @@ public class SurgicalToolBuilder {
 	public SurgicalTool build() {
 		SurgicalTool surgicalTool = new SurgicalTool(this);
 	
+		//TODO review to make sure this is accurate
 		if(typecode.isEmpty()
 			|| status.isEmpty()
 			|| interventionId == UNSPECIFIED_INTERVENTION) {
