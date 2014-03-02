@@ -29,26 +29,6 @@ public class PrescriptionTest {
 		prescriptionWithDrugName = new PrescriptionBuilder().drugName(SAMPLE_DRUG_NAME).date(SAMPLE_DATE).prescriber(staffMemberMock).allowedRenewalCount(SAMPLE_NUMBER_OF_RENEWALS).build();
 	}
 	
-	@Test(expected = IllegalStateException.class)
-	public void disallowsUnspecifiedPrescriber() {
-		new PrescriptionBuilder().drug(drugMock).date(SAMPLE_DATE).allowedRenewalCount(SAMPLE_NUMBER_OF_RENEWALS).build();
-	}
-	
-	@Test(expected = IllegalStateException.class)
-	public void disallowsUnspecifiedRenewalCount() {
-		new PrescriptionBuilder().drug(drugMock).date(SAMPLE_DATE).prescriber(staffMemberMock).build();
-	}
-	
-	@Test(expected = IllegalStateException.class)
-	public void disallowsUnspecifiedDate() {
-		new PrescriptionBuilder().drug(drugMock).prescriber(staffMemberMock).allowedRenewalCount(SAMPLE_NUMBER_OF_RENEWALS).build();
-	}
-	
-	@Test(expected = IllegalStateException.class)
-	public void disallowsUnspecifiedDrugAndDrugName() {
-		new PrescriptionBuilder().date(SAMPLE_DATE).prescriber(staffMemberMock).allowedRenewalCount(SAMPLE_NUMBER_OF_RENEWALS).build();
-	}
-	
 	@Test
 	public void comparesIdCorrectly() {
 		int prescriptionId = prescriptionWithDrug.getId();
