@@ -7,6 +7,11 @@ import javax.persistence.EntityTransaction;
 
 import org.junit.*;
 import org.mockito.*;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.mockito.Mockito.*;
 import ca.ulaval.glo4002.domain.intervention.*;
@@ -14,6 +19,7 @@ import ca.ulaval.glo4002.domain.patient.*;
 import ca.ulaval.glo4002.exceptions.BadRequestException;
 import ca.ulaval.glo4002.rest.requests.CreateInterventionRequest;
 
+@RunWith(MockitoJUnitRunner.class)
 public class InterventionServiceTest {
 	
 	private static final Date SAMPLE_DATE = new Date();
@@ -104,5 +110,22 @@ public class InterventionServiceTest {
 		interventionService.createIntervention(createInterventionRequestMock);
 
 		verify(entityTransactionMock).rollback();
+	}
+
+	@Rule public ExpectedException thrown=ExpectedException.none();
+	
+	@Test
+	public void sendInAValidMarkNewInstrumentRequest() {
+		assertTrue(false);
+	}
+	
+	@Test
+	public void sendRequestForAlreadyFiledSerialNumber() {
+		assertTrue(false);
+	}
+	
+	@Test
+	public void sendInAValidMarkExistingRequest() {
+		assertTrue(false);
 	}
 }

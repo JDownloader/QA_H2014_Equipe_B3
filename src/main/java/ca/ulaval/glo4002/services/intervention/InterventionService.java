@@ -3,14 +3,17 @@ package ca.ulaval.glo4002.services.intervention;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityTransaction;
 
+import ca.ulaval.glo4002.domain.intervention.InterventionRepository;
+import ca.ulaval.glo4002.exceptions.BadRequestException;
 import ca.ulaval.glo4002.domain.intervention.Intervention;
 import ca.ulaval.glo4002.domain.intervention.InterventionBuilder;
-import ca.ulaval.glo4002.domain.intervention.InterventionRepository;
 import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
-import ca.ulaval.glo4002.exceptions.BadRequestException;
 import ca.ulaval.glo4002.rest.requests.CreateInterventionRequest;
+import ca.ulaval.glo4002.rest.requests.MarkExistingInstrumentRequest;
+import ca.ulaval.glo4002.rest.requests.MarkNewInstrumentRequest;
+
 
 public class InterventionService {
 	private InterventionRepository interventionRepository;
@@ -57,5 +60,39 @@ public class InterventionService {
 		} catch (EntityNotFoundException e) {
 			throw new BadRequestException("INT002", "Erreur - Patient inexistant");
 		}
+	}
+	
+	public void markNewInstrument(MarkNewInstrumentRequest request) throws BadRequestException {
+		try {
+			entityTransaction.begin();
+			doMarkNewInstrument(request);
+			entityTransaction.commit();
+		} catch (BadRequestException exception) {
+			throw exception;
+		} finally {
+			if(entityTransaction.isActive())
+				entityTransaction.rollback();
+		}
+	}
+	
+	private void doMarkNewInstrument(MarkNewInstrumentRequest request) throws BadRequestException {
+		//TODO
+	}
+	
+	public void markExistingInstrument(MarkExistingInstrumentRequest request) throws BadRequestException {
+		try {
+			entityTransaction.begin();
+			doMarkExistingInstrument(request);
+			entityTransaction.commit();
+		} catch (BadRequestException exception) {
+			throw exception;
+		} finally {
+			if(entityTransaction.isActive())
+				entityTransaction.rollback();
+		}
+	}
+	
+	private void doMarkExistingInstrument(MarkExistingInstrumentRequest request) throws BadRequestException {
+		//TODO
 	}
 }
