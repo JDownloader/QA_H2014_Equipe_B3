@@ -22,6 +22,7 @@ import ca.ulaval.glo4002.rest.requests.MarkNewInstrumentRequest;
 import ca.ulaval.glo4002.rest.utils.BadRequestJsonResponseBuilder;
 import ca.ulaval.glo4002.services.intervention.InterventionService;
 import ca.ulaval.glo4002.services.intervention.InterventionServiceBuilder;
+import ca.ulaval.glo4002.services.surgicalTool.SurgicalToolService;
 
 @Path("interventions/")
 public class InterventionResource {
@@ -29,6 +30,7 @@ public class InterventionResource {
 	public String INSTRUMENT_NUMBER_PARAMETER = "noinstrument";
 	
 	private InterventionService service;
+	private SurgicalToolService surgicalToolService;
 	private CreateInterventionRequestFactory createInterventionRequestFactory;
 
 	@PathParam("intervention_number")
@@ -48,8 +50,9 @@ public class InterventionResource {
 		this.createInterventionRequestFactory = new CreateInterventionRequestFactory();
 	}
 	
-	public InterventionResource(InterventionService service) {
+	public InterventionResource(InterventionService service, SurgicalToolService surgicalToolService) {
 		this.service = service;
+		this.surgicalToolService = surgicalToolService;
 	}
 	
 	public InterventionResource(InterventionService service, CreateInterventionRequestFactory createInterventionRequestFactory) {
@@ -95,7 +98,7 @@ public class InterventionResource {
 		}
 		
 		try {
-			service.markNewInstrument(myRequest);
+			surgicalToolService.markNewInstrument(myRequest);
 		} catch (BadRequestException exception) {
 			return returnResponseWhenException(exception);
 		}
@@ -134,7 +137,7 @@ public class InterventionResource {
 		}
 		
 		try {
-			service.markExistingInstrument(myRequest);
+			surgicalToolService.markExistingInstrument(myRequest);
 		} catch (BadRequestException exception) {
 			return returnResponseWhenException(exception);
 		}
