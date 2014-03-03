@@ -25,7 +25,8 @@ public class PrescriptionTest {
 		drugMock = mock(Drug.class);
 		staffMemberMock = mock(StaffMember.class);
 		
-		PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder().drug(drugMock);
+		PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder();
+		prescriptionBuilder.drug(drugMock);
 		prescription = buildCommonParameters(prescriptionBuilder).build();
 
 	}
@@ -58,7 +59,8 @@ public class PrescriptionTest {
 	
 	@Test
 	public void returnsAllowedNumberOfRenewalsCorrectly() {
-		assertEquals(SAMPLE_NUMBER_OF_RENEWALS, prescription.getAllowedNumberOfRenewal());
+		int value = prescription.getAllowedNumberOfRenewal();
+		assertEquals(SAMPLE_NUMBER_OF_RENEWALS, value);
 	}
 	
 	@Test

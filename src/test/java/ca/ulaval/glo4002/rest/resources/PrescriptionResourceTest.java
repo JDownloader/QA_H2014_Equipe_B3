@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import ca.ulaval.glo4002.domain.drug.DrugDontHaveDinExeption;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.requestparsers.prescription.AddPrescriptionRequestParser;
 import ca.ulaval.glo4002.rest.requestparsers.prescription.AddPrescriptionRequestParserFactory;
@@ -25,7 +26,7 @@ public class PrescriptionResourceTest {
 	private PrescriptionResource prescriptionResource;
 	
 	@Before
-	public void setup() throws Exception {
+	public void init() throws Exception {
 		createMocks();
 		stubMethods();
 		buildPrescriptionResource();
@@ -46,7 +47,7 @@ public class PrescriptionResourceTest {
 	}
 	
 	@Test
-	public void verifyAddPrescriptionCallsServiceMethodsCorrectly() throws ServiceRequestException {
+	public void verifyAddPrescriptionCallsServiceMethodsCorrectly() throws ServiceRequestException, DrugDontHaveDinExeption {
 		prescriptionResource.post(SAMPLE_JSON_REQUEST);
 		verify(prescriptionServiceMock).addPrescription(addPrescriptionRequestParserMock);
 	}
@@ -58,7 +59,7 @@ public class PrescriptionResourceTest {
 	}
 	
 	@Test
-	public void verifyAddPrescriptionReturnsInvalidResponseWhenSpecifyingInvalidRequest() throws ServiceRequestException {
+	public void verifyAddPrescriptionReturnsInvalidResponseWhenSpecifyingInvalidRequest() throws ServiceRequestException, DrugDontHaveDinExeption {
 		doThrow(new ServiceRequestException()).when(prescriptionServiceMock).addPrescription(addPrescriptionRequestParserMock);
 		
 		Response expectedResponse = Response.status(Status.BAD_REQUEST).build();

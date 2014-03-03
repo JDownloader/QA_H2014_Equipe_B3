@@ -22,7 +22,7 @@ private static final String SAMPLE_JSON_REQUEST = "{attrib: value}";
 	private DrugResource drugResource;
 	
 	@Before
-	public void setup() throws Exception {
+	public void init() throws Exception {
 		createMocks();
 		stubMethods();
 		buildPrescriptionResource();

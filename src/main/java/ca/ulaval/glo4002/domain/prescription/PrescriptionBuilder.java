@@ -9,7 +9,6 @@ import ca.ulaval.glo4002.domain.staff.StaffMember;
 
 public class PrescriptionBuilder {
 	private static final int UNSPECIFIED = -1;
-	
 	protected Drug drug = null;
 	protected String drugName = null;
 	protected int allowedNumberOfRenewal = UNSPECIFIED;

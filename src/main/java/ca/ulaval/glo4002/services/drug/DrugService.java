@@ -6,7 +6,6 @@ import javax.persistence.EntityTransaction;
 
 import ca.ulaval.glo4002.domain.drug.Drug;
 import ca.ulaval.glo4002.domain.drug.DrugRepository;
-import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.requestparsers.drug.DrugSearchRequestParser;
 
 public class DrugService {

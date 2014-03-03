@@ -11,6 +11,7 @@ import org.mockito.*;
 import static org.mockito.Mockito.*;
 import ca.ulaval.glo4002.domain.drug.Din;
 import ca.ulaval.glo4002.domain.drug.Drug;
+import ca.ulaval.glo4002.domain.drug.DrugDontHaveDinExeption;
 import ca.ulaval.glo4002.domain.drug.DrugRepository;
 import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
@@ -38,7 +39,8 @@ public class PrescriptionServiceTest {
 	private AddPrescriptionRequestParser addPrescriptionRequestParserMock;
 	
 	@Before
-	public void setup()  {
+	//TODO verify logic, init should'nt thow
+	public void init() throws EntityNotFoundException, DrugDontHaveDinExeption  {
 		createMocks();
 		buildPrescriptionService(); 
 		stubAddPrescriptionRequestMockMethods();
@@ -79,7 +81,7 @@ public class PrescriptionServiceTest {
 		when(addPrescriptionRequestParserMock.getDrugName()).thenReturn(SAMPLE_DRUG_NAME_PARAMETER);
 	}
 	
-	private void stubRepositoryMethods() {
+	private void stubRepositoryMethods() throws EntityNotFoundException, DrugDontHaveDinExeption {
 		when(drugRepositoryMock.getByDin(any(Din.class))).thenReturn(drugMock);
 		when(patientRepositoryMock.getById(anyInt())).thenReturn(patientMock);
 	}
@@ -89,7 +91,7 @@ public class PrescriptionServiceTest {
 	}
 	
 	@Test
-	public void verifyAddPrescriptionWithDinCallsCorrectRepositoryMethods() throws ServiceRequestException {
+	public void verifyAddPrescriptionCallsCorrectRepositoryMethods() throws ServiceRequestException, DrugDontHaveDinExeption {
 		prescriptionService.addPrescription(addPrescriptionRequestParserMock);
 		
 		verify(drugRepositoryMock).getByDin(any(Din.class));
@@ -98,7 +100,7 @@ public class PrescriptionServiceTest {
 	}
 	
 	@Test
-	public void verifyAddPrescriptionWithNoDinCallsCorrectRepositoryMethods() throws ServiceRequestException {
+	public void verifyAddPrescriptionWithNoDinCallsCorrectRepositoryMethods() throws ServiceRequestException, DrugDontHaveDinExeption {
 		stubAddPrescriptionRequestMockMethodsWithNoDin();
 		
 		prescriptionService.addPrescription(addPrescriptionRequestParserMock);
@@ -109,7 +111,7 @@ public class PrescriptionServiceTest {
 	}
 	
 	@Test
-	public void verifyAddPrescriptionTransactionHandling() throws ServiceRequestException {
+	public void verifyAddPrescriptionTransactionHandling() throws ServiceRequestException, DrugDontHaveDinExeption {
 		prescriptionService.addPrescription(addPrescriptionRequestParserMock);
 		InOrder inOrder = inOrder(entityTransactionMock);
 		
@@ -118,7 +120,7 @@ public class PrescriptionServiceTest {
 	}
 	
 	@Test(expected = ServiceRequestException.class)
-	public void verifyAddPrescriptionThrowsWhenSpecifyingNonExistingDrugDin() throws ServiceRequestException {
+	public void verifyAddPrescriptionThrowsWhenSpecifyingNonExistingDrugDin() throws ServiceRequestException, DrugDontHaveDinExeption {
 		when(drugRepositoryMock.getByDin(any(Din.class))).thenThrow(new EntityNotFoundException());
 		
 		prescriptionService.addPrescription(addPrescriptionRequestParserMock);
@@ -127,7 +129,7 @@ public class PrescriptionServiceTest {
 	}
 	
 	@Test(expected = ServiceRequestException.class)
-	public void verifyAddPrescriptionThrowsWhenSpecifyingNonExistingPatientNumber() throws ServiceRequestException {
+	public void verifyAddPrescriptionThrowsWhenSpecifyingNonExistingPatientNumber() throws ServiceRequestException, DrugDontHaveDinExeption {
 		when(patientRepositoryMock.getById(anyInt())).thenThrow(new EntityNotFoundException());
 		
 		prescriptionService.addPrescription(addPrescriptionRequestParserMock);

@@ -24,13 +24,14 @@ public class HibernateDrugRepository extends HibernateRepository implements Drug
 	public Drug getByDin(Din din) throws EntityNotFoundException {
 		Drug drug = entityManager.find(Drug.class, din);
 		if (drug == null) {
-			throw new EntityNotFoundException(String.format("Cannot find Drug with din '%s'.", din));
+			throw new EntityNotFoundException(String.format("Cannot find Drug  din '%s'.", din));
 		}
 		return drug;
 	}
 	
 	public List<Drug> findByName(String name) throws Exception {
 		String likeStatement = name.replace(' ', '%').toUpperCase();
+		//TODO no more sql
 		String queryString = String.format("SELECT d FROM DRUG d WHERE UPPER(d.name) LIKE '%s' OR UPPER(d.description) LIKE '%s'", likeStatement, likeStatement);
 		
 		TypedQuery<Drug> query = entityManager.createQuery(queryString, Drug.class);
@@ -38,4 +39,5 @@ public class HibernateDrugRepository extends HibernateRepository implements Drug
 		List<Drug> result = query.getResultList();
 		return result;
 	}
+
 }
