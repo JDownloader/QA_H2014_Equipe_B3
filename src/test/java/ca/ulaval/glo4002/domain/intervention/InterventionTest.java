@@ -43,7 +43,7 @@ public class InterventionTest {
 		interventionBuilder.type(SAMPLE_TYPE);
 		intervention = interventionBuilder.build();
 	}
-
+	
 	@Test
 	public void returnsDescriptionCorrectly() {
 		assertEquals(SAMPLE_DESCRIPTION, intervention.getDescription());

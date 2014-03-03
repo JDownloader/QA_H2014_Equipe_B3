@@ -27,11 +27,12 @@ public class InterventionService {
 		this.patientRepository = builder.patientRepository;
 	}
 	
-	public void createIntervention(CreateInterventionRequestParser requestParser) throws ServiceRequestException {
+	public int createIntervention(CreateInterventionRequestParser requestParser) throws ServiceRequestException {
 		try {
 			entityTransaction.begin();
-			doCreateIntervention(requestParser);
+			Intervention newIntervention = doCreateIntervention(requestParser);
 			entityTransaction.commit();
+			return newIntervention.getId();
 		} catch (Exception e) {
 			if (entityTransaction.isActive()) {
 				entityTransaction.rollback();
@@ -40,20 +41,21 @@ public class InterventionService {
 		}
 	}
 	
-	protected void doCreateIntervention(CreateInterventionRequestParser requestParser) throws ServiceRequestException {
+	protected Intervention doCreateIntervention(CreateInterventionRequestParser requestParser) throws ServiceRequestException {
 		Intervention intervention = buildIntervention(requestParser);
 		interventionRepository.create(intervention);
+		return intervention;
 	}
 
 	private Intervention buildIntervention(CreateInterventionRequestParser requestParser) throws ServiceRequestException {
-		InterventionBuilder interventionBuilder = new InterventionBuilder();
-		interventionBuilder.date(requestParser.getDate());
-		interventionBuilder.description(requestParser.getDescription());
-		interventionBuilder.room(requestParser.getRoom());
-		interventionBuilder.surgeon(new Surgeon(requestParser.getSurgeon()));
-		interventionBuilder.type(requestParser.getType());
-		interventionBuilder.status(requestParser.getStatus());
-		interventionBuilder.patient(getPatient(requestParser));
+		InterventionBuilder interventionBuilder = new InterventionBuilder()
+		.date(requestParser.getDate())
+		.description(requestParser.getDescription())
+		.room(requestParser.getRoom())
+		.surgeon(new Surgeon(requestParser.getSurgeon()))
+		.type(requestParser.getType())
+		.status(requestParser.getStatus())
+		.patient(getPatient(requestParser));
 		return interventionBuilder.build();
 	}
 	
@@ -65,11 +67,12 @@ public class InterventionService {
 		}
 	}
 	
-	public void createSurgicalTool(CreateSurgicalToolRequestParser requestParser) throws ServiceRequestException {
+	public int createSurgicalTool(CreateSurgicalToolRequestParser requestParser) throws ServiceRequestException {
 		try {
 			entityTransaction.begin();
-			doCreateSurgicalTool(requestParser);
+			SurgicalTool newSurgicalTool = doCreateSurgicalTool(requestParser);
 			entityTransaction.commit();
+			return newSurgicalTool.getId();
 		} catch (ServiceRequestException exception) {
 			throw exception;
 		} finally {
@@ -78,9 +81,10 @@ public class InterventionService {
 		}
 	}
 	
-	private void doCreateSurgicalTool(CreateSurgicalToolRequestParser requestParser) throws ServiceRequestException {
+	private SurgicalTool doCreateSurgicalTool(CreateSurgicalToolRequestParser requestParser) throws ServiceRequestException {
 		SurgicalTool surgicalTool = createAndPersistSurgicalTool(requestParser);
 		updateIntervention(requestParser, surgicalTool);
+		return surgicalTool;
 	}
 
 	private SurgicalTool createAndPersistSurgicalTool(CreateSurgicalToolRequestParser requestParser) throws ServiceRequestException {

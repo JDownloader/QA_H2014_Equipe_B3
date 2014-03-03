@@ -29,6 +29,10 @@ public class SurgicalTool {
 		this.typeCode = builder.typeCode;
 		this.status = builder.status;
 	}
+	
+	public int getId() {
+		return this.Id;
+	}
 
 	public String getSerialNumber() {
 		return this.serialNumber;

@@ -1,5 +1,7 @@
 package ca.ulaval.glo4002.rest.resources;
 
+import java.net.URI;
+
 import javax.persistence.EntityManager;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -10,20 +12,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
-import ca.ulaval.glo4002.exceptions.RequestParseException;
-import ca.ulaval.glo4002.exceptions.ServiceRequestException;
+import ca.ulaval.glo4002.exceptions.*;
 import ca.ulaval.glo4002.persistence.intervention.HibernateInterventionRepository;
 import ca.ulaval.glo4002.persistence.patient.HibernatePatientRepository;
 import ca.ulaval.glo4002.persistence.surgicaltool.HibernateSurgicalToolRepository;
-import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParser;
-import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParserFactory;
-import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.ModifySurgicalToolRequestParser;
-import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.ModifySurgicalToolRequestParserFactory;
-import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.CreateSurgicalToolRequestParser;
-import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.CreateSurgicalToolRequestParserFactory;
+import ca.ulaval.glo4002.rest.requestparsers.intervention.*;
+import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.*;
 import ca.ulaval.glo4002.rest.utils.BadRequestJsonResponseBuilder;
-import ca.ulaval.glo4002.services.intervention.InterventionService;
-import ca.ulaval.glo4002.services.intervention.InterventionServiceBuilder;
+import ca.ulaval.glo4002.services.intervention.*;
+
 
 @Path("interventions/")
 public class InterventionResource {
@@ -67,8 +64,9 @@ public class InterventionResource {
 	public Response post(String request){
 		try {
 			CreateInterventionRequestParser requestParser = getCreateInterventionRequestParser(request);
-			service.createIntervention(requestParser); 
-			return Response.status(Status.CREATED).build();
+			int interventionNumber = service.createIntervention(requestParser); 
+			String newResourceLocation = getNewResourceLocation(interventionNumber);
+			return Response.status(Status.CREATED).location(new URI(newResourceLocation)).build();
 		} catch (RequestParseException | JSONException e) {
 			return BadRequestJsonResponseBuilder.build("INT001", e.getMessage());
 		} catch (ServiceRequestException e) {
@@ -76,6 +74,10 @@ public class InterventionResource {
 		} catch (Exception e) {
 			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 		}
+	}
+
+	private String getNewResourceLocation(int interventionNumber) {
+		return String.format("/%d", interventionNumber);
 	}
 	
 	private CreateInterventionRequestParser getCreateInterventionRequestParser(String request) throws RequestParseException {
@@ -91,8 +93,9 @@ public class InterventionResource {
 	public Response createSurgicalTool(String request, @PathParam("interventionNumber") int interventionNumber) {
 		try {
 			CreateSurgicalToolRequestParser requestParser = getCreateSurgicalToolRequestParser(request, interventionNumber);
-			service.createSurgicalTool(requestParser); 
-			return Response.status(Status.CREATED).build();
+			int surgicalToolId = service.createSurgicalTool(requestParser); 
+			String newResourceLocation = getNewSurgicalToolResourceLocation(requestParser, surgicalToolId);
+			return Response.status(Status.CREATED).location(new URI(newResourceLocation)).build();
 		} catch (RequestParseException | JSONException e) {
 			return BadRequestJsonResponseBuilder.build("INT010", e.getMessage());
 		} catch (ServiceRequestException e) {
@@ -100,6 +103,10 @@ public class InterventionResource {
 		} catch (Exception e) {
 			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 		}
+	}
+	
+	private String getNewSurgicalToolResourceLocation(CreateSurgicalToolRequestParser requestParser, int surgicalToolId) {
+		return String.format("/%s/%s", requestParser.getTypeCode(), surgicalToolId);
 	}
 	
 	private CreateSurgicalToolRequestParser getCreateSurgicalToolRequestParser(String request, int interventionNumber) throws RequestParseException {
