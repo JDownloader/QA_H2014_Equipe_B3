@@ -21,8 +21,8 @@ public class DrugTest {
 		drugWithoutDescription = new DrugFactory().createDrug(SAMPLE_DIN, SAMPLE_DRUG_NAME);
 	}
 
-	@Test(expected = DrugDoesntHaveDinException.class)
-	public void newDrugWithNoDinThrowExeption() throws DrugDoesntHaveDinException {
+	@Test(expected = DrugDoesNotContainDinException.class)
+	public void newDrugWithNoDinThrowExeption() throws DrugDoesNotContainDinException {
 		Drug drugWhitoutDin = new DrugFactory().createDrug(SAMPLE_DRUG_NAME);
 		drugWhitoutDin.getDin();
 	}
@@ -38,7 +38,7 @@ public class DrugTest {
 	}
 
 	@Test
-	public void returnsCorrectDin() throws DrugDoesntHaveDinException {
+	public void returnsCorrectDin() throws DrugDoesNotContainDinException {
 		assertEquals(SAMPLE_DIN, drugWithDescription.getDin());
 	}
 

@@ -11,7 +11,7 @@ import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.ulaval.glo4002.domain.drug.DrugDoesntHaveDinException;
+import ca.ulaval.glo4002.domain.drug.DrugDoesNotContainDinException;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.requestparsers.prescription.AddPrescriptionRequestParser;
 import ca.ulaval.glo4002.rest.requestparsers.prescription.AddPrescriptionRequestParserFactory;
@@ -48,7 +48,7 @@ public class PrescriptionResourceTest {
 	}
 
 	@Test
-	public void verifyAddPrescriptionCallsServiceMethodsCorrectly() throws ServiceRequestException, DrugDoesntHaveDinException {
+	public void verifyAddPrescriptionCallsServiceMethodsCorrectly() throws ServiceRequestException, DrugDoesNotContainDinException {
 		prescriptionResource.post(SAMPLE_JSON_REQUEST);
 		verify(prescriptionServiceMock).addPrescription(addPrescriptionRequestParserMock);
 	}
@@ -60,7 +60,7 @@ public class PrescriptionResourceTest {
 	}
 
 	@Test
-	public void verifyAddPrescriptionReturnsInvalidResponseWhenSpecifyingInvalidRequest() throws ServiceRequestException, DrugDoesntHaveDinException {
+	public void verifyAddPrescriptionReturnsInvalidResponseWhenSpecifyingInvalidRequest() throws ServiceRequestException, DrugDoesNotContainDinException {
 		doThrow(new ServiceRequestException()).when(prescriptionServiceMock).addPrescription(addPrescriptionRequestParserMock);
 
 		Response expectedResponse = Response.status(Status.BAD_REQUEST).build();

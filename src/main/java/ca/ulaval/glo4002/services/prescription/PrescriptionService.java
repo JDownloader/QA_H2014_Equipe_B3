@@ -23,7 +23,7 @@ public class PrescriptionService {
 		this.patientRepository = builder.patientRepository;
 	}
 	
-	public void addPrescription(AddPrescriptionRequestParser requestParser) throws ServiceRequestException, DrugDoesntHaveDinException {
+	public void addPrescription(AddPrescriptionRequestParser requestParser) throws ServiceRequestException, DrugDoesNotContainDinException {
 		try {
 			entityTransaction.begin();
 			doAddPrescription(requestParser);
@@ -36,13 +36,13 @@ public class PrescriptionService {
 		}
 	}
 	
-	protected void doAddPrescription(AddPrescriptionRequestParser requestParser) throws ServiceRequestException, DrugDoesntHaveDinException {
+	protected void doAddPrescription(AddPrescriptionRequestParser requestParser) throws ServiceRequestException, DrugDoesNotContainDinException {
 		Prescription prescription = buildPrescription(requestParser);
 		prescriptionRepository.create(prescription);
 		updatePatient(requestParser, prescription);
 	}
 
-	private Prescription buildPrescription(AddPrescriptionRequestParser requestParser) throws ServiceRequestException, DrugDoesntHaveDinException {
+	private Prescription buildPrescription(AddPrescriptionRequestParser requestParser) throws ServiceRequestException, DrugDoesNotContainDinException {
 		PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder()
 			.date(requestParser.getDate())
 			.allowedNumberOfRenewal(requestParser.getRenewals())
@@ -57,7 +57,7 @@ public class PrescriptionService {
 		return prescriptionBuilder.build();
 	}
 	
-	private Drug getDrug(AddPrescriptionRequestParser requestParser) throws ServiceRequestException, DrugDoesntHaveDinException {
+	private Drug getDrug(AddPrescriptionRequestParser requestParser) throws ServiceRequestException, DrugDoesNotContainDinException {
 		try {
 			return drugRepository.getByDin(new Din(requestParser.getDin()));
 		} catch (EntityNotFoundException e) {

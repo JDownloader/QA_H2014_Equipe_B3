@@ -20,7 +20,7 @@ public abstract class Drug {
 		//Required for Hibernate.
 	}
 	
-	public Din getDin() throws DrugDoesntHaveDinException{
+	public Din getDin() throws DrugDoesNotContainDinException{
 		return this.din;
 	}
 
