@@ -9,8 +9,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import ca.ulaval.glo4002.rest.HospitalRestMain;
-
 public class HospitalRestConfigProviderTest {
 	private HospitalRestConfigProvider myConfig;
 	int INT_PREF_DEFAULT_VALUE = 123;

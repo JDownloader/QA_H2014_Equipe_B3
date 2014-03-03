@@ -6,7 +6,7 @@ import org.json.JSONObject;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolStatus;
 import ca.ulaval.glo4002.exceptions.RequestParseException;
 
-public class CreateSurgicalToolRequestParser extends AbstractSurgicalToolRequestParser implements ISurgicalToolRequestParser{
+public class CreateSurgicalToolRequestParser extends AbstractSurgicalToolRequestParser implements SurgicalToolRequestParser{
 	
 	public CreateSurgicalToolRequestParser(JSONObject jsonRequest) throws RequestParseException {
 		try {

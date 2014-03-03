@@ -18,8 +18,8 @@ public class CreateSurgicalToolRequestTest {
 	private static final String SAMPLE_TYPE_CODE = "56465T";
 	private static final int MIN_INTERVENTION_NUMBER = 0;
 	
-	protected CreateSurgicalToolRequestParser createSurgicalToolRequest;
-	protected JSONObject jsonRequest = new JSONObject();
+	private CreateSurgicalToolRequestParser surgicalToolRequest;
+	private JSONObject jsonRequest = new JSONObject();
 	
 	@Before
 	public void setup() throws Exception {
@@ -27,11 +27,10 @@ public class CreateSurgicalToolRequestTest {
 		jsonRequest.put(AbstractSurgicalToolRequestParser.STATUS_PARAMETER_NAME, SAMPLE_STATUS);
 		jsonRequest.put(AbstractSurgicalToolRequestParser.SERIAL_NUMBER_PARAMETER_NAME, SAMPLE_SERIAL_NUMBER);
 		jsonRequest.put(AbstractSurgicalToolRequestParser.TYPECODE_PARAMETER_NAME, SAMPLE_TYPE_CODE);
-		createRequestParser();
 	}
 	
 	public void createRequestParser() throws Exception {
-		createSurgicalToolRequest = new CreateSurgicalToolRequestParser(jsonRequest);
+		surgicalToolRequest = new CreateSurgicalToolRequestParser(jsonRequest);
 	}
 	
 	@Test
@@ -71,27 +70,32 @@ public class CreateSurgicalToolRequestTest {
 	
 	@Test
 	public void returnsCorrectTypeCode() throws Exception {
-		assertEquals(SAMPLE_TYPE_CODE, createSurgicalToolRequest.getTypeCode());
+		createRequestParser();
+		assertEquals(SAMPLE_TYPE_CODE, surgicalToolRequest.getTypeCode());
 	}
 	
 	@Test
 	public void returnsCorrectStatus() throws Exception {
-		assertEquals(SurgicalToolStatus.TERMINEE, createSurgicalToolRequest.getStatus());
+		createRequestParser();
+		assertEquals(SurgicalToolStatus.TERMINEE, surgicalToolRequest.getStatus());
 	}
 	
 	@Test
 	public void returnsCorrectSerialNumber() throws Exception {
-		assertEquals(SAMPLE_SERIAL_NUMBER, createSurgicalToolRequest.getSerialNumber());
+		createRequestParser();
+		assertEquals(SAMPLE_SERIAL_NUMBER, surgicalToolRequest.getSerialNumber());
 	}
 	
 	@Test
 	public void hasSerialNumberReturnsCorrectValue() throws Exception {
-		assertTrue(createSurgicalToolRequest.hasSerialNumber());
+		createRequestParser();
+		assertTrue(surgicalToolRequest.hasSerialNumber());
 	}
 	
 	@Test
 	public void returnsCorrectInterventionNumber() throws Exception {
-		assertEquals(SAMPLE_INTERVENTION_NUMBER, createSurgicalToolRequest.getInterventionNumber());
+		createRequestParser();
+		assertEquals(SAMPLE_INTERVENTION_NUMBER, surgicalToolRequest.getInterventionNumber());
 	}
 	
 }

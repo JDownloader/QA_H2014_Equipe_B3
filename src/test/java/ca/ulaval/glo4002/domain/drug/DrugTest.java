@@ -10,7 +10,6 @@ import ca.ulaval.glo4002.domain.drug.DrugFactory;
 import ca.ulaval.glo4002.domain.drug.DrugDoesntHaveDinExeption;
 
 public class DrugTest {
-	private static final Din NULL_DIN = null;
 
 	private static final Din SAMPLE_DIN = new Din(5);
 	private static final String EMPTY_DESCRPTION = "";
@@ -22,13 +21,13 @@ public class DrugTest {
 
 	@Before
 	public void init() {
-		drugWithDescription = new DrugFactory().createDrug(SAMPLE_DIN, SAMPLE_DRUG_NAME, SAMPLE_DESCRIPTION);
-		drugWithoutDescription  = new DrugFactory().createDrug(SAMPLE_DIN, SAMPLE_DRUG_NAME);
+		drugWithDescription = DrugFactory.createDrug(SAMPLE_DIN, SAMPLE_DRUG_NAME, SAMPLE_DESCRIPTION);
+		drugWithoutDescription  = DrugFactory.createDrug(SAMPLE_DIN, SAMPLE_DRUG_NAME);
 	}
 
 	@Test(expected = DrugDoesntHaveDinExeption.class)
 	public void newDrugWithNoDinThrowExeption() throws DrugDoesntHaveDinExeption {
-		Drug drugWhitoutDin = new DrugFactory().createDrug(SAMPLE_DRUG_NAME);
+		Drug drugWhitoutDin = DrugFactory.createDrug(SAMPLE_DRUG_NAME);
 		drugWhitoutDin.getDin();
 	}
 	

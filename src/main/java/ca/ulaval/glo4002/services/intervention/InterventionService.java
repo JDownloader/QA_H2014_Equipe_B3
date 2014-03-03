@@ -116,7 +116,7 @@ public class InterventionService {
 		interventionRepository.update(intervention);
 	}
 	
-	private Intervention getIntervention(ISurgicalToolRequestParser requestParser) throws ServiceRequestException {
+	private Intervention getIntervention(SurgicalToolRequestParser requestParser) throws ServiceRequestException {
 		try {
 			return interventionRepository.getById(requestParser.getInterventionNumber());
 		} catch (EntityNotFoundException e) {
@@ -167,7 +167,7 @@ public class InterventionService {
 		}
 	}
 	
-	private SurgicalTool getSurgicalTool(ISurgicalToolRequestParser requestParser) throws ServiceRequestException {
+	private SurgicalTool getSurgicalTool(SurgicalToolRequestParser requestParser) throws ServiceRequestException {
 		try {
 			return surgicalToolRepository.getBySerialNumber(requestParser.getSerialNumber());
 		} catch (EntityNotFoundException e) {
@@ -176,7 +176,7 @@ public class InterventionService {
 	}
 
 
-	private void validateSerialNumberRequirement(ISurgicalToolRequestParser requestParser, Intervention intervention) throws ServiceRequestException {
+	private void validateSerialNumberRequirement(SurgicalToolRequestParser requestParser, Intervention intervention) throws ServiceRequestException {
 		if (!requestParser.hasSerialNumber() 
 				&& Arrays.asList(forbiddenInterventionTypesForAnonymousSurgicalTools).contains(intervention.getType())) {
 							throw new ServiceRequestException("INT012", "An anonymous surgical tool cannot be used with this type of intervention.");
