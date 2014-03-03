@@ -53,13 +53,19 @@ public class AddPrescriptionRequestParser {
 			throw new RequestParseException ("Parameter 'renouvellements' must be greater or equal to 0.");
 		} else if (this.patientNumber < 0) {
 			throw new RequestParseException ("Path parameter '$NO_PATIENT$' must be greater or equal to 0.");
-		} else if (!this.validateDinAndName()) {
-			throw new RequestParseException ("Either parameter 'din' or 'nom' must be specified, but not both.");
 		}
+		validateDinAndName();
 	}
 
-	private boolean validateDinAndName() {
-		return StringUtils.isNullOrEmpty(this.drugName) ^ (this.din < 0);
+	private void validateDinAndName() throws RequestParseException {
+		boolean drugNameValid = !StringUtils.isNullOrEmpty(this.drugName);
+		boolean isDinValid = this.din >= 0;
+		
+		if (drugNameValid && isDinValid) {
+			throw new RequestParseException ("Either parameter 'din' or 'nom' must be specified, but not both.");	
+		} else if (!drugNameValid && !isDinValid) {
+			throw new RequestParseException ("Parameter 'din' or 'nom' must be specified.");
+		}
 	}
 
 	public boolean hasDin() {
