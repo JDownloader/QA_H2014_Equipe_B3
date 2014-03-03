@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import ca.ulaval.glo4002.domain.drug.Drug;
 import ca.ulaval.glo4002.domain.drug.DrugFactory;
-import ca.ulaval.glo4002.domain.drug.DrugDontHaveDinExeption;
+import ca.ulaval.glo4002.domain.drug.DrugDoesntHaveDinExeption;
 
 public class DrugTest {
 	private static final Din NULL_DIN = null;
@@ -26,8 +26,8 @@ public class DrugTest {
 		drugWithoutDescription  = new DrugFactory().createDrug(SAMPLE_DIN, SAMPLE_DRUG_NAME);
 	}
 
-	@Test(expected = DrugDontHaveDinExeption.class)
-	public void newDrugWithNoDinThrowExeption() throws DrugDontHaveDinExeption {
+	@Test(expected = DrugDoesntHaveDinExeption.class)
+	public void newDrugWithNoDinThrowExeption() throws DrugDoesntHaveDinExeption {
 		Drug drugWhitoutDin = new DrugFactory().createDrug(SAMPLE_DRUG_NAME);
 		drugWhitoutDin.getDin();
 	}
@@ -43,7 +43,7 @@ public class DrugTest {
 	}
 
 	@Test
-	public void returnsCorrectDin() throws DrugDontHaveDinExeption {
+	public void returnsCorrectDin() throws DrugDoesntHaveDinExeption {
 		assertEquals(SAMPLE_DIN, drugWithDescription.getDin());
 	}
 	

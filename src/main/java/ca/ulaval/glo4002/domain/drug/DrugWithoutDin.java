@@ -12,8 +12,8 @@ public class DrugWithoutDin implements Drug {
 	}
 	
 	@Override
-	public Din getDin() throws DrugDontHaveDinExeption {
-		throw new DrugDontHaveDinExeption();
+	public Din getDin() throws DrugDoesntHaveDinExeption {
+		throw new DrugDoesntHaveDinExeption();
 	}
 
 	@Override

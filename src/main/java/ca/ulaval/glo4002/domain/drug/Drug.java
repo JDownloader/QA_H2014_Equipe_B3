@@ -5,7 +5,7 @@ import javax.persistence.Id;
 
 public interface Drug {
 	
-	public Din getDin() throws DrugDontHaveDinExeption;
+	public Din getDin() throws DrugDoesntHaveDinExeption;
 	public String getName();
 	public String getDescription();
 	
