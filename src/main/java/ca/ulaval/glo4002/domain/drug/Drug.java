@@ -16,7 +16,7 @@ public abstract class Drug {
 	@Column(name = "DESCRIPTION")	
 	protected String description = "";
 	
-	public Din getDin() throws DrugDoesntHaveDinExeption{
+	public Din getDin() throws DrugDoesntHaveDinException{
 		return this.din;
 	}
 

@@ -1,14 +1,14 @@
 package ca.ulaval.glo4002.domain.drug;
 
-public class DrugDoesntHaveDinExeption extends Exception {
+public class DrugDoesntHaveDinException extends Exception {
 
 	private static final long serialVersionUID = 3424074651042879554L;
 
-	public DrugDoesntHaveDinExeption() {
+	public DrugDoesntHaveDinException() {
 		super();
 	}
 
-	public DrugDoesntHaveDinExeption(String message) {
+	public DrugDoesntHaveDinException(String message) {
 		super(message);
 	}
 }

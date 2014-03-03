@@ -1,8 +1,6 @@
 package ca.ulaval.glo4002.domain.intervention;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import javax.persistence.*;
 
@@ -20,10 +18,10 @@ public class Intervention {
 	private String description;
 
 	@Column(name = "SURGEON", nullable = false)
-	private Surgeon surgeon = null;
+	private Surgeon surgeon;
 
 	@Column(name = "DATE", nullable = false)
-	private Date date = null;
+	private Date date;
 
 	@Column(name = "ROOM", nullable = false)
 	private String room;
@@ -37,13 +35,13 @@ public class Intervention {
 	@ManyToOne()
 	@JoinColumn(name = "PATIENT", nullable = false)
 	private Patient patient;
-	
+
 	@ElementCollection()
 	@JoinColumn(name = "INTERVENTION")
 	private List<SurgicalTool> surgicalTools = new ArrayList<SurgicalTool>();
-	
+
 	protected Intervention() {
-		//Required for Hibernate.
+		// Required for Hibernate.
 	}
 
 	public Intervention(InterventionBuilder builder) {
@@ -55,39 +53,39 @@ public class Intervention {
 		this.patient = builder.patient;
 		this.status = builder.status;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
-	
+
 	public Surgeon getSurgeon() {
 		return surgeon;
 	}
-	
+
 	public Date getDate() {
 		return date;
 	}
-	
+
 	public String getRoom() {
 		return room;
 	}
-	
+
 	public InterventionType getType() {
 		return type;
 	}
-	
+
 	public InterventionStatus getStatus() {
 		return status;
 	}
-	
+
 	public Patient getPatient() {
 		return patient;
 	}
-	
+
 	public void addSurgicalTool(SurgicalTool surgicalTool) {
 		surgicalTools.add(surgicalTool);
 	}
-	
+
 	public boolean hasSurgicalTool(SurgicalTool surgicalTool) {
 		return surgicalTools.contains(surgicalTool);
 	}
