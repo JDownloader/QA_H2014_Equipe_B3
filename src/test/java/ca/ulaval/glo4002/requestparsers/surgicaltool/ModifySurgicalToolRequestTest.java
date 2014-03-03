@@ -7,7 +7,6 @@ import org.junit.*;
 
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolStatus;
 import ca.ulaval.glo4002.exceptions.RequestParseException;
-import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.AbstractSurgicalToolRequestParser;
 import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.ModifySurgicalToolRequestParser;
 public class ModifySurgicalToolRequestTest {
 	
@@ -24,11 +23,11 @@ public class ModifySurgicalToolRequestTest {
 	
 	@Before
 	public void init() throws Exception {
-		jsonRequest.put(AbstractSurgicalToolRequestParser.INTERVENTION_NUMBER_PARAMETER_NAME, SAMPLE_INTERVENTION_NUMBER);
-		jsonRequest.put(AbstractSurgicalToolRequestParser.STATUS_PARAMETER_NAME, SAMPLE_STATUS);
-		jsonRequest.put(AbstractSurgicalToolRequestParser.SERIAL_NUMBER_PARAMETER_NAME, SAMPLE_SERIAL_NUMBER);
-		jsonRequest.put(AbstractSurgicalToolRequestParser.TYPECODE_PARAMETER_NAME, SAMPLE_TYPE_CODE);
-		jsonRequest.put("nouveaunoserie", SAMPLE_NEW_SERIAL_NUMBER);
+		jsonRequest.put(ModifySurgicalToolRequestParser.INTERVENTION_NUMBER_PARAMETER_NAME, SAMPLE_INTERVENTION_NUMBER);
+		jsonRequest.put(ModifySurgicalToolRequestParser.STATUS_PARAMETER_NAME, SAMPLE_STATUS);
+		jsonRequest.put(ModifySurgicalToolRequestParser.SERIAL_NUMBER_PARAMETER_NAME, SAMPLE_SERIAL_NUMBER);
+		jsonRequest.put(ModifySurgicalToolRequestParser.TYPECODE_PARAMETER_NAME, SAMPLE_TYPE_CODE);
+		jsonRequest.put(ModifySurgicalToolRequestParser.NEW_SERIAL_NUMBER_PARAMETER_NAME, SAMPLE_NEW_SERIAL_NUMBER);
 	}
 	
 	public void createRequestParser() throws Exception {
@@ -42,37 +41,37 @@ public class ModifySurgicalToolRequestTest {
 	
 	@Test(expected = RequestParseException.class)
 	public void disallowsUnspecifiedTypeCode() throws Exception {
-		jsonRequest.remove("typecode");
+		jsonRequest.remove(ModifySurgicalToolRequestParser.TYPECODE_PARAMETER_NAME);
 		createRequestParser();
 	}
 	
 	@Test(expected = RequestParseException.class)
 	public void disallowsEmptyTypeCode() throws Exception {
-		jsonRequest.put("typecode", "");
+		jsonRequest.put(ModifySurgicalToolRequestParser.TYPECODE_PARAMETER_NAME, "");
 		createRequestParser();
 	}
 	
 	@Test(expected = RequestParseException.class)
 	public void disallowsUnspecifiedInterventionNumberParameter() throws Exception {
-		jsonRequest.remove("nointervention");
+		jsonRequest.remove(ModifySurgicalToolRequestParser.INTERVENTION_NUMBER_PARAMETER_NAME);
 		createRequestParser();
 	}
 	
 	@Test(expected = RequestParseException.class)
 	public void disallowsChangingTypeCodeParameter() throws Exception {
-		jsonRequest.put("nouveautypecode", SAMPLE_NEW_TYPE_CODE);
+		jsonRequest.put(ModifySurgicalToolRequestParser.NEW_TYPECODE_PARAMETER_NAME, SAMPLE_NEW_TYPE_CODE);
 		createRequestParser();
 	}
 	
 	@Test(expected = RequestParseException.class)
 	public void disallowsNegativeInterventionNumberParameter() throws Exception {
-		jsonRequest.put("nointervention", "-1");
+		jsonRequest.put(ModifySurgicalToolRequestParser.INTERVENTION_NUMBER_PARAMETER_NAME, "-1");
 		createRequestParser();
 	}
 	
 	@Test
 	public void allowsMinimumInterventionNumberParameter() throws Exception {
-		jsonRequest.put("din", MIN_INTERVENTION_NUMBER);
+		jsonRequest.put(ModifySurgicalToolRequestParser.INTERVENTION_NUMBER_PARAMETER_NAME, MIN_INTERVENTION_NUMBER);
 		createRequestParser();
 	}
 	

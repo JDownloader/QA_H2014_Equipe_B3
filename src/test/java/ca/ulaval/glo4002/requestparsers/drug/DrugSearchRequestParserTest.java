@@ -31,31 +31,31 @@ public class DrugSearchRequestParserTest {
 	
 	@Test(expected = RequestParseException.class)
 	public void disallowsUnspecifiedNameParameter() throws Exception {
-		jsonRequest.remove("nom");
+		jsonRequest.remove(DrugSearchRequestParser.NAME_PARAMETER);
 		createRequestParser();
 	}
 	
 	@Test(expected = RequestParseException.class)
 	public void disallowsBlankNameParameter() throws Exception {
-		jsonRequest.put("nom", "");
+		jsonRequest.put(DrugSearchRequestParser.NAME_PARAMETER, "");
 		createRequestParser();
 	}
 	
 	@Test(expected = RequestParseException.class)
 	public void disallowsNameParameterWithLessThan3Length() throws Exception {
-		jsonRequest.put("nom", "ab");
+		jsonRequest.put(DrugSearchRequestParser.NAME_PARAMETER, "ab");
 		createRequestParser();
 	}
 	
 	@Test(expected = RequestParseException.class)
 	public void disallowsNameParameterWithLessThan3LengthIncludingWildcards() throws Exception {
-		jsonRequest.put("nom", "ab ");
+		jsonRequest.put(DrugSearchRequestParser.NAME_PARAMETER, "ab ");
 		createRequestParser();
 	}
 	
 	@Test
 	public void allowsNameWith3CharactersParameter() throws Exception {
-		jsonRequest.put("nom", "abc");
+		jsonRequest.put(DrugSearchRequestParser.NAME_PARAMETER, "abc");
 		createRequestParser();
 	}
 	

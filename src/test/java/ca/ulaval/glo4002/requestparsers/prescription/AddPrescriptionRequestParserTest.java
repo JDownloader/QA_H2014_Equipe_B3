@@ -2,13 +2,13 @@ package ca.ulaval.glo4002.requestparsers.prescription;
 
 import static org.junit.Assert.*;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.json.JSONObject;
 import org.junit.*;
 
 import ca.ulaval.glo4002.rest.requestparsers.prescription.AddPrescriptionRequestParser;
+import ca.ulaval.glo4002.utils.DateParser;
 import ca.ulaval.glo4002.exceptions.*;
 
 public class AddPrescriptionRequestParserTest {
@@ -31,11 +31,11 @@ public class AddPrescriptionRequestParserTest {
 	
 	@Before
 	public void init() throws Exception {
-		jsonRequest.put("intervenant", SAMPLE_STAFF_MEMBER_PARAMETER);
-		jsonRequest.put("date", SAMPLE_DATE_PARAMETER);
-		jsonRequest.put("renouvellements", SAMPLE_RENEWALS_PARAMETER);
-		jsonRequest.put("din", SAMPLE_DIN_PARAMETER);
-		jsonRequest.put("nopatient", SAMPLE_PATIENT_NUMBER_PARAMETER);
+		jsonRequest.put(AddPrescriptionRequestParser.STAFF_MEMBER_PARAMETER_NAME, SAMPLE_STAFF_MEMBER_PARAMETER);
+		jsonRequest.put(AddPrescriptionRequestParser.DATE_PARAMETER_NAME, SAMPLE_DATE_PARAMETER);
+		jsonRequest.put(AddPrescriptionRequestParser.RENEWAL_PARAMETER_NAME, SAMPLE_RENEWALS_PARAMETER);
+		jsonRequest.put(AddPrescriptionRequestParser.DIN_PARAMETER_NAME, SAMPLE_DIN_PARAMETER);
+		jsonRequest.put(AddPrescriptionRequestParser.PATIENT_NUMBER_PARAMETER_NAME, SAMPLE_PATIENT_NUMBER_PARAMETER);
 		createRequestParser();
 	}
 	
@@ -56,86 +56,86 @@ public class AddPrescriptionRequestParserTest {
 	
 	@Test(expected = RequestParseException.class)
 	public void disallowsEmptyDrugName() throws Exception {
-		jsonRequest.remove("din");
-		jsonRequest.put("nom", "");
+		jsonRequest.remove(AddPrescriptionRequestParser.DIN_PARAMETER_NAME);
+		jsonRequest.put(AddPrescriptionRequestParser.DRUG_NAME_PARAMETER_NAME, "");
 		createRequestParser();
 	}
 	
 	@Test(expected = RequestParseException.class)
 	public void disallowsUnspecifiedDrugAndDrugNameParameters() throws Exception {
-		jsonRequest.remove("din");
+		jsonRequest.remove(AddPrescriptionRequestParser.DIN_PARAMETER_NAME);
 		createRequestParser();
 	}
 	
 	@Test(expected = RequestParseException.class)
 	public void disallowsDrugAndDrugNameParametersBothSpecified() throws Exception {
-		jsonRequest.put("nom", SAMPLE_DRUG_NAME_PARAMETER);
+		jsonRequest.put(AddPrescriptionRequestParser.DRUG_NAME_PARAMETER_NAME, SAMPLE_DRUG_NAME_PARAMETER);
 		createRequestParser();
 	}
 	
 	@Test(expected = RequestParseException.class)
 	public void disallowsUnspecifiedStaffMemberParameter() throws Exception {
-		jsonRequest.remove("intervenant");
+		jsonRequest.remove(AddPrescriptionRequestParser.STAFF_MEMBER_PARAMETER_NAME);
 		createRequestParser();
 	}
 	
 	@Test(expected = RequestParseException.class)
 	public void disallowsUnspecifiedRenewalsParameter() throws Exception {
-		jsonRequest.remove("renouvellements");
+		jsonRequest.remove(AddPrescriptionRequestParser.RENEWAL_PARAMETER_NAME);
 		createRequestParser();
 	}
 	
 	@Test(expected = Exception.class)
 	public void disallowsUnspecifiedDateParameter() throws Exception {
-		jsonRequest.remove("date");
+		jsonRequest.remove(AddPrescriptionRequestParser.DATE_PARAMETER_NAME);
 		createRequestParser();
 	}
 	
 	@Test(expected = RequestParseException.class)
 	public void disallowsNegativeStaffMemberParameter() throws Exception {
-		jsonRequest.put("intervenant", "-1");
+		jsonRequest.put(AddPrescriptionRequestParser.STAFF_MEMBER_PARAMETER_NAME, "-1");
 		createRequestParser();
 	}
 	
 	@Test(expected = Exception.class)
 	public void disallowsNegativeRenewalsParameter() throws Exception {
-		jsonRequest.put("renouvellements", "-1");
+		jsonRequest.put(AddPrescriptionRequestParser.RENEWAL_PARAMETER_NAME, "-1");
 		createRequestParser();
 	}
 	
 	@Test(expected = RequestParseException.class)
 	public void disallowsNegativePatientParameter() throws Exception {
-		jsonRequest.put("nopatient", "-1");
+		jsonRequest.put(AddPrescriptionRequestParser.PATIENT_NUMBER_PARAMETER_NAME, "-1");
 		createRequestParser();
 	}
 
 	@Test(expected = RequestParseException.class)
 	public void disallowsInvalidDateParameter() throws Exception {
-		jsonRequest.put("date", SAMPLE_INVALID_DATE_PARAMETER);
+		jsonRequest.put(AddPrescriptionRequestParser.DATE_PARAMETER_NAME, SAMPLE_INVALID_DATE_PARAMETER);
 		createRequestParser();
 	}
 	
 	@Test
 	public void allowsMinimumDinParameter() throws Exception {
-		jsonRequest.put("din", MIN_DIN_PARAMETER);
+		jsonRequest.put(AddPrescriptionRequestParser.DIN_PARAMETER_NAME, MIN_DIN_PARAMETER);
 		createRequestParser();
 	}
 	
 	@Test
 	public void allowsMinimumStaffMemberParameter() throws Exception {
-		jsonRequest.put("intervenant", MIN_STAFF_MEMBER_PARAMETER);
+		jsonRequest.put(AddPrescriptionRequestParser.STAFF_MEMBER_PARAMETER_NAME, MIN_STAFF_MEMBER_PARAMETER);
 		createRequestParser();
 	}
 	
 	@Test
 	public void allowsMinimumRenewalsParameter() throws Exception {
-		jsonRequest.put("renouvellements", MIN_RENEWALS_PARAMETER);
+		jsonRequest.put(AddPrescriptionRequestParser.RENEWAL_PARAMETER_NAME, MIN_RENEWALS_PARAMETER);
 		createRequestParser();
 	}
 	
 	@Test
 	public void allowsMinimumPatientNumberParameter() throws Exception {
-		jsonRequest.put("nopatient", MIN_PATIENT_NUMBER_PARAMETER);
+		jsonRequest.put(AddPrescriptionRequestParser.PATIENT_NUMBER_PARAMETER_NAME, MIN_PATIENT_NUMBER_PARAMETER);
 		createRequestParser();
 	}
 	
@@ -173,7 +173,7 @@ public class AddPrescriptionRequestParserTest {
 	
 	@Test
 	public void returnsCorrectDate() throws Exception {
-		Date sampleDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse("2001-07-04T12:08:56");
+		Date sampleDate = DateParser.parseDate(SAMPLE_DATE_PARAMETER);
 		assertEquals(sampleDate, addPrescriptionRequestParser.getDate());
 	}
 	
