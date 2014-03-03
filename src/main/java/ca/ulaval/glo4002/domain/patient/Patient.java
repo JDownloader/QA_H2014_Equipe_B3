@@ -15,7 +15,7 @@ public class Patient {
 	private int id;
 
 	@ElementCollection()
-	@JoinColumn(name = "PRESCRIPTIONS")
+	@JoinColumn(name = "PATIENT_ID")
 	private List<Prescription> prescriptions = new ArrayList<Prescription>();
 
 	protected Patient() {

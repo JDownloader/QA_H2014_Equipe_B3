@@ -11,6 +11,9 @@ import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.requestparsers.prescription.AddPrescriptionRequestParser;
 
 public class PrescriptionService {
+    public static final String ERROR_SERVICE_REQUEST_EXCEPTION_PRES001 = "PRES001";
+
+    
 	private PrescriptionRepository prescriptionRepository;
 	private DrugRepository drugRepository;
 	private PatientRepository patientRepository;
@@ -61,7 +64,7 @@ public class PrescriptionService {
 		try {
 			return drugRepository.getByDin(new Din(requestParser.getDin()));
 		} catch (EntityNotFoundException e) {
-			throw new ServiceRequestException("PRES001", e.getMessage());
+			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_PRES001, e.getMessage());
 		}
 	}
 
@@ -75,7 +78,7 @@ public class PrescriptionService {
 		try {
 			return patientRepository.getById(requestParser.getPatientNumber());
 		} catch (EntityNotFoundException e) {
-			throw new ServiceRequestException("PRES001", e.getMessage());
+			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_PRES001, e.getMessage());
 		}
 	}
 	

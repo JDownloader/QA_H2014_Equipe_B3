@@ -13,13 +13,13 @@ import ca.ulaval.glo4002.utils.DateParser;
 
 public class CreateInterventionRequestParser {
 
-	private static final String DESCRIPTION_PARAMETER_NAME = "description";
-	private static final String SURGEON_PARAMETER_NAME = "chirurgien";
-	private static final String DATE_PARAMETER_NAME = "date";
-	private static final String ROOM_PARAMETER_NAME = "salle";
-	private static final String TYPE_PARAMETER_NAME = "type";
-	private static final String STATUS_PARAMETER_NAME = "statut";
-	private static final String PATIENT_PARAMETER_NAME = "patient";
+	public static final String DESCRIPTION_PARAMETER_NAME = "description";
+	public static final String SURGEON_PARAMETER_NAME = "chirurgien";
+	public static final String DATE_PARAMETER_NAME = "date";
+	public static final String ROOM_PARAMETER_NAME = "salle";
+	public static final String TYPE_PARAMETER_NAME = "type";
+	public static final String STATUS_PARAMETER_NAME = "statut";
+	public static final String PATIENT_PARAMETER_NAME = "patient";
 	
 	private String description;
 	private int surgeon;

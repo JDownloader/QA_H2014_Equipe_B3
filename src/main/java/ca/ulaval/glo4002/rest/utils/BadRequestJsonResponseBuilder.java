@@ -7,9 +7,13 @@ import org.json.JSONObject;
 
 public class BadRequestJsonResponseBuilder {
 	
+    static private final String CODE_PARAMETER = "code";
+    static private final String MESSAGE_PARAMETER = "message";
+
+    
 	public static Response build(String code, String message) {
 		JSONObject jsonResponse = new JSONObject();
-		jsonResponse.append("code", code).append("message", message);
+		jsonResponse.append(CODE_PARAMETER, code).append(MESSAGE_PARAMETER, message);
 		return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(jsonResponse.toString()).build();
 	}
 }

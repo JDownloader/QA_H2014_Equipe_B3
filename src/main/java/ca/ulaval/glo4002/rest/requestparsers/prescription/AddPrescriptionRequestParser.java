@@ -12,12 +12,12 @@ import ca.ulaval.glo4002.utils.DateParser;
 public class AddPrescriptionRequestParser {
 
 	private static final int UNSPECIFIED_VALUE = -1;
-	private static final String PATIENT_NUMBER_PARAMETER_NAME = "nopatient";
-	private static final String DIN_PARAMETER_NAME = "din";
-	private static final String STAFF_MEMBER_PARAMETER_NAME = "intervenant";
-	private static final String DRUG_NAME_PARAMETER_NAME = "nom";
-	private static final String DATE_PARAMETER_NAME = "date";
-	private static final String RENEWAL_PARAMETER_NAME = "renouvellements";
+	public static final String PATIENT_NUMBER_PARAMETER_NAME = "nopatient";
+	public static final String DIN_PARAMETER_NAME = "din";
+	public static final String STAFF_MEMBER_PARAMETER_NAME = "intervenant";
+	public static final String DRUG_NAME_PARAMETER_NAME = "nom";
+	public static final String DATE_PARAMETER_NAME = "date";
+	public static final String RENEWAL_PARAMETER_NAME = "renouvellements";
 
 	private int din;
 	private String drugName;

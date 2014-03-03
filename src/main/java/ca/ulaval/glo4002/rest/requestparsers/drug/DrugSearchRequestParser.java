@@ -6,7 +6,7 @@ import org.json.JSONObject;
 import ca.ulaval.glo4002.exceptions.RequestParseException;
 
 public class DrugSearchRequestParser {
-	private static final String NAME_PARAMETER = "nom";
+	public static final String NAME_PARAMETER = "nom";
 	
 	private String name;
 	

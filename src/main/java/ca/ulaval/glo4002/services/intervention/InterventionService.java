@@ -13,6 +13,11 @@ import ca.ulaval.glo4002.rest.requestparsers.intervention.*;
 import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.*;
 
 public class InterventionService {
+	private static final String ERROR_SERVICE_REQUEST_EXCEPTION_INT002 = "INT002";
+    private static final String ERROR_SERVICE_REQUEST_EXCEPTION_INT010 = "INT010";
+    private static final String ERROR_SERVICE_REQUEST_EXCEPTION_INT011 = "INT011";
+    private static final String ERROR_SERVICE_REQUEST_EXCEPTION_INT012 = "INT012";
+
 	private static final InterventionType forbiddenInterventionTypesForAnonymousSurgicalTools[] = {InterventionType.OEIL, InterventionType.COEUR, InterventionType.MOELLE};
 	
 	private InterventionRepository interventionRepository;
@@ -63,7 +68,7 @@ public class InterventionService {
 		try {
 			return patientRepository.getById(requestParser.getPatient());
 		} catch (EntityNotFoundException e) {
-			throw new ServiceRequestException("INT002", e.getMessage());
+			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT002, e.getMessage());
 		}
 	}
 	
@@ -97,7 +102,7 @@ public class InterventionService {
 	private void checkSurgicalToolAlreadyExists(CreateSurgicalToolRequestParser requestParser) throws ServiceRequestException {
 		try {
 			surgicalToolRepository.getBySerialNumber(requestParser.getSerialNumber());
-			throw new ServiceRequestException("INT011", String.format("A surgical tool with serial number '%s' already exists.", requestParser.getSerialNumber()));
+			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT011, String.format("A surgical tool with serial number '%s' already exists.", requestParser.getSerialNumber()));
 		} catch (EntityNotFoundException e) {
 			return;
 		}
@@ -123,7 +128,7 @@ public class InterventionService {
 		try {
 			return interventionRepository.getById(requestParser.getInterventionNumber());
 		} catch (EntityNotFoundException e) {
-			throw new ServiceRequestException("INT010", e.getMessage());
+			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT010, e.getMessage());
 		}
 	}
 	
@@ -152,7 +157,7 @@ public class InterventionService {
 		try {
 			surgicalToolRepository.update(surgicalTool);
 		} catch (EntityExistsException e) {
-			throw new ServiceRequestException("INT011", String.format("A surgical tool with serial number '%s' already exists.", requestParser.getSerialNumber()));
+			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT011, String.format("A surgical tool with serial number '%s' already exists.", requestParser.getSerialNumber()));
 		}
 	}
 
@@ -165,7 +170,7 @@ public class InterventionService {
 
 	private void verifyTypeCodeMatch(ModifySurgicalToolRequestParser requestParser, SurgicalTool surgicalTool) throws ServiceRequestException {
 		if (surgicalTool.getTypeCode().compareToIgnoreCase(requestParser.getTypeCode()) != 0) {
-			throw new ServiceRequestException("INT011", String.format("Type code of specified surgical tool ('%s') does not match the specified type code parameter ('%s').", 
+			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT011, String.format("Type code of specified surgical tool ('%s') does not match the specified type code parameter ('%s').", 
 					surgicalTool.getTypeCode(), requestParser.getTypeCode()));
 		}
 	}
@@ -183,14 +188,14 @@ public class InterventionService {
 			int surgicalToolId = Integer.parseInt(requestParser.getSerialNumber());
 			return surgicalToolRepository.getById(surgicalToolId);
 		} catch (EntityNotFoundException e) {
-			throw new ServiceRequestException("INT010", String.format("Cannot find Surgical Tool with serial or id '%s'", requestParser.getSerialNumber()));
+			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT010, String.format("Cannot find Surgical Tool with serial or id '%s'", requestParser.getSerialNumber()));
 		}
 	}
 
 	private void validateSerialNumberRequirement(SurgicalToolRequestParser requestParser, Intervention intervention) throws ServiceRequestException {
 		if (!requestParser.hasSerialNumber() 
 				&& Arrays.asList(forbiddenInterventionTypesForAnonymousSurgicalTools).contains(intervention.getType())) {
-							throw new ServiceRequestException("INT012", "An anonymous surgical tool cannot be used with this type of intervention.");
+							throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT012, "An anonymous surgical tool cannot be used with this type of intervention.");
 		}
 	}
 }

@@ -24,8 +24,8 @@ import ca.ulaval.glo4002.services.intervention.*;
 
 @Path("interventions/")
 public class InterventionResource {
-	public String INTERVENTION_NUMBER_PARAMETER = "nointervention";
-	public String INSTRUMENT_NUMBER_PARAMETER = "noinstrument";
+	public static final String ERROR_BAD_REQUEST_INT001 = "INT001";
+	public static final String ERROR_BAD_REQUEST_INT010  = "INT010";
 	
 	private InterventionService service;
 	private CreateInterventionRequestParserFactory createInterventionRequestParserFactory;
@@ -68,7 +68,7 @@ public class InterventionResource {
 			String newResourceLocation = getNewResourceLocation(interventionNumber);
 			return Response.status(Status.CREATED).location(new URI(newResourceLocation)).build();
 		} catch (RequestParseException | JSONException e) {
-			return BadRequestJsonResponseBuilder.build("INT001", e.getMessage());
+			return BadRequestJsonResponseBuilder.build(ERROR_BAD_REQUEST_INT001, e.getMessage());
 		} catch (ServiceRequestException e) {
 			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());
 		} catch (Exception e) {
@@ -97,7 +97,7 @@ public class InterventionResource {
 			String newResourceLocation = getNewSurgicalToolResourceLocation(requestParser, surgicalToolId);
 			return Response.status(Status.CREATED).location(new URI(newResourceLocation)).build();
 		} catch (RequestParseException | JSONException e) {
-			return BadRequestJsonResponseBuilder.build("INT010", e.getMessage());
+			return BadRequestJsonResponseBuilder.build(ERROR_BAD_REQUEST_INT010, e.getMessage());
 		} catch (ServiceRequestException e) {
 			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());
 		} catch (Exception e) {
@@ -111,7 +111,7 @@ public class InterventionResource {
 	
 	private CreateSurgicalToolRequestParser getCreateSurgicalToolRequestParser(String request, int interventionNumber) throws RequestParseException {
 		JSONObject jsonRequest = new JSONObject(request);
-		jsonRequest.put("nointervention", String.valueOf(interventionNumber));
+		jsonRequest.put(CreateSurgicalToolRequestParser.INTERVENTION_NUMBER_PARAMETER_NAME, String.valueOf(interventionNumber));
 		
 		CreateSurgicalToolRequestParser requestParser = createSurgicalToolRequestParserFactory.getParser(jsonRequest);
 		return requestParser;
@@ -129,7 +129,7 @@ public class InterventionResource {
 			service.modifySurgicalTool(requestParser); 
 			return Response.status(Status.OK).build();
 		} catch (RequestParseException | JSONException e) {
-			return BadRequestJsonResponseBuilder.build("INT010", e.getMessage());
+			return BadRequestJsonResponseBuilder.build(ERROR_BAD_REQUEST_INT010, e.getMessage());
 		} catch (ServiceRequestException e) {
 			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());
 		} catch (Exception e) {
@@ -146,10 +146,10 @@ public class InterventionResource {
 	}
 
 	private void addPathParametersToJsonObject(JSONObject jsonRequest, int interventionNumber, String surgicalToolTypeCode, String surgicalToolSerialNumber) {
-		jsonRequest.put("nointervention", String.valueOf(interventionNumber));
-		jsonRequest.put("nouveautypecode", jsonRequest.opt("typecode"));
-		jsonRequest.put("typecode", String.valueOf(surgicalToolTypeCode));
-		jsonRequest.put("nouveaunoserie", jsonRequest.opt("noserie"));
-		jsonRequest.put("noserie", String.valueOf(surgicalToolSerialNumber));
+		jsonRequest.put(ModifySurgicalToolRequestParser.INTERVENTION_NUMBER_PARAMETER_NAME, String.valueOf(interventionNumber));
+		jsonRequest.put(ModifySurgicalToolRequestParser.NEW_TYPECODE_PARAMETER_NAME, jsonRequest.opt("typecode"));
+		jsonRequest.put(ModifySurgicalToolRequestParser.TYPECODE_PARAMETER_NAME, String.valueOf(surgicalToolTypeCode));
+		jsonRequest.put(ModifySurgicalToolRequestParser.NEW_SERIAL_NUMBER_PARAMETER_NAME, jsonRequest.opt("noserie"));
+		jsonRequest.put(ModifySurgicalToolRequestParser.SERIAL_NUMBER_PARAMETER_NAME, String.valueOf(surgicalToolSerialNumber));
 	}
 }

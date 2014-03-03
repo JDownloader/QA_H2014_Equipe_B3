@@ -23,9 +23,15 @@ import ca.ulaval.glo4002.services.drug.DrugServiceBuilder;
 
 @Path("medicaments/dins/")
 public class DrugResource {
+    private static final String DRUG_DIN_RESULT_PARAMETER = "din";
+    private static final String DRUG_NAME_RESULT_PARAMETER = "nom";
+    private static final String DRUG_DESCRIPTION_RESULT_PARAMETER = "description";
+    
 	private DrugService service;
 	private DrugSearchRequestParserFactory drugSearchRequestParserFactory;
 	
+    public static final String ERROR_BAD_REQUEST_DIN001 = "DIN001";
+
 	public DrugResource() {
 		EntityManager entityManager = new EntityManagerProvider().getEntityManager();
 		
@@ -55,7 +61,7 @@ public class DrugResource {
 			List<Drug> drugResults = service.searchDrug(requestParser); 
 			return buildDrugResultResponse(drugResults);
 		} catch (RequestParseException | JSONException e) {
-			return BadRequestJsonResponseBuilder.build("DIN001", e.getMessage());
+			return BadRequestJsonResponseBuilder.build(ERROR_BAD_REQUEST_DIN001, e.getMessage());
 		} catch (ServiceRequestException e) {
 			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());
 		} catch (Exception e) {
@@ -74,9 +80,9 @@ public class DrugResource {
 		
 		for(Drug drug : drugs) {
 			JSONObject jsonResponse = new JSONObject();
-			jsonResponse.append("din", drug.getDin().toString());
-			jsonResponse.append("nom", drug.getName());
-			jsonResponse.append("description", drug.getDescription());
+			jsonResponse.append(DRUG_DIN_RESULT_PARAMETER, drug.getDin().toString());
+			jsonResponse.append(DRUG_NAME_RESULT_PARAMETER, drug.getName());
+			jsonResponse.append(DRUG_DESCRIPTION_RESULT_PARAMETER, drug.getDescription());
 			jsonArray.put(jsonResponse);
 		}
 
