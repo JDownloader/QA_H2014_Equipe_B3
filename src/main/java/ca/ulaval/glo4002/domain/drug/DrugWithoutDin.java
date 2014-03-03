@@ -5,6 +5,10 @@ import javax.persistence.Entity;
 @Entity
 public class DrugWithoutDin extends Drug {
 
+	protected DrugWithoutDin() {
+		//Required for Hibernate.
+	}
+	
 	public DrugWithoutDin(String name) {
 		this.name=name;
 	}

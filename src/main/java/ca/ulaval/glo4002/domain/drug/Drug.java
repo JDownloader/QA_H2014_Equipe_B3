@@ -16,6 +16,10 @@ public abstract class Drug {
 	@Column(name = "DESCRIPTION")	
 	protected String description = "";
 	
+	protected Drug() {
+		//Required for Hibernate.
+	}
+	
 	public Din getDin() throws DrugDoesntHaveDinExeption{
 		return this.din;
 	}

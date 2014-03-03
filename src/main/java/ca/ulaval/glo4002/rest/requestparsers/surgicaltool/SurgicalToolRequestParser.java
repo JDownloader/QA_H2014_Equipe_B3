@@ -1,9 +1,6 @@
 package ca.ulaval.glo4002.rest.requestparsers.surgicaltool;
 
-import org.json.JSONObject;
-
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolStatus;
-import ca.ulaval.glo4002.exceptions.RequestParseException;
 
 public interface SurgicalToolRequestParser {
 	

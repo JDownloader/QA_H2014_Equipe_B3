@@ -133,7 +133,8 @@ public class InterventionResource {
 		JSONObject jsonRequest = new JSONObject(request);
 		jsonRequest.put("nointervention", String.valueOf(interventionNumber));
 		jsonRequest.put("typecode", String.valueOf(surgicalToolTypeCode));
-		jsonRequest.put("serialNumberPathParameter", String.valueOf(surgicalToolSerialNumber));
+		jsonRequest.put("nouveaunoserie", jsonRequest.opt("noserie"));
+		jsonRequest.put("noserie", String.valueOf(surgicalToolSerialNumber));
 		
 		ModifySurgicalToolRequestParser requestParser = modifySurgicalToolRequestParserFactory.getParser(jsonRequest);
 		return requestParser;
