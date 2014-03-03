@@ -5,14 +5,12 @@ import org.json.JSONObject;
 
 import ca.ulaval.glo4002.exceptions.RequestParseException;
 
-public class ModifySurgicalToolRequestParser extends CreateSurgicalToolRequestParser {
-	public String SERIAL_NUMBER_PARAMETER_NAME = "serialNumberPathParameter";
-	public String NEW_SERIAL_NUMBER_PARAMETER_NAME = "noserie";
+public class ModifySurgicalToolRequestParser extends AbstractSurgicalToolRequestParser implements ISurgicalToolRequestParser {
+	public static String NEW_SERIAL_NUMBER_PARAMETER_NAME = "noserie";
 	
 	protected String newSerialNumber;
 	
 	public ModifySurgicalToolRequestParser(JSONObject jsonRequest) throws RequestParseException {
-		super(jsonRequest);
 		try {
 			parseParameters(jsonRequest);
 		}
@@ -22,7 +20,7 @@ public class ModifySurgicalToolRequestParser extends CreateSurgicalToolRequestPa
 		validateParameterSemantics();
 	}
 	
-	private void parseParameters(JSONObject jsonRequest) {
+	protected void parseParameters(JSONObject jsonRequest) {
 		this.serialNumber = jsonRequest.optString(SERIAL_NUMBER_PARAMETER_NAME);
 		this.newSerialNumber = jsonRequest.getString(NEW_SERIAL_NUMBER_PARAMETER_NAME);
 	}

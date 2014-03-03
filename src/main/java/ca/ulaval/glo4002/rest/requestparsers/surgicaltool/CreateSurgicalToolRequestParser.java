@@ -6,16 +6,7 @@ import org.json.JSONObject;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolStatus;
 import ca.ulaval.glo4002.exceptions.RequestParseException;
 
-public class CreateSurgicalToolRequestParser {
-	public String INTERVENTION_NUMBER_PARAMETER_NAME = "nointervention";
-	public String STATUS_PARAMETER_NAME = "statut";
-	public String SERIAL_NUMBER_PARAMETER_NAME = "noserie";
-	public String TYPECODE_PARAMETER_NAME = "typecode";
-	
-	protected SurgicalToolStatus status;
-	protected String typeCode;
-	protected String serialNumber;
-	protected int interventionNumber;
+public class CreateSurgicalToolRequestParser extends AbstractSurgicalToolRequestParser implements ISurgicalToolRequestParser{
 	
 	public CreateSurgicalToolRequestParser(JSONObject jsonRequest) throws RequestParseException {
 		try {
@@ -41,25 +32,5 @@ public class CreateSurgicalToolRequestParser {
 		} else if (StringUtils.isBlank(this.typeCode)) {
 			throw new RequestParseException("Parameter 'typecode' must not be blank.");
 		}
-	}
-	
-	public String getTypeCode() {
-		return this.typeCode;
-	}
-	
-	public SurgicalToolStatus getStatus() {
-		return this.status;
-	}
-	
-	public String getSerialNumber() {
-		return this.serialNumber;
-	}
-	
-	public boolean hasSerialNumber() {
-		return !StringUtils.isBlank(this.serialNumber);
-	}
-	
-	public int getInterventionNumber() {
-		return this.interventionNumber;
 	}
 }

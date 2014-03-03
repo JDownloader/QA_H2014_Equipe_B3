@@ -7,6 +7,7 @@ import org.junit.*;
 
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolStatus;
 import ca.ulaval.glo4002.exceptions.RequestParseException;
+import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.AbstractSurgicalToolRequestParser;
 import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.CreateSurgicalToolRequestParser;
 
 public class CreateSurgicalToolRequestTest {
@@ -22,10 +23,10 @@ public class CreateSurgicalToolRequestTest {
 	
 	@Before
 	public void setup() throws Exception {
-		jsonRequest.put("nointervention", SAMPLE_INTERVENTION_NUMBER);
-		jsonRequest.put("statut", SAMPLE_STATUS);
-		jsonRequest.put("noserie", SAMPLE_SERIAL_NUMBER);
-		jsonRequest.put("typecode", SAMPLE_TYPE_CODE);
+		jsonRequest.put(AbstractSurgicalToolRequestParser.INTERVENTION_NUMBER_PARAMETER_NAME, SAMPLE_INTERVENTION_NUMBER);
+		jsonRequest.put(AbstractSurgicalToolRequestParser.STATUS_PARAMETER_NAME, SAMPLE_STATUS);
+		jsonRequest.put(AbstractSurgicalToolRequestParser.SERIAL_NUMBER_PARAMETER_NAME, SAMPLE_SERIAL_NUMBER);
+		jsonRequest.put(AbstractSurgicalToolRequestParser.TYPECODE_PARAMETER_NAME, SAMPLE_TYPE_CODE);
 		createRequestParser();
 	}
 	
