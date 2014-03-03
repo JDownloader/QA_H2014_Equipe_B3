@@ -26,8 +26,9 @@ public class DrugSearchRequestParser {
 	}
 	
 	private void validateParameterSemantics() throws RequestParseException {
-		if (StringUtils.isBlank(this.name) || this.name.length() < 3) {
-			throw new RequestParseException("Search criteria must not be less than 3 characters.");
+		String wildcardInsensitiveSearchCriteria = this.name.replace(" ", "");
+		if (StringUtils.isBlank(this.name) || wildcardInsensitiveSearchCriteria.length() < 3) {
+			throw new RequestParseException("Search criteria  must not be less than 3 characters, excluding wilcards.");
 		}
 	}
 	

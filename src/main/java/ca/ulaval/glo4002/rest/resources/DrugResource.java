@@ -80,7 +80,7 @@ public class DrugResource {
 			jsonArray.put(jsonResponse);
 		}
 
-		return Response.status(Status.CREATED).type(MediaType.APPLICATION_JSON).entity(jsonArray.toString()).build();
+		return Response.status(Status.OK).type(MediaType.APPLICATION_JSON).entity(jsonArray.toString()).build();
 	}
 
 }

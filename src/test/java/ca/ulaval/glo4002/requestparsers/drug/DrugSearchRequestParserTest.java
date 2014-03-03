@@ -42,8 +42,14 @@ public class DrugSearchRequestParserTest {
 	}
 	
 	@Test(expected = RequestParseException.class)
-	public void disallowsNameWith2CharactersParameter() throws Exception {
+	public void disallowsNameParameterWithLessThan3Length() throws Exception {
 		jsonRequest.put("nom", "ab");
+		createRequestParser();
+	}
+	
+	@Test(expected = RequestParseException.class)
+	public void disallowsNameParameterWithLessThan3LengthIncludingWildcards() throws Exception {
+		jsonRequest.put("nom", "ab ");
 		createRequestParser();
 	}
 	

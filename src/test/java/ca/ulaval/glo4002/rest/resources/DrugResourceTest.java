@@ -51,7 +51,7 @@ private static final String SAMPLE_JSON_REQUEST = "{attrib: value}";
 	@Test
 	public void verifySearchDrugReturnsCreatedResponse() throws ServiceRequestException {
 		Response response = drugResource.post(SAMPLE_JSON_REQUEST);
-		assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}
 	
 	@Test
