@@ -131,12 +131,17 @@ public class InterventionResource {
 	
 	private ModifySurgicalToolRequestParser getModifySurgicalToolRequestParser(String request, int interventionNumber, String surgicalToolTypeCode, String surgicalToolSerialNumber) throws RequestParseException {
 		JSONObject jsonRequest = new JSONObject(request);
-		jsonRequest.put("nointervention", String.valueOf(interventionNumber));
-		jsonRequest.put("typecode", String.valueOf(surgicalToolTypeCode));
-		jsonRequest.put("nouveaunoserie", jsonRequest.opt("noserie"));
-		jsonRequest.put("noserie", String.valueOf(surgicalToolSerialNumber));
+		addPathParametersToJsonObject(jsonRequest, interventionNumber, surgicalToolTypeCode, surgicalToolSerialNumber);
 		
 		ModifySurgicalToolRequestParser requestParser = modifySurgicalToolRequestParserFactory.getParser(jsonRequest);
 		return requestParser;
+	}
+
+	private void addPathParametersToJsonObject(JSONObject jsonRequest, int interventionNumber, String surgicalToolTypeCode, String surgicalToolSerialNumber) {
+		jsonRequest.put("nointervention", String.valueOf(interventionNumber));
+		jsonRequest.put("nouveautypecode", jsonRequest.opt("typecode"));
+		jsonRequest.put("typecode", String.valueOf(surgicalToolTypeCode));
+		jsonRequest.put("nouveaunoserie", jsonRequest.opt("noserie"));
+		jsonRequest.put("noserie", String.valueOf(surgicalToolSerialNumber));
 	}
 }
