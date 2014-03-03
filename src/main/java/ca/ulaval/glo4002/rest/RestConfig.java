@@ -10,19 +10,19 @@ import java.util.prefs.Preferences;
 public class RestConfig {
 	private static RestConfig instance = null;
 	private Preferences prefs;
-
-	public RestConfig(Preferences prefs) {
+	
+	protected RestConfig(Preferences prefs) {
 		this.prefs = prefs;
 		try {
 			InputStream is = new BufferedInputStream(new FileInputStream("RestConfig.xml"));
 			Preferences.importPreferences(is);
-		} catch (InvalidPreferencesFormatException e) {
+		} catch ( InvalidPreferencesFormatException e) {
 		} catch (IOException e) {
 		}
 	}
-
+	
 	public static RestConfig getInstance() {
-		if (instance == null) {
+		if(instance == null) {
 			instance = new RestConfig(Preferences.userRoot().node("RestConfig"));
 		}
 		return instance;
@@ -30,6 +30,10 @@ public class RestConfig {
 
 	public int getInt(String key, int def) {
 		return prefs.getInt(key, def);
+	}
+
+	public String getString(String key, String def) {
+		return prefs.get(key,def);
 	}
 
 }
