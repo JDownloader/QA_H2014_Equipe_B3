@@ -22,7 +22,7 @@ import ca.ulaval.glo4002.services.prescription.*;
 
 @Path("patient/{patient_number: [0-9]+}/prescriptions/")
 public class PrescriptionResource {
-	public static final String ERROR_BAD_REQUEST_PRES001  = "PRES001";
+	public static final String BAD_REQUEST_ERROR_CODE_PRES001  = "PRES001";
 	
 	private PrescriptionService service;
 	private AddPrescriptionRequestParserFactory addPrescriptionRequestParserFactory;
@@ -61,7 +61,7 @@ public class PrescriptionResource {
 			service.addPrescription(requestParser); 
 			return Response.status(Status.CREATED).build();
 		} catch (RequestParseException | JSONException e) {
-			return BadRequestJsonResponseBuilder.build(ERROR_BAD_REQUEST_PRES001, e.getMessage());
+			return BadRequestJsonResponseBuilder.build(BAD_REQUEST_ERROR_CODE_PRES001, e.getMessage());
 		} catch (ServiceRequestException e) {
 			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());
 		} catch (Exception e) {

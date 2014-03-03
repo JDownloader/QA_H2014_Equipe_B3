@@ -30,7 +30,7 @@ public class DrugResource {
 	private DrugService service;
 	private DrugSearchRequestParserFactory drugSearchRequestParserFactory;
 	
-    public static final String ERROR_BAD_REQUEST_DIN001 = "DIN001";
+    public static final String BAD_REQUEST_ERROR_CODE_DIN001 = "DIN001";
 
 	public DrugResource() {
 		EntityManager entityManager = new EntityManagerProvider().getEntityManager();
@@ -61,7 +61,7 @@ public class DrugResource {
 			List<Drug> drugResults = service.searchDrug(requestParser); 
 			return buildDrugResultResponse(drugResults);
 		} catch (RequestParseException | JSONException e) {
-			return BadRequestJsonResponseBuilder.build(ERROR_BAD_REQUEST_DIN001, e.getMessage());
+			return BadRequestJsonResponseBuilder.build(BAD_REQUEST_ERROR_CODE_DIN001, e.getMessage());
 		} catch (ServiceRequestException e) {
 			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());
 		} catch (Exception e) {

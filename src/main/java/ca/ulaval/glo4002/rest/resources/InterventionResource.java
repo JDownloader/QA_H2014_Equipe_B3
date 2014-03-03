@@ -24,8 +24,8 @@ import ca.ulaval.glo4002.services.intervention.*;
 
 @Path("interventions/")
 public class InterventionResource {
-	public static final String ERROR_BAD_REQUEST_INT001 = "INT001";
-	public static final String ERROR_BAD_REQUEST_INT010  = "INT010";
+	public static final String BAD_REQUEST_ERROR_CODE_INT001 = "INT001";
+	public static final String BAD_REQUEST_ERROR_CODE_INT010  = "INT010";
 	
 	private InterventionService service;
 	private CreateInterventionRequestParserFactory createInterventionRequestParserFactory;
@@ -68,7 +68,7 @@ public class InterventionResource {
 			String newResourceLocation = getNewResourceLocation(interventionNumber);
 			return Response.status(Status.CREATED).location(new URI(newResourceLocation)).build();
 		} catch (RequestParseException | JSONException e) {
-			return BadRequestJsonResponseBuilder.build(ERROR_BAD_REQUEST_INT001, e.getMessage());
+			return BadRequestJsonResponseBuilder.build(BAD_REQUEST_ERROR_CODE_INT001, e.getMessage());
 		} catch (ServiceRequestException e) {
 			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());
 		} catch (Exception e) {
@@ -97,7 +97,7 @@ public class InterventionResource {
 			String newResourceLocation = getNewSurgicalToolResourceLocation(requestParser, surgicalToolId);
 			return Response.status(Status.CREATED).location(new URI(newResourceLocation)).build();
 		} catch (RequestParseException | JSONException e) {
-			return BadRequestJsonResponseBuilder.build(ERROR_BAD_REQUEST_INT010, e.getMessage());
+			return BadRequestJsonResponseBuilder.build(BAD_REQUEST_ERROR_CODE_INT010, e.getMessage());
 		} catch (ServiceRequestException e) {
 			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());
 		} catch (Exception e) {
@@ -129,7 +129,7 @@ public class InterventionResource {
 			service.modifySurgicalTool(requestParser); 
 			return Response.status(Status.OK).build();
 		} catch (RequestParseException | JSONException e) {
-			return BadRequestJsonResponseBuilder.build(ERROR_BAD_REQUEST_INT010, e.getMessage());
+			return BadRequestJsonResponseBuilder.build(BAD_REQUEST_ERROR_CODE_INT010, e.getMessage());
 		} catch (ServiceRequestException e) {
 			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());
 		} catch (Exception e) {
