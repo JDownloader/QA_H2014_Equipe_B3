@@ -7,7 +7,7 @@ import org.h2.util.StringUtils;
 import org.json.JSONObject;
 
 import ca.ulaval.glo4002.exceptions.RequestParseException;
-import ca.ulaval.glo4002.utils.CustomDateParser;
+import ca.ulaval.glo4002.utils.DateParser;
 
 public class AddPrescriptionRequestParser {
 
@@ -42,7 +42,7 @@ public class AddPrescriptionRequestParser {
 		this.drugName = jsonRequest.optString(DRUG_NAME_PARAMETER_NAME);
 		this.staffMember = jsonRequest.getInt(STAFF_MEMBER_PARAMETER_NAME);
 		this.renewals = jsonRequest.getInt(RENEWAL_PARAMETER_NAME);
-		this.date = CustomDateParser.parseDate(jsonRequest.getString(DATE_PARAMETER_NAME));
+		this.date = DateParser.parseDate(jsonRequest.getString(DATE_PARAMETER_NAME));
 		this.patientNumber = jsonRequest.getInt(PATIENT_NUMBER_PARAMETER_NAME);
 	}
 

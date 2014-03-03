@@ -3,11 +3,9 @@
 <preferences EXTERNAL_XML_VERSION="1.0">
   <root type="user">
     <map/>
-    <node name="RestConfig">
+    <node name="HospitalRestConfig">
       <map>
         <entry key="SERVER_PORT" value="8080"/>
-        <entry key="B" value="b"/>
-        <entry key="C" value="c"/>
       </map>
     </node>
   </root>

@@ -8,20 +8,20 @@ import java.util.Date;
 
 import org.junit.Test;
 
-public class CustomDateParserTest {
+public class DateParserTest {
 
 	public static final String VALID_DATE = "2001-07-04T12:08:56";
 	public static final String INVALID_DATE = "28-04-1989234-23";
 
 	@Test(expected = ParseException.class)
 	public void invalidDateReturnExeption() throws ParseException {
-		CustomDateParser.parseDate(INVALID_DATE);
+		DateParser.parseDate(INVALID_DATE);
 	}
 
 	@Test
 	public void validatesDateCorrectly() throws ParseException {
 		Date parsedValidDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse("2001-07-04T12:08:56");
-		assertEquals(parsedValidDate, CustomDateParser.parseDate(VALID_DATE));
+		assertEquals(parsedValidDate, DateParser.parseDate(VALID_DATE));
 	}
 
 }

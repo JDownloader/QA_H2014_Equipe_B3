@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.domain.surgicalTool;
+package ca.ulaval.glo4002.domain.surgicaltool;
 
 import static org.junit.Assert.*;
 

@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import ca.ulaval.glo4002.domain.intervention.InterventionStatus;
 import ca.ulaval.glo4002.domain.intervention.InterventionType;
 import ca.ulaval.glo4002.exceptions.RequestParseException;
-import ca.ulaval.glo4002.utils.CustomDateParser;
+import ca.ulaval.glo4002.utils.DateParser;
 
 public class CreateInterventionRequestParser {
 
@@ -43,7 +43,7 @@ public class CreateInterventionRequestParser {
 	private void parseParameters(JSONObject jsonRequest) throws ParseException {
 		this.description = jsonRequest.getString(DESCRIPTION_PARAMETER_NAME);
 		this.surgeon = jsonRequest.getInt(SURGEON_PARAMETER_NAME);
-		this.date = CustomDateParser.parseDate(jsonRequest.getString(DATE_PARAMETER_NAME));
+		this.date = DateParser.parseDate(jsonRequest.getString(DATE_PARAMETER_NAME));
 		this.room = jsonRequest.getString(ROOM_PARAMETER_NAME);
 		this.type = InterventionType.fromString(jsonRequest.getString(TYPE_PARAMETER_NAME));
 		String statusParameter = jsonRequest.optString(STATUS_PARAMETER_NAME);

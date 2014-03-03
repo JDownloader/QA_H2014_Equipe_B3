@@ -9,10 +9,10 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import ca.ulaval.glo4002.rest.RestMain;
+import ca.ulaval.glo4002.rest.HospitalRestMain;
 
-public class RestConfigTest {
-	private RestConfig myConfig;
+public class HospitalRestConfigProviderTest {
+	private HospitalRestConfigProvider myConfig;
 	int INT_PREF_DEFAULT_VALUE = 123;
 	int INT_PREF_VALUE = 321;
 	String KEY_PREF_STING = "KEY";
@@ -22,7 +22,7 @@ public class RestConfigTest {
 	
 	@Before
 	public void init() {
-		myConfig = new RestConfig(prefs);
+		myConfig = new HospitalRestConfigProvider(prefs);
 	}
 
 	@Test

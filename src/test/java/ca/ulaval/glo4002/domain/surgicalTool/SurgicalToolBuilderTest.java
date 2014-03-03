@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.domain.surgicalTool;
+package ca.ulaval.glo4002.domain.surgicaltool;
 
 import org.junit.*;
 import static org.mockito.Mockito.*;

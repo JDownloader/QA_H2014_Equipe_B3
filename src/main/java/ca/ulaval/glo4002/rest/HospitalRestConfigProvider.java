@@ -7,23 +7,23 @@ import java.io.FileInputStream;
 import java.util.prefs.InvalidPreferencesFormatException;
 import java.util.prefs.Preferences;
 
-public class RestConfig {
-	private static RestConfig instance = null;
+public class HospitalRestConfigProvider {
+	private static HospitalRestConfigProvider instance = null;
 	private Preferences prefs;
 	
-	protected RestConfig(Preferences prefs) {
+	protected HospitalRestConfigProvider(Preferences prefs) {
 		this.prefs = prefs;
 		try {
-			InputStream is = new BufferedInputStream(new FileInputStream("RestConfig.xml"));
+			InputStream is = new BufferedInputStream(new FileInputStream("HospitalRestConfig.xml"));
 			Preferences.importPreferences(is);
 		} catch ( InvalidPreferencesFormatException e) {
 		} catch (IOException e) {
 		}
 	}
 	
-	public static RestConfig getInstance() {
+	public static HospitalRestConfigProvider getInstance() {
 		if(instance == null) {
-			instance = new RestConfig(Preferences.userRoot().node("RestConfig"));
+			instance = new HospitalRestConfigProvider(Preferences.userRoot().node("HospitalRestConfig"));
 		}
 		return instance;
 	}

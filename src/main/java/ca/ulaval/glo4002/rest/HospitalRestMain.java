@@ -22,8 +22,8 @@ import ca.ulaval.glo4002.rest.filters.EntityManagerContextFilter;
 
 import com.sun.jersey.spi.container.servlet.ServletContainer;
 
-public class RestMain {
-	private static RestConfig restConfig = RestConfig.getInstance();
+public class HospitalRestMain {
+	private static HospitalRestConfigProvider restConfig = HospitalRestConfigProvider.getInstance();
 	private static final int HTTP_SERVER_PORT = restConfig.getInt("SERVER_PORT", 8080);
 	private static final String DRUG_FILE_PATH = "data/drug.txt";
 
@@ -35,7 +35,7 @@ public class RestMain {
 			return;
 		}
 		
-		new RestMain().execute();
+		new HospitalRestMain().execute();
 	}
 	
 	public static void doRepositoryFill() throws IOException, BadFileFormatException {
