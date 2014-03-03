@@ -43,17 +43,18 @@ public class PrescriptionService {
 	}
 
 	private Prescription buildPrescription(AddPrescriptionRequestParser requestParser) throws ServiceRequestException, DrugDoesntHaveDinException {
-		PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder();
-		prescriptionBuilder.date(requestParser.getDate());
-		prescriptionBuilder.allowedNumberOfRenewal(requestParser.getRenewals());
-		prescriptionBuilder.staffMember(new StaffMember(requestParser.getStaffMember()));
-		prescriptionBuilder.drugName(requestParser.getDrugName());
+		PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder()
+			.date(requestParser.getDate())
+			.allowedNumberOfRenewal(requestParser.getRenewals())
+			.staffMember(new StaffMember(requestParser.getStaffMember()))
+			.drugName(requestParser.getDrugName());
+		
 		if (requestParser.hasDin()) {
 			Drug drug = getDrug(requestParser);
 			prescriptionBuilder.drug(drug);	
 		}
-		Prescription prescription = prescriptionBuilder.build();
-		return prescription;
+		
+		return prescriptionBuilder.build();
 	}
 	
 	private Drug getDrug(AddPrescriptionRequestParser requestParser) throws ServiceRequestException, DrugDoesntHaveDinException {

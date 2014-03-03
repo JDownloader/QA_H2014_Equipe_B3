@@ -49,13 +49,13 @@ public class InterventionService {
 
 	private Intervention buildIntervention(CreateInterventionRequestParser requestParser) throws ServiceRequestException {
 		InterventionBuilder interventionBuilder = new InterventionBuilder()
-		.date(requestParser.getDate())
-		.description(requestParser.getDescription())
-		.room(requestParser.getRoom())
-		.surgeon(new Surgeon(requestParser.getSurgeon()))
-		.type(requestParser.getType())
-		.status(requestParser.getStatus())
-		.patient(getPatient(requestParser));
+    		.date(requestParser.getDate())
+    		.description(requestParser.getDescription())
+    		.room(requestParser.getRoom())
+    		.surgeon(new Surgeon(requestParser.getSurgeon()))
+    		.type(requestParser.getType())
+    		.status(requestParser.getStatus())
+    		.patient(getPatient(requestParser));
 		return interventionBuilder.build();
 	}
 	
@@ -104,13 +104,12 @@ public class InterventionService {
 	}
 
 	private SurgicalTool buildSurgicalTool(CreateSurgicalToolRequestParser requestParser) throws ServiceRequestException {
-		SurgicalToolBuilder surgicalToolBuilder = new SurgicalToolBuilder();
-		surgicalToolBuilder.serialNumber(requestParser.getSerialNumber());
-		surgicalToolBuilder.status(requestParser.getStatus());
-		surgicalToolBuilder.typeCode(requestParser.getTypeCode());
+		SurgicalToolBuilder surgicalToolBuilder = new SurgicalToolBuilder()
+			.serialNumber(requestParser.getSerialNumber())
+			.status(requestParser.getStatus())
+			.typeCode(requestParser.getTypeCode());
 		
-		SurgicalTool surgicalTool = surgicalToolBuilder.build();
-		return surgicalTool;
+		return surgicalToolBuilder.build();
 	}
 	
 	private void updateIntervention(CreateSurgicalToolRequestParser requestParser, SurgicalTool surgicalTool) throws ServiceRequestException {
