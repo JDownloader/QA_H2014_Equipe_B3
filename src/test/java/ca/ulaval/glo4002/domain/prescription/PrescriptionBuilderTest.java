@@ -20,7 +20,7 @@ public class PrescriptionBuilderTest {
 	private PrescriptionBuilder prescriptionBuilderSpy;
 	
 	@Before
-	public void setup() {
+	public void init() {
 		drugMock = mock(Drug.class);
 		staffMemberMock = mock(StaffMember.class);
 		

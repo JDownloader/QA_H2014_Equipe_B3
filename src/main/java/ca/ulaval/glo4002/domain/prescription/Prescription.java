@@ -16,11 +16,11 @@ public class Prescription {
 	private int id;
 
 	@ManyToOne()
-	@JoinColumn(name = "DRUG", nullable = true)
+	@JoinColumn(name = "DRUG")
 	private Drug drug;
-	
-	@Column(name = "DRUG_NAME", nullable = true)
-	private String drugName = null;
+
+	@Column(name = "DRUG_NAME")
+	private String drugName;
 
 	@Column(name = "RENEWALS", nullable = false)
 	private int allowedNumberOfRenewal;
@@ -32,9 +32,9 @@ public class Prescription {
 	private StaffMember staffMember;
 
 	protected Prescription() {
-		//Required for Hibernate
+		// Required for Hibernate
 	}
-	
+
 	public Prescription(PrescriptionBuilder builder) {
 		this.drug = builder.drug;
 		this.drugName = builder.drugName;
@@ -42,31 +42,31 @@ public class Prescription {
 		this.allowedNumberOfRenewal = builder.allowedNumberOfRenewal;
 		this.date = builder.date;
 	}
-	
+
 	public boolean compareId(int id) {
 		return this.id == id;
 	}
-	
+
 	public int getId() {
 		return this.id;
 	}
-	
+
 	public Drug getDrug() {
 		return this.drug;
 	}
-	
+
 	public String getDrugName() {
 		return this.drugName;
 	}
-	
+
 	public int getAllowedNumberOfRenewal() {
 		return this.allowedNumberOfRenewal;
 	}
-	
+
 	public Date getDate() {
 		return this.date;
 	}
-	
+
 	public StaffMember getStaffMember() {
 		return this.staffMember;
 	}

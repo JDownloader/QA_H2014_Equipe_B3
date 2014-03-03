@@ -55,7 +55,7 @@ public class InterventionServiceTest {
 	private ModifySurgicalToolRequestParser modifySurgicalToolRequestParserMock;
 	
 	@Before
-	public void setup()  {
+	public void init()  {
 		createMocks();
 		buildInterventionService();
 		stubCreateInterventionRequestMockMethods();

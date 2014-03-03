@@ -22,7 +22,7 @@ public class InterventionBuilderTest {
 	private InterventionBuilder interventionBuilderSpy;
 	
 	@Before
-	public void setup() {
+	public void init() {
 		patientMock = mock(Patient.class);
 		surgeonMock = mock(Surgeon.class);
 		

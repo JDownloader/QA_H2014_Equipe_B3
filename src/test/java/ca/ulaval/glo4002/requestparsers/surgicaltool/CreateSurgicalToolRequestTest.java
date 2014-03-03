@@ -22,7 +22,7 @@ public class CreateSurgicalToolRequestTest {
 	private JSONObject jsonRequest = new JSONObject();
 	
 	@Before
-	public void setup() throws Exception {
+	public void init() throws Exception {
 		jsonRequest.put(AbstractSurgicalToolRequestParser.INTERVENTION_NUMBER_PARAMETER_NAME, SAMPLE_INTERVENTION_NUMBER);
 		jsonRequest.put(AbstractSurgicalToolRequestParser.STATUS_PARAMETER_NAME, SAMPLE_STATUS);
 		jsonRequest.put(AbstractSurgicalToolRequestParser.SERIAL_NUMBER_PARAMETER_NAME, SAMPLE_SERIAL_NUMBER);

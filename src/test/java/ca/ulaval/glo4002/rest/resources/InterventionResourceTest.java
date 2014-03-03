@@ -1,29 +1,24 @@
 package ca.ulaval.glo4002.rest.resources;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.json.JSONObject;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.mockito.Mockito.*;
 import ca.ulaval.glo4002.exceptions.RequestParseException;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParser;
 import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParserFactory;
-import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.CreateSurgicalToolRequestParser;
-import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.CreateSurgicalToolRequestParserFactory;
-import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.ModifySurgicalToolRequestParser;
-import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.ModifySurgicalToolRequestParserFactory;
-import ca.ulaval.glo4002.rest.resources.InterventionResource;
-import ca.ulaval.glo4002.rest.resources.InterventionResourceBuilder;
+import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.*;
 import ca.ulaval.glo4002.services.intervention.InterventionService;
-
-import org.mockito.runners.MockitoJUnitRunner;
-
 
 @RunWith(MockitoJUnitRunner.class)
 public class InterventionResourceTest {
@@ -43,7 +38,7 @@ public class InterventionResourceTest {
 	private InterventionResource interventionResource;
 
 	@Before
-	public void setup() throws Exception {
+	public void init() throws Exception {
 		createMocks();
 		stubMethods();
 		buildInterventionResource();
@@ -58,13 +53,13 @@ public class InterventionResourceTest {
 		modifySurgicalToolRequestParserMock = mock(ModifySurgicalToolRequestParser.class);
 		modifySurgicalToolRequestParserFactoryMock = mock(ModifySurgicalToolRequestParserFactory.class);
 	}
-	
+
 	private void stubMethods() throws RequestParseException {
 		when(createInterventionRequestParserFactoryMock.getParser(any(JSONObject.class))).thenReturn(createInterventionRequestParserMock);
 		when(createSurgicalToolRequestParserFactoryMock.getParser(any(JSONObject.class))).thenReturn(createSurgicalToolRequestParserMock);
 		when(modifySurgicalToolRequestParserFactoryMock.getParser(any(JSONObject.class))).thenReturn(modifySurgicalToolRequestParserMock);
 	}
-	
+
 	private void buildInterventionResource() {
 		InterventionResourceBuilder interventionResourceBuilder = new InterventionResourceBuilder();
 		interventionResourceBuilder.createInterventionRequestParserFactory(createInterventionRequestParserFactoryMock);
@@ -95,7 +90,7 @@ public class InterventionResourceTest {
 
 		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
 	}
-	
+
 	@Test
 	public void verifyCreateSurgicalToolCallsServiceMethodsCorrectly() throws ServiceRequestException {
 		interventionResource.createSurgicalTool(SAMPLE_JSON_REQUEST, SAMPLE_INTERVENTION_NUMBER);
@@ -117,7 +112,7 @@ public class InterventionResourceTest {
 
 		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
 	}
-	
+
 	@Test
 	public void verifyModifySurgicalToolCallsServiceMethodsCorrectly() throws ServiceRequestException {
 		interventionResource.modifySurgicalTool(SAMPLE_JSON_REQUEST, SAMPLE_INTERVENTION_NUMBER, SAMPLE_TYPE_CODE, SAMPLE_SERIAL_NUMBER);
@@ -135,7 +130,8 @@ public class InterventionResourceTest {
 		doThrow(new ServiceRequestException()).when(interventionServiceMock).modifySurgicalTool(modifySurgicalToolRequestParserMock);
 
 		Response expectedResponse = Response.status(Status.BAD_REQUEST).build();
-		Response receivedResponse = interventionResource.modifySurgicalTool(SAMPLE_JSON_REQUEST, SAMPLE_INTERVENTION_NUMBER, SAMPLE_TYPE_CODE, SAMPLE_SERIAL_NUMBER);
+		Response receivedResponse = interventionResource.modifySurgicalTool(SAMPLE_JSON_REQUEST, SAMPLE_INTERVENTION_NUMBER, SAMPLE_TYPE_CODE,
+				SAMPLE_SERIAL_NUMBER);
 
 		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
 	}

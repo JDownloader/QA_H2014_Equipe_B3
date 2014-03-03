@@ -21,7 +21,7 @@ public class PrescriptionTest {
 	private static final String SAMPLE_DRUG_NAME = "drug_name";
 	
 	@Before
-	public void setup()  {
+	public void init()  {
 		drugMock = mock(Drug.class);
 		staffMemberMock = mock(StaffMember.class);
 		

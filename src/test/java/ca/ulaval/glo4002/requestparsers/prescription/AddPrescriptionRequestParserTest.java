@@ -30,7 +30,7 @@ public class AddPrescriptionRequestParserTest {
 	private JSONObject jsonRequest = new JSONObject();
 	
 	@Before
-	public void setup() throws Exception {
+	public void init() throws Exception {
 		jsonRequest.put("intervenant", SAMPLE_STAFF_MEMBER_PARAMETER);
 		jsonRequest.put("date", SAMPLE_DATE_PARAMETER);
 		jsonRequest.put("renouvellements", SAMPLE_RENEWALS_PARAMETER);

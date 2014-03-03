@@ -12,10 +12,10 @@ public class Patient {
 
 	@Id
 	@Column(name = "PATIENT_ID", nullable = false)
-	private int id = 0;
+	private int id;
 
 	@ElementCollection()
-	@JoinColumn(name = "PATIENT")
+	@JoinColumn(name = "PRESCRIPTIONS")
 	private List<Prescription> prescriptions = new ArrayList<Prescription>();
 
 	protected Patient() {

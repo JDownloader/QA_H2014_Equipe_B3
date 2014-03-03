@@ -29,7 +29,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<mainClass>ca.ulaval.glo4002.rest.RestMain</mainClass>
+					<mainClass>ca.ulaval.glo4002.rest.HospitalRestMain</mainClass>
 				</configuration>
 			</plugin>
 			<plugin>

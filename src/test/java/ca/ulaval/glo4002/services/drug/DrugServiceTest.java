@@ -19,7 +19,7 @@ public class DrugServiceTest {
 	private DrugSearchRequestParser drugSearchRequestParserMock;
 	
 	@Before
-	public void setup()  {
+	public void init()  {
 		createMocks();
 		buildInterventionService();
 		stubCreateInterventionRequestMockMethods();

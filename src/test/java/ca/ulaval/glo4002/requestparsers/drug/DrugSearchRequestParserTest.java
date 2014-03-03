@@ -15,7 +15,7 @@ public class DrugSearchRequestParserTest {
 	private JSONObject jsonRequest = new JSONObject();
 	
 	@Before
-	public void setup() throws Exception {
+	public void init() throws Exception {
 		jsonRequest.put("nom", SAMPLE_NAME_PARAMETER);
 		createRequestParser();
 	}

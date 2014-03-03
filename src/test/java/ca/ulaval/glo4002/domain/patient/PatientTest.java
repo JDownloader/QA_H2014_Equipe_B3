@@ -15,7 +15,7 @@ public class PatientTest {
 	private Patient patient;
 
 	@Before
-	public void setup() {
+	public void init() {
 		patient = new Patient(SAMPLE_PATIENT_ID);
 	}
 	

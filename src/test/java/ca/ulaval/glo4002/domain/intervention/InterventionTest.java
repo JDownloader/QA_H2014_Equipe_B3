@@ -25,7 +25,7 @@ public class InterventionTest {
 	private Intervention intervention;
 
 	@Before
-	public void setup() {
+	public void init() {
 		patientMock = mock(Patient.class);
 		surgeonMock = mock(Surgeon.class);
 
