@@ -2,10 +2,11 @@ package ca.ulaval.glo4002.contexts;
 
 import javax.persistence.EntityManager;
 
-import ca.ulaval.glo4002.domain.patient.*;
+import ca.ulaval.glo4002.domain.patient.Patient;
+import ca.ulaval.glo4002.domain.patient.PatientRepository;
 
 public class PatientRepositoryFiller {
-	
+
 	public void fill(EntityManager entityManager, PatientRepository patientRepository) {
 		entityManager.getTransaction().begin();
 		patientRepository.create(new Patient(0));

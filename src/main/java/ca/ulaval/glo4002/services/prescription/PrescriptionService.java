@@ -4,28 +4,28 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityTransaction;
 
 import ca.ulaval.glo4002.domain.drug.*;
-import ca.ulaval.glo4002.domain.patient.*;
+import ca.ulaval.glo4002.domain.patient.Patient;
+import ca.ulaval.glo4002.domain.patient.PatientRepository;
 import ca.ulaval.glo4002.domain.prescription.*;
 import ca.ulaval.glo4002.domain.staff.StaffMember;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.requestparsers.prescription.AddPrescriptionRequestParser;
 
 public class PrescriptionService {
-    public static final String ERROR_SERVICE_REQUEST_EXCEPTION_PRES001 = "PRES001";
+	public static final String ERROR_SERVICE_REQUEST_EXCEPTION_PRES001 = "PRES001";
 
-    
 	private PrescriptionRepository prescriptionRepository;
 	private DrugRepository drugRepository;
 	private PatientRepository patientRepository;
 	private EntityTransaction entityTransaction;
-	
+
 	public PrescriptionService(PrescriptionServiceBuilder builder) {
 		this.entityTransaction = builder.entityTransaction;
 		this.prescriptionRepository = builder.prescriptionRepository;
 		this.drugRepository = builder.drugRepository;
 		this.patientRepository = builder.patientRepository;
 	}
-	
+
 	public void addPrescription(AddPrescriptionRequestParser requestParser) throws ServiceRequestException, DrugDoesNotContainDinException {
 		try {
 			entityTransaction.begin();
@@ -38,7 +38,7 @@ public class PrescriptionService {
 			throw e;
 		}
 	}
-	
+
 	protected void doAddPrescription(AddPrescriptionRequestParser requestParser) throws ServiceRequestException, DrugDoesNotContainDinException {
 		Prescription prescription = buildPrescription(requestParser);
 		prescriptionRepository.create(prescription);
@@ -46,20 +46,17 @@ public class PrescriptionService {
 	}
 
 	private Prescription buildPrescription(AddPrescriptionRequestParser requestParser) throws ServiceRequestException, DrugDoesNotContainDinException {
-		PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder()
-			.date(requestParser.getDate())
-			.allowedNumberOfRenewal(requestParser.getRenewals())
-			.staffMember(new StaffMember(requestParser.getStaffMember()))
-			.drugName(requestParser.getDrugName());
-		
+		PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder().date(requestParser.getDate()).allowedNumberOfRenewal(requestParser.getRenewals())
+				.staffMember(new StaffMember(requestParser.getStaffMember())).drugName(requestParser.getDrugName());
+
 		if (requestParser.hasDin()) {
 			Drug drug = getDrug(requestParser);
-			prescriptionBuilder.drug(drug);	
+			prescriptionBuilder.drug(drug);
 		}
-		
+
 		return prescriptionBuilder.build();
 	}
-	
+
 	private Drug getDrug(AddPrescriptionRequestParser requestParser) throws ServiceRequestException, DrugDoesNotContainDinException {
 		try {
 			return drugRepository.getByDin(new Din(requestParser.getDin()));
@@ -73,7 +70,7 @@ public class PrescriptionService {
 		patient.addPrescription(prescription);
 		patientRepository.update(patient);
 	}
-	
+
 	private Patient getPatient(AddPrescriptionRequestParser requestParser) throws ServiceRequestException {
 		try {
 			return patientRepository.getById(requestParser.getPatientNumber());
@@ -81,5 +78,5 @@ public class PrescriptionService {
 			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_PRES001, e.getMessage());
 		}
 	}
-	
+
 }

@@ -11,12 +11,12 @@ import ca.ulaval.glo4002.rest.requestparsers.drug.DrugSearchRequestParser;
 public class DrugService {
 	private DrugRepository drugRepository;
 	private EntityTransaction entityTransaction;
-	
+
 	public DrugService(DrugServiceBuilder builder) {
 		this.entityTransaction = builder.entityTransaction;
 		this.drugRepository = builder.drugRepository;
 	}
-	
+
 	public List<Drug> searchDrug(DrugSearchRequestParser requestParser) throws Exception {
 		try {
 			entityTransaction.begin();
@@ -30,7 +30,7 @@ public class DrugService {
 			throw e;
 		}
 	}
-	
+
 	protected List<Drug> doDrugSearch(DrugSearchRequestParser requestParser) throws Exception {
 		return drugRepository.findByName(requestParser.getName());
 	}

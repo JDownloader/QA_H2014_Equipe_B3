@@ -6,8 +6,8 @@ public class Din implements Serializable {
 	private static final long serialVersionUID = 7369022975618045987L;
 	private int din;
 
-	public Din(int Din) {
-		this.din = Din;
+	public Din(int din) {
+		this.din = din;
 	}
 
 	@Override
@@ -17,15 +17,21 @@ public class Din implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		final Din otherDin = (Din) obj;
-		if (this.din != otherDin.din)
+
+		if (this.din != otherDin.din) {
 			return false;
+		}
+
 		return true;
 	}
 }

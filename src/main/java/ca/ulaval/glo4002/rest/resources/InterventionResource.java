@@ -4,39 +4,40 @@ import java.net.URI;
 
 import javax.persistence.EntityManager;
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
-import ca.ulaval.glo4002.exceptions.*;
+import ca.ulaval.glo4002.exceptions.RequestParseException;
+import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.persistence.intervention.HibernateInterventionRepository;
 import ca.ulaval.glo4002.persistence.patient.HibernatePatientRepository;
 import ca.ulaval.glo4002.persistence.surgicaltool.HibernateSurgicalToolRepository;
-import ca.ulaval.glo4002.rest.requestparsers.intervention.*;
+import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParser;
+import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParserFactory;
 import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.*;
 import ca.ulaval.glo4002.rest.utils.BadRequestJsonResponseBuilder;
-import ca.ulaval.glo4002.services.intervention.*;
-
+import ca.ulaval.glo4002.services.intervention.InterventionService;
+import ca.ulaval.glo4002.services.intervention.InterventionServiceBuilder;
 
 @Path("interventions/")
 public class InterventionResource {
 	public static final String BAD_REQUEST_ERROR_CODE_INT001 = "INT001";
-	public static final String BAD_REQUEST_ERROR_CODE_INT010  = "INT010";
-	
+	public static final String BAD_REQUEST_ERROR_CODE_INT010 = "INT010";
+
 	private InterventionService service;
 	private CreateInterventionRequestParserFactory createInterventionRequestParserFactory;
 	private CreateSurgicalToolRequestParserFactory createSurgicalToolRequestParserFactory;
 	private ModifySurgicalToolRequestParserFactory modifySurgicalToolRequestParserFactory;
-	
+
 	public InterventionResource() {
 		EntityManager entityManager = new EntityManagerProvider().getEntityManager();
-		
+
 		buildInterventionService(entityManager);
-		
+
 		this.createInterventionRequestParserFactory = new CreateInterventionRequestParserFactory();
 		this.createSurgicalToolRequestParserFactory = new CreateSurgicalToolRequestParserFactory();
 		this.modifySurgicalToolRequestParserFactory = new ModifySurgicalToolRequestParserFactory();
@@ -50,21 +51,21 @@ public class InterventionResource {
 		interventionServiceBuilder.surgicalToolRepository(new HibernateSurgicalToolRepository());
 		this.service = new InterventionService(interventionServiceBuilder);
 	}
-	
+
 	public InterventionResource(InterventionResourceBuilder interventionResourceBuilder) {
 		this.service = interventionResourceBuilder.service;
 		this.createInterventionRequestParserFactory = interventionResourceBuilder.createInterventionRequestParserFactory;
 		this.createSurgicalToolRequestParserFactory = interventionResourceBuilder.createSurgicalToolRequestParserFactory;
 		this.modifySurgicalToolRequestParserFactory = interventionResourceBuilder.modifySurgicalToolRequestParserFactory;
 	}
-	
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response post(String request){
+	public Response post(String request) {
 		try {
 			CreateInterventionRequestParser requestParser = getCreateInterventionRequestParser(request);
-			int interventionNumber = service.createIntervention(requestParser); 
+			int interventionNumber = service.createIntervention(requestParser);
 			String newResourceLocation = getNewResourceLocation(interventionNumber);
 			return Response.status(Status.CREATED).location(new URI(newResourceLocation)).build();
 		} catch (RequestParseException | JSONException e) {
@@ -79,7 +80,7 @@ public class InterventionResource {
 	private String getNewResourceLocation(int interventionNumber) {
 		return String.format("/%d", interventionNumber);
 	}
-	
+
 	private CreateInterventionRequestParser getCreateInterventionRequestParser(String request) throws RequestParseException {
 		JSONObject jsonRequest = new JSONObject(request);
 		CreateInterventionRequestParser interventionRequestParser = createInterventionRequestParserFactory.getParser(jsonRequest);
@@ -93,7 +94,7 @@ public class InterventionResource {
 	public Response createSurgicalTool(String request, @PathParam("interventionNumber") int interventionNumber) {
 		try {
 			CreateSurgicalToolRequestParser requestParser = getCreateSurgicalToolRequestParser(request, interventionNumber);
-			int surgicalToolId = service.createSurgicalTool(requestParser); 
+			int surgicalToolId = service.createSurgicalTool(requestParser);
 			String newResourceLocation = getNewSurgicalToolResourceLocation(requestParser, surgicalToolId);
 			return Response.status(Status.CREATED).location(new URI(newResourceLocation)).build();
 		} catch (RequestParseException | JSONException e) {
@@ -104,29 +105,29 @@ public class InterventionResource {
 			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
-	
+
 	private String getNewSurgicalToolResourceLocation(CreateSurgicalToolRequestParser requestParser, int surgicalToolId) {
 		return String.format("/%s/%s", requestParser.getTypeCode(), surgicalToolId);
 	}
-	
+
 	private CreateSurgicalToolRequestParser getCreateSurgicalToolRequestParser(String request, int interventionNumber) throws RequestParseException {
 		JSONObject jsonRequest = new JSONObject(request);
 		jsonRequest.put(CreateSurgicalToolRequestParser.INTERVENTION_NUMBER_PARAMETER_NAME, String.valueOf(interventionNumber));
-		
+
 		CreateSurgicalToolRequestParser requestParser = createSurgicalToolRequestParserFactory.getParser(jsonRequest);
 		return requestParser;
 	}
-	
+
 	@PUT
 	@Path("{interventionNumber: [0-9]+}/instruments/{surgicalToolTypeCode}/{surgicalToolSerialNumber}/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response modifySurgicalTool(String request, @PathParam("interventionNumber") int interventionNumber
-			, @PathParam("surgicalToolTypeCode") String surgicalToolTypeCode
-			, @PathParam("surgicalToolSerialNumber") String surgicalToolSerialNumber) {
+	public Response modifySurgicalTool(String request, @PathParam("interventionNumber") int interventionNumber,
+			@PathParam("surgicalToolTypeCode") String surgicalToolTypeCode, @PathParam("surgicalToolSerialNumber") String surgicalToolSerialNumber) {
 		try {
-			ModifySurgicalToolRequestParser requestParser = getModifySurgicalToolRequestParser(request, interventionNumber, surgicalToolTypeCode, surgicalToolSerialNumber);
-			service.modifySurgicalTool(requestParser); 
+			ModifySurgicalToolRequestParser requestParser = getModifySurgicalToolRequestParser(request, interventionNumber, surgicalToolTypeCode,
+					surgicalToolSerialNumber);
+			service.modifySurgicalTool(requestParser);
 			return Response.status(Status.OK).build();
 		} catch (RequestParseException | JSONException e) {
 			return BadRequestJsonResponseBuilder.build(BAD_REQUEST_ERROR_CODE_INT010, e.getMessage());
@@ -136,11 +137,12 @@ public class InterventionResource {
 			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
-	
-	private ModifySurgicalToolRequestParser getModifySurgicalToolRequestParser(String request, int interventionNumber, String surgicalToolTypeCode, String surgicalToolSerialNumber) throws RequestParseException {
+
+	private ModifySurgicalToolRequestParser getModifySurgicalToolRequestParser(String request, int interventionNumber, String surgicalToolTypeCode,
+			String surgicalToolSerialNumber) throws RequestParseException {
 		JSONObject jsonRequest = new JSONObject(request);
 		addPathParametersToJsonObject(jsonRequest, interventionNumber, surgicalToolTypeCode, surgicalToolSerialNumber);
-		
+
 		ModifySurgicalToolRequestParser requestParser = modifySurgicalToolRequestParserFactory.getParser(jsonRequest);
 		return requestParser;
 	}

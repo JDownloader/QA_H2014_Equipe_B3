@@ -7,7 +7,7 @@ public class RequestParseException extends Exception {
 	public RequestParseException() {
 		super();
 	}
-	
+
 	public RequestParseException(String message) {
 		super(message);
 	}

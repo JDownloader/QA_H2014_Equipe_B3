@@ -11,35 +11,32 @@ public class InterventionServiceBuilder {
 	protected PatientRepository patientRepository = null;
 	protected SurgicalToolRepository surgicalToolRepository = null;
 	protected EntityTransaction entityTransaction = null;
-	
+
 	public InterventionServiceBuilder interventionRepository(InterventionRepository prescriptionRepository) {
 		this.interventionRepository = prescriptionRepository;
 		return this;
 	}
-	
+
 	public InterventionServiceBuilder surgicalToolRepository(SurgicalToolRepository surgicalToolRepository) {
 		this.surgicalToolRepository = surgicalToolRepository;
 		return this;
 	}
-	
+
 	public InterventionServiceBuilder patientRepository(PatientRepository patientRepository) {
 		this.patientRepository = patientRepository;
 		return this;
 	}
-	
+
 	public InterventionServiceBuilder entityTransaction(EntityTransaction entityTransaction) {
 		this.entityTransaction = entityTransaction;
 		return this;
 	}
-	
+
 	public InterventionService build() {
 		InterventionService interventionService = new InterventionService(this);
-		if (interventionRepository == null 
-				|| surgicalToolRepository == null 
-				|| patientRepository == null 
-				|| entityTransaction == null) {
+		if (interventionRepository == null || surgicalToolRepository == null || patientRepository == null || entityTransaction == null) {
 			throw new IllegalStateException();
 		}
-        return interventionService;
-    }
+		return interventionService;
+	}
 }

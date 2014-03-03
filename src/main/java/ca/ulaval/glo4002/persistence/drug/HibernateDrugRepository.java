@@ -20,7 +20,7 @@ public class HibernateDrugRepository extends HibernateRepository implements Drug
 	public void create(Drug drug) {
 		entityManager.persist(drug);
 	}
-	
+
 	public Drug getByDin(Din din) throws EntityNotFoundException {
 		Drug drug = entityManager.find(Drug.class, din);
 		if (drug == null) {
@@ -28,14 +28,15 @@ public class HibernateDrugRepository extends HibernateRepository implements Drug
 		}
 		return drug;
 	}
-	
+
 	public List<Drug> findByName(String name) throws Exception {
 		String likeStatement = name.replace(' ', '%').toUpperCase();
-		//TODO no more sql
-		String queryString = String.format("SELECT d FROM DRUG d WHERE UPPER(d.name) LIKE '%s' OR UPPER(d.description) LIKE '%s'", likeStatement, likeStatement);
-		
+		// TODO no more sql
+		String queryString = String
+				.format("SELECT d FROM DRUG d WHERE UPPER(d.name) LIKE '%s' OR UPPER(d.description) LIKE '%s'", likeStatement, likeStatement);
+
 		TypedQuery<Drug> query = entityManager.createQuery(queryString, Drug.class);
-		
+
 		List<Drug> result = query.getResultList();
 		return result;
 	}

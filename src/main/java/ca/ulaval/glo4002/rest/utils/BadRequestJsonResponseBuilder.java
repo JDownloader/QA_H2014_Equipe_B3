@@ -6,11 +6,10 @@ import javax.ws.rs.core.Response.Status;
 import org.json.JSONObject;
 
 public class BadRequestJsonResponseBuilder {
-	
-    static private final String CODE_PARAMETER = "code";
-    static private final String MESSAGE_PARAMETER = "message";
 
-    
+	private static final String CODE_PARAMETER = "code";
+	private static final String MESSAGE_PARAMETER = "message";
+
 	public static Response build(String code, String message) {
 		JSONObject jsonResponse = new JSONObject();
 		jsonResponse.append(CODE_PARAMETER, code).append(MESSAGE_PARAMETER, message);

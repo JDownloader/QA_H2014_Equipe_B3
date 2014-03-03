@@ -10,7 +10,7 @@ public class EntityManagerFactoryProvider {
 	public static EntityManagerFactory getFactory() {
 		if (entityManagerFactory == null) {
 			entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-        }
-        return entityManagerFactory;
+		}
+		return entityManagerFactory;
 	}
 }

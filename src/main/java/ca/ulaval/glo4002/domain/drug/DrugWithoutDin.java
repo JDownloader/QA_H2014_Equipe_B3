@@ -6,13 +6,13 @@ import javax.persistence.Entity;
 public class DrugWithoutDin extends Drug {
 
 	protected DrugWithoutDin() {
-		//Required for Hibernate.
+		// Required for Hibernate.
 	}
-	
+
 	public DrugWithoutDin(String name) {
-		this.name=name;
+		this.name = name;
 	}
-	
+
 	@Override
 	public Din getDin() throws DrugDoesNotContainDinException {
 		throw new DrugDoesNotContainDinException();

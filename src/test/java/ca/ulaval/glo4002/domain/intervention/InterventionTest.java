@@ -1,11 +1,13 @@
 package ca.ulaval.glo4002.domain.intervention;
 
-import java.util.Date;
-
-import org.junit.*;
-
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+
+import java.util.Date;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalTool;
@@ -43,7 +45,7 @@ public class InterventionTest {
 		interventionBuilder.type(SAMPLE_TYPE);
 		intervention = interventionBuilder.build();
 	}
-	
+
 	@Test
 	public void returnsDescriptionCorrectly() {
 		assertEquals(SAMPLE_DESCRIPTION, intervention.getDescription());
@@ -78,7 +80,7 @@ public class InterventionTest {
 	public void returnsPatientCorrectly() {
 		assertSame(patientMock, intervention.getPatient());
 	}
-	
+
 	@Test
 	public void addsSurgicalToolCorrectly() {
 		SurgicalTool surgicalToolMock = mock(SurgicalTool.class);

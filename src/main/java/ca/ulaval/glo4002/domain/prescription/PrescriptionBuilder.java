@@ -14,40 +14,37 @@ public class PrescriptionBuilder {
 	protected int allowedNumberOfRenewal = UNSPECIFIED;
 	protected Date date = null;
 	protected StaffMember staffMember = null;
-	
+
 	public PrescriptionBuilder drug(Drug drug) {
 		this.drug = drug;
 		return this;
 	}
-	
+
 	public PrescriptionBuilder drugName(String drugName) {
 		this.drugName = drugName;
 		return this;
 	}
-	
+
 	public PrescriptionBuilder allowedNumberOfRenewal(int allowedNumberOfRenewal) {
 		this.allowedNumberOfRenewal = allowedNumberOfRenewal;
 		return this;
 	}
-	
+
 	public PrescriptionBuilder date(Date date) {
 		this.date = date;
 		return this;
 	}
-	
+
 	public PrescriptionBuilder staffMember(StaffMember staffMember) {
 		this.staffMember = staffMember;
 		return this;
 	}
-	
+
 	public Prescription build() {
 		Prescription prescription = new Prescription(this);
-		if (staffMember == null
-				|| allowedNumberOfRenewal == UNSPECIFIED
-				|| date == null
-				|| !(drug == null ^ StringUtils.isBlank(drugName))) {
+		if (staffMember == null || allowedNumberOfRenewal == UNSPECIFIED || date == null || !(drug == null ^ StringUtils.isBlank(drugName))) {
 			throw new IllegalStateException();
 		}
-        return prescription;
-    }
+		return prescription;
+	}
 }

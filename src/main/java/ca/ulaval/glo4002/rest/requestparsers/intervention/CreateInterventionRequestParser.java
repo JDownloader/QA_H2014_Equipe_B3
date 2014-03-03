@@ -20,7 +20,7 @@ public class CreateInterventionRequestParser {
 	public static final String TYPE_PARAMETER_NAME = "type";
 	public static final String STATUS_PARAMETER_NAME = "statut";
 	public static final String PATIENT_PARAMETER_NAME = "patient";
-	
+
 	private String description;
 	private int surgeon;
 	private Date date;
@@ -28,15 +28,14 @@ public class CreateInterventionRequestParser {
 	private InterventionType type;
 	private InterventionStatus status;
 	private int patient;
-	
+
 	public CreateInterventionRequestParser(JSONObject jsonRequest) throws RequestParseException {
 		try {
 			parseParameters(jsonRequest);
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			throw new RequestParseException("Invalid parameters were supplied to the request.");
 		}
-		
+
 		validateParameterSemantics();
 	}
 
@@ -50,7 +49,7 @@ public class CreateInterventionRequestParser {
 		this.status = InterventionStatus.fromString(statusParameter);
 		this.patient = jsonRequest.getInt(PATIENT_PARAMETER_NAME);
 	}
-	
+
 	private void validateParameterSemantics() throws RequestParseException {
 		if (this.surgeon < 0) {
 			throw new RequestParseException("Parameter 'chirurgien' must be greater or equal to 0.");
@@ -62,31 +61,31 @@ public class CreateInterventionRequestParser {
 			throw new RequestParseException("Parameter 'salle' must not be blank.");
 		}
 	}
-	
+
 	public String getDescription() {
 		return this.description;
 	}
-	
+
 	public int getSurgeon() {
 		return this.surgeon;
 	}
-	
+
 	public Date getDate() {
 		return this.date;
 	}
-	
+
 	public String getRoom() {
 		return this.room;
 	}
-	
+
 	public InterventionType getType() {
 		return this.type;
 	}
-	
+
 	public InterventionStatus getStatus() {
 		return this.status;
 	}
-	
+
 	public int getPatient() {
 		return this.patient;
 	}

@@ -9,7 +9,7 @@ public abstract class AbstractSurgicalToolRequestParser {
 	public static String INTERVENTION_NUMBER_PARAMETER_NAME = "nointervention";
 	public static String STATUS_PARAMETER_NAME = "statut";
 	public static String TYPECODE_PARAMETER_NAME = "typecode";
-	
+
 	protected SurgicalToolStatus status;
 	protected String typeCode;
 	protected String serialNumber;
@@ -18,21 +18,21 @@ public abstract class AbstractSurgicalToolRequestParser {
 	public String getTypeCode() {
 		return this.typeCode;
 	}
-	
+
 	public SurgicalToolStatus getStatus() {
 		return this.status;
 	}
-	
+
 	public String getSerialNumber() {
 		return this.serialNumber;
 	}
-	
+
 	public int getInterventionNumber() {
 		return this.interventionNumber;
 	}
-	
+
 	public boolean hasSerialNumber() {
 		return !StringUtils.isBlank(this.serialNumber);
 	}
-	
+
 }

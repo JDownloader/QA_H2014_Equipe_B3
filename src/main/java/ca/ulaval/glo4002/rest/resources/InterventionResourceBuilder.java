@@ -10,35 +10,33 @@ public class InterventionResourceBuilder {
 	protected CreateInterventionRequestParserFactory createInterventionRequestParserFactory;
 	protected CreateSurgicalToolRequestParserFactory createSurgicalToolRequestParserFactory;
 	protected ModifySurgicalToolRequestParserFactory modifySurgicalToolRequestParserFactory;
-	
+
 	public InterventionResourceBuilder service(InterventionService service) {
 		this.service = service;
 		return this;
 	}
-	
+
 	public InterventionResourceBuilder createInterventionRequestParserFactory(CreateInterventionRequestParserFactory createInterventionRequestParserFactory) {
 		this.createInterventionRequestParserFactory = createInterventionRequestParserFactory;
 		return this;
 	}
-	
+
 	public InterventionResourceBuilder createSurgicalToolRequestParserFactory(CreateSurgicalToolRequestParserFactory createSurgicalToolRequestParserFactory) {
 		this.createSurgicalToolRequestParserFactory = createSurgicalToolRequestParserFactory;
 		return this;
 	}
-	
+
 	public InterventionResourceBuilder modifySurgicalToolRequestParserFactory(ModifySurgicalToolRequestParserFactory modifySurgicalToolRequestParserFactory) {
 		this.modifySurgicalToolRequestParserFactory = modifySurgicalToolRequestParserFactory;
 		return this;
 	}
-	
+
 	public InterventionResource build() {
 		InterventionResource interventionResource = new InterventionResource(this);
-		if (service == null 
-				|| createInterventionRequestParserFactory == null 
-				|| createSurgicalToolRequestParserFactory == null 
+		if (service == null || createInterventionRequestParserFactory == null || createSurgicalToolRequestParserFactory == null
 				|| modifySurgicalToolRequestParserFactory == null) {
 			throw new IllegalStateException();
 		}
-        return interventionResource;
-    }
+		return interventionResource;
+	}
 }

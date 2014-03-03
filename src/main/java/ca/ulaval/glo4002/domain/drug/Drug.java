@@ -3,8 +3,7 @@ package ca.ulaval.glo4002.domain.drug;
 import javax.persistence.*;
 
 @Entity(name = "DRUG")
-@Table(name="DRUG", indexes = {@Index(name="NAME_IDX", columnList="NAME")})
-
+@Table(name = "DRUG", indexes = { @Index(name = "NAME_IDX", columnList = "NAME") })
 public abstract class Drug {
 	@Id
 	@Column(name = "DIN")
@@ -13,14 +12,14 @@ public abstract class Drug {
 	@Column(name = "NAME")
 	protected String name = "";
 
-	@Column(name = "DESCRIPTION")	
+	@Column(name = "DESCRIPTION")
 	protected String description = "";
 
 	protected Drug() {
-		//Required for Hibernate.
+		// Required for Hibernate.
 	}
-	
-	public Din getDin() throws DrugDoesNotContainDinException{
+
+	public Din getDin() throws DrugDoesNotContainDinException {
 		return this.din;
 	}
 
@@ -31,5 +30,5 @@ public abstract class Drug {
 	public String getDescription() {
 		return this.description;
 	}
-	
+
 }

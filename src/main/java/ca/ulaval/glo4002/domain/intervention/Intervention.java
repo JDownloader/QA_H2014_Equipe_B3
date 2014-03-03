@@ -53,7 +53,7 @@ public class Intervention {
 		this.patient = builder.patient;
 		this.status = builder.status;
 	}
-	
+
 	public int getId() {
 		return id;
 	}

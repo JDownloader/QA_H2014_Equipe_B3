@@ -29,11 +29,10 @@ public class AddPrescriptionRequestParser {
 	public AddPrescriptionRequestParser(JSONObject jsonRequest) throws RequestParseException {
 		try {
 			parseParameters(jsonRequest);
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			throw new RequestParseException("Invalid parameters were supplied to the request.");
 		}
-		
+
 		validateParameterSemantics();
 	}
 
@@ -48,11 +47,11 @@ public class AddPrescriptionRequestParser {
 
 	private void validateParameterSemantics() throws RequestParseException {
 		if (this.staffMember < 0) {
-			throw new RequestParseException ("Parameter 'intervenant' must be greater or equal to 0.");
+			throw new RequestParseException("Parameter 'intervenant' must be greater or equal to 0.");
 		} else if (this.renewals < 0) {
-			throw new RequestParseException ("Parameter 'renouvellements' must be greater or equal to 0.");
+			throw new RequestParseException("Parameter 'renouvellements' must be greater or equal to 0.");
 		} else if (this.patientNumber < 0) {
-			throw new RequestParseException ("Path parameter '$NO_PATIENT$' must be greater or equal to 0.");
+			throw new RequestParseException("Path parameter '$NO_PATIENT$' must be greater or equal to 0.");
 		}
 		validateDinAndName();
 	}
@@ -60,11 +59,11 @@ public class AddPrescriptionRequestParser {
 	private void validateDinAndName() throws RequestParseException {
 		boolean drugNameValid = !StringUtils.isNullOrEmpty(this.drugName);
 		boolean isDinValid = this.din >= 0;
-		
+
 		if (drugNameValid && isDinValid) {
-			throw new RequestParseException ("Either parameter 'din' or 'nom' must be specified, but not both.");	
+			throw new RequestParseException("Either parameter 'din' or 'nom' must be specified, but not both.");
 		} else if (!drugNameValid && !isDinValid) {
-			throw new RequestParseException ("Parameter 'din' or 'nom' must be specified.");
+			throw new RequestParseException("Parameter 'din' or 'nom' must be specified.");
 		}
 	}
 

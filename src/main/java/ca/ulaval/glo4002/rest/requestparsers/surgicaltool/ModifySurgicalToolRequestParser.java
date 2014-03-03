@@ -9,20 +9,19 @@ import ca.ulaval.glo4002.exceptions.RequestParseException;
 public class ModifySurgicalToolRequestParser extends AbstractSurgicalToolRequestParser implements SurgicalToolRequestParser {
 	public static String NEW_SERIAL_NUMBER_PARAMETER_NAME = "nouveaunoserie";
 	public static String NEW_TYPECODE_PARAMETER_NAME = "nouveautypecode";
-	
+
 	protected String newSerialNumber;
 	protected String newTypeCode;
-	
+
 	public ModifySurgicalToolRequestParser(JSONObject jsonRequest) throws RequestParseException {
 		try {
 			parseParameters(jsonRequest);
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			throw new RequestParseException("Invalid parameters were supplied to the request.");
 		}
 		validateParameterSemantics();
 	}
-	
+
 	protected void parseParameters(JSONObject jsonRequest) {
 		this.status = SurgicalToolStatus.fromString(jsonRequest.getString(STATUS_PARAMETER_NAME));
 		this.typeCode = jsonRequest.getString(TYPECODE_PARAMETER_NAME);
@@ -31,7 +30,7 @@ public class ModifySurgicalToolRequestParser extends AbstractSurgicalToolRequest
 		this.newSerialNumber = jsonRequest.optString(NEW_SERIAL_NUMBER_PARAMETER_NAME);
 		this.newTypeCode = jsonRequest.optString(NEW_TYPECODE_PARAMETER_NAME);
 	}
-	
+
 	private void validateParameterSemantics() throws RequestParseException {
 		if (this.interventionNumber < 0) {
 			throw new RequestParseException("Path parameter '$NO_INTERVENTION$' must be greater or equal to 0.");
@@ -41,7 +40,7 @@ public class ModifySurgicalToolRequestParser extends AbstractSurgicalToolRequest
 			throw new RequestParseException("Parameter 'typecode' attribute of intervention cannot be changed.");
 		}
 	}
-	
+
 	public String getNewSerialNumber() {
 		return this.newSerialNumber;
 	}
