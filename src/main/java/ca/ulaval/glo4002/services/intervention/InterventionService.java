@@ -175,10 +175,18 @@ public class InterventionService {
 		try {
 			return surgicalToolRepository.getBySerialNumber(requestParser.getSerialNumber());
 		} catch (EntityNotFoundException e) {
-			throw new ServiceRequestException("INT010", e.getMessage());
+			return getSurgicalToolById(requestParser);
 		}
 	}
 
+	private SurgicalTool getSurgicalToolById(SurgicalToolRequestParser requestParser) throws ServiceRequestException {
+		try {
+			int surgicalToolId = Integer.parseInt(requestParser.getSerialNumber());
+			return surgicalToolRepository.getById(surgicalToolId);
+		} catch (EntityNotFoundException e) {
+			throw new ServiceRequestException("INT010", String.format("Cannot find Surgical Tool with serial or id '%s'", requestParser.getSerialNumber()));
+		}
+	}
 
 	private void validateSerialNumberRequirement(SurgicalToolRequestParser requestParser, Intervention intervention) throws ServiceRequestException {
 		if (!requestParser.hasSerialNumber() 
