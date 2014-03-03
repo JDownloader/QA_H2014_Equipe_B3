@@ -39,7 +39,7 @@ public class InterventionServiceTest {
 	private static final String SAMPLE_NEW_SERIAL_NUMBER = "684518TF";
 	private static final String SAMPLE_TYPE_CODE = "56465T";
 	private static final String ANOTHER_SAMPLE_TYPE_CODE = "56462T";
-	private static final SurgicalToolStatus SAMPLE_SURGICAL_TOOL_STATUS = SurgicalToolStatus.TERMINEE;
+	private static final SurgicalToolStatus SAMPLE_SURGICAL_TOOL_STATUS = SurgicalToolStatus.INUTILISE;
 	
 	private InterventionRepository interventionRepositoryMock;
 	private PatientRepository patientRepositoryMock;

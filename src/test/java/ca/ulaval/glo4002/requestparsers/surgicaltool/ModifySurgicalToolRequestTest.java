@@ -12,9 +12,10 @@ import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.ModifySurgicalToolRequ
 public class ModifySurgicalToolRequestTest {
 	
 	private static final int SAMPLE_INTERVENTION_NUMBER = 3;
-	private static final String SAMPLE_STATUS = "Terminee";
+	private static final String SAMPLE_STATUS = "Inutilise";
 	protected final String SAMPLE_SERIAL_NUMBER = "684518TF";
 	private static final String SAMPLE_TYPE_CODE = "56465T";
+	private static final String SAMPLE_NEW_TYPE_CODE = "56445T";
 	private static final int MIN_INTERVENTION_NUMBER = 0;
 	private static final String SAMPLE_NEW_SERIAL_NUMBER = "684518TF";
 	
@@ -58,6 +59,12 @@ public class ModifySurgicalToolRequestTest {
 	}
 	
 	@Test(expected = RequestParseException.class)
+	public void disallowsChangingTypeCodeParameter() throws Exception {
+		jsonRequest.put("nouveautypecode", SAMPLE_NEW_TYPE_CODE);
+		createRequestParser();
+	}
+	
+	@Test(expected = RequestParseException.class)
 	public void disallowsNegativeInterventionNumberParameter() throws Exception {
 		jsonRequest.put("nointervention", "-1");
 		createRequestParser();
@@ -78,7 +85,7 @@ public class ModifySurgicalToolRequestTest {
 	@Test
 	public void returnsCorrectStatus() throws Exception {
 		createRequestParser();
-		assertEquals(SurgicalToolStatus.TERMINEE, surgicalToolRequest.getStatus());
+		assertEquals(SurgicalToolStatus.INUTILISE, surgicalToolRequest.getStatus());
 	}
 	
 	@Test

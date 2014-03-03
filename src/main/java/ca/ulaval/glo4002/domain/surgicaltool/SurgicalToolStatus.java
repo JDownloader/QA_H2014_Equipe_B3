@@ -3,7 +3,7 @@ package ca.ulaval.glo4002.domain.surgicaltool;
 import java.io.Serializable;
 
 public enum SurgicalToolStatus implements Serializable {
-	UTILISE_PATIENT("Utilise_Patient"), SOUILLE("Souille"), TERMINEE("Terminee");
+	UTILISE_PATIENT("Utilise_Patient"), SOUILLE("Souille"), INUTILISE("Inutilise");
 	private String value;
 	
 	private SurgicalToolStatus(String value) {

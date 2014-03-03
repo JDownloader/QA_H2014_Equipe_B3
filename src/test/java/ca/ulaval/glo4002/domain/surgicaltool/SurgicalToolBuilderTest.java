@@ -9,7 +9,7 @@ import org.junit.Test;
 public class SurgicalToolBuilderTest {
 	private static final String SAMPLE_SERIAL_NUMBER = "2321984423QTY";
 	private static final String SAMPLE_TYPE_CODE = "1FT566";
-	private static final SurgicalToolStatus SAMPLE_STATUS = SurgicalToolStatus.TERMINEE;
+	private static final SurgicalToolStatus SAMPLE_STATUS = SurgicalToolStatus.INUTILISE;
 
 	private SurgicalToolBuilder surgicalToolBuilder;
 	private SurgicalToolBuilder surgicalToolBuilderSpy;
