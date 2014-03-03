@@ -13,8 +13,8 @@ public class HospitalRestConfigProvider {
 		try {
 			InputStream is = new BufferedInputStream(new FileInputStream("HospitalRestConfig.xml"));
 			Preferences.importPreferences(is);
-		} catch (InvalidPreferencesFormatException e) {
-		} catch (IOException e) {
+		} catch (Exception e) {
+			return;
 		}
 	}
 
