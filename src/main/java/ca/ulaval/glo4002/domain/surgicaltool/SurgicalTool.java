@@ -9,7 +9,7 @@ public class SurgicalTool {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "SURGICAL_TOOL_ID", nullable = false)
-	private int Id;
+	private int id;
 
 	@Column(name = "SERIAL_NUMBER")
 	private String serialNumber;
@@ -31,7 +31,7 @@ public class SurgicalTool {
 	}
 
 	public int getId() {
-		return this.Id;
+		return this.id;
 	}
 
 	public String getSerialNumber() {
