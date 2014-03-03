@@ -6,6 +6,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
@@ -57,7 +58,7 @@ public class PrescriptionResource {
 			AddPrescriptionRequestParser requestParser = getRequestParser(request);
 			service.addPrescription(requestParser); 
 			return Response.status(Status.CREATED).build();
-		} catch (RequestParseException e) {
+		} catch (RequestParseException | JSONException e) {
 			return BadRequestJsonResponseBuilder.build("PRES001", e.getMessage());
 		} catch (ServiceRequestException e) {
 			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());

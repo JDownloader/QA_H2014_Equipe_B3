@@ -6,6 +6,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
@@ -68,7 +69,7 @@ public class InterventionResource {
 			CreateInterventionRequestParser requestParser = getCreateInterventionRequestParser(request);
 			service.createIntervention(requestParser); 
 			return Response.status(Status.CREATED).build();
-		} catch (RequestParseException e) {
+		} catch (RequestParseException | JSONException e) {
 			return BadRequestJsonResponseBuilder.build("INT001", e.getMessage());
 		} catch (ServiceRequestException e) {
 			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());
@@ -92,7 +93,7 @@ public class InterventionResource {
 			CreateSurgicalToolRequestParser requestParser = getCreateSurgicalToolRequestParser(request, interventionNumber);
 			service.createSurgicalTool(requestParser); 
 			return Response.status(Status.CREATED).build();
-		} catch (RequestParseException e) {
+		} catch (RequestParseException | JSONException e) {
 			return BadRequestJsonResponseBuilder.build("INT010", e.getMessage());
 		} catch (ServiceRequestException e) {
 			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());
@@ -120,7 +121,7 @@ public class InterventionResource {
 			ModifySurgicalToolRequestParser requestParser = getModifySurgicalToolRequestParser(request, interventionNumber, surgicalToolTypeCode, surgicalToolSerialNumber);
 			service.modifySurgicalTool(requestParser); 
 			return Response.status(Status.OK).build();
-		} catch (RequestParseException e) {
+		} catch (RequestParseException | JSONException e) {
 			return BadRequestJsonResponseBuilder.build("INT010", e.getMessage());
 		} catch (ServiceRequestException e) {
 			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());

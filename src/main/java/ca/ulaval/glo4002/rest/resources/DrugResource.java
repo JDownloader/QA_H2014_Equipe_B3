@@ -54,7 +54,7 @@ public class DrugResource {
 			DrugSearchRequestParser requestParser = getRequestParser(request);
 			List<Drug> drugResults = service.searchDrug(requestParser); 
 			return buildDrugResultResponse(drugResults);
-		} catch (RequestParseException e) {
+		} catch (RequestParseException | JSONException e) {
 			return BadRequestJsonResponseBuilder.build("DIN001", e.getMessage());
 		} catch (ServiceRequestException e) {
 			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());
