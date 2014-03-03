@@ -1,11 +1,9 @@
 package ca.ulaval.glo4002.domain.drug;
 
+import javax.persistence.Entity;
 
-public class DrugWithoutDin implements Drug {
-	
-	private String name = "";
-
-	private String description = "";
+@Entity
+public class DrugWithoutDin extends Drug {
 
 	public DrugWithoutDin(String name) {
 		this.name=name;
@@ -14,16 +12,6 @@ public class DrugWithoutDin implements Drug {
 	@Override
 	public Din getDin() throws DrugDoesntHaveDinExeption {
 		throw new DrugDoesntHaveDinExeption();
-	}
-
-	@Override
-	public String getName() {
-		return this.name;
-	}
-
-	@Override
-	public String getDescription() {
-		return this.description;
 	}
 
 }
