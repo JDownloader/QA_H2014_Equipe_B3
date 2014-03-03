@@ -123,7 +123,7 @@ public class InterventionResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response modifySurgicalTool(String request, @PathParam("interventionNumber") int interventionNumber
 			, @PathParam("surgicalToolTypeCode") String surgicalToolTypeCode
-			, @PathParam("surgicalToolSerialNumber") String surgicalToolSerialNumber) {  //TODO: Check if not a cleaner way to do this.
+			, @PathParam("surgicalToolSerialNumber") String surgicalToolSerialNumber) {
 		try {
 			ModifySurgicalToolRequestParser requestParser = getModifySurgicalToolRequestParser(request, interventionNumber, surgicalToolTypeCode, surgicalToolSerialNumber);
 			service.modifySurgicalTool(requestParser); 
