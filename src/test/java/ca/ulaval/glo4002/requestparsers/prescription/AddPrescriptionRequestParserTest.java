@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import ca.ulaval.glo4002.exceptions.RequestParseException;
 import ca.ulaval.glo4002.rest.requestparsers.prescription.AddPrescriptionRequestParser;
+import ca.ulaval.glo4002.rest.requestparsers.prescription.AddPrescriptionRequestParserFactory;
 import ca.ulaval.glo4002.utils.DateParser;
 
 public class AddPrescriptionRequestParserTest {
@@ -41,7 +42,7 @@ public class AddPrescriptionRequestParserTest {
 	}
 
 	private void createRequestParser() throws Exception {
-		addPrescriptionRequestParser = new AddPrescriptionRequestParser(jsonRequest);
+		addPrescriptionRequestParser = new AddPrescriptionRequestParserFactory().getParser(jsonRequest);
 	}
 
 	@Test
@@ -143,6 +144,13 @@ public class AddPrescriptionRequestParserTest {
 	@Test
 	public void hasDinReturnsCorrectValue() throws Exception {
 		assertTrue(addPrescriptionRequestParser.hasDin());
+	}
+	
+	@Test
+	public void hasDinReturnsCorrectValueWhenNoDin() throws Exception {
+		swapDinForDrugName();
+		createRequestParser();
+		assertFalse(addPrescriptionRequestParser.hasDin());
 	}
 
 	@Test

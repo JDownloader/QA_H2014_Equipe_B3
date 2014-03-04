@@ -11,7 +11,7 @@ import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.ulaval.glo4002.domain.drug.DrugDoesNotContainDinException;
+import ca.ulaval.glo4002.exceptions.RequestParseException;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.requestparsers.prescription.AddPrescriptionRequestParser;
 import ca.ulaval.glo4002.rest.requestparsers.prescription.AddPrescriptionRequestParserFactory;
@@ -48,7 +48,7 @@ public class PrescriptionResourceTest {
 	}
 
 	@Test
-	public void verifyAddPrescriptionCallsServiceMethodsCorrectly() throws ServiceRequestException, DrugDoesNotContainDinException {
+	public void verifyAddPrescriptionCallsServiceMethodsCorrectly() throws Exception {
 		prescriptionResource.post(SAMPLE_JSON_REQUEST);
 		verify(prescriptionServiceMock).addPrescription(addPrescriptionRequestParserMock);
 	}
@@ -60,12 +60,32 @@ public class PrescriptionResourceTest {
 	}
 
 	@Test
-	public void verifyAddPrescriptionReturnsInvalidResponseWhenSpecifyingInvalidRequest() throws ServiceRequestException, DrugDoesNotContainDinException {
+	public void verifyAddPrescriptionReturnsBadRequestResponseWhenSpecifyingInvalidRequest() throws Exception {
 		doThrow(new ServiceRequestException()).when(prescriptionServiceMock).addPrescription(addPrescriptionRequestParserMock);
 
 		Response expectedResponse = Response.status(Status.BAD_REQUEST).build();
 		Response receivedResponse = prescriptionResource.post(SAMPLE_JSON_REQUEST);
 
+		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
+	}
+	
+	@Test
+	public void verifyAddPrescriptionReturnsBadRequestResponseWhenSpecifyingInvalidRequestString() throws Exception {
+		doThrow(new RequestParseException()).when(addPrescriptionRequestParserFactoryMock).getParser(any(JSONObject.class));
+
+		Response expectedResponse = Response.status(Status.BAD_REQUEST).build();
+		Response receivedResponse = prescriptionResource.post(SAMPLE_JSON_REQUEST);
+		
+		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
+	}
+	
+	@Test
+	public void verifyAddPrescriptionReturnsInternalServerErrorResponseOnUnhandledException() throws Exception {
+		doThrow(new Exception()).when(prescriptionServiceMock).addPrescription(addPrescriptionRequestParserMock);
+
+		Response expectedResponse = Response.status(Status.INTERNAL_SERVER_ERROR).build();
+		Response receivedResponse = prescriptionResource.post(SAMPLE_JSON_REQUEST);
+		
 		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
 	}
 

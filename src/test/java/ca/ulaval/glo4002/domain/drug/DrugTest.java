@@ -21,8 +21,8 @@ public class DrugTest {
 		drugWithoutDescription = new DrugFactory().createDrug(SAMPLE_DIN, SAMPLE_DRUG_NAME);
 	}
 
-	@Test(expected = DrugDoesNotContainDinException.class)
-	public void newDrugWithNoDinThrowExeption() throws DrugDoesNotContainDinException {
+	@Test(expected = NoSuchFieldException.class)
+	public void newDrugWithNoDinThrowExeption() throws NoSuchFieldException {
 		Drug drugWhitoutDin = new DrugFactory().createDrug(SAMPLE_DRUG_NAME);
 		drugWhitoutDin.getDin();
 	}
@@ -38,7 +38,7 @@ public class DrugTest {
 	}
 
 	@Test
-	public void returnsCorrectDin() throws DrugDoesNotContainDinException {
+	public void returnsCorrectDin() throws NoSuchFieldException {
 		assertEquals(SAMPLE_DIN, drugWithDescription.getDin());
 	}
 

@@ -1,5 +1,6 @@
 package ca.ulaval.glo4002.services.prescription;
 
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
@@ -40,12 +41,11 @@ public class PrescriptionServiceTest {
 
 	@Before
 	// TODO verify logic, init shouldn't thow
-	public void init() throws EntityNotFoundException, DrugDoesNotContainDinException {
+	public void init() throws Exception {
 		createMocks();
 		buildPrescriptionService();
 		stubAddPrescriptionRequestMockMethods();
 		stubRepositoryMethods();
-		stubEntityTransactionsMethods();
 	}
 
 	private void createMocks() {
@@ -81,17 +81,13 @@ public class PrescriptionServiceTest {
 		when(addPrescriptionRequestParserMock.getDrugName()).thenReturn(SAMPLE_DRUG_NAME_PARAMETER);
 	}
 
-	private void stubRepositoryMethods() throws EntityNotFoundException, DrugDoesNotContainDinException {
+	private void stubRepositoryMethods() throws Exception {
 		when(drugRepositoryMock.getByDin(any(Din.class))).thenReturn(drugMock);
 		when(patientRepositoryMock.getById(anyInt())).thenReturn(patientMock);
 	}
 
-	private void stubEntityTransactionsMethods() {
-		when(entityTransactionMock.isActive()).thenReturn(true);
-	}
-
 	@Test
-	public void verifyAddPrescriptionCallsCorrectRepositoryMethods() throws ServiceRequestException, DrugDoesNotContainDinException {
+	public void verifyAddPrescriptionCallsCorrectRepositoryMethods() throws Exception {
 		prescriptionService.addPrescription(addPrescriptionRequestParserMock);
 
 		verify(drugRepositoryMock).getByDin(any(Din.class));
@@ -100,7 +96,7 @@ public class PrescriptionServiceTest {
 	}
 
 	@Test
-	public void verifyAddPrescriptionWithNoDinCallsCorrectRepositoryMethods() throws ServiceRequestException, DrugDoesNotContainDinException {
+	public void verifyAddPrescriptionWithNoDinCallsCorrectRepositoryMethods() throws Exception {
 		stubAddPrescriptionRequestMockMethodsWithNoDin();
 
 		prescriptionService.addPrescription(addPrescriptionRequestParserMock);
@@ -111,7 +107,7 @@ public class PrescriptionServiceTest {
 	}
 
 	@Test
-	public void verifyAddPrescriptionTransactionHandling() throws ServiceRequestException, DrugDoesNotContainDinException {
+	public void verifyAddPrescriptionBeginsAndCommitsTransaction() throws Exception {
 		prescriptionService.addPrescription(addPrescriptionRequestParserMock);
 		InOrder inOrder = inOrder(entityTransactionMock);
 
@@ -120,20 +116,41 @@ public class PrescriptionServiceTest {
 	}
 
 	@Test(expected = ServiceRequestException.class)
-	public void verifyAddPrescriptionThrowsWhenSpecifyingNonExistingDrugDin() throws ServiceRequestException, DrugDoesNotContainDinException {
+	public void verifyAddPrescriptionThrowsWhenSpecifyingNonExistingDrugDin() throws Exception {
 		when(drugRepositoryMock.getByDin(any(Din.class))).thenThrow(new EntityNotFoundException());
 
 		prescriptionService.addPrescription(addPrescriptionRequestParserMock);
-
-		verify(entityTransactionMock).rollback();
 	}
 
 	@Test(expected = ServiceRequestException.class)
-	public void verifyAddPrescriptionThrowsWhenSpecifyingNonExistingPatientNumber() throws ServiceRequestException, DrugDoesNotContainDinException {
+	public void verifyAddPrescriptionThrowsWhenSpecifyingNonExistingPatientNumber() throws Exception {
 		when(patientRepositoryMock.getById(anyInt())).thenThrow(new EntityNotFoundException());
 
 		prescriptionService.addPrescription(addPrescriptionRequestParserMock);
+	}
+	
+	@Test
+	public void verifyAddPrescriptionRollsbackOnException() throws Exception {
+		when(entityTransactionMock.isActive()).thenReturn(true);
+		when(patientRepositoryMock.getById(anyInt())).thenThrow(new EntityNotFoundException());
 
-		verify(entityTransactionMock).rollback();
+		try {
+			prescriptionService.addPrescription(addPrescriptionRequestParserMock);
+		} catch(ServiceRequestException e) {
+			verify(entityTransactionMock).rollback();
+			return;
+		}
+		
+		fail();
+	}
+	
+	@Test
+	public void verifyAddPrescriptionDoesNotRollbackOnSuccessfulCommit() throws Exception {
+		when(entityTransactionMock.isActive()).thenReturn(false);
+
+		prescriptionService.addPrescription(addPrescriptionRequestParserMock);
+		
+		verify(entityTransactionMock).commit();
+		verify(entityTransactionMock, never()).rollback();
 	}
 }

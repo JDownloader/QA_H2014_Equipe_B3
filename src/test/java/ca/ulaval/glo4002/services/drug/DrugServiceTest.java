@@ -1,5 +1,6 @@
 package ca.ulaval.glo4002.services.drug;
 
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
@@ -10,6 +11,7 @@ import org.junit.Test;
 import org.mockito.InOrder;
 
 import ca.ulaval.glo4002.domain.drug.DrugRepository;
+import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.requestparsers.drug.DrugSearchRequestParser;
 
 public class DrugServiceTest {
@@ -26,7 +28,6 @@ public class DrugServiceTest {
 		createMocks();
 		buildInterventionService();
 		stubCreateInterventionRequestMockMethods();
-		stubEntityTransactionsMethods();
 	}
 
 	private void createMocks() {
@@ -46,10 +47,6 @@ public class DrugServiceTest {
 		when(drugSearchRequestParserMock.getName()).thenReturn(SAMPLE_DRUG_NAME);
 	}
 
-	private void stubEntityTransactionsMethods() {
-		when(entityTransactionMock.isActive()).thenReturn(true);
-	}
-
 	@Test
 	public void verifySearchDrugCallsCorrectRepositoryMethods() throws Exception {
 		drugService.searchDrug(drugSearchRequestParserMock);
@@ -58,7 +55,7 @@ public class DrugServiceTest {
 	}
 
 	@Test
-	public void verifySearchDrugTransactionHandling() throws Exception {
+	public void verifySearchDrugBeginsAndCommitsTransaction() throws Exception {
 		drugService.searchDrug(drugSearchRequestParserMock);
 		InOrder inOrder = inOrder(entityTransactionMock);
 
@@ -66,13 +63,36 @@ public class DrugServiceTest {
 		inOrder.verify(entityTransactionMock).commit();
 	}
 
-	@Test(expected = Exception.class)
+	@Test(expected = ServiceRequestException.class)
 	public void verifySearchDrugThrowsWhenSpecifyingNonExistingPatientNumber() throws Exception {
-		when(drugRepositoryMock.findByName(anyString())).thenThrow(new Exception());
+		when(drugRepositoryMock.findByName(anyString())).thenThrow(new ServiceRequestException());
 
 		drugService.searchDrug(drugSearchRequestParserMock);
+	}
+	
+	@Test
+	public void verifySearchDrugRollsbackOnException() throws Exception {
+		when(entityTransactionMock.isActive()).thenReturn(true);
+		when(drugRepositoryMock.findByName(anyString())).thenThrow(new ServiceRequestException());
 
-		verify(entityTransactionMock).rollback();
+		try {
+			drugService.searchDrug(drugSearchRequestParserMock);
+		} catch(ServiceRequestException e) {
+			verify(entityTransactionMock).rollback();
+			return;
+		}
+		
+		fail();
+	}
+	
+	@Test
+	public void verifySearchDrugDoesNotRollbackOnSuccessfulCommit() throws Exception {
+		when(entityTransactionMock.isActive()).thenReturn(false);
+
+		drugService.searchDrug(drugSearchRequestParserMock);
+		
+		verify(entityTransactionMock).commit();
+		verify(entityTransactionMock, never()).rollback();
 	}
 
 }

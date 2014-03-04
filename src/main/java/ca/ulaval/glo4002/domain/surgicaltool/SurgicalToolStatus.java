@@ -10,11 +10,6 @@ public enum SurgicalToolStatus implements Serializable {
 		this.value = value;
 	}
 
-	@Override
-	public String toString() {
-		return super.toString();
-	}
-
 	public String getValue() {
 		return value;
 	}

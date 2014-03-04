@@ -10,7 +10,6 @@ import javax.ws.rs.core.Response.Status;
 import org.json.*;
 
 import ca.ulaval.glo4002.domain.drug.Drug;
-import ca.ulaval.glo4002.domain.drug.DrugDoesNotContainDinException;
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
 import ca.ulaval.glo4002.exceptions.RequestParseException;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
@@ -75,7 +74,7 @@ public class DrugResource {
 		return interventionRequestParser;
 	}
 
-	private Response buildDrugResultResponse(List<Drug> drugs) throws DrugDoesNotContainDinException {
+	private Response buildDrugResultResponse(List<Drug> drugs) throws NoSuchFieldException {
 		JSONArray jsonArray = new JSONArray();
 
 		for (Drug drug : drugs) {

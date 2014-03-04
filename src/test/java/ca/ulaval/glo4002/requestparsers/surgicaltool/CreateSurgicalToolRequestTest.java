@@ -9,12 +9,14 @@ import org.junit.Test;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolStatus;
 import ca.ulaval.glo4002.exceptions.RequestParseException;
 import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.CreateSurgicalToolRequestParser;
+import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.CreateSurgicalToolRequestParserFactory;
 
 public class CreateSurgicalToolRequestTest {
 
 	private static final int SAMPLE_INTERVENTION_NUMBER = 3;
 	private static final String SAMPLE_STATUS = "Inutilise";
-	protected final String SAMPLE_SERIAL_NUMBER = "684518TF";
+	private static final String SAMPLE_INVALID_STATUS = "invalid_status";
+	private final String SAMPLE_SERIAL_NUMBER = "684518TF";
 	private static final String SAMPLE_TYPE_CODE = "56465T";
 	private static final int MIN_INTERVENTION_NUMBER = 0;
 
@@ -30,7 +32,7 @@ public class CreateSurgicalToolRequestTest {
 	}
 
 	public void createRequestParser() throws Exception {
-		surgicalToolRequest = new CreateSurgicalToolRequestParser(jsonRequest);
+		surgicalToolRequest = new CreateSurgicalToolRequestParserFactory().getParser(jsonRequest);
 	}
 
 	@Test
@@ -50,6 +52,12 @@ public class CreateSurgicalToolRequestTest {
 		createRequestParser();
 	}
 
+	@Test(expected = RequestParseException.class)
+	public void disallowsInvalidStatusParameter() throws Exception {
+		jsonRequest.put(CreateSurgicalToolRequestParser.STATUS_PARAMETER_NAME, SAMPLE_INVALID_STATUS);
+		createRequestParser();
+	}
+	
 	@Test(expected = RequestParseException.class)
 	public void disallowsUnspecifiedInterventionNumberParameter() throws Exception {
 		jsonRequest.remove(CreateSurgicalToolRequestParser.INTERVENTION_NUMBER_PARAMETER_NAME);
@@ -90,6 +98,13 @@ public class CreateSurgicalToolRequestTest {
 	public void hasSerialNumberReturnsCorrectValue() throws Exception {
 		createRequestParser();
 		assertTrue(surgicalToolRequest.hasSerialNumber());
+	}
+	
+	@Test
+	public void hasSerialNumberReturnsCorrectValueWhenNoSerialNumber() throws Exception {
+		jsonRequest.remove(CreateSurgicalToolRequestParser.SERIAL_NUMBER_PARAMETER_NAME);
+		createRequestParser();
+		assertFalse(surgicalToolRequest.hasSerialNumber());
 	}
 
 	@Test

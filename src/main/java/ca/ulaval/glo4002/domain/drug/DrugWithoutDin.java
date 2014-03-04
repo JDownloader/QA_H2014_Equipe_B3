@@ -14,8 +14,8 @@ public class DrugWithoutDin extends Drug {
 	}
 
 	@Override
-	public Din getDin() throws DrugDoesNotContainDinException {
-		throw new DrugDoesNotContainDinException();
+	public Din getDin() throws NoSuchFieldException {
+		throw new NoSuchFieldException();
 	}
 
 }

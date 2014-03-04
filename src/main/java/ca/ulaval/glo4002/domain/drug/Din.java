@@ -19,13 +19,12 @@ public class Din implements Serializable {
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
-		}
-		if (obj == null) {
+		} else if (obj == null) {
+			return false;
+		} else if (getClass() != obj.getClass()) {
 			return false;
 		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
+		
 		final Din otherDin = (Din) obj;
 
 		if (this.din != otherDin.din) {

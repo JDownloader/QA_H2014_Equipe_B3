@@ -34,7 +34,7 @@ public class InterventionService {
 		this.patientRepository = builder.patientRepository;
 	}
 
-	public int createIntervention(CreateInterventionRequestParser requestParser) throws ServiceRequestException {
+	public int createIntervention(CreateInterventionRequestParser requestParser) throws ServiceRequestException, Exception {
 		try {
 			entityTransaction.begin();
 			Intervention newIntervention = doCreateIntervention(requestParser);
@@ -69,7 +69,7 @@ public class InterventionService {
 		}
 	}
 
-	public int createSurgicalTool(CreateSurgicalToolRequestParser requestParser) throws ServiceRequestException {
+	public int createSurgicalTool(CreateSurgicalToolRequestParser requestParser) throws ServiceRequestException, Exception {
 		try {
 			entityTransaction.begin();
 			SurgicalTool newSurgicalTool = doCreateSurgicalTool(requestParser);
@@ -129,7 +129,7 @@ public class InterventionService {
 		}
 	}
 
-	public void modifySurgicalTool(ModifySurgicalToolRequestParser requestParser) throws ServiceRequestException {
+	public void modifySurgicalTool(ModifySurgicalToolRequestParser requestParser) throws ServiceRequestException, Exception {
 		try {
 			entityTransaction.begin();
 			doModifySurgicalTool(requestParser);
@@ -187,7 +187,7 @@ public class InterventionService {
 		try {
 			int surgicalToolId = Integer.parseInt(requestParser.getSerialNumber());
 			return surgicalToolRepository.getById(surgicalToolId);
-		} catch (EntityNotFoundException e) {
+		} catch (EntityNotFoundException | NumberFormatException e) {
 			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT010, String.format("Cannot find Surgical Tool with serial or id '%s'",
 					requestParser.getSerialNumber()));
 		}

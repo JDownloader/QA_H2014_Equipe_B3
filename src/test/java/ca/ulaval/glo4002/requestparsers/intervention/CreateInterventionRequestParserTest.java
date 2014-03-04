@@ -12,6 +12,7 @@ import ca.ulaval.glo4002.domain.intervention.InterventionStatus;
 import ca.ulaval.glo4002.domain.intervention.InterventionType;
 import ca.ulaval.glo4002.exceptions.RequestParseException;
 import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParser;
+import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParserFactory;
 import ca.ulaval.glo4002.utils.DateParser;
 
 public class CreateInterventionRequestParserTest {
@@ -45,7 +46,7 @@ public class CreateInterventionRequestParserTest {
 	}
 
 	private void createRequestParser() throws Exception {
-		createInterventionRequest = new CreateInterventionRequestParser(jsonRequest);
+		createInterventionRequest = new CreateInterventionRequestParserFactory().getParser(jsonRequest);
 	}
 
 	@Test

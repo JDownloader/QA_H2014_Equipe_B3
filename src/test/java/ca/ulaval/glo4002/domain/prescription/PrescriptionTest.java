@@ -19,6 +19,7 @@ public class PrescriptionTest {
 	private static final Date SAMPLE_DATE = new Date();
 	private static final int SAMPLE_NUMBER_OF_RENEWALS = 2;
 	private static final String SAMPLE_DRUG_NAME = "drug_name";
+	private static final int SAMPLE_UNEXISTING_ID = -1;
 
 	@Before
 	public void init() {
@@ -42,6 +43,7 @@ public class PrescriptionTest {
 	public void comparesIdCorrectly() {
 		int prescriptionId = prescription.getId();
 		assertTrue(prescription.compareId(prescriptionId));
+		assertFalse(prescription.compareId(SAMPLE_UNEXISTING_ID));
 	}
 
 	@Test

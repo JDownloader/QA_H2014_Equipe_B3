@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import ca.ulaval.glo4002.exceptions.RequestParseException;
 import ca.ulaval.glo4002.rest.requestparsers.drug.DrugSearchRequestParser;
+import ca.ulaval.glo4002.rest.requestparsers.drug.DrugSearchRequestParserFactory;
 
 public class DrugSearchRequestParserTest {
 	private static final String SAMPLE_NAME_PARAMETER = "drug_name";
@@ -22,7 +23,7 @@ public class DrugSearchRequestParserTest {
 	}
 
 	private void createRequestParser() throws Exception {
-		drugSearchRequest = new DrugSearchRequestParser(jsonRequest);
+		drugSearchRequest = new DrugSearchRequestParserFactory().getParser(jsonRequest);
 	}
 
 	@Test
