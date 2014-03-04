@@ -37,9 +37,9 @@ public class DrugServiceTest {
 	}
 
 	private void buildInterventionService() {
-		DrugServiceBuilder drugServiceBuilder = new DrugServiceBuilder();
-		drugServiceBuilder.drugRepository(drugRepositoryMock);
-		drugServiceBuilder.entityTransaction(entityTransactionMock);
+		DrugServiceBuilder drugServiceBuilder = new DrugServiceBuilder()
+			.drugRepository(drugRepositoryMock)
+			.entityTransaction(entityTransactionMock);
 		drugService = drugServiceBuilder.build();
 	}
 

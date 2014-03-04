@@ -26,8 +26,7 @@ public class PrescriptionTest {
 		drugMock = mock(Drug.class);
 		staffMemberMock = mock(StaffMember.class);
 
-		PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder();
-		prescriptionBuilder.drug(drugMock);
+		PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder().drug(drugMock);
 		prescription = buildCommonParameters(prescriptionBuilder).build();
 
 	}

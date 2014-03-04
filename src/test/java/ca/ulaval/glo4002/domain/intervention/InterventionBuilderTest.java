@@ -75,12 +75,11 @@ public class InterventionBuilderTest {
 	}
 
 	private void doBuild() {
-		interventionBuilderSpy.date(SAMPLE_DATE);
-		interventionBuilderSpy.description(SAMPLE_DESCRIPTION);
-		interventionBuilderSpy.patient(patientMock);
-		interventionBuilderSpy.room(SAMPLE_ROOM);
-		interventionBuilderSpy.surgeon(surgeonMock);
-		interventionBuilderSpy.type(SAMPLE_TYPE);
-		interventionBuilderSpy.build();
+		interventionBuilderSpy.date(SAMPLE_DATE)
+			.description(SAMPLE_DESCRIPTION)
+			.patient(patientMock)
+			.room(SAMPLE_ROOM)
+			.surgeon(surgeonMock)
+			.type(SAMPLE_TYPE).build();
 	}
 }

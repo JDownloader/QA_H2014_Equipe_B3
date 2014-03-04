@@ -59,11 +59,11 @@ public class PrescriptionServiceTest {
 	}
 
 	private void buildPrescriptionService() {
-		PrescriptionServiceBuilder prescriptionServiceBuilder = new PrescriptionServiceBuilder();
-		prescriptionServiceBuilder.prescriptionRepository(prescriptionRepositoryMock);
-		prescriptionServiceBuilder.drugRepository(drugRepositoryMock);
-		prescriptionServiceBuilder.patientRepository(patientRepositoryMock);
-		prescriptionServiceBuilder.entityTransaction(entityTransactionMock);
+		PrescriptionServiceBuilder prescriptionServiceBuilder = new PrescriptionServiceBuilder()
+			.prescriptionRepository(prescriptionRepositoryMock)
+			.drugRepository(drugRepositoryMock)
+			.patientRepository(patientRepositoryMock)
+			.entityTransaction(entityTransactionMock);
 		prescriptionService = prescriptionServiceBuilder.build();
 	}
 

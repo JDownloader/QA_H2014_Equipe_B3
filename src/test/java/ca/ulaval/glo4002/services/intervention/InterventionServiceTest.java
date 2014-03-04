@@ -77,11 +77,11 @@ public class InterventionServiceTest {
 	}
 
 	private void buildInterventionService() {
-		InterventionServiceBuilder interventionServiceBuilder = new InterventionServiceBuilder();
-		interventionServiceBuilder.interventionRepository(interventionRepositoryMock);
-		interventionServiceBuilder.patientRepository(patientRepositoryMock);
-		interventionServiceBuilder.surgicalToolRepository(surgicalToolRepositoryMock);
-		interventionServiceBuilder.entityTransaction(entityTransactionMock);
+		InterventionServiceBuilder interventionServiceBuilder = new InterventionServiceBuilder()
+			.interventionRepository(interventionRepositoryMock)
+			.patientRepository(patientRepositoryMock)
+			.surgicalToolRepository(surgicalToolRepositoryMock)
+			.entityTransaction(entityTransactionMock);
 		interventionService = interventionServiceBuilder.build();
 	}
 

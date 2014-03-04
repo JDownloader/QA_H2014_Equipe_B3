@@ -16,10 +16,10 @@ public class SurgicalToolTest {
 
 	@Before
 	public void init() {
-		SurgicalToolBuilder surgicalToolBuilder = new SurgicalToolBuilder();
-		surgicalToolBuilder.serialNumber(SAMPLE_SERIAL_NUMBER);
-		surgicalToolBuilder.typeCode(SAMPLE_TYPE_CODE);
-		surgicalToolBuilder.status(SAMPLE_STATUS);
+		SurgicalToolBuilder surgicalToolBuilder = new SurgicalToolBuilder()
+			.serialNumber(SAMPLE_SERIAL_NUMBER)
+			.typeCode(SAMPLE_TYPE_CODE)
+			.status(SAMPLE_STATUS);
 		surgicalTool = surgicalToolBuilder.build();
 	}
 

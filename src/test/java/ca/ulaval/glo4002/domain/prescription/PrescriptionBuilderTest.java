@@ -67,10 +67,9 @@ public class PrescriptionBuilderTest {
 	}
 
 	private void doBuild() {
-		prescriptionBuilderSpy.drug(drugMock);
-		prescriptionBuilderSpy.date(SAMPLE_DATE);
-		prescriptionBuilderSpy.allowedNumberOfRenewal(SAMPLE_NUMBER_OF_RENEWALS);
-		prescriptionBuilderSpy.staffMember(staffMemberMock);
-		prescriptionBuilderSpy.build();
+		prescriptionBuilderSpy.drug(drugMock)
+			.date(SAMPLE_DATE)
+			.allowedNumberOfRenewal(SAMPLE_NUMBER_OF_RENEWALS)
+			.staffMember(staffMemberMock).build();
 	}
 }

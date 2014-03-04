@@ -35,14 +35,14 @@ public class InterventionTest {
 	}
 
 	private void buildInterventionMock() {
-		interventionBuilder = new InterventionBuilder();
-		interventionBuilder.date(SAMPLE_DATE);
-		interventionBuilder.description(SAMPLE_DESCRIPTION);
-		interventionBuilder.patient(patientMock);
-		interventionBuilder.status(SAMPLE_STATUS);
-		interventionBuilder.room(SAMPLE_ROOM);
-		interventionBuilder.surgeon(surgeonMock);
-		interventionBuilder.type(SAMPLE_TYPE);
+		interventionBuilder = new InterventionBuilder()
+			.date(SAMPLE_DATE)
+			.description(SAMPLE_DESCRIPTION)
+			.patient(patientMock)
+			.status(SAMPLE_STATUS)
+			.room(SAMPLE_ROOM)
+			.surgeon(surgeonMock)
+			.type(SAMPLE_TYPE);
 		intervention = interventionBuilder.build();
 	}
 

@@ -38,9 +38,8 @@ public class SurgicalToolBuilderTest {
 	}
 
 	private void doBuild() {
-		surgicalToolBuilderSpy.serialNumber(SAMPLE_SERIAL_NUMBER);
-		surgicalToolBuilderSpy.typeCode(SAMPLE_TYPE_CODE);
-		surgicalToolBuilderSpy.status(SAMPLE_STATUS);
-		surgicalToolBuilderSpy.build();
+		surgicalToolBuilderSpy.serialNumber(SAMPLE_SERIAL_NUMBER)
+			.typeCode(SAMPLE_TYPE_CODE)
+			.status(SAMPLE_STATUS).build();
 	}
 }
