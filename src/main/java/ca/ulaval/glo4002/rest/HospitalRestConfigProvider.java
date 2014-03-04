@@ -1,7 +1,6 @@
 package ca.ulaval.glo4002.rest;
 
 import java.io.*;
-import java.util.prefs.InvalidPreferencesFormatException;
 import java.util.prefs.Preferences;
 
 public class HospitalRestConfigProvider {
