@@ -40,10 +40,10 @@ public class DrugResource {
 	}
 
 	private void buildDrugService(EntityManager entityManager) {
-		DrugServiceBuilder drugServiceBuilder = new DrugServiceBuilder();
-		drugServiceBuilder.entityTransaction(entityManager.getTransaction());
-		drugServiceBuilder.drugRepository(new HibernateDrugRepository());
-		this.service = new DrugService(drugServiceBuilder);
+		DrugServiceBuilder drugServiceBuilder = new DrugServiceBuilder()
+			.entityTransaction(entityManager.getTransaction())
+			.drugRepository(new HibernateDrugRepository());
+		this.service = drugServiceBuilder.build();
 	}
 
 	public DrugResource(DrugService service, DrugSearchRequestParserFactory drugSearchRequestParserFactory) {
@@ -70,8 +70,8 @@ public class DrugResource {
 
 	private DrugSearchRequestParser getRequestParser(String request) throws RequestParseException {
 		JSONObject jsonRequest = new JSONObject(request);
-		DrugSearchRequestParser interventionRequestParser = drugSearchRequestParserFactory.getParser(jsonRequest);
-		return interventionRequestParser;
+		DrugSearchRequestParser drugSearchRequestParser = drugSearchRequestParserFactory.getParser(jsonRequest);
+		return drugSearchRequestParser;
 	}
 
 	private Response buildDrugResultResponse(List<Drug> drugs) throws NoSuchFieldException {

@@ -36,12 +36,12 @@ public class PrescriptionResource {
 	}
 
 	private void buildPrescriptionService(EntityManager entityManager) {
-		PrescriptionServiceBuilder prescriptionServiceBuilder = new PrescriptionServiceBuilder();
-		prescriptionServiceBuilder.entityTransaction(entityManager.getTransaction());
-		prescriptionServiceBuilder.prescriptionRepository(new HibernatePrescriptionRepository());
-		prescriptionServiceBuilder.drugRepository(new HibernateDrugRepository());
-		prescriptionServiceBuilder.patientRepository(new HibernatePatientRepository());
-		this.service = new PrescriptionService(prescriptionServiceBuilder);
+		PrescriptionServiceBuilder prescriptionServiceBuilder = new PrescriptionServiceBuilder()
+			.entityTransaction(entityManager.getTransaction())
+			.prescriptionRepository(new HibernatePrescriptionRepository())
+			.drugRepository(new HibernateDrugRepository())
+			.patientRepository(new HibernatePatientRepository());
+		this.service = prescriptionServiceBuilder.build();
 	}
 
 	public PrescriptionResource(PrescriptionService service, AddPrescriptionRequestParserFactory addPrescriptionRequestParserFactory) {

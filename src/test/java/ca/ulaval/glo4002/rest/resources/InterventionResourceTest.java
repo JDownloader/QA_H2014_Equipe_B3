@@ -61,11 +61,11 @@ public class InterventionResourceTest {
 	}
 
 	private void buildInterventionResource() {
-		InterventionResourceBuilder interventionResourceBuilder = new InterventionResourceBuilder();
-		interventionResourceBuilder.createInterventionRequestParserFactory(createInterventionRequestParserFactoryMock);
-		interventionResourceBuilder.modifySurgicalToolRequestParserFactory(modifySurgicalToolRequestParserFactoryMock);
-		interventionResourceBuilder.createSurgicalToolRequestParserFactory(createSurgicalToolRequestParserFactoryMock);
-		interventionResourceBuilder.service(interventionServiceMock);
+		InterventionResourceBuilder interventionResourceBuilder = new InterventionResourceBuilder()
+			.createInterventionRequestParserFactory(createInterventionRequestParserFactoryMock)
+			.modifySurgicalToolRequestParserFactory(modifySurgicalToolRequestParserFactoryMock)
+			.createSurgicalToolRequestParserFactory(createSurgicalToolRequestParserFactoryMock)
+			.service(interventionServiceMock);
 		interventionResource = interventionResourceBuilder.build();
 	}
 

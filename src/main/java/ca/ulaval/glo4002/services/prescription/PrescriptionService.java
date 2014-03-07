@@ -46,8 +46,11 @@ public class PrescriptionService {
 	}
 
 	private Prescription buildPrescription(AddPrescriptionRequestParser requestParser) throws ServiceRequestException, Exception {
-		PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder().date(requestParser.getDate()).allowedNumberOfRenewal(requestParser.getRenewals())
-				.staffMember(new StaffMember(requestParser.getStaffMember())).drugName(requestParser.getDrugName());
+		PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder()
+			.date(requestParser.getDate())
+			.allowedNumberOfRenewal(requestParser.getRenewals())
+			.staffMember(new StaffMember(requestParser.getStaffMember()))
+			.drugName(requestParser.getDrugName());
 
 		if (requestParser.hasDin()) {
 			Drug drug = getDrug(requestParser);

@@ -44,12 +44,12 @@ public class InterventionResource {
 	}
 
 	private void buildInterventionService(EntityManager entityManager) {
-		InterventionServiceBuilder interventionServiceBuilder = new InterventionServiceBuilder();
-		interventionServiceBuilder.entityTransaction(entityManager.getTransaction());
-		interventionServiceBuilder.interventionRepository(new HibernateInterventionRepository());
-		interventionServiceBuilder.patientRepository(new HibernatePatientRepository());
-		interventionServiceBuilder.surgicalToolRepository(new HibernateSurgicalToolRepository());
-		this.service = new InterventionService(interventionServiceBuilder);
+		InterventionServiceBuilder interventionServiceBuilder = new InterventionServiceBuilder()
+			.entityTransaction(entityManager.getTransaction())
+			.interventionRepository(new HibernateInterventionRepository())
+			.patientRepository(new HibernatePatientRepository())
+			.surgicalToolRepository(new HibernateSurgicalToolRepository());
+		this.service = interventionServiceBuilder.build();
 	}
 
 	public InterventionResource(InterventionResourceBuilder interventionResourceBuilder) {
