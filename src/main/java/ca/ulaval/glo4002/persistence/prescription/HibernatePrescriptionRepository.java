@@ -8,7 +8,7 @@ import ca.ulaval.glo4002.persistence.HibernateRepository;
 
 public class HibernatePrescriptionRepository extends HibernateRepository implements PrescriptionRepository {
 
-	public void create(Prescription prescription) {
+	public void persist(Prescription prescription) {
 		entityManager.persist(prescription);
 	}
 

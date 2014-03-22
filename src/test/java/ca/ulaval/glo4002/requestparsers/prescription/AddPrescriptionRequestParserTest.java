@@ -46,11 +46,6 @@ public class AddPrescriptionRequestParserTest {
 	}
 
 	@Test
-	public void validatesGoodRequestCorrectly() throws Exception {
-		createRequestParser();
-	}
-
-	@Test
 	public void validatesGoodRequestWithDrugNameCorrectly() throws Exception {
 		swapDinForDrugName();
 		createRequestParser();
@@ -145,7 +140,7 @@ public class AddPrescriptionRequestParserTest {
 	public void hasDinReturnsCorrectValue() throws Exception {
 		assertTrue(addPrescriptionRequestParser.hasDin());
 	}
-	
+
 	@Test
 	public void hasDinReturnsCorrectValueWhenNoDin() throws Exception {
 		swapDinForDrugName();

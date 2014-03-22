@@ -41,16 +41,13 @@ public class PrescriptionService {
 
 	protected void doAddPrescription(AddPrescriptionRequestParser requestParser) throws ServiceRequestException, Exception {
 		Prescription prescription = buildPrescription(requestParser);
-		prescriptionRepository.create(prescription);
+		prescriptionRepository.persist(prescription);
 		updatePatient(requestParser, prescription);
 	}
 
 	private Prescription buildPrescription(AddPrescriptionRequestParser requestParser) throws ServiceRequestException, Exception {
-		PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder()
-			.date(requestParser.getDate())
-			.allowedNumberOfRenewal(requestParser.getRenewals())
-			.staffMember(new StaffMember(requestParser.getStaffMember()))
-			.drugName(requestParser.getDrugName());
+		PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder().date(requestParser.getDate()).allowedNumberOfRenewal(requestParser.getRenewals())
+				.staffMember(new StaffMember(requestParser.getStaffMember())).drugName(requestParser.getDrugName());
 
 		if (requestParser.hasDin()) {
 			Drug drug = getDrug(requestParser);
