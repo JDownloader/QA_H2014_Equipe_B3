@@ -12,12 +12,12 @@ import org.mockito.Mockito;
 
 public class HospitalRestConfigProviderTest {
 	private HospitalRestConfigProvider myConfig;
-	int INT_PREF_DEFAULT_VALUE = 123;
-	int INT_PREF_VALUE = 321;
-	String KEY_PREF_STING = "KEY";
-	String STRING_PREF_DEFAULT_VALUE = "abcdefj";
-	String STRING_PREF_VALUE = "jfedcba";
-	private Preferences prefs;
+	private static final int INT_PREF_DEFAULT_VALUE = 123;
+	private static final int INT_PREF_VALUE = 321;
+	private static final String KEY_PREF_STING = "KEY";
+	private static final String STRING_PREF_DEFAULT_VALUE = "abcdefj";
+	private static final String STRING_PREF_VALUE = "jfedcba";
+	private static Preferences prefs;
 
 	@Before
 	public void init() {
