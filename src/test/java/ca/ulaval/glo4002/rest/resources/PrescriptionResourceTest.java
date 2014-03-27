@@ -13,8 +13,8 @@ import org.junit.Test;
 
 import ca.ulaval.glo4002.exceptions.RequestParseException;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
-import ca.ulaval.glo4002.rest.requestparsers.prescription.AddPrescriptionRequestParser;
-import ca.ulaval.glo4002.rest.requestparsers.prescription.AddPrescriptionRequestParserFactory;
+import ca.ulaval.glo4002.rest.requestparsers.prescription.PrescriptionCreationRequestParser;
+import ca.ulaval.glo4002.rest.requestparsers.prescription.PrescriptionCreationRequestParserFactory;
 import ca.ulaval.glo4002.services.prescription.PrescriptionService;
 
 public class PrescriptionResourceTest {
@@ -22,8 +22,8 @@ public class PrescriptionResourceTest {
 	private static final String SAMPLE_JSON_REQUEST = "{attrib: value}";
 
 	private PrescriptionService prescriptionServiceMock;
-	private AddPrescriptionRequestParser addPrescriptionRequestParserMock;
-	private AddPrescriptionRequestParserFactory addPrescriptionRequestParserFactoryMock;
+	private PrescriptionCreationRequestParser addPrescriptionRequestParserMock;
+	private PrescriptionCreationRequestParserFactory addPrescriptionRequestParserFactoryMock;
 	private PrescriptionResource prescriptionResource;
 
 	@Before
@@ -35,12 +35,12 @@ public class PrescriptionResourceTest {
 
 	private void createMocks() {
 		prescriptionServiceMock = mock(PrescriptionService.class);
-		addPrescriptionRequestParserMock = mock(AddPrescriptionRequestParser.class);
-		addPrescriptionRequestParserFactoryMock = mock(AddPrescriptionRequestParserFactory.class);
+		addPrescriptionRequestParserMock = mock(PrescriptionCreationRequestParser.class);
+		addPrescriptionRequestParserFactoryMock = mock(PrescriptionCreationRequestParserFactory.class);
 	}
 
 	private void stubMethods() throws Exception {
-		when(addPrescriptionRequestParserFactoryMock.getParser(any(JSONObject.class))).thenReturn(addPrescriptionRequestParserMock);
+		when(addPrescriptionRequestParserFactoryMock.createParser(any(JSONObject.class))).thenReturn(addPrescriptionRequestParserMock);
 	}
 
 	private void buildPrescriptionResource() {
@@ -54,7 +54,7 @@ public class PrescriptionResourceTest {
 	}
 
 	@Test
-	public void verifyAddPrescriptionReturnsCreatedResponse() throws ServiceRequestException {
+	public void verifyAddPrescriptionReturnsCreatedResponse() throws Exception {
 		Response response = prescriptionResource.post(SAMPLE_JSON_REQUEST);
 		assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
 	}
@@ -71,22 +71,13 @@ public class PrescriptionResourceTest {
 	
 	@Test
 	public void verifyAddPrescriptionReturnsBadRequestResponseWhenSpecifyingInvalidRequestString() throws Exception {
-		doThrow(new RequestParseException()).when(addPrescriptionRequestParserFactoryMock).getParser(any(JSONObject.class));
+		doThrow(new RequestParseException()).when(addPrescriptionRequestParserFactoryMock).createParser(any(JSONObject.class));
 
 		Response expectedResponse = Response.status(Status.BAD_REQUEST).build();
 		Response receivedResponse = prescriptionResource.post(SAMPLE_JSON_REQUEST);
 		
 		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
 	}
-	
-	@Test
-	public void verifyAddPrescriptionReturnsInternalServerErrorResponseOnUnhandledException() throws Exception {
-		doThrow(new Exception()).when(prescriptionServiceMock).addPrescription(addPrescriptionRequestParserMock);
 
-		Response expectedResponse = Response.status(Status.INTERNAL_SERVER_ERROR).build();
-		Response receivedResponse = prescriptionResource.post(SAMPLE_JSON_REQUEST);
-		
-		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
-	}
 
 }

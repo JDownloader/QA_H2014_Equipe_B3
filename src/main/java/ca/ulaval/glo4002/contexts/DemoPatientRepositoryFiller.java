@@ -5,7 +5,7 @@ import javax.persistence.EntityManager;
 import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
 
-public class PatientRepositoryFiller {
+public class DemoPatientRepositoryFiller {
 
 	public void fill(EntityManager entityManager, PatientRepository patientRepository) {
 		entityManager.getTransaction().begin();

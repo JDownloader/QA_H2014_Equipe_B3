@@ -7,10 +7,10 @@ import javax.persistence.EntityManager;
 
 import au.com.bytecode.opencsv.CSVReader;
 import ca.ulaval.glo4002.domain.drug.*;
-import ca.ulaval.glo4002.exceptions.BadFileFormatException;
 
-public class DrugRepositoryFiller {
+public class DemoDrugRepositoryFiller {
 
+	private static final char DRUG_FILE_VALUE_SEPARATOR = ',';
 	private static final int DRUG_IDENTIFICATION_NUMBER_COLUMN = 3;
 	private static final int BRAND_NAME_COLUMN = 4;
 	private static final int DESCRIPTOR_COLUMN = 5;
@@ -22,7 +22,7 @@ public class DrugRepositoryFiller {
 	}
 
 	public void loadDrugFile(DrugRepository drugRepository, Reader reader) throws IOException, BadFileFormatException {
-		CSVReader csvReader = new CSVReader(reader, ',');
+		CSVReader csvReader = new CSVReader(reader, DRUG_FILE_VALUE_SEPARATOR);
 		String[] nextLine;
 		int lineNumber = 0;
 		while ((nextLine = csvReader.readNext()) != null) {

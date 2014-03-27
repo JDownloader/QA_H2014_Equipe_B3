@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import ca.ulaval.glo4002.exceptions.RequestParseException;
 import ca.ulaval.glo4002.utils.DateParser;
 
-public class AddPrescriptionRequestParser {
+public class PrescriptionCreationRequestParser {
 
 	private static final int UNSPECIFIED_VALUE = -1;
 	public static final String PATIENT_NUMBER_PARAMETER_NAME = "nopatient";
@@ -26,7 +26,7 @@ public class AddPrescriptionRequestParser {
 	private Date date;
 	private int patientNumber;
 
-	public AddPrescriptionRequestParser(JSONObject jsonRequest) throws RequestParseException {
+	public PrescriptionCreationRequestParser(JSONObject jsonRequest) throws RequestParseException {
 		try {
 			parseParameters(jsonRequest);
 		} catch (Exception e) {

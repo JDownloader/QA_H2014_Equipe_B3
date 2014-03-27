@@ -19,15 +19,15 @@ public class PrescriptionBuilderTest {
 	private Drug drugMock;
 	private StaffMember staffMemberMock;
 
-	private PrescriptionBuilder prescriptionBuilder;
-	private PrescriptionBuilder prescriptionBuilderSpy;
+	private PrescriptionAssembler prescriptionBuilder;
+	private PrescriptionAssembler prescriptionBuilderSpy;
 
 	@Before
 	public void init() {
 		drugMock = mock(Drug.class);
 		staffMemberMock = mock(StaffMember.class);
 
-		prescriptionBuilder = new PrescriptionBuilder();
+		prescriptionBuilder = new PrescriptionAssembler();
 		prescriptionBuilderSpy = spy(prescriptionBuilder);
 	}
 

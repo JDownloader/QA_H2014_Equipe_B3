@@ -12,10 +12,10 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
-import ca.ulaval.glo4002.contexts.DrugRepositoryFiller;
-import ca.ulaval.glo4002.contexts.PatientRepositoryFiller;
+import ca.ulaval.glo4002.contexts.BadFileFormatException;
+import ca.ulaval.glo4002.contexts.DemoDrugRepositoryFiller;
+import ca.ulaval.glo4002.contexts.DemoPatientRepositoryFiller;
 import ca.ulaval.glo4002.entitymanager.EntityManagerFactoryProvider;
-import ca.ulaval.glo4002.exceptions.BadFileFormatException;
 import ca.ulaval.glo4002.persistence.drug.HibernateDrugRepository;
 import ca.ulaval.glo4002.persistence.patient.HibernatePatientRepository;
 import ca.ulaval.glo4002.rest.filters.EntityManagerContextFilter;
@@ -49,13 +49,13 @@ public class HospitalRestMain {
 	public static void fillDrugRepository(EntityManager entityManager) throws IOException, BadFileFormatException {
 		HibernateDrugRepository hibernateDrugRepository = new HibernateDrugRepository(entityManager);
 		FileReader fileReader = new FileReader(DRUG_FILE_PATH);
-		new DrugRepositoryFiller().fill(entityManager, hibernateDrugRepository, fileReader);
+		new DemoDrugRepositoryFiller().fill(entityManager, hibernateDrugRepository, fileReader);
 		fileReader.close();
 	}
 
 	public static void fillPatientRepository(EntityManager entityManager) {
 		HibernatePatientRepository hibernatePatientRepository = new HibernatePatientRepository(entityManager);
-		new PatientRepositoryFiller().fill(entityManager, hibernatePatientRepository);
+		new DemoPatientRepositoryFiller().fill(entityManager, hibernatePatientRepository);
 	}
 
 	public void execute() throws Exception {

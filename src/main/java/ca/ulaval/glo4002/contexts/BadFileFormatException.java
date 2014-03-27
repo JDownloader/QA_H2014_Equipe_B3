@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.exceptions;
+package ca.ulaval.glo4002.contexts;
 
 public class BadFileFormatException extends Exception {
 

@@ -35,7 +35,7 @@ public class Prescription {
 		// Required for Hibernate
 	}
 
-	public Prescription(PrescriptionBuilder builder) {
+	public Prescription(PrescriptionAssembler builder) {
 		this.drug = builder.drug;
 		this.drugName = builder.drugName;
 		this.staffMember = builder.staffMember;

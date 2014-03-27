@@ -51,7 +51,7 @@ public class DrugServiceTest {
 	public void verifySearchDrugCallsCorrectRepositoryMethods() throws Exception {
 		drugService.searchDrug(drugSearchRequestParserMock);
 
-		verify(drugRepositoryMock).findByName(SAMPLE_DRUG_NAME);
+		verify(drugRepositoryMock).search(SAMPLE_DRUG_NAME);
 	}
 
 	@Test
@@ -65,7 +65,7 @@ public class DrugServiceTest {
 
 	@Test(expected = ServiceRequestException.class)
 	public void verifySearchDrugThrowsWhenSpecifyingNonExistingPatientNumber() throws Exception {
-		when(drugRepositoryMock.findByName(anyString())).thenThrow(new ServiceRequestException());
+		when(drugRepositoryMock.search(anyString())).thenThrow(new ServiceRequestException());
 
 		drugService.searchDrug(drugSearchRequestParserMock);
 	}
@@ -73,7 +73,7 @@ public class DrugServiceTest {
 	@Test
 	public void verifySearchDrugRollsbackOnException() throws Exception {
 		when(entityTransactionMock.isActive()).thenReturn(true);
-		when(drugRepositoryMock.findByName(anyString())).thenThrow(new ServiceRequestException());
+		when(drugRepositoryMock.search(anyString())).thenThrow(new ServiceRequestException());
 
 		try {
 			drugService.searchDrug(drugSearchRequestParserMock);

@@ -26,12 +26,12 @@ public class PrescriptionTest {
 		drugMock = mock(Drug.class);
 		staffMemberMock = mock(StaffMember.class);
 
-		PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder().drug(drugMock);
+		PrescriptionAssembler prescriptionBuilder = new PrescriptionAssembler().drug(drugMock);
 		prescription = buildCommonParameters(prescriptionBuilder).build();
 
 	}
 
-	private PrescriptionBuilder buildCommonParameters(PrescriptionBuilder prescriptionBuilder) {
+	private PrescriptionAssembler buildCommonParameters(PrescriptionAssembler prescriptionBuilder) {
 		prescriptionBuilder.date(SAMPLE_DATE);
 		prescriptionBuilder.staffMember(staffMemberMock);
 		prescriptionBuilder.allowedNumberOfRenewal(SAMPLE_NUMBER_OF_RENEWALS);
@@ -52,7 +52,7 @@ public class PrescriptionTest {
 
 	@Test
 	public void returnsDrugNameCorrectly() {
-		PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder().drugName(SAMPLE_DRUG_NAME);
+		PrescriptionAssembler prescriptionBuilder = new PrescriptionAssembler().drugName(SAMPLE_DRUG_NAME);
 		Prescription prescriptionWithDrugName = buildCommonParameters(prescriptionBuilder).build();
 
 		assertEquals(SAMPLE_DRUG_NAME, prescriptionWithDrugName.getDrugName());

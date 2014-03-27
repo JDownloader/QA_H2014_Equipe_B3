@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import ca.ulaval.glo4002.domain.drug.Drug;
 import ca.ulaval.glo4002.domain.staff.StaffMember;
 
-public class PrescriptionBuilder {
+public class PrescriptionAssembler {
 	private static final int UNSPECIFIED = -1;
 	protected Drug drug = null;
 	protected String drugName = null;
@@ -15,27 +15,27 @@ public class PrescriptionBuilder {
 	protected Date date = null;
 	protected StaffMember staffMember = null;
 
-	public PrescriptionBuilder drug(Drug drug) {
+	public PrescriptionAssembler drug(Drug drug) {
 		this.drug = drug;
 		return this;
 	}
 
-	public PrescriptionBuilder drugName(String drugName) {
+	public PrescriptionAssembler drugName(String drugName) {
 		this.drugName = drugName;
 		return this;
 	}
 
-	public PrescriptionBuilder allowedNumberOfRenewal(int allowedNumberOfRenewal) {
+	public PrescriptionAssembler allowedNumberOfRenewal(int allowedNumberOfRenewal) {
 		this.allowedNumberOfRenewal = allowedNumberOfRenewal;
 		return this;
 	}
 
-	public PrescriptionBuilder date(Date date) {
+	public PrescriptionAssembler date(Date date) {
 		this.date = date;
 		return this;
 	}
 
-	public PrescriptionBuilder staffMember(StaffMember staffMember) {
+	public PrescriptionAssembler staffMember(StaffMember staffMember) {
 		this.staffMember = staffMember;
 		return this;
 	}

@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.requestparsers.drug;
+package ca.ulaval.glo4002.rest.requestparsers.drug;
 
 import static org.junit.Assert.*;
 
@@ -12,6 +12,7 @@ import ca.ulaval.glo4002.rest.requestparsers.drug.DrugSearchRequestParserFactory
 
 public class DrugSearchRequestParserTest {
 	private static final String SAMPLE_NAME_PARAMETER = "drug_name";
+	private static final String SAMPLE_MINIMUM_LENGTH_NAME_PARAMETER = "abc";
 
 	private DrugSearchRequestParser drugSearchRequest;
 	private JSONObject jsonRequest = new JSONObject();
@@ -57,8 +58,9 @@ public class DrugSearchRequestParserTest {
 
 	@Test
 	public void allowsNameWith3CharactersParameter() throws Exception {
-		jsonRequest.put(DrugSearchRequestParser.NAME_PARAMETER, "abc");
+		jsonRequest.put(DrugSearchRequestParser.NAME_PARAMETER, SAMPLE_MINIMUM_LENGTH_NAME_PARAMETER);
 		createRequestParser();
+		assertEquals(drugSearchRequest.getName(), SAMPLE_MINIMUM_LENGTH_NAME_PARAMETER);
 	}
 
 	@Test

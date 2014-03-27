@@ -21,7 +21,7 @@ public class DrugService {
 	public List<Drug> searchDrug(DrugSearchRequestParser requestParser) throws ServiceRequestException, Exception {
 		try {
 			entityTransaction.begin();
-			List<Drug> drugResults = doDrugSearch(requestParser);
+			List<Drug> drugResults = drugRepository.search(requestParser.getName());
 			entityTransaction.commit();
 			return drugResults;
 		} catch (Exception e) {
@@ -32,7 +32,4 @@ public class DrugService {
 		}
 	}
 
-	protected List<Drug> doDrugSearch(DrugSearchRequestParser requestParser) throws Exception {
-		return drugRepository.findByName(requestParser.getName());
-	}
 }

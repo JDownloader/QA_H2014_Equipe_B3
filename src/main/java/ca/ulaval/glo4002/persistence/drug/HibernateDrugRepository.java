@@ -29,7 +29,7 @@ public class HibernateDrugRepository extends HibernateRepository implements Drug
 		return drug;
 	}
 
-	public List<Drug> findByName(String name) throws Exception {
+	public List<Drug> search(String name) throws Exception {
 		String likeStatement = name.replace(' ', '%').toUpperCase();
 		// TODO no more sql
 		String queryString = String

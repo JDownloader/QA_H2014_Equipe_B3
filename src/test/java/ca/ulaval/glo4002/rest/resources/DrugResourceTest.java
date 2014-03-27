@@ -50,6 +50,17 @@ public class DrugResourceTest {
 		drugSearchRequestParserFactoryMock = mock(DrugSearchRequestParserFactory.class);
 	}
 
+	private void stubDrugMethods() throws NoSuchFieldException {
+		when(drugMock.getDin()).thenReturn(SAMPLE_DIN);
+		when(drugMock.getDescription()).thenReturn(SAMPLE_DESCRIPTION);
+		when(drugMock.getName()).thenReturn(SAMPLE_DRUG_NAME);
+	}
+	
+	private void stubDrugServiceMethods() throws ServiceRequestException, Exception {
+		ArrayList<Drug> drugMocks = new ArrayList<Drug>(Arrays.asList(drugMock));
+		when(drugServiceMock.searchDrug(drugSearchRequestParserMock)).thenReturn(drugMocks);
+	}
+	
 	private void stubRequestParserMethods() throws Exception {
 		when(drugSearchRequestParserFactoryMock.getParser(any(JSONObject.class))).thenReturn(drugSearchRequestParserMock);
 	}
@@ -70,16 +81,7 @@ public class DrugResourceTest {
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}
 
-	private void stubDrugServiceMethods() throws ServiceRequestException, Exception {
-		ArrayList<Drug> drugMocks = new ArrayList<Drug>(Arrays.asList(drugMock));
-		when(drugServiceMock.searchDrug(drugSearchRequestParserMock)).thenReturn(drugMocks);
-	}
 
-	private void stubDrugMethods() throws NoSuchFieldException {
-		when(drugMock.getDin()).thenReturn(SAMPLE_DIN);
-		when(drugMock.getDescription()).thenReturn(SAMPLE_DESCRIPTION);
-		when(drugMock.getName()).thenReturn(SAMPLE_DRUG_NAME);
-	}
 
 	@Test
 	public void verifySearchDrugReturnsBadRequestResponseWhenSpecifyingInvalidRequest() throws Exception {
