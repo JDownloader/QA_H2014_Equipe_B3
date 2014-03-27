@@ -2,14 +2,14 @@ package ca.ulaval.glo4002.rest.resources;
 
 import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParserFactory;
 import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.CreateSurgicalToolRequestParserFactory;
-import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.ModifySurgicalToolRequestParserFactory;
+import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.SurgicalToolModificationRequestParserFactory;
 import ca.ulaval.glo4002.services.intervention.InterventionService;
 
 public class InterventionResourceBuilder {
 	protected InterventionService service;
 	protected CreateInterventionRequestParserFactory createInterventionRequestParserFactory;
 	protected CreateSurgicalToolRequestParserFactory createSurgicalToolRequestParserFactory;
-	protected ModifySurgicalToolRequestParserFactory modifySurgicalToolRequestParserFactory;
+	protected SurgicalToolModificationRequestParserFactory modifySurgicalToolRequestParserFactory;
 
 	public InterventionResourceBuilder service(InterventionService service) {
 		this.service = service;
@@ -26,7 +26,7 @@ public class InterventionResourceBuilder {
 		return this;
 	}
 
-	public InterventionResourceBuilder modifySurgicalToolRequestParserFactory(ModifySurgicalToolRequestParserFactory modifySurgicalToolRequestParserFactory) {
+	public InterventionResourceBuilder modifySurgicalToolRequestParserFactory(SurgicalToolModificationRequestParserFactory modifySurgicalToolRequestParserFactory) {
 		this.modifySurgicalToolRequestParserFactory = modifySurgicalToolRequestParserFactory;
 		return this;
 	}

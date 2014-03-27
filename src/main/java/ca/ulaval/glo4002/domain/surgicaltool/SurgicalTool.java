@@ -24,10 +24,10 @@ public class SurgicalTool {
 		// Required for Hibernate
 	}
 
-	public SurgicalTool(SurgicalToolBuilder builder) {
-		this.serialNumber = builder.serialNumber;
-		this.typeCode = builder.typeCode;
-		this.status = builder.status;
+	public SurgicalTool(String serialNumber, String typeCode, SurgicalToolStatus status){
+		this.serialNumber = serialNumber;
+		this.typeCode = typeCode;
+		this.status = status;
 	}
 
 	public int getId() {
@@ -55,4 +55,3 @@ public class SurgicalTool {
 	}
 }
 
-//

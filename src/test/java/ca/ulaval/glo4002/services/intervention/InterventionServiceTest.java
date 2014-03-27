@@ -49,8 +49,8 @@ public class InterventionServiceTest {
 	private InterventionService interventionService;
 
 	private CreateInterventionRequestParser createInterventionRequestParserMock;
-	private CreateSurgicalToolRequestParser createSurgicalToolRequestParserMock;
-	private ModifySurgicalToolRequestParser modifySurgicalToolRequestParserMock;
+	private SurgicalToolCreationRequestParser createSurgicalToolRequestParserMock;
+	private SurgicalToolModificationRequestParser modifySurgicalToolRequestParserMock;
 
 	@Before
 	public void init() {
@@ -72,8 +72,8 @@ public class InterventionServiceTest {
 		surgicalToolMock = mock(SurgicalTool.class);
 		entityTransactionMock = mock(EntityTransaction.class);
 		createInterventionRequestParserMock = mock(CreateInterventionRequestParser.class);
-		createSurgicalToolRequestParserMock = mock(CreateSurgicalToolRequestParser.class);
-		modifySurgicalToolRequestParserMock = mock(ModifySurgicalToolRequestParser.class);
+		createSurgicalToolRequestParserMock = mock(SurgicalToolCreationRequestParser.class);
+		modifySurgicalToolRequestParserMock = mock(SurgicalToolModificationRequestParser.class);
 	}
 
 	private void buildInterventionService() {
@@ -103,7 +103,7 @@ public class InterventionServiceTest {
 		when(surgicalTooolRequestParserMock.getInterventionNumber()).thenReturn(SAMPLE_INTERVENTION_NUMBER);
 	}
 
-	private void stubModifySurgicalToolRequestMockMethods(ModifySurgicalToolRequestParser modifySurgicalTooolRequestParserMock) {
+	private void stubModifySurgicalToolRequestMockMethods(SurgicalToolModificationRequestParser modifySurgicalTooolRequestParserMock) {
 		when(modifySurgicalToolRequestParserMock.getNewSerialNumber()).thenReturn(SAMPLE_NEW_SERIAL_NUMBER);
 	}
 

@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolStatus;
 import ca.ulaval.glo4002.exceptions.RequestParseException;
-import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.CreateSurgicalToolRequestParser;
+import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.SurgicalToolCreationRequestParser;
 import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.CreateSurgicalToolRequestParserFactory;
 
 public class CreateSurgicalToolRequestTest {
@@ -20,15 +20,15 @@ public class CreateSurgicalToolRequestTest {
 	private static final String SAMPLE_TYPE_CODE = "56465T";
 	private static final int MIN_INTERVENTION_NUMBER = 0;
 
-	private CreateSurgicalToolRequestParser surgicalToolRequest;
+	private SurgicalToolCreationRequestParser surgicalToolRequest;
 	private JSONObject jsonRequest = new JSONObject();
 
 	@Before
 	public void init() throws Exception {
-		jsonRequest.put(CreateSurgicalToolRequestParser.INTERVENTION_NUMBER_PARAMETER_NAME, SAMPLE_INTERVENTION_NUMBER);
-		jsonRequest.put(CreateSurgicalToolRequestParser.STATUS_PARAMETER_NAME, SAMPLE_STATUS);
-		jsonRequest.put(CreateSurgicalToolRequestParser.SERIAL_NUMBER_PARAMETER_NAME, SAMPLE_SERIAL_NUMBER);
-		jsonRequest.put(CreateSurgicalToolRequestParser.TYPECODE_PARAMETER_NAME, SAMPLE_TYPE_CODE);
+		jsonRequest.put(SurgicalToolCreationRequestParser.INTERVENTION_NUMBER_PARAMETER_NAME, SAMPLE_INTERVENTION_NUMBER);
+		jsonRequest.put(SurgicalToolCreationRequestParser.STATUS_PARAMETER_NAME, SAMPLE_STATUS);
+		jsonRequest.put(SurgicalToolCreationRequestParser.SERIAL_NUMBER_PARAMETER_NAME, SAMPLE_SERIAL_NUMBER);
+		jsonRequest.put(SurgicalToolCreationRequestParser.TYPECODE_PARAMETER_NAME, SAMPLE_TYPE_CODE);
 	}
 
 	public void createRequestParser() throws Exception {
@@ -42,37 +42,37 @@ public class CreateSurgicalToolRequestTest {
 
 	@Test(expected = RequestParseException.class)
 	public void disallowsUnspecifiedTypeCode() throws Exception {
-		jsonRequest.remove(CreateSurgicalToolRequestParser.TYPECODE_PARAMETER_NAME);
+		jsonRequest.remove(SurgicalToolCreationRequestParser.TYPECODE_PARAMETER_NAME);
 		createRequestParser();
 	}
 
 	@Test(expected = RequestParseException.class)
 	public void disallowsEmptyTypeCode() throws Exception {
-		jsonRequest.put(CreateSurgicalToolRequestParser.TYPECODE_PARAMETER_NAME, "");
+		jsonRequest.put(SurgicalToolCreationRequestParser.TYPECODE_PARAMETER_NAME, "");
 		createRequestParser();
 	}
 
 	@Test(expected = RequestParseException.class)
 	public void disallowsInvalidStatusParameter() throws Exception {
-		jsonRequest.put(CreateSurgicalToolRequestParser.STATUS_PARAMETER_NAME, SAMPLE_INVALID_STATUS);
+		jsonRequest.put(SurgicalToolCreationRequestParser.STATUS_PARAMETER_NAME, SAMPLE_INVALID_STATUS);
 		createRequestParser();
 	}
 	
 	@Test(expected = RequestParseException.class)
 	public void disallowsUnspecifiedInterventionNumberParameter() throws Exception {
-		jsonRequest.remove(CreateSurgicalToolRequestParser.INTERVENTION_NUMBER_PARAMETER_NAME);
+		jsonRequest.remove(SurgicalToolCreationRequestParser.INTERVENTION_NUMBER_PARAMETER_NAME);
 		createRequestParser();
 	}
 
 	@Test(expected = RequestParseException.class)
 	public void disallowsNegativeInterventionNumberParameter() throws Exception {
-		jsonRequest.put(CreateSurgicalToolRequestParser.INTERVENTION_NUMBER_PARAMETER_NAME, "-1");
+		jsonRequest.put(SurgicalToolCreationRequestParser.INTERVENTION_NUMBER_PARAMETER_NAME, "-1");
 		createRequestParser();
 	}
 
 	@Test
 	public void allowsMinimumInterventionNumberParameter() throws Exception {
-		jsonRequest.put(CreateSurgicalToolRequestParser.INTERVENTION_NUMBER_PARAMETER_NAME, MIN_INTERVENTION_NUMBER);
+		jsonRequest.put(SurgicalToolCreationRequestParser.INTERVENTION_NUMBER_PARAMETER_NAME, MIN_INTERVENTION_NUMBER);
 		createRequestParser();
 	}
 
@@ -102,7 +102,7 @@ public class CreateSurgicalToolRequestTest {
 	
 	@Test
 	public void hasSerialNumberReturnsCorrectValueWhenNoSerialNumber() throws Exception {
-		jsonRequest.remove(CreateSurgicalToolRequestParser.SERIAL_NUMBER_PARAMETER_NAME);
+		jsonRequest.remove(SurgicalToolCreationRequestParser.SERIAL_NUMBER_PARAMETER_NAME);
 		createRequestParser();
 		assertFalse(surgicalToolRequest.hasSerialNumber());
 	}

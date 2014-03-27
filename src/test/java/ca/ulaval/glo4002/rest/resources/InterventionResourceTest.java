@@ -31,10 +31,10 @@ public class InterventionResourceTest {
 	private InterventionService interventionServiceMock;
 	private CreateInterventionRequestParser createInterventionRequestParserMock;
 	private CreateInterventionRequestParserFactory createInterventionRequestParserFactoryMock;
-	private CreateSurgicalToolRequestParser createSurgicalToolRequestParserMock;
+	private SurgicalToolCreationRequestParser createSurgicalToolRequestParserMock;
 	private CreateSurgicalToolRequestParserFactory createSurgicalToolRequestParserFactoryMock;
-	private ModifySurgicalToolRequestParser modifySurgicalToolRequestParserMock;
-	private ModifySurgicalToolRequestParserFactory modifySurgicalToolRequestParserFactoryMock;
+	private SurgicalToolModificationRequestParser modifySurgicalToolRequestParserMock;
+	private SurgicalToolModificationRequestParserFactory modifySurgicalToolRequestParserFactoryMock;
 	private InterventionResource interventionResource;
 
 	@Before
@@ -48,10 +48,10 @@ public class InterventionResourceTest {
 		interventionServiceMock = mock(InterventionService.class);
 		createInterventionRequestParserMock = mock(CreateInterventionRequestParser.class);
 		createInterventionRequestParserFactoryMock = mock(CreateInterventionRequestParserFactory.class);
-		createSurgicalToolRequestParserMock = mock(CreateSurgicalToolRequestParser.class);
+		createSurgicalToolRequestParserMock = mock(SurgicalToolCreationRequestParser.class);
 		createSurgicalToolRequestParserFactoryMock = mock(CreateSurgicalToolRequestParserFactory.class);
-		modifySurgicalToolRequestParserMock = mock(ModifySurgicalToolRequestParser.class);
-		modifySurgicalToolRequestParserFactoryMock = mock(ModifySurgicalToolRequestParserFactory.class);
+		modifySurgicalToolRequestParserMock = mock(SurgicalToolModificationRequestParser.class);
+		modifySurgicalToolRequestParserFactoryMock = mock(SurgicalToolModificationRequestParserFactory.class);
 	}
 
 	private void stubMethods() throws RequestParseException {

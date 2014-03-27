@@ -6,14 +6,14 @@ import org.json.JSONObject;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolStatus;
 import ca.ulaval.glo4002.exceptions.RequestParseException;
 
-public class ModifySurgicalToolRequestParser extends AbstractSurgicalToolRequestParser implements SurgicalToolRequestParser {
+public class SurgicalToolModificationRequestParser extends AbstractSurgicalToolRequestParser implements SurgicalToolRequestParser {
 	public static String NEW_SERIAL_NUMBER_PARAMETER_NAME = "nouveaunoserie";
 	public static String NEW_TYPECODE_PARAMETER_NAME = "nouveautypecode";
 
 	protected String newSerialNumber;
 	protected String newTypeCode;
 
-	public ModifySurgicalToolRequestParser(JSONObject jsonRequest) throws RequestParseException {
+	public SurgicalToolModificationRequestParser(JSONObject jsonRequest) throws RequestParseException {
 		try {
 			parseParameters(jsonRequest);
 		} catch (Exception e) {
