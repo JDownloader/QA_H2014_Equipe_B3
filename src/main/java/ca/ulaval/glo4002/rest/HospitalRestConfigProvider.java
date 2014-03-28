@@ -9,9 +9,13 @@ import java.util.prefs.Preferences;
 
 public class HospitalRestConfigProvider {
 	private static final String XML_CONFIG_FILE_NAME = "HospitalRestConfig.xml";
-	private static HospitalRestConfigProvider instance = null;
 	private Preferences prefs;
 
+	
+	private static class HospitalRestConfigProviderHolder {
+        private static final HospitalRestConfigProvider instance = new HospitalRestConfigProvider(Preferences.userRoot().node("HospitalRestConfigProvider"));
+    }
+	
 	protected HospitalRestConfigProvider(Preferences prefs) {
 		this.prefs = prefs;
 		try {
@@ -23,10 +27,7 @@ public class HospitalRestConfigProvider {
 	}
 
 	public static HospitalRestConfigProvider getInstance() {
-		if(instance == null) {
-			instance = new HospitalRestConfigProvider(Preferences.userRoot().node("HospitalRestConfigProvider"));
-		}
-		return instance;
+		return HospitalRestConfigProviderHolder.instance;
 	}
 
 	public int getInt(String key, int def) {
