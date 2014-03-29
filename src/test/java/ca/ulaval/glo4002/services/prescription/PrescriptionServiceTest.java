@@ -26,6 +26,7 @@ import ca.ulaval.glo4002.domain.prescription.PrescriptionRepository;
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.requestparsers.prescription.PrescriptionCreationRequestParser;
+import ca.ulaval.glo4002.services.patient.PatientService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PrescriptionServiceTest {
@@ -34,7 +35,7 @@ public class PrescriptionServiceTest {
 	 @Mock private DrugRepository drugRepository;
 	 @Mock private PatientRepository patientRepository;
 	 @Mock private EntityTransaction entityTransaction;
-	 @InjectMocks private PrescriptionService prescriptionService;
+	 @InjectMocks private PatientService prescriptionService;
 	
 	
 	private static final Date SAMPLE_DATE = new Date();

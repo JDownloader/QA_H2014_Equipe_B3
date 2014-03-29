@@ -3,13 +3,13 @@ package ca.ulaval.glo4002.domain.drug;
 import javax.persistence.Entity;
 
 @Entity
-public class DrugWithoutDin extends Drug {
+public class DrugWithNoDin extends Drug {
 
-	protected DrugWithoutDin() {
+	protected DrugWithNoDin() {
 		// Required for Hibernate.
 	}
 
-	public DrugWithoutDin(String name) {
+	public DrugWithNoDin(String name) {
 		this.name = name;
 	}
 

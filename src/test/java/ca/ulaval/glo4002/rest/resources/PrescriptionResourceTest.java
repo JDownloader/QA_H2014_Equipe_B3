@@ -15,16 +15,16 @@ import ca.ulaval.glo4002.exceptions.RequestParseException;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.requestparsers.prescription.PrescriptionCreationRequestParser;
 import ca.ulaval.glo4002.rest.requestparsers.prescription.PrescriptionCreationRequestParserFactory;
-import ca.ulaval.glo4002.services.prescription.PrescriptionService;
+import ca.ulaval.glo4002.services.patient.PatientService;
 
 public class PrescriptionResourceTest {
 
 	private static final String SAMPLE_JSON_REQUEST = "{attrib: value}";
 
-	private PrescriptionService prescriptionServiceMock;
+	private PatientService prescriptionServiceMock;
 	private PrescriptionCreationRequestParser addPrescriptionRequestParserMock;
 	private PrescriptionCreationRequestParserFactory addPrescriptionRequestParserFactoryMock;
-	private PrescriptionResource prescriptionResource;
+	private PatientResource prescriptionResource;
 
 	@Before
 	public void init() throws Exception {
@@ -34,7 +34,7 @@ public class PrescriptionResourceTest {
 	}
 
 	private void createMocks() {
-		prescriptionServiceMock = mock(PrescriptionService.class);
+		prescriptionServiceMock = mock(PatientService.class);
 		addPrescriptionRequestParserMock = mock(PrescriptionCreationRequestParser.class);
 		addPrescriptionRequestParserFactoryMock = mock(PrescriptionCreationRequestParserFactory.class);
 	}
@@ -44,7 +44,7 @@ public class PrescriptionResourceTest {
 	}
 
 	private void buildPrescriptionResource() {
-		prescriptionResource = new PrescriptionResource(prescriptionServiceMock, addPrescriptionRequestParserFactoryMock);
+		prescriptionResource = new PatientResource(prescriptionServiceMock, addPrescriptionRequestParserFactoryMock);
 	}
 
 	@Test

@@ -6,13 +6,12 @@ import javax.persistence.*;
 @Table(name = "DRUG", indexes = { @Index(name = "NAME_IDX", columnList = "NAME") })
 public abstract class Drug {
 	@Id
-	@Column(name = "DIN")
+	private int id;
+	
 	protected Din din = null;
 
-	@Column(name = "NAME")
 	protected String name = "";
 
-	@Column(name = "DESCRIPTION")
 	protected String description = "";
 
 	protected Drug() {
