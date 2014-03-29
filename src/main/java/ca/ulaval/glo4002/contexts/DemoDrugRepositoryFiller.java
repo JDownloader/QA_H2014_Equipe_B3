@@ -34,8 +34,8 @@ public class DemoDrugRepositoryFiller {
 
 	private Drug parseDrug(final String[] line, int lineNumber) throws BadFileFormatException {
 		try {
-			Din din = new Din(Integer.parseInt(line[DRUG_IDENTIFICATION_NUMBER_COLUMN]));
-			return new DrugFactory().createDrug(din, line[BRAND_NAME_COLUMN], line[DESCRIPTOR_COLUMN]);
+			Din din = new Din(line[DRUG_IDENTIFICATION_NUMBER_COLUMN]);
+			return new Drug(din, line[BRAND_NAME_COLUMN], line[DESCRIPTOR_COLUMN]);
 		} catch (NumberFormatException e) {
 			throw new BadFileFormatException(String.format("Could not parse line %d due to bad data format.", lineNumber));
 		} catch (ArrayIndexOutOfBoundsException e) {

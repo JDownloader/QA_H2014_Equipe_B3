@@ -10,14 +10,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PrescriptionCreationDto {
-	private Integer din;
+	private String din;
 	private String drugName;
 	private Integer staffMember;
 	private Integer renewals;
 	private Date date;
 	private Integer patientNumber;
 	
-	public int getDin() {
+	public String getDin() {
 		return din;
 	}
 	
@@ -26,7 +26,7 @@ public class PrescriptionCreationDto {
 	}
 	
 	@JsonProperty("din")
-	public void setDin(Integer din) {
+	public void setDin(String din) {
 		this.din = din;
 	}
 	

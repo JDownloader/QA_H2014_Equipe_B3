@@ -13,7 +13,7 @@ public class PrescriptionCreationDtoValidatorTest {
 	private static final int SAMPLE_RENEWALS_PARAMETER = 2;
 	private static final String SAMPLE_DRUG_NAME_PARAMETER = "drug_name";
 	private static final int SAMPLE_STAFF_MEMBER_PARAMETER = 3;
-	private static final int SAMPLE_DIN_PARAMETER = 3;
+	private static final String SAMPLE_DIN_PARAMETER = "098423";
 	private static final int SAMPLE_PATIENT_NUMBER_PARAMETER = 3;
 	private static final int MIN_RENEWALS_PARAMETER = 0;
 	private static final int MIN_STAFF_MEMBER_PARAMETER = 0;

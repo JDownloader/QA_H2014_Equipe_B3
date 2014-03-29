@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 public class Din implements Serializable {
 	private static final long serialVersionUID = 7369022975618045987L;
-	private int din;
+	private String din;
 
-	public Din(int din) {
+	public Din(String din) {
 		this.din = din;
 	}
 

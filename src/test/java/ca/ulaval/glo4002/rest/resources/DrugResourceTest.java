@@ -23,7 +23,7 @@ import ca.ulaval.glo4002.rest.requestparsers.drug.DrugSearchRequestParserFactory
 import ca.ulaval.glo4002.services.drug.DrugService;
 
 public class DrugResourceTest {
-	private static final Din SAMPLE_DIN = new Din(5);
+	private static final Din SAMPLE_DIN = new Din("0498");
 	private static final String SAMPLE_DRUG_NAME = "Drug";
 	private static final String SAMPLE_DESCRIPTION = "Description";
 	private static final String SAMPLE_JSON_REQUEST = "{attrib: value}";

@@ -4,18 +4,20 @@ import javax.persistence.*;
 
 @Entity(name = "DRUG")
 @Table(name = "DRUG", indexes = { @Index(name = "NAME_IDX", columnList = "NAME") })
-public abstract class Drug {
+public class Drug {
 	@Id
-	private int id;
-	
-	protected Din din = null;
-
-	protected String name = "";
-
-	protected String description = "";
+	protected Din din;
+	protected String name;
+	protected String description;
 
 	protected Drug() {
 		// Required for Hibernate.
+	}
+	
+	public Drug(Din din, String name, String description) {
+		this.din = din;
+		this.name = name;
+		this.description = description;
 	}
 
 	public Din getDin() throws NoSuchFieldException {
