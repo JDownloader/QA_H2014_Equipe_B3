@@ -6,7 +6,7 @@ public class PrescriptionCreationDtoValidator {
 	public static void validate(PrescriptionCreationDto prescriptionCreationDto) {
 		if (!prescriptionCreationDto.hasRenewals()) {
 			throw new IllegalArgumentException("Parameter 'renouvellements' is required.");
-		} else if (prescriptionCreationDto.getRenewals() < 0) {
+		} else if (prescriptionCreationDto.getRenewals() < 0) { //TODO: Check if this validation goes here
 			throw new IllegalArgumentException("Parameter 'renouvellements' must be greater or equal to 0.");
 		} else if (!prescriptionCreationDto.hasDate()) {
 			throw new IllegalArgumentException("Parameter 'date' is required.");
@@ -20,7 +20,7 @@ public class PrescriptionCreationDtoValidator {
 		boolean hasDrugName = prescriptionCreationDto.hasDrugName();
 		boolean hasDin = prescriptionCreationDto.hasDin();
 
-		if (hasDrugName && hasDin) {
+		if (hasDrugName && hasDin) { //TODO: Check if this validation goes here
 			throw new IllegalArgumentException("Either parameter 'din' or 'nom' must be specified, but not both.");
 		} else if (!hasDrugName && !hasDin) {
 			throw new IllegalArgumentException("Parameter 'din' or 'nom' must be specified.");

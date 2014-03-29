@@ -74,8 +74,12 @@ public class Prescription {
 		}
 		
 		public Prescription build() {
-			if (!(drug == null ^ StringUtils.isBlank(drugName))) {
-				throw new IllegalStateException("Either parameter 'drug' or 'drugName' must be specified.");
+			if (drug == null && StringUtils.isBlank(drugName)) {
+				throw new IllegalStateException("Parameter 'drug' or 'drugName' must be specified.");
+			} else if (drug != null && !StringUtils.isBlank(drugName)) {
+				throw new IllegalStateException("Either parameter 'drug' or 'drugName' must be specified, but not both.");
+			} else if (allowedNumberOfRenewal < 0) { //TODO: Check if this validation goes here
+				throw new IllegalArgumentException("Parameter 'renouvellements' must be greater or equal to 0.");
 			}
 			return new Prescription(this);
 		}

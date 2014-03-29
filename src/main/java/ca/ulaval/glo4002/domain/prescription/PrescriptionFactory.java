@@ -18,7 +18,7 @@ public class PrescriptionFactory {
 		
 		if (prescriptionCreationDto.hasDin()) {
 			prescriptionBuilder.withDrug(getDrug(prescriptionCreationDto, drugRepository));
-		} else {
+		} else if (prescriptionCreationDto.hasDrugName()) {
 			prescriptionBuilder.withDrugName(prescriptionCreationDto.getDrugName());
 		}
 		
