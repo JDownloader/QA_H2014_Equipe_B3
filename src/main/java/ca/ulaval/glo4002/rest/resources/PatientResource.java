@@ -43,7 +43,7 @@ public class PatientResource {
 	public Response post(String jsonRequest) throws Exception {
 		try {
 			PrescriptionCreationDto prescriptionCreationDto = mapJsonToPrescriptionCreationDto(jsonRequest);
-			patientService.addPrescription(prescriptionCreationDto, new PrescriptionFactory());
+			patientService.createPrescription(prescriptionCreationDto, new PrescriptionFactory());
 			return Response.status(Status.CREATED).build();
 		} catch (JsonParseException | JsonMappingException e) {
 			return BadRequestJsonResponseBuilder.build(BAD_REQUEST_ERROR_CODE_PRES001, e.getMessage());

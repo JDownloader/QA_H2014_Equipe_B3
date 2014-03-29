@@ -39,11 +39,11 @@ public class PatientService {
 		this.entityTransaction = entityManager.getTransaction();
 	}
 
-	public void addPrescription(PrescriptionCreationDto prescriptionCreationDto, PrescriptionFactory prescriptionFactory) throws ServiceRequestException {
+	public void createPrescription(PrescriptionCreationDto prescriptionCreationDto, PrescriptionFactory prescriptionFactory) throws ServiceRequestException {
 		try {
 			entityTransaction.begin();
 			prescriptionCreationDto.validate();
-			doAddPrescription(prescriptionCreationDto, prescriptionFactory);
+			doCreatePrescription(prescriptionCreationDto, prescriptionFactory); //TODO: Rename method
 			entityTransaction.commit();
 		} catch (Exception e) {
 			if (entityTransaction.isActive()) {
@@ -53,7 +53,7 @@ public class PatientService {
 		}
 	}
 
-	protected void doAddPrescription(PrescriptionCreationDto prescriptionCreationDto, PrescriptionFactory prescriptionFactory) throws ServiceRequestException {
+	protected void doCreatePrescription(PrescriptionCreationDto prescriptionCreationDto, PrescriptionFactory prescriptionFactory) throws ServiceRequestException {
 		Prescription prescription = prescriptionFactory.createPrescription(prescriptionCreationDto, drugRepository);
 		prescriptionRepository.persist(prescription);
 		Patient patient = patientRepository.getById(prescriptionCreationDto.getPatientNumber());

@@ -39,7 +39,7 @@ public class PatientResourceTest {
 	@Test
 	public void verifyAddPrescriptionCallsServiceMethodsCorrectly() throws Exception {
 		patientResource.post(SAMPLE_JSON_REQUEST);
-		verify(patientServiceMock).addPrescription(eq(prescriptionCreationDtoMock), any(PrescriptionFactory.class));
+		verify(patientServiceMock).createPrescription(eq(prescriptionCreationDtoMock), any(PrescriptionFactory.class));
 	}
 
 	@Test
@@ -50,7 +50,7 @@ public class PatientResourceTest {
 
 	@Test
 	public void verifyAddPrescriptionReturnsBadRequestResponseWhenSpecifyingInvalidRequest() throws Exception {
-		doThrow(new ServiceRequestException()).when(patientServiceMock).addPrescription(eq(prescriptionCreationDtoMock), any(PrescriptionFactory.class));
+		doThrow(new ServiceRequestException()).when(patientServiceMock).createPrescription(eq(prescriptionCreationDtoMock), any(PrescriptionFactory.class));
 
 		Response expectedResponse = Response.status(Status.BAD_REQUEST).build();
 		Response receivedResponse = patientResource.post(SAMPLE_JSON_REQUEST);
