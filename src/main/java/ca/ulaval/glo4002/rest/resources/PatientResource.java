@@ -14,6 +14,7 @@ import ca.ulaval.glo4002.domain.prescription.PrescriptionFactory;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.dto.PrescriptionCreationDto;
 import ca.ulaval.glo4002.rest.utils.BadRequestJsonResponseBuilder;
+import ca.ulaval.glo4002.rest.utils.ObjectMapperProvider;
 import ca.ulaval.glo4002.services.patient.PatientService;
 
 @Path("patient/{patient_number: [0-9]+}/prescriptions/")
@@ -21,13 +22,16 @@ public class PatientResource {
 	public static final String BAD_REQUEST_ERROR_CODE_PRES001 = "PRES001";
 
 	private PatientService patientService; 
+	private ObjectMapper objectMapper;
 
 	public PatientResource() {
 		this.patientService = new PatientService();
+		this.objectMapper = ObjectMapperProvider.getObjectMapper();
 	}
 
-	public PatientResource(PatientService patientService) {
+	public PatientResource(PatientService patientService, ObjectMapper objectMapper) {
 		this.patientService = patientService;
+		this.objectMapper = objectMapper;
 	}
 
 	@PathParam("patient_number")
@@ -49,8 +53,7 @@ public class PatientResource {
 	}
 	
 	private PrescriptionCreationDto mapJsonToPrescriptionCreationDto(String jsonRequest) throws JsonParseException, JsonMappingException, IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		PrescriptionCreationDto prescriptionCreationDto = mapper.readValue(jsonRequest, PrescriptionCreationDto.class);
+		PrescriptionCreationDto prescriptionCreationDto = objectMapper.readValue(jsonRequest, PrescriptionCreationDto.class);
 		prescriptionCreationDto.setPatientNumber(patientNumber);
 		return prescriptionCreationDto;
 	}

@@ -15,13 +15,10 @@ public class Prescription {
 	private int id;
 
 	@ManyToOne()
-	@JoinColumn(name = "DRUG")
 	private Drug drug;
 
 	private int allowedNumberOfRenewal;
-
 	private Date date;
-
 	private StaffMember staffMember;
 
 	protected Prescription() {
@@ -33,29 +30,5 @@ public class Prescription {
 		this.staffMember = staffMember;
 		this.allowedNumberOfRenewal = allowedNumberOfRenewal;
 		this.date = date;
-	}
-
-	public boolean compareId(int id) {
-		return this.id == id;
-	}
-
-	public int getId() {
-		return this.id;
-	}
-
-	public Drug getDrug() {
-		return this.drug;
-	}
-
-	public int getAllowedNumberOfRenewal() {
-		return this.allowedNumberOfRenewal;
-	}
-
-	public Date getDate() {
-		return this.date;
-	}
-
-	public StaffMember getStaffMember() {
-		return this.staffMember;
 	}
 }

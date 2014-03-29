@@ -24,10 +24,6 @@ public class Patient {
 		this.id = id;
 	}
 
-	public int getId() {
-		return id;
-	}
-
 	public void addPrescription(Prescription prescription) {
 		prescriptions.add(prescription);
 	}

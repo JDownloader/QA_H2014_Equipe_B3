@@ -10,6 +10,17 @@ import ca.ulaval.glo4002.domain.staff.StaffMember;
 import ca.ulaval.glo4002.rest.dto.PrescriptionCreationDto;
 
 public class PrescriptionFactory {
+	
+	private DrugFactory drugFactory;
+	
+	public PrescriptionFactory() {
+		drugFactory = new DrugFactory();
+	}
+	
+	public PrescriptionFactory(DrugFactory drugFactory) {
+		this.drugFactory = drugFactory;
+	}
+	
 	public Prescription createPrescription(PrescriptionCreationDto prescriptionCreationDto, DrugRepository drugRepository) throws EntityNotFoundException {
 		Drug drug = getDrug(prescriptionCreationDto, drugRepository);
 
@@ -23,7 +34,7 @@ public class PrescriptionFactory {
 		if (prescriptionCreationDto.hasDin()) {
 			return drugRepository.getByDin(new Din(prescriptionCreationDto.getDin()));
 		} else {
-			return new DrugFactory().createDrug(prescriptionCreationDto.getDrugName());
+			return drugFactory.createDrug(prescriptionCreationDto.getDrugName());
 		}
 	}
 }

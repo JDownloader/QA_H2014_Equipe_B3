@@ -4,6 +4,8 @@ import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 
+import ca.ulaval.glo4002.rest.dto.validators.PrescriptionCreationDtoValidator;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -45,6 +47,10 @@ public class PrescriptionCreationDto {
 		return staffMember;
 	}
 	
+	public boolean hasStaffMember() {
+		return staffMember != null;
+	}
+	
 	@JsonProperty("intervenant")
 	public void setStaffMember(Integer staffMember) {
 		this.staffMember = staffMember;
@@ -54,6 +60,10 @@ public class PrescriptionCreationDto {
 		return renewals;
 	}
 	
+	public boolean hasRenewals() {
+		return renewals != null;
+	}
+	
 	@JsonProperty("renouvellements")
 	public void setRenewals(Integer renewals) {
 		this.renewals = renewals;
@@ -61,6 +71,10 @@ public class PrescriptionCreationDto {
 	
 	public Date getDate() {
 		return date;
+	}
+	
+	public boolean hasDate() {
+		return date != null;
 	}
 	
 	@JsonProperty("date")
@@ -75,5 +89,10 @@ public class PrescriptionCreationDto {
 	@JsonIgnore
 	public void setPatientNumber(Integer patientNumber) {
 		this.patientNumber = patientNumber;
+	}
+	
+	@JsonIgnore
+	public void validate() {
+		PrescriptionCreationDtoValidator.validate(this);
 	}
 }

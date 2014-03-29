@@ -13,7 +13,6 @@ import ca.ulaval.glo4002.persistence.drug.HibernateDrugRepository;
 import ca.ulaval.glo4002.persistence.patient.HibernatePatientRepository;
 import ca.ulaval.glo4002.persistence.prescription.HibernatePrescriptionRepository;
 import ca.ulaval.glo4002.rest.dto.PrescriptionCreationDto;
-import ca.ulaval.glo4002.rest.dto.validators.PrescriptionCreationDtoValidator;
 
 public class PatientService {
 	public static final String ERROR_SERVICE_REQUEST_EXCEPTION_PRES001 = "PRES001";
@@ -43,7 +42,7 @@ public class PatientService {
 	public void addPrescription(PrescriptionCreationDto prescriptionCreationDto, PrescriptionFactory prescriptionFactory) throws ServiceRequestException {
 		try {
 			entityTransaction.begin();
-			PrescriptionCreationDtoValidator.validate(prescriptionCreationDto);
+			prescriptionCreationDto.validate();
 			doAddPrescription(prescriptionCreationDto, prescriptionFactory);
 			entityTransaction.commit();
 		} catch (Exception e) {
