@@ -38,19 +38,19 @@ public class PatientResourceTest {
 	}
 
 	@Test
-	public void verifyAddPrescriptionCallsServiceMethodsCorrectly() throws Exception {
+	public void verifyPrescriptionCreationCallsServiceMethodsCorrectly() throws Exception {
 		patientResource.post(SAMPLE_JSON_REQUEST);
 		verify(patientServiceMock).createPrescription(eq(prescriptionCreationDtoMock), any(PrescriptionCreationDtoValidator.class), any(PrescriptionAssembler.class));
 	}
 
 	@Test
-	public void verifyAddPrescriptionReturnsCreatedResponse() throws Exception {
+	public void verifyPrescriptionCreationReturnsCreatedResponse() throws Exception {
 		Response response = patientResource.post(SAMPLE_JSON_REQUEST);
 		assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
 	}
 
 	@Test
-	public void verifyAddPrescriptionReturnsBadRequestResponseWhenSpecifyingInvalidRequest() throws Exception {
+	public void verifyPrescriptionCreationReturnsBadRequestResponseWhenSpecifyingInvalidRequest() throws Exception {
 		doThrow(new ServiceRequestException()).when(patientServiceMock).createPrescription(eq(prescriptionCreationDtoMock), any(PrescriptionCreationDtoValidator.class), any(PrescriptionAssembler.class));
 
 		Response expectedResponse = Response.status(Status.BAD_REQUEST).build();
@@ -60,7 +60,7 @@ public class PatientResourceTest {
 	}
 	
 	@Test
-	public void verifyAddPrescriptionReturnsBadRequestResponseWhenSpecifyingInvalidJsonRequestString() throws Exception {
+	public void verifyPrescriptionCreationReturnsBadRequestResponseWhenSpecifyingInvalidJsonRequestString() throws Exception {
 		doThrow(new JsonMappingException("")).when(objectMapperMock).readValue(anyString(), eq(PrescriptionCreationDto.class));
 
 		Response expectedResponse = Response.status(Status.BAD_REQUEST).build();

@@ -44,8 +44,8 @@ public class DrugResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response post(String request) throws Exception {
 		try {
-			DrugSearchDto requestParser = mapJsonToDrugSearchDto(request);
-			List<Drug> drugResults = drugService.searchDrug(requestParser);
+			DrugSearchDto drugSearchDto = mapJsonToDrugSearchDto(request);
+			List<Drug> drugResults = drugService.searchDrug(drugSearchDto);
 			return buildDrugResultResponse(drugResults);
 		} catch (JsonParseException | JsonMappingException e) {
 			return BadRequestJsonResponseBuilder.build(BAD_REQUEST_ERROR_CODE_DIN001, e.getMessage());
