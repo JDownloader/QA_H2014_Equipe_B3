@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.apache.commons.lang3.StringUtils;
+
 import ca.ulaval.glo4002.domain.drug.*;
 import ca.ulaval.glo4002.persistence.HibernateRepository;
 
@@ -30,7 +32,20 @@ public class HibernateDrugRepository extends HibernateRepository implements Drug
 	}
 
 	public List<Drug> search(String name) throws Exception {
+		validateSearchParameters(name);
+		return performSearch(name);
+	}
+
+	private void validateSearchParameters(String name) {
+		String wildcardInsensitiveSearchCriteria = name.replace(" ", "");
+		if (StringUtils.isBlank(name) || wildcardInsensitiveSearchCriteria.length() < 3) {
+			throw new IllegalArgumentException("Search criteria  must not be less than 3 characters, excluding wilcards.");
+		}
+	}
+
+	private List<Drug> performSearch(String name) {
 		String likeStatement = name.replace(' ', '%').toUpperCase();
+		
 		// TODO no more sql
 		String queryString = String
 				.format("SELECT d FROM DRUG d WHERE UPPER(d.name) LIKE '%s' OR UPPER(d.description) LIKE '%s'", likeStatement, likeStatement);
@@ -40,5 +55,4 @@ public class HibernateDrugRepository extends HibernateRepository implements Drug
 		List<Drug> result = query.getResultList();
 		return result;
 	}
-
 }

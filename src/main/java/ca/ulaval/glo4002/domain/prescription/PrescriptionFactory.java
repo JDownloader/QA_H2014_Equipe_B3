@@ -9,19 +9,17 @@ import ca.ulaval.glo4002.domain.staff.StaffMember;
 import ca.ulaval.glo4002.rest.dto.PrescriptionCreationDto;
 
 public class PrescriptionFactory {
-	
+
 	public Prescription createPrescription(PrescriptionCreationDto prescriptionCreationDto, DrugRepository drugRepository) throws EntityNotFoundException {
-		Prescription.Builder prescriptionBuilder = new Prescription.Builder( 
-				prescriptionCreationDto.getRenewals(), 
-				prescriptionCreationDto.getDate(), 
+		Prescription.Builder prescriptionBuilder = new Prescription.Builder(prescriptionCreationDto.getRenewals(), prescriptionCreationDto.getDate(),
 				new StaffMember(prescriptionCreationDto.getStaffMember()));
-		
+
 		if (prescriptionCreationDto.hasDin()) {
 			prescriptionBuilder.withDrug(getDrug(prescriptionCreationDto, drugRepository));
 		} else if (prescriptionCreationDto.hasDrugName()) {
 			prescriptionBuilder.withDrugName(prescriptionCreationDto.getDrugName());
 		}
-		
+
 		return prescriptionBuilder.build();
 	}
 

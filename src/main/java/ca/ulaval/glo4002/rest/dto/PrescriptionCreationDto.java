@@ -4,17 +4,18 @@ import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ca.ulaval.glo4002.rest.dto.validators.PrescriptionCreationDtoValidator;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 
 public class PrescriptionCreationDto {
 	private String din;
+	@JsonProperty("nom")
 	private String drugName;
+	@JsonProperty("intervenant")
 	private Integer staffMember;
+	@JsonProperty("renouvellements")
 	private Integer renewals;
 	private Date date;
+	@JsonIgnore
 	private Integer patientNumber;
 	
 	public String getDin() {
@@ -25,7 +26,6 @@ public class PrescriptionCreationDto {
 		return din != null;
 	}
 	
-	@JsonProperty("din")
 	public void setDin(String din) {
 		this.din = din;
 	}
@@ -38,7 +38,6 @@ public class PrescriptionCreationDto {
 		return !StringUtils.isBlank(drugName);
 	}
 	
-	@JsonProperty("nom")
 	public void setDrugName(String drugName) {
 		this.drugName = drugName;
 	}
@@ -51,7 +50,6 @@ public class PrescriptionCreationDto {
 		return staffMember != null;
 	}
 	
-	@JsonProperty("intervenant")
 	public void setStaffMember(Integer staffMember) {
 		this.staffMember = staffMember;
 	}
@@ -64,7 +62,6 @@ public class PrescriptionCreationDto {
 		return renewals != null;
 	}
 	
-	@JsonProperty("renouvellements")
 	public void setRenewals(Integer renewals) {
 		this.renewals = renewals;
 	}
@@ -77,7 +74,6 @@ public class PrescriptionCreationDto {
 		return date != null;
 	}
 	
-	@JsonProperty("date")
 	public void setDate(Date date) {
 		this.date = date;
 	}
@@ -86,13 +82,7 @@ public class PrescriptionCreationDto {
 		return patientNumber;
 	}
 	
-	@JsonIgnore
 	public void setPatientNumber(Integer patientNumber) {
 		this.patientNumber = patientNumber;
-	}
-	
-	@JsonIgnore
-	public void validate() {
-		PrescriptionCreationDtoValidator.validate(this);
 	}
 }

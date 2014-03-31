@@ -2,11 +2,14 @@ package ca.ulaval.glo4002.domain.drug;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.*;
+
 @Entity(name = "DRUG")
 @Table(name = "DRUG", indexes = { @Index(name = "NAME_IDX", columnList = "NAME") })
 public class Drug {
 	@Id
 	protected Din din;
+	@JsonProperty("nom")
 	protected String name;
 	protected String description;
 
