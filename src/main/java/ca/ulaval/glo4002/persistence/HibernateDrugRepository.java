@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.persistence.drug;
+package ca.ulaval.glo4002.persistence;
 
 import java.util.List;
 
@@ -7,7 +7,6 @@ import javax.persistence.*;
 import org.apache.commons.lang3.StringUtils;
 
 import ca.ulaval.glo4002.domain.drug.*;
-import ca.ulaval.glo4002.persistence.HibernateRepository;
 
 public class HibernateDrugRepository extends HibernateRepository implements DrugRepository {
 

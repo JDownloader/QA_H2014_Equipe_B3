@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.services.patient;
+package ca.ulaval.glo4002.services;
 
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
@@ -16,7 +16,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import ca.ulaval.glo4002.domain.drug.*;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.dto.DrugSearchDto;
-import ca.ulaval.glo4002.services.drug.DrugService;
+import ca.ulaval.glo4002.services.DrugService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DrugServiceTest {

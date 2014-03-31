@@ -16,7 +16,7 @@ import ca.ulaval.glo4002.rest.dto.PrescriptionCreationDto;
 import ca.ulaval.glo4002.rest.dto.validators.PrescriptionCreationDtoValidator;
 import ca.ulaval.glo4002.rest.utils.BadRequestJsonResponseBuilder;
 import ca.ulaval.glo4002.rest.utils.ObjectMapperProvider;
-import ca.ulaval.glo4002.services.patient.PatientService;
+import ca.ulaval.glo4002.services.PatientService;
 
 @Path("patient/{patient_number: [0-9]+}/prescriptions/")
 public class PatientResource {

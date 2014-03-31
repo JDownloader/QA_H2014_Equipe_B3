@@ -1,10 +1,9 @@
-package ca.ulaval.glo4002.persistence.patient;
+package ca.ulaval.glo4002.persistence;
 
 import javax.persistence.*;
 
 import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
-import ca.ulaval.glo4002.persistence.HibernateRepository;
 
 public class HibernatePatientRepository extends HibernateRepository implements PatientRepository {
 

@@ -17,7 +17,7 @@ import ca.ulaval.glo4002.domain.prescription.PrescriptionAssembler;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.dto.PrescriptionCreationDto;
 import ca.ulaval.glo4002.rest.dto.validators.PrescriptionCreationDtoValidator;
-import ca.ulaval.glo4002.services.patient.PatientService;
+import ca.ulaval.glo4002.services.PatientService;
 
 public class PatientResourceTest {
 

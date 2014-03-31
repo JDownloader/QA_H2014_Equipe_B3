@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.services.drug;
+package ca.ulaval.glo4002.services;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import ca.ulaval.glo4002.domain.drug.Drug;
 import ca.ulaval.glo4002.domain.drug.DrugRepository;
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
-import ca.ulaval.glo4002.persistence.drug.HibernateDrugRepository;
+import ca.ulaval.glo4002.persistence.HibernateDrugRepository;
 import ca.ulaval.glo4002.rest.dto.DrugSearchDto;
 
 public class DrugService {

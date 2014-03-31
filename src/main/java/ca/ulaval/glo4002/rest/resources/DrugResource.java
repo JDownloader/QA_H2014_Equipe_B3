@@ -19,7 +19,7 @@ import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.dto.DrugSearchDto;
 import ca.ulaval.glo4002.rest.utils.BadRequestJsonResponseBuilder;
 import ca.ulaval.glo4002.rest.utils.ObjectMapperProvider;
-import ca.ulaval.glo4002.services.drug.DrugService;
+import ca.ulaval.glo4002.services.DrugService;
 
 @Path("medicaments/dins/")
 public class DrugResource {

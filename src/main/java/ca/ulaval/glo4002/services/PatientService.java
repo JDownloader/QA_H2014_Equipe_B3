@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.services.patient;
+package ca.ulaval.glo4002.services;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -9,9 +9,9 @@ import ca.ulaval.glo4002.domain.patient.PatientRepository;
 import ca.ulaval.glo4002.domain.prescription.*;
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
-import ca.ulaval.glo4002.persistence.drug.HibernateDrugRepository;
-import ca.ulaval.glo4002.persistence.patient.HibernatePatientRepository;
-import ca.ulaval.glo4002.persistence.prescription.HibernatePrescriptionRepository;
+import ca.ulaval.glo4002.persistence.HibernateDrugRepository;
+import ca.ulaval.glo4002.persistence.HibernatePatientRepository;
+import ca.ulaval.glo4002.persistence.HibernatePrescriptionRepository;
 import ca.ulaval.glo4002.rest.dto.PrescriptionCreationDto;
 import ca.ulaval.glo4002.rest.dto.validators.PrescriptionCreationDtoValidator;
 
@@ -44,7 +44,7 @@ public class PatientService {
 		try {
 			entityTransaction.begin();
 			prescriptionCreationDtoValidator.validate(prescriptionCreationDto);
-			ExecutePrescriptionCreationUseCase(prescriptionCreationDto, prescriptionAssembler);
+			executePrescriptionCreationUseCase(prescriptionCreationDto, prescriptionAssembler);
 			entityTransaction.commit();
 		} catch (Exception e) {
 			if (entityTransaction.isActive()) {
@@ -54,7 +54,7 @@ public class PatientService {
 		}
 	}
 
-	protected void ExecutePrescriptionCreationUseCase(PrescriptionCreationDto prescriptionCreationDto, PrescriptionAssembler prescriptionAssembler) throws ServiceRequestException {
+	protected void executePrescriptionCreationUseCase(PrescriptionCreationDto prescriptionCreationDto, PrescriptionAssembler prescriptionAssembler) throws ServiceRequestException {
 		Prescription prescription = prescriptionAssembler.assemblePrescription(prescriptionCreationDto, drugRepository);
 		prescriptionRepository.persist(prescription);
 		Patient patient = patientRepository.getById(prescriptionCreationDto.getPatientNumber());

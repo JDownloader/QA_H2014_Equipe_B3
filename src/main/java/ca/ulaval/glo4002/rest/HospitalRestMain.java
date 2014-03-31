@@ -16,8 +16,8 @@ import ca.ulaval.glo4002.contexts.BadFileFormatException;
 import ca.ulaval.glo4002.contexts.DemoDrugRepositoryFiller;
 import ca.ulaval.glo4002.contexts.DemoPatientRepositoryFiller;
 import ca.ulaval.glo4002.entitymanager.EntityManagerFactoryProvider;
-import ca.ulaval.glo4002.persistence.drug.HibernateDrugRepository;
-import ca.ulaval.glo4002.persistence.patient.HibernatePatientRepository;
+import ca.ulaval.glo4002.persistence.HibernateDrugRepository;
+import ca.ulaval.glo4002.persistence.HibernatePatientRepository;
 import ca.ulaval.glo4002.rest.filters.EntityManagerContextFilter;
 
 import com.sun.jersey.spi.container.servlet.ServletContainer;
