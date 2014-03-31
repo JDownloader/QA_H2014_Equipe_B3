@@ -3,7 +3,7 @@ package ca.ulaval.glo4002.rest.dto.validators;
 import ca.ulaval.glo4002.rest.dto.PrescriptionCreationDto;
 
 public class PrescriptionCreationDtoValidator {
-	public static void validate(PrescriptionCreationDto prescriptionCreationDto) {
+	public void validate(PrescriptionCreationDto prescriptionCreationDto) {
 		if (!prescriptionCreationDto.hasRenewals()) {
 			throw new IllegalArgumentException("Parameter 'renouvellements' is required.");
 		} else if (prescriptionCreationDto.getRenewals() < 0) {
@@ -16,7 +16,7 @@ public class PrescriptionCreationDtoValidator {
 		validateDinAndName(prescriptionCreationDto);
 	}
 	
-	private static void validateDinAndName(PrescriptionCreationDto prescriptionCreationDto) throws IllegalArgumentException {
+	private void validateDinAndName(PrescriptionCreationDto prescriptionCreationDto) throws IllegalArgumentException {
 		boolean hasDrugName = prescriptionCreationDto.hasDrugName();
 		boolean hasDin = prescriptionCreationDto.hasDin();
 

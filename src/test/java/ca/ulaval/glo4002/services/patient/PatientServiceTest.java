@@ -17,11 +17,11 @@ import ca.ulaval.glo4002.domain.drug.*;
 import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
 import ca.ulaval.glo4002.domain.prescription.Prescription;
-import ca.ulaval.glo4002.domain.prescription.PrescriptionFactory;
+import ca.ulaval.glo4002.domain.prescription.PrescriptionAssembler;
 import ca.ulaval.glo4002.domain.prescription.PrescriptionRepository;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.dto.PrescriptionCreationDto;
-import ca.ulaval.glo4002.services.patient.PatientService;
+import ca.ulaval.glo4002.rest.dto.validators.PrescriptionCreationDtoValidator;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PatientServiceTest {
@@ -37,7 +37,8 @@ public class PatientServiceTest {
 	private Patient patientMock;
 	private Prescription prescriptionMock;
 	private PrescriptionCreationDto prescriptionCreationDtoMock;
-	private PrescriptionFactory prescriptionFactoryMock;
+	private PrescriptionCreationDtoValidator prescriptionCreationDtoValidatorMock;
+	private PrescriptionAssembler prescriptionFactoryMock;
 
 	@Before
 	public void init() {
@@ -55,7 +56,8 @@ public class PatientServiceTest {
 		entityManagerMock = mock(EntityManager.class);
 		entityTransactionMock = mock(EntityTransaction.class);
 		prescriptionCreationDtoMock = mock(PrescriptionCreationDto.class);
-		prescriptionFactoryMock = mock(PrescriptionFactory.class);
+		prescriptionCreationDtoValidatorMock = mock(PrescriptionCreationDtoValidator.class);
+		prescriptionFactoryMock = mock(PrescriptionAssembler.class);
 	}
 
 	private void stubMethods() {
@@ -65,7 +67,7 @@ public class PatientServiceTest {
 
 	@Test
 	public void verifyAddPrescriptionCallsCorrectRepositoryMethods() throws Exception {
-		patientService.createPrescription(prescriptionCreationDtoMock, prescriptionFactoryMock);
+		patientService.createPrescription(prescriptionCreationDtoMock, prescriptionCreationDtoValidatorMock, prescriptionFactoryMock);
 		
 		verify(prescriptionRepositoryMock).persist(any(Prescription.class));
 		verify(patientRepositoryMock).getById(anyInt());
@@ -74,14 +76,14 @@ public class PatientServiceTest {
 	
 	@Test
 	public void verifyAddPrescriptionCallsCorrectDomainMethods() throws Exception {
-		when(prescriptionFactoryMock.createPrescription(prescriptionCreationDtoMock, drugRepositoryMock)).thenReturn(prescriptionMock);
-		patientService.createPrescription(prescriptionCreationDtoMock, prescriptionFactoryMock);
+		when(prescriptionFactoryMock.assemblePrescription(prescriptionCreationDtoMock, drugRepositoryMock)).thenReturn(prescriptionMock);
+		patientService.createPrescription(prescriptionCreationDtoMock, prescriptionCreationDtoValidatorMock, prescriptionFactoryMock);
 		verify(patientMock).addPrescription(prescriptionMock);
 	}
 
 	@Test
 	public void verifyAddPrescriptionBeginsAndCommitsTransaction() throws Exception {
-		patientService.createPrescription(prescriptionCreationDtoMock, prescriptionFactoryMock);
+		patientService.createPrescription(prescriptionCreationDtoMock, prescriptionCreationDtoValidatorMock, prescriptionFactoryMock);
 		InOrder inOrder = inOrder(entityTransactionMock);
 
 		inOrder.verify(entityTransactionMock).begin();
@@ -94,7 +96,7 @@ public class PatientServiceTest {
 		when(patientRepositoryMock.getById(anyInt())).thenThrow(new EntityNotFoundException());
 
 		try {
-			patientService.createPrescription(prescriptionCreationDtoMock, prescriptionFactoryMock);
+			patientService.createPrescription(prescriptionCreationDtoMock, prescriptionCreationDtoValidatorMock, prescriptionFactoryMock);
 		} catch(ServiceRequestException e) {
 			verify(entityTransactionMock).rollback();
 			return;
@@ -105,7 +107,7 @@ public class PatientServiceTest {
 	public void verifyAddPrescriptionDoesNotRollbackOnSuccessfulCommit() throws Exception {
 		when(entityTransactionMock.isActive()).thenReturn(false);
 
-		patientService.createPrescription(prescriptionCreationDtoMock, prescriptionFactoryMock);
+		patientService.createPrescription(prescriptionCreationDtoMock, prescriptionCreationDtoValidatorMock, prescriptionFactoryMock);
 		
 		verify(entityTransactionMock).commit();
 		verify(entityTransactionMock, never()).rollback();

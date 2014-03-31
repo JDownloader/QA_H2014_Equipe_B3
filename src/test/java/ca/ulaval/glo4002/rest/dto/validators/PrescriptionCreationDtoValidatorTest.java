@@ -19,7 +19,8 @@ public class PrescriptionCreationDtoValidatorTest {
 	private static final int MIN_STAFF_MEMBER_PARAMETER = 0;
 
 	PrescriptionCreationDto prescriptionCreationDto;
-
+	PrescriptionCreationDtoValidator prescriptionCreationDtoValidator;
+	
 	@Before
 	public void init() throws Exception {
 		prescriptionCreationDto = new PrescriptionCreationDto();
@@ -37,7 +38,7 @@ public class PrescriptionCreationDtoValidatorTest {
 		prescriptionCreationDto.setDrugName(SAMPLE_DRUG_NAME_PARAMETER);
 
 		try {
-			PrescriptionCreationDtoValidator.validate(prescriptionCreationDto);
+			prescriptionCreationDtoValidator.validate(prescriptionCreationDto);
 		} catch (Exception e) {
 			fail("Should not have thrown an exception");
 		}
@@ -49,7 +50,7 @@ public class PrescriptionCreationDtoValidatorTest {
 		prescriptionCreationDto.setDrugName(null);
 
 		try {
-			PrescriptionCreationDtoValidator.validate(prescriptionCreationDto);
+			prescriptionCreationDtoValidator.validate(prescriptionCreationDto);
 		} catch (Exception e) {
 			fail("Should not have thrown an exception");
 		}
@@ -60,7 +61,7 @@ public class PrescriptionCreationDtoValidatorTest {
 		prescriptionCreationDto.setDin(null);
 		prescriptionCreationDto.setDrugName("");
 
-		PrescriptionCreationDtoValidator.validate(prescriptionCreationDto);
+		prescriptionCreationDtoValidator.validate(prescriptionCreationDto);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -68,7 +69,7 @@ public class PrescriptionCreationDtoValidatorTest {
 		prescriptionCreationDto.setDin(null);
 		prescriptionCreationDto.setDrugName(null);
 
-		PrescriptionCreationDtoValidator.validate(prescriptionCreationDto);
+		prescriptionCreationDtoValidator.validate(prescriptionCreationDto);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -76,31 +77,31 @@ public class PrescriptionCreationDtoValidatorTest {
 		prescriptionCreationDto.setDin(SAMPLE_DIN_PARAMETER);
 		prescriptionCreationDto.setDrugName(SAMPLE_DRUG_NAME_PARAMETER);
 
-		PrescriptionCreationDtoValidator.validate(prescriptionCreationDto);
+		prescriptionCreationDtoValidator.validate(prescriptionCreationDto);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void disallowsUnspecifiedStaffMemberParameter() throws Exception {
 		prescriptionCreationDto.setStaffMember(null);
-		PrescriptionCreationDtoValidator.validate(prescriptionCreationDto);
+		prescriptionCreationDtoValidator.validate(prescriptionCreationDto);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void disallowsUnspecifiedRenewalsParameter() throws Exception {
 		prescriptionCreationDto.setRenewals(null);
-		PrescriptionCreationDtoValidator.validate(prescriptionCreationDto);
+		prescriptionCreationDtoValidator.validate(prescriptionCreationDto);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void disallowsUnspecifiedDateParameter() throws Exception {
 		prescriptionCreationDto.setDate(null);
-		PrescriptionCreationDtoValidator.validate(prescriptionCreationDto);
+		prescriptionCreationDtoValidator.validate(prescriptionCreationDto);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void disallowsNegativeRenewalsParameter() throws Exception {
 		prescriptionCreationDto.setRenewals(-1);
-		PrescriptionCreationDtoValidator.validate(prescriptionCreationDto);
+		prescriptionCreationDtoValidator.validate(prescriptionCreationDto);
 	}
 
 	@Test
@@ -108,7 +109,7 @@ public class PrescriptionCreationDtoValidatorTest {
 		prescriptionCreationDto.setStaffMember(MIN_STAFF_MEMBER_PARAMETER);
 		
 		try {
-			PrescriptionCreationDtoValidator.validate(prescriptionCreationDto);
+			prescriptionCreationDtoValidator.validate(prescriptionCreationDto);
 		} catch (Exception e) {
 			fail("Should not have thrown an exception");
 		}
@@ -119,7 +120,7 @@ public class PrescriptionCreationDtoValidatorTest {
 		prescriptionCreationDto.setRenewals(MIN_RENEWALS_PARAMETER);
 		
 		try {
-			PrescriptionCreationDtoValidator.validate(prescriptionCreationDto);
+			prescriptionCreationDtoValidator.validate(prescriptionCreationDto);
 		} catch (Exception e) {
 			fail("Should not have thrown an exception");
 		}

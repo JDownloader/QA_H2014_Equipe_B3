@@ -8,10 +8,10 @@ import com.fasterxml.jackson.annotation.*;
 @Table(name = "DRUG", indexes = { @Index(name = "NAME_IDX", columnList = "NAME") })
 public class Drug {
 	@Id
-	protected Din din;
+	private Din din;
 	@JsonProperty("nom")
-	protected String name;
-	protected String description;
+	private String name;
+	private String description;
 
 	protected Drug() {
 		// Required for Hibernate.

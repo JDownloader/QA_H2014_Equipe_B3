@@ -10,9 +10,10 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ca.ulaval.glo4002.domain.prescription.PrescriptionFactory;
+import ca.ulaval.glo4002.domain.prescription.PrescriptionAssembler;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.dto.PrescriptionCreationDto;
+import ca.ulaval.glo4002.rest.dto.validators.PrescriptionCreationDtoValidator;
 import ca.ulaval.glo4002.rest.utils.BadRequestJsonResponseBuilder;
 import ca.ulaval.glo4002.rest.utils.ObjectMapperProvider;
 import ca.ulaval.glo4002.services.patient.PatientService;
@@ -43,7 +44,7 @@ public class PatientResource {
 	public Response post(String jsonRequest) throws Exception {
 		try {
 			PrescriptionCreationDto prescriptionCreationDto = mapJsonToPrescriptionCreationDto(jsonRequest);
-			patientService.createPrescription(prescriptionCreationDto, new PrescriptionFactory());
+			patientService.createPrescription(prescriptionCreationDto, new PrescriptionCreationDtoValidator(), new PrescriptionAssembler());
 			return Response.status(Status.CREATED).build();
 		} catch (JsonParseException | JsonMappingException e) {
 			return BadRequestJsonResponseBuilder.build(BAD_REQUEST_ERROR_CODE_PRES001, e.getMessage());

@@ -13,9 +13,10 @@ import org.junit.Test;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ca.ulaval.glo4002.domain.prescription.PrescriptionFactory;
+import ca.ulaval.glo4002.domain.prescription.PrescriptionAssembler;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.dto.PrescriptionCreationDto;
+import ca.ulaval.glo4002.rest.dto.validators.PrescriptionCreationDtoValidator;
 import ca.ulaval.glo4002.services.patient.PatientService;
 
 public class PatientResourceTest {
@@ -39,7 +40,7 @@ public class PatientResourceTest {
 	@Test
 	public void verifyAddPrescriptionCallsServiceMethodsCorrectly() throws Exception {
 		patientResource.post(SAMPLE_JSON_REQUEST);
-		verify(patientServiceMock).createPrescription(eq(prescriptionCreationDtoMock), any(PrescriptionFactory.class));
+		verify(patientServiceMock).createPrescription(eq(prescriptionCreationDtoMock), any(PrescriptionCreationDtoValidator.class), any(PrescriptionAssembler.class));
 	}
 
 	@Test
@@ -50,7 +51,7 @@ public class PatientResourceTest {
 
 	@Test
 	public void verifyAddPrescriptionReturnsBadRequestResponseWhenSpecifyingInvalidRequest() throws Exception {
-		doThrow(new ServiceRequestException()).when(patientServiceMock).createPrescription(eq(prescriptionCreationDtoMock), any(PrescriptionFactory.class));
+		doThrow(new ServiceRequestException()).when(patientServiceMock).createPrescription(eq(prescriptionCreationDtoMock), any(PrescriptionCreationDtoValidator.class), any(PrescriptionAssembler.class));
 
 		Response expectedResponse = Response.status(Status.BAD_REQUEST).build();
 		Response receivedResponse = patientResource.post(SAMPLE_JSON_REQUEST);
