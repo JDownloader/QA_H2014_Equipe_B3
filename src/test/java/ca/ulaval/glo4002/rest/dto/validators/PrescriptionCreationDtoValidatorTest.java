@@ -23,6 +23,7 @@ public class PrescriptionCreationDtoValidatorTest {
 	
 	@Before
 	public void init() throws Exception {
+		prescriptionCreationDtoValidator = new PrescriptionCreationDtoValidator();
 		prescriptionCreationDto = new PrescriptionCreationDto();
 		
 		prescriptionCreationDto.setStaffMember(SAMPLE_STAFF_MEMBER_PARAMETER);
