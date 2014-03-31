@@ -11,11 +11,9 @@ import ca.ulaval.glo4002.domain.prescription.Prescription;
 public class Patient {
 
 	@Id
-	@Column(name = "PATIENT_ID", nullable = false)
 	private int id;
 
 	@ElementCollection()
-	@JoinColumn(name = "PATIENT_ID")
 	private List<Prescription> prescriptions = new ArrayList<Prescription>();
 
 	protected Patient() {
@@ -24,10 +22,6 @@ public class Patient {
 
 	public Patient(int id) {
 		this.id = id;
-	}
-
-	public int getId() {
-		return id;
 	}
 
 	public void addPrescription(Prescription prescription) {

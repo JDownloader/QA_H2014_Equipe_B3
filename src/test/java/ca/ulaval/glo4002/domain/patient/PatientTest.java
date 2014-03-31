@@ -20,11 +20,6 @@ public class PatientTest {
 	}
 
 	@Test
-	public void returnsTheCorrectId() {
-		assertEquals(SAMPLE_PATIENT_ID, patient.getId());
-	}
-
-	@Test
 	public void addsPrescriptionCorrectly() throws ItemNotFoundException {
 		Prescription prescriptionMock = mock(Prescription.class);
 		patient.addPrescription(prescriptionMock);

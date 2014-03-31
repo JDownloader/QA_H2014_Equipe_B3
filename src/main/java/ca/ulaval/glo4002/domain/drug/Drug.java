@@ -2,26 +2,35 @@ package ca.ulaval.glo4002.domain.drug;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.*;
+
 @Entity(name = "DRUG")
 @Table(name = "DRUG", indexes = { @Index(name = "NAME_IDX", columnList = "NAME") })
-public abstract class Drug {
+public class Drug {
 	@Id
-	@Column(name = "DIN")
-	protected Din din = null;
-
-	@Column(name = "NAME")
-	protected String name = "";
-
-	@Column(name = "DESCRIPTION")
-	protected String description = "";
+	private Din din;
+	@JsonProperty("nom")
+	private String name;
+	private String description;
 
 	protected Drug() {
 		// Required for Hibernate.
 	}
-
-	public Din getDin() throws NoSuchFieldException {
+	
+	public Drug(Din din, String name, String description) {
+		this.din = din;
+		this.name = name;
+		this.description = description;
+	}
+	
+	public Din getDin() {
 		return this.din;
 	}
+	
+	public void setDin(Din din) {
+		din = this.din;
+	}
+
 
 	public String getName() {
 		return this.name;

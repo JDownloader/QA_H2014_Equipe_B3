@@ -4,86 +4,52 @@ import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.ulaval.glo4002.domain.drug.Din;
-import ca.ulaval.glo4002.domain.drug.Drug;
-import ca.ulaval.glo4002.exceptions.RequestParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
-import ca.ulaval.glo4002.rest.requestparsers.drug.DrugSearchRequestParser;
-import ca.ulaval.glo4002.rest.requestparsers.drug.DrugSearchRequestParserFactory;
-import ca.ulaval.glo4002.services.drug.DrugService;
+import ca.ulaval.glo4002.rest.dto.DrugSearchDto;
+import ca.ulaval.glo4002.services.DrugService;
 
 public class DrugResourceTest {
-	private static final Din SAMPLE_DIN = new Din(5);
-	private static final String SAMPLE_DRUG_NAME = "Drug";
-	private static final String SAMPLE_DESCRIPTION = "Description";
+
 	private static final String SAMPLE_JSON_REQUEST = "{attrib: value}";
 
 	private DrugService drugServiceMock;
-	private DrugSearchRequestParser drugSearchRequestParserMock;
-	private DrugSearchRequestParserFactory drugSearchRequestParserFactoryMock;
+	private DrugSearchDto drugSearchDtoMock;
+	private ObjectMapper objectMapperMock;
 	private DrugResource drugResource;
-	private Drug drugMock;
 
 	@Before
 	public void init() throws Exception {
-		createMocks();
-		stubDrugMethods();
-		stubDrugServiceMethods();
-		stubRequestParserMethods();
-		buildPrescriptionResource();
-	}
-
-	private void createMocks() {
-		drugMock = mock(Drug.class);
 		drugServiceMock = mock(DrugService.class);
-		drugSearchRequestParserMock = mock(DrugSearchRequestParser.class);
-		drugSearchRequestParserFactoryMock = mock(DrugSearchRequestParserFactory.class);
-	}
-
-	private void stubRequestParserMethods() throws Exception {
-		when(drugSearchRequestParserFactoryMock.getParser(any(JSONObject.class))).thenReturn(drugSearchRequestParserMock);
-	}
-
-	private void buildPrescriptionResource() {
-		drugResource = new DrugResource(drugServiceMock, drugSearchRequestParserFactoryMock);
+		drugSearchDtoMock = mock(DrugSearchDto.class);
+		objectMapperMock = mock(ObjectMapper.class);
+		drugResource = new DrugResource(drugServiceMock, objectMapperMock);
+		when(objectMapperMock.readValue(anyString(), eq(DrugSearchDto.class))).thenReturn(drugSearchDtoMock);
 	}
 
 	@Test
-	public void verifySearchDrugCallsServiceMethodsCorrectly() throws Exception {
+	public void verifyDrugSearchCallsServiceMethodsCorrectly() throws Exception {
 		drugResource.post(SAMPLE_JSON_REQUEST);
-		verify(drugServiceMock).searchDrug(drugSearchRequestParserMock);
+		verify(drugServiceMock).searchDrug(eq(drugSearchDtoMock));
 	}
 
-	@Test
-	public void verifySearchDrugReturnsCreatedResponse() throws Exception {
+	@Test //TODO: Test Json response string
+	public void verifyDrugSearchReturnsCreatedResponse() throws Exception {
 		Response response = drugResource.post(SAMPLE_JSON_REQUEST);
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}
 
-	private void stubDrugServiceMethods() throws ServiceRequestException, Exception {
-		ArrayList<Drug> drugMocks = new ArrayList<Drug>(Arrays.asList(drugMock));
-		when(drugServiceMock.searchDrug(drugSearchRequestParserMock)).thenReturn(drugMocks);
-	}
-
-	private void stubDrugMethods() throws NoSuchFieldException {
-		when(drugMock.getDin()).thenReturn(SAMPLE_DIN);
-		when(drugMock.getDescription()).thenReturn(SAMPLE_DESCRIPTION);
-		when(drugMock.getName()).thenReturn(SAMPLE_DRUG_NAME);
-	}
-
 	@Test
-	public void verifySearchDrugReturnsBadRequestResponseWhenSpecifyingInvalidRequest() throws Exception {
-		doThrow(new ServiceRequestException()).when(drugServiceMock).searchDrug(drugSearchRequestParserMock);
+	public void verifyDrugSearchReturnsBadRequestResponseWhenSpecifyingInvalidRequest() throws Exception {
+		doThrow(new ServiceRequestException()).when(drugServiceMock).searchDrug(eq(drugSearchDtoMock));
 
 		Response expectedResponse = Response.status(Status.BAD_REQUEST).build();
 		Response receivedResponse = drugResource.post(SAMPLE_JSON_REQUEST);
@@ -92,22 +58,12 @@ public class DrugResourceTest {
 	}
 	
 	@Test
-	public void verifySearchDrugReturnsBadRequestResponseWhenSpecifyingInvalidRequestString() throws Exception {
-		doThrow(new RequestParseException()).when(drugSearchRequestParserFactoryMock).getParser(any(JSONObject.class));
+	public void verifyDrugSearchReturnsBadRequestResponseWhenSpecifyingInvalidJsonRequestString() throws Exception {
+		doThrow(new JsonMappingException("")).when(objectMapperMock).readValue(anyString(), eq(DrugSearchDto.class));
 
 		Response expectedResponse = Response.status(Status.BAD_REQUEST).build();
 		Response receivedResponse = drugResource.post(SAMPLE_JSON_REQUEST);
-
-		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
-	}
-	
-	@Test
-	public void verifySearchDrugReturnsInternalServerErrorResponseOnUnhandledException() throws Exception {
-		doThrow(new Exception()).when(drugServiceMock).searchDrug(drugSearchRequestParserMock);
-
-		Response expectedResponse = Response.status(Status.INTERNAL_SERVER_ERROR).build();
-		Response receivedResponse = drugResource.post(SAMPLE_JSON_REQUEST);
-
+		
 		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
 	}
 }

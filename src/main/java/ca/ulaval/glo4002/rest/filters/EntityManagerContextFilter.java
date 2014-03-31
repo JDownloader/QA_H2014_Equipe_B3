@@ -20,7 +20,6 @@ public class EntityManagerContextFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
 		EntityManager entityManager = null;
-		EntityTransaction entityTransaction = null;
 
 		try {
 			entityManager = entityManagerFactory.createEntityManager();
@@ -28,9 +27,6 @@ public class EntityManagerContextFilter implements Filter {
 
 			chain.doFilter(request, response);
 		} finally {
-			if (entityTransaction != null && entityTransaction.isActive()) {
-				entityTransaction.rollback();
-			}
 			if (entityManager != null) {
 				entityManager.close();
 			}

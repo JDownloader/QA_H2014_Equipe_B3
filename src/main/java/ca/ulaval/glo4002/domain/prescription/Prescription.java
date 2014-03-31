@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+import org.apache.commons.lang3.StringUtils;
+
 import ca.ulaval.glo4002.domain.drug.Drug;
 import ca.ulaval.glo4002.domain.staff.StaffMember;
 
@@ -12,62 +14,74 @@ public class Prescription {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "PRESCRIPTION_ID", nullable = false)
 	private int id;
 
 	@ManyToOne()
-	@JoinColumn(name = "DRUG")
 	private Drug drug;
-
-	@Column(name = "DRUG_NAME")
 	private String drugName;
-
-	@Column(name = "RENEWALS", nullable = false)
 	private int allowedNumberOfRenewal;
-
-	@Column(name = "DATE", nullable = false)
 	private Date date;
-
-	@Column(name = "STAFF_MEMBER", nullable = false)
 	private StaffMember staffMember;
 
 	protected Prescription() {
 		// Required for Hibernate
 	}
 
-	public Prescription(PrescriptionBuilder builder) {
+	public Prescription(Builder builder) {
 		this.drug = builder.drug;
 		this.drugName = builder.drugName;
 		this.staffMember = builder.staffMember;
 		this.allowedNumberOfRenewal = builder.allowedNumberOfRenewal;
 		this.date = builder.date;
 	}
-
-	public boolean compareId(int id) {
-		return this.id == id;
-	}
-
-	public int getId() {
-		return this.id;
-	}
-
-	public Drug getDrug() {
-		return this.drug;
-	}
-
+	
 	public String getDrugName() {
-		return this.drugName;
+		return drugName;
 	}
 
 	public int getAllowedNumberOfRenewal() {
-		return this.allowedNumberOfRenewal;
+		return allowedNumberOfRenewal;
 	}
-
+	
 	public Date getDate() {
-		return this.date;
+		return date;
+	}
+	public StaffMember getStaffMember() {
+		return staffMember;
 	}
 
-	public StaffMember getStaffMember() {
-		return this.staffMember;
+	public static class Builder {
+		private Drug drug;
+		private String drugName;
+		private int allowedNumberOfRenewal;
+		private Date date;
+		private StaffMember staffMember;
+		
+		public Builder(int allowedNumberOfRenewal, Date date, StaffMember staffMember) {
+			this.staffMember = staffMember;
+			this.allowedNumberOfRenewal = allowedNumberOfRenewal;
+			this.date = date;
+		}
+		
+		public Builder withDrug(Drug drug) {
+			this.drug = drug;
+			return this;
+		}
+		
+		public Builder withDrugName(String drugName) {
+			this.drugName = drugName;
+			return this;
+		}
+		
+		public Prescription build() {
+			if (drug == null && StringUtils.isBlank(drugName)) {
+				throw new IllegalStateException("Parameter 'drug' or 'drugName' must be specified.");
+			} else if (drug != null && !StringUtils.isBlank(drugName)) {
+				throw new IllegalStateException("Either parameter 'drug' or 'drugName' must be specified, but not both.");
+			} else if (allowedNumberOfRenewal < 0) {
+				throw new IllegalArgumentException("Parameter 'renouvellements' must be greater or equal to 0.");
+			}
+			return new Prescription(this);
+		}
 	}
 }

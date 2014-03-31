@@ -9,7 +9,7 @@ public interface DrugRepository {
 
 	void create(Drug drug) throws EntityExistsException;
 
-	Drug getByDin(Din din) throws EntityNotFoundException, NoSuchFieldException;
+	Drug getByDin(Din din) throws EntityNotFoundException;
 
-	List<Drug> findByName(String name) throws Exception;
+	List<Drug> search(String name) throws Exception;
 }
