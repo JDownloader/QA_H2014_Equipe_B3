@@ -11,9 +11,10 @@ import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.persistence.drug.HibernateDrugRepository;
 import ca.ulaval.glo4002.rest.dto.DrugSearchDto;
-import ca.ulaval.glo4002.rest.dto.DrugSearchResultDto;
 
 public class DrugService {
+	public static final String ERROR_SERVICE_REQUEST_EXCEPTION_DIN001 = "DIN001";
+	
 	private DrugRepository drugRepository;
 	private EntityManager entityManager;
 	private EntityTransaction entityTransaction;
@@ -30,24 +31,17 @@ public class DrugService {
 		this.entityTransaction = entityManager.getTransaction();		
 	}
 
-	public DrugSearchResultDto searchDrug(DrugSearchDto drugSearchDto) throws ServiceRequestException, Exception {
+	public List<Drug> searchDrug(DrugSearchDto drugSearchDto) throws ServiceRequestException, Exception {
 		try {
 			entityTransaction.begin();
 			List<Drug> drugResults = drugRepository.search(drugSearchDto.getName());
 			entityTransaction.commit();
-			return buildDrugSearchResultDto(drugResults);
+			return drugResults;
 		} catch (Exception e) {
 			if (entityTransaction.isActive()) {
 				entityTransaction.rollback();
 			}
-			throw e;
+			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_DIN001, e.getMessage());
 		}
 	}
-	
-	private DrugSearchResultDto buildDrugSearchResultDto(List<Drug> drugResults) throws NoSuchFieldException {
-		DrugSearchResultDto drugSearchResultDto = new DrugSearchResultDto();
-		drugSearchResultDto.setDrugSearchResultEntries(drugResults);
-		return drugSearchResultDto;
-	}
-
 }

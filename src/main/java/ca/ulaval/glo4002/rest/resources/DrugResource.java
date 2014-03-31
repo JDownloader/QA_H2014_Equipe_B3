@@ -3,6 +3,7 @@ package ca.ulaval.glo4002.rest.resources;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.List;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -13,9 +14,9 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ca.ulaval.glo4002.domain.drug.Drug;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.dto.DrugSearchDto;
-import ca.ulaval.glo4002.rest.dto.DrugSearchResultDto;
 import ca.ulaval.glo4002.rest.utils.BadRequestJsonResponseBuilder;
 import ca.ulaval.glo4002.rest.utils.ObjectMapperProvider;
 import ca.ulaval.glo4002.services.drug.DrugService;
@@ -44,8 +45,8 @@ public class DrugResource {
 	public Response post(String request) throws Exception {
 		try {
 			DrugSearchDto requestParser = mapJsonToDrugSearchDto(request);
-			DrugSearchResultDto drugSearchResultDto = drugService.searchDrug(requestParser);
-			return buildDrugResultResponse(drugSearchResultDto);
+			List<Drug> drugResults = drugService.searchDrug(requestParser);
+			return buildDrugResultResponse(drugResults);
 		} catch (JsonParseException | JsonMappingException e) {
 			return BadRequestJsonResponseBuilder.build(BAD_REQUEST_ERROR_CODE_DIN001, e.getMessage());
 		} catch (ServiceRequestException e) {
@@ -57,9 +58,9 @@ public class DrugResource {
 		return objectMapper.readValue(jsonRequest, DrugSearchDto.class);
 	}
 
-	private Response buildDrugResultResponse(DrugSearchResultDto drugSearchResultDto) throws JsonGenerationException, JsonMappingException, IOException {
+	private Response buildDrugResultResponse(List<Drug> drugResults) throws JsonGenerationException, JsonMappingException, IOException {
 		Writer stringWriter = new StringWriter();
-		objectMapper.writeValue(stringWriter, drugSearchResultDto);
+		objectMapper.writeValue(stringWriter, drugResults);
 		return Response.status(Status.OK).type(MediaType.APPLICATION_JSON).entity(stringWriter.toString()).build();
 	}
 

@@ -22,10 +22,15 @@ public class Drug {
 		this.name = name;
 		this.description = description;
 	}
-
-	public Din getDin() throws NoSuchFieldException {
+	
+	public Din getDin() {
 		return this.din;
 	}
+	
+	public void setDin(Din din) {
+		din = this.din;
+	}
+
 
 	public String getName() {
 		return this.name;
