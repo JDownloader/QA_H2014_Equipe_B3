@@ -13,8 +13,7 @@ import ca.ulaval.glo4002.services.dto.validators.PrescriptionCreationDtoValidato
 
 @Path("patient/{patient_number: [0-9]+}/prescriptions/")
 public class PatientResource {
-	public static final String BAD_REQUEST_ERROR_CODE_PRES001 = "PRES001";
-
+	
 	private PatientService patientService; 
 
 	public PatientResource() {

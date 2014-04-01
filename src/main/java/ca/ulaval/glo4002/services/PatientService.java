@@ -43,9 +43,9 @@ public class PatientService {
 
 	public void createPrescription(PrescriptionCreationDto prescriptionCreationDto, PrescriptionCreationDtoValidator prescriptionCreationDtoValidator, PrescriptionAssembler prescriptionAssembler) throws ServiceRequestException {
 		try {
+			prescriptionCreationDtoValidator.validate(prescriptionCreationDto);
 			entityTransaction.begin();
 			
-			prescriptionCreationDtoValidator.validate(prescriptionCreationDto);
 			doCreatePrescription(prescriptionCreationDto, prescriptionAssembler);
 			
 			entityTransaction.commit();

@@ -18,7 +18,7 @@ public class PrescriptionCreationDtoValidator {
 		validateDinAndName(prescriptionCreationDto);
 	}
 	
-	private void validateDinAndName(PrescriptionCreationDto prescriptionCreationDto) throws IllegalArgumentException {
+	private void validateDinAndName(PrescriptionCreationDto prescriptionCreationDto) {
 		boolean hasDrugName = !StringUtils.isBlank(prescriptionCreationDto.getDrugName());
 		boolean hasDin = prescriptionCreationDto.getDin() != null;
 
