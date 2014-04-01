@@ -10,7 +10,7 @@ import ca.ulaval.glo4002.domain.drug.DrugRepository;
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.persistence.HibernateDrugRepository;
-import ca.ulaval.glo4002.rest.dto.DrugSearchDto;
+import ca.ulaval.glo4002.services.dto.DrugSearchDto;
 
 public class DrugService {
 	public static final String ERROR_SERVICE_REQUEST_EXCEPTION_DIN001 = "DIN001";
@@ -34,10 +34,12 @@ public class DrugService {
 	public List<Drug> searchDrug(DrugSearchDto drugSearchDto) throws ServiceRequestException {
 		try {
 			entityTransaction.begin();
+			
 			List<Drug> drugResults = drugRepository.search(drugSearchDto.getName());
+			
 			entityTransaction.commit();
 			return drugResults;
-		} catch (RuntimeException e) {
+		} catch (Exception e) {
 			if (entityTransaction.isActive()) {
 				entityTransaction.rollback();
 			}

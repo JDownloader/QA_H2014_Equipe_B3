@@ -29,7 +29,7 @@ public class HospitalRestMain {
 
 	public static void main(String[] args) throws Exception {
 		try {
-			doRepositoryFill();
+			doDemoRepositoryFilling();
 		} catch (Exception e) {
 			System.out.println(String.format("An error occured while filling one or more repositories: %s", e.getMessage()));
 			return;
@@ -38,7 +38,7 @@ public class HospitalRestMain {
 		new HospitalRestMain().execute();
 	}
 
-	public static void doRepositoryFill() throws IOException, BadFileFormatException {
+	public static void doDemoRepositoryFilling() throws IOException, BadFileFormatException {
 		EntityManagerFactory entityManagerFactory = EntityManagerFactoryProvider.getFactory();
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		fillDrugRepository(entityManager);
@@ -60,7 +60,7 @@ public class HospitalRestMain {
 
 	public void execute() throws Exception {
 		Server server = new Server(HTTP_SERVER_PORT);
-
+		
 		ServletContextHandler servletContextHandler = new ServletContextHandler(server, "/");
 		servletContextHandler.addFilter(EntityManagerContextFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
 

@@ -6,7 +6,7 @@ public class StaffMember implements Serializable {
 
 	private static final long serialVersionUID = -7716343327245896940L;
 
-	private int licenseNumber;
+	private int licenseNumber; //TODO: Change to String
 
 	public StaffMember(int licenseNumber) {
 		this.licenseNumber = licenseNumber;

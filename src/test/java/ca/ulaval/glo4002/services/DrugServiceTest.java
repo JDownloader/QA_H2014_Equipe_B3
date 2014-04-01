@@ -15,8 +15,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import ca.ulaval.glo4002.domain.drug.*;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
-import ca.ulaval.glo4002.rest.dto.DrugSearchDto;
 import ca.ulaval.glo4002.services.DrugService;
+import ca.ulaval.glo4002.services.dto.DrugSearchDto;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DrugServiceTest {
