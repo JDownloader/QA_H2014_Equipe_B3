@@ -30,7 +30,7 @@ public class HibernateDrugRepository extends HibernateRepository implements Drug
 		return drug;
 	}
 
-	public List<Drug> search(String name) throws Exception {
+	public List<Drug> search(String name) {
 		validateSearchParameters(name);
 		return performSearch(name);
 	}

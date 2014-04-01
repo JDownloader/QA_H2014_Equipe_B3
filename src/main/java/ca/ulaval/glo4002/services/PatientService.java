@@ -46,7 +46,7 @@ public class PatientService {
 			prescriptionCreationDtoValidator.validate(prescriptionCreationDto);
 			executePrescriptionCreationUseCase(prescriptionCreationDto, prescriptionAssembler);
 			entityTransaction.commit();
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			if (entityTransaction.isActive()) {
 				entityTransaction.rollback();
 			}
@@ -54,7 +54,7 @@ public class PatientService {
 		}
 	}
 
-	protected void executePrescriptionCreationUseCase(PrescriptionCreationDto prescriptionCreationDto, PrescriptionAssembler prescriptionAssembler) throws ServiceRequestException {
+	protected void executePrescriptionCreationUseCase(PrescriptionCreationDto prescriptionCreationDto, PrescriptionAssembler prescriptionAssembler) {
 		Prescription prescription = prescriptionAssembler.assemblePrescription(prescriptionCreationDto, drugRepository);
 		prescriptionRepository.persist(prescription);
 		Patient patient = patientRepository.getById(prescriptionCreationDto.getPatientNumber());

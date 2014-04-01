@@ -31,13 +31,13 @@ public class DrugService {
 		this.entityTransaction = entityManager.getTransaction();		
 	}
 
-	public List<Drug> searchDrug(DrugSearchDto drugSearchDto) throws ServiceRequestException, Exception {
+	public List<Drug> searchDrug(DrugSearchDto drugSearchDto) throws ServiceRequestException {
 		try {
 			entityTransaction.begin();
 			List<Drug> drugResults = drugRepository.search(drugSearchDto.getName());
 			entityTransaction.commit();
 			return drugResults;
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			if (entityTransaction.isActive()) {
 				entityTransaction.rollback();
 			}

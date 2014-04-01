@@ -11,5 +11,5 @@ public interface DrugRepository {
 
 	Drug getByDin(Din din) throws EntityNotFoundException;
 
-	List<Drug> search(String name) throws Exception;
+	List<Drug> search(String name);
 }
