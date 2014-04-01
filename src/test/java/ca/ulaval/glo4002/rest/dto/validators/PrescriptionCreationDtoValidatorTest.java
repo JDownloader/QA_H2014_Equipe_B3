@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ca.ulaval.glo4002.services.dto.PrescriptionCreationDto;
-import ca.ulaval.glo4002.services.dto.validators.PrescriptionCreationDtoValidator;
+import ca.ulaval.glo4002.services.dto.validators.*;
 import ca.ulaval.glo4002.utils.DateParser;
 
 public class PrescriptionCreationDtoValidatorTest {
@@ -60,7 +60,7 @@ public class PrescriptionCreationDtoValidatorTest {
 		}
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = PrescriptionCreationException.class)
 	public void disallowsEmptyDrugName() throws Exception {
 		when(prescriptionCreationDtoMock.getDin()).thenReturn(null);
 		when(prescriptionCreationDtoMock.getDrugName()).thenReturn("");
@@ -68,7 +68,7 @@ public class PrescriptionCreationDtoValidatorTest {
 		prescriptionCreationDtoValidator.validate(prescriptionCreationDtoMock);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = PrescriptionCreationException.class)
 	public void disallowsUnspecifiedDrugAndDrugNameParameters() throws Exception {
 		when(prescriptionCreationDtoMock.getDin()).thenReturn(null);
 		when(prescriptionCreationDtoMock.getDrugName()).thenReturn(null);
@@ -76,7 +76,7 @@ public class PrescriptionCreationDtoValidatorTest {
 		prescriptionCreationDtoValidator.validate(prescriptionCreationDtoMock);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = PrescriptionCreationException.class)
 	public void disallowsDrugAndDrugNameParametersBothSpecified() throws Exception {
 		when(prescriptionCreationDtoMock.getDin()).thenReturn(SAMPLE_DIN_PARAMETER);
 		when(prescriptionCreationDtoMock.getDrugName()).thenReturn(SAMPLE_DRUG_NAME_PARAMETER);
@@ -84,25 +84,25 @@ public class PrescriptionCreationDtoValidatorTest {
 		prescriptionCreationDtoValidator.validate(prescriptionCreationDtoMock);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = PrescriptionCreationException.class)
 	public void disallowsUnspecifiedStaffMemberParameter() throws Exception {
 		when(prescriptionCreationDtoMock.getStaffMember()).thenReturn(null);
 		prescriptionCreationDtoValidator.validate(prescriptionCreationDtoMock);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = PrescriptionCreationException.class)
 	public void disallowsUnspecifiedRenewalsParameter() throws Exception {
 		when(prescriptionCreationDtoMock.getRenewals()).thenReturn(null);
 		prescriptionCreationDtoValidator.validate(prescriptionCreationDtoMock);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = PrescriptionCreationException.class)
 	public void disallowsUnspecifiedDateParameter() throws Exception {
 		when(prescriptionCreationDtoMock.getDate()).thenReturn(null);
 		prescriptionCreationDtoValidator.validate(prescriptionCreationDtoMock);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = PrescriptionCreationException.class)
 	public void disallowsNegativeRenewalsParameter() throws Exception {
 		when(prescriptionCreationDtoMock.getRenewals()).thenReturn(-1);
 		prescriptionCreationDtoValidator.validate(prescriptionCreationDtoMock);

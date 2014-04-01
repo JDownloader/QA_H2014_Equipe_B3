@@ -40,10 +40,11 @@ public class DrugService {
 			entityTransaction.commit();
 			return drugResults;
 		} catch (Exception e) {
+			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_DIN001, e.getMessage());
+		} finally {
 			if (entityTransaction.isActive()) {
 				entityTransaction.rollback();
 			}
-			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_DIN001, e.getMessage());
 		}
 	}
 }

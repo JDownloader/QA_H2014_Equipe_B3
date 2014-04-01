@@ -50,10 +50,11 @@ public class PatientService {
 			
 			entityTransaction.commit();
 		} catch (Exception e) {
+			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_PRES001, e.getMessage());
+		} finally {
 			if (entityTransaction.isActive()) {
 				entityTransaction.rollback();
 			}
-			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_PRES001, e.getMessage());
 		}
 	}
 
