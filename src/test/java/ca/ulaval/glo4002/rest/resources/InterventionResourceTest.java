@@ -18,7 +18,7 @@ import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParser;
 import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParserFactory;
 import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.*;
-import ca.ulaval.glo4002.services.intervention.InterventionService;
+import ca.ulaval.glo4002.services.InterventionService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class InterventionResourceTest {

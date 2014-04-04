@@ -20,7 +20,7 @@ import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequ
 import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParserFactory;
 import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.*;
 import ca.ulaval.glo4002.rest.utils.BadRequestJsonResponseBuilder;
-import ca.ulaval.glo4002.services.intervention.InterventionService;
+import ca.ulaval.glo4002.services.InterventionService;
 import ca.ulaval.glo4002.services.intervention.InterventionServiceBuilder;
 
 @Path("interventions/")

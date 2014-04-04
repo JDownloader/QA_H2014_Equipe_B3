@@ -5,12 +5,13 @@ import javax.persistence.EntityTransaction;
 import ca.ulaval.glo4002.domain.intervention.InterventionRepository;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolRepository;
+import ca.ulaval.glo4002.services.InterventionService;
 
 public class InterventionServiceBuilder {
-	protected InterventionRepository interventionRepository = null;
-	protected PatientRepository patientRepository = null;
-	protected SurgicalToolRepository surgicalToolRepository = null;
-	protected EntityTransaction entityTransaction = null;
+	public InterventionRepository interventionRepository = null;
+	public PatientRepository patientRepository = null;
+	public SurgicalToolRepository surgicalToolRepository = null;
+	public EntityTransaction entityTransaction = null;
 
 	public InterventionServiceBuilder interventionRepository(InterventionRepository prescriptionRepository) {
 		this.interventionRepository = prescriptionRepository;

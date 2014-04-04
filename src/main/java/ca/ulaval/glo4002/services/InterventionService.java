@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.services.intervention;
+package ca.ulaval.glo4002.services;
 
 import java.util.Arrays;
 
@@ -12,6 +12,7 @@ import ca.ulaval.glo4002.domain.surgicaltool.*;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParser;
 import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.*;
+import ca.ulaval.glo4002.services.intervention.InterventionServiceBuilder;
 
 public class InterventionService {
 	private static final String ERROR_SERVICE_REQUEST_EXCEPTION_INT002 = "INT002";

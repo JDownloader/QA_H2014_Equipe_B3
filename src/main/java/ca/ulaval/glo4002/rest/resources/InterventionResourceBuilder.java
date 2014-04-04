@@ -3,7 +3,7 @@ package ca.ulaval.glo4002.rest.resources;
 import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParserFactory;
 import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.CreateSurgicalToolRequestParserFactory;
 import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.ModifySurgicalToolRequestParserFactory;
-import ca.ulaval.glo4002.services.intervention.InterventionService;
+import ca.ulaval.glo4002.services.InterventionService;
 
 public class InterventionResourceBuilder {
 	protected InterventionService service;
