@@ -23,10 +23,10 @@ public class CreateInterventionRequestParserTest {
 	private static final String SAMPLE_ROOM_PARAMETER = "room";
 	private static final int SAMPLE_PATIENT_PARAMETER = 2;
 	private static final int SAMPLE_SURGEON_PARAMETER = 101224;
-	private static final String SAMPLE_STATUS_PARAMETER = "en_cours";
-	private static final String INVALID_STATUS_PARAMETER = "invalid";
-	private static final String SAMPLE_TYPE_PARAMETER = "moelle";
-	private static final String INVALID_TYPE_PARAMETER = "invalid";
+	private static final String SAMPLE_STATUS_PARAMETER = "EN_COURS";
+	private static final String INVALID_STATUS_PARAMETER = "INVALIDE";
+	private static final String SAMPLE_TYPE_PARAMETER = "MOELLE";
+	private static final String INVALID_TYPE_PARAMETER = "INVALIDE";
 	private static final int MIN_PATIENT_PARAMETER = 2;
 	private static final int MIN_SURGEON_PARAMETER = 101224;
 
@@ -173,12 +173,12 @@ public class CreateInterventionRequestParserTest {
 
 	@Test
 	public void returnsCorrectType() throws Exception {
-		assertEquals(InterventionType.MOELLE, createInterventionRequest.getType());
+		assertEquals(InterventionType.MARROW, createInterventionRequest.getType());
 	}
 
 	@Test
 	public void returnsCorrectStatus() throws Exception {
-		assertEquals(InterventionStatus.EN_COURS, createInterventionRequest.getStatus());
+		assertEquals(InterventionStatus.IN_PROGRESS, createInterventionRequest.getStatus());
 	}
 
 	@Test
