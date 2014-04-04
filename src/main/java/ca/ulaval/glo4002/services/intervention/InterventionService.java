@@ -19,8 +19,8 @@ public class InterventionService {
 	private static final String ERROR_SERVICE_REQUEST_EXCEPTION_INT011 = "INT011";
 	private static final String ERROR_SERVICE_REQUEST_EXCEPTION_INT012 = "INT012";
 
-	private static final InterventionType[] forbiddenInterventionTypesForAnonymousSurgicalTools = { InterventionType.OEIL, InterventionType.COEUR,
-			InterventionType.MOELLE };
+	private static final InterventionType[] forbiddenInterventionTypesForAnonymousSurgicalTools = { InterventionType.EYE, InterventionType.HEART,
+			InterventionType.MARROW };
 
 	private InterventionRepository interventionRepository;
 	private PatientRepository patientRepository;

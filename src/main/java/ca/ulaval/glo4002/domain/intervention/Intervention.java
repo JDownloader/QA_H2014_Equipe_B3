@@ -8,50 +8,30 @@ import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalTool;
 
-@Entity(name = "INTERVENTION")
+@Entity
 public class Intervention {
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-
-	@Column(name = "DESCRIPTION", nullable = false)
+	@Column
 	private String description;
-
-	@Column(name = "SURGEON", nullable = false)
+	@Column
 	private Surgeon surgeon;
-
-	@Column(name = "DATE", nullable = false)
+	@Column
 	private Date date;
-
-	@Column(name = "ROOM", nullable = false)
+	@Column
 	private String room;
-
-	@Column(name = "TYPE", nullable = false)
+	@Column
 	private InterventionType type;
-
-	@Column(name = "STATUS", nullable = false)
+	@Column
 	private InterventionStatus status;
-
 	@ManyToOne()
-	@JoinColumn(name = "PATIENT", nullable = false)
 	private Patient patient;
-
 	@ElementCollection()
-	@JoinColumn(name = "INTERVENTION")
 	private List<SurgicalTool> surgicalTools = new ArrayList<SurgicalTool>();
 
 	protected Intervention() {
 		// Required for Hibernate.
-	}
-
-	public Intervention(InterventionBuilder builder) {
-		this.description = builder.description;
-		this.surgeon = builder.surgeon;
-		this.date = builder.date;
-		this.room = builder.room;
-		this.type = builder.type;
-		this.patient = builder.patient;
-		this.status = builder.status;
 	}
 
 	public int getId() {
@@ -92,5 +72,16 @@ public class Intervention {
 
 	public boolean hasSurgicalTool(SurgicalTool surgicalTool) {
 		return surgicalTools.contains(surgicalTool);
+	}
+	
+	//TODO : remove when nobody depends on this
+	public Intervention(InterventionBuilder builder) {
+		this.description = builder.description;
+		this.surgeon = builder.surgeon;
+		this.date = builder.date;
+		this.room = builder.room;
+		this.type = builder.type;
+		this.patient = builder.patient;
+		this.status = builder.status;
 	}
 }

@@ -3,28 +3,24 @@ package ca.ulaval.glo4002.domain.intervention;
 import java.io.Serializable;
 
 public enum InterventionStatus implements Serializable {
-	PLANIFIEE("Planifiee"), EN_COURS("En_cours"), TERMINEE("Terminee"), ANNULEE("Annulee"), REPORTEE("Reportee"), UNDEFINED("");
+	PLANNED("PLANIFIEE"), IN_PROGRESS("EN_COURS"), DONE("TERMINEE"), CANCELLED("ANNULEE"), POSTPONED("REPORTEE");
 	private String value;
 
 	private InterventionStatus(String value) {
 		this.value = value;
 	}
-
-	@Override
-	public String toString() {
-		return super.toString();
-	}
-
+	
 	public String getValue() {
 		return value;
 	}
 
 	public static InterventionStatus fromString(String statusName) {
 		for (InterventionStatus interventionStatus : InterventionStatus.values()) {
-			if (statusName.compareToIgnoreCase(interventionStatus.getValue()) == 0) {
+			if (statusName.compareTo(interventionStatus.getValue()) == 0) {
 				return interventionStatus;
 			}
 		}
-		throw new IllegalArgumentException(String.format("'%s' is not a valid value for enumeration InterventionStatus.", statusName));
+		
+		throw new IllegalArgumentException(String.format("'%s' n'est pas un statut d'intervention valide.", statusName));
 	}
 }
