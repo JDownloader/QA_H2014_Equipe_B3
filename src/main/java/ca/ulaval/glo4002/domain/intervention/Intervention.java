@@ -33,6 +33,19 @@ public class Intervention {
 	protected Intervention() {
 		// Required for Hibernate.
 	}
+	
+	//TODO : constructor from DTO
+	
+	//TODO : remove when nobody depends on this
+	public Intervention(InterventionBuilder builder) {
+		this.description = builder.description;
+		this.surgeon = builder.surgeon;
+		this.date = builder.date;
+		this.room = builder.room;
+		this.type = builder.type;
+		this.patient = builder.patient;
+		this.status = builder.status;
+	}
 
 	public int getId() {
 		return id;
@@ -74,14 +87,4 @@ public class Intervention {
 		return surgicalTools.contains(surgicalTool);
 	}
 	
-	//TODO : remove when nobody depends on this
-	public Intervention(InterventionBuilder builder) {
-		this.description = builder.description;
-		this.surgeon = builder.surgeon;
-		this.date = builder.date;
-		this.room = builder.room;
-		this.type = builder.type;
-		this.patient = builder.patient;
-		this.status = builder.status;
-	}
 }
