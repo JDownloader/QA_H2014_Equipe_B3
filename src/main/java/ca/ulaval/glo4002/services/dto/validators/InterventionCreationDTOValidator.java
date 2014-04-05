@@ -1,0 +1,24 @@
+package ca.ulaval.glo4002.services.dto.validators;
+
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+
+import ca.ulaval.glo4002.rest.response.InterventionCreationResponse;
+import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
+
+public class InterventionCreationDTOValidator {
+	InterventionCreationResponse interventionCreationResponse;
+	
+	public Response validateDTO(InterventionCreationDTO interventionCreationDTO){
+		if((interventionCreationDTO.getDescription() == null) || (interventionCreationDTO.getDescription() == null)  
+				|| (interventionCreationDTO.getDate() == null) || (interventionCreationDTO.getPatientNumber() == null) 
+				|| (interventionCreationDTO.getRoom() == null) || (interventionCreationDTO.getSurgeonNumber() == null)
+				|| (interventionCreationDTO.getType() == null)){
+			return interventionCreationResponse.createCustomBadRequestMissingInformationResponse();
+		}
+		else if(interventionCreationDTO.getPatientNumber() < 0){
+			return interventionCreationResponse.createCustomBadRequestNonExistingPatientResponse();
+		}
+		return Response.status(Status.ACCEPTED).build();
+	}
+}
