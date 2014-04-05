@@ -6,7 +6,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
-import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParser;
 import ca.ulaval.glo4002.rest.response.InterventionCreationResponse;
 import ca.ulaval.glo4002.services.InterventionService;
 import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
@@ -14,13 +13,13 @@ import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
 @Path("interventions/")
 public class InterventionCreationResource {
 	private InterventionService interventionService;
-	private InterventionCreationResponse interventionCreationResponse;
+	private InterventionCreationResponse interventionCreationResponse = new InterventionCreationResponse();
 	
-	//TODO est-ce pertinent de mettre un constructeur sans paramètre?
-	/*public InterventionCreationResource(){
+	public InterventionCreationResource(){
 		this.interventionService = new InterventionService();
-	}*/
+	}
 	
+	//Utilisé dans les tests
 	public InterventionCreationResource(InterventionService interventionService){
 		this.interventionService = interventionService;
 	}
@@ -29,14 +28,13 @@ public class InterventionCreationResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response post(InterventionCreationDTO interventionCreationDTO) throws ServiceRequestException {
-			CreateInterventionRequestParser requestParser = null; //TODO delete when service will be refactored
-			try {
-				interventionService.createIntervention(interventionCreationDTO);//TODO will have other parameters after service is refactored
+		int interventionId = 0;	
+		try {
+				interventionId = interventionService.createIntervention(interventionCreationDTO);
 			} catch (Exception e) {
 				return interventionCreationResponse.createDefaultBadRequestResponse();
 			}  
-			//TODO: aller chercher l'id de l'intervention pour pouvoir le passer à la réponse, car mauvaise réponse en ce moment
-			return Response.status(Status.CREATED).build();
+			return interventionCreationResponse.createCustomCreatedSuccessResponse(interventionId);
 	}
 	
 }

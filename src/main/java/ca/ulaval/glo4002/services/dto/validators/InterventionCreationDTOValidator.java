@@ -13,6 +13,7 @@ public class InterventionCreationDTOValidator {
 				|| (interventionCreationDTO.getSurgeonNumber() == null) || (interventionCreationDTO.getType() == null)){
 			return interventionCreationResponse.createCustomBadRequestMissingInformationResponse();
 		}
+		//TODO validate date
 		else if(interventionCreationDTO.getPatientNumber() < 0){
 			return interventionCreationResponse.createCustomBadRequestNonExistingPatientResponse();
 		}

@@ -1,8 +1,5 @@
 package ca.ulaval.glo4002.rest.response;
 
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -35,9 +32,7 @@ public class InterventionCreationResponse {
 		return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(jsonResponse.toString()).build();
 	}
 	
-	@POST
-	@Path(value = "/interventions/{interventionNumber}")
-	public Response createCustomCreatedSuccessResponse(@PathParam("interventionNumber") int interventionNumber){
+	public Response createCustomCreatedSuccessResponse(int interventionNumber){
 		JSONObject jsonResponse = new JSONObject();
 		jsonResponse.append(LOCATION_PARAMETER, "/interventions/"+interventionNumber).append(MESSAGE_PARAMETER, "Succès");
 		return Response.status(Status.CREATED).type(MediaType.APPLICATION_JSON).entity(jsonResponse.toString()).build();
