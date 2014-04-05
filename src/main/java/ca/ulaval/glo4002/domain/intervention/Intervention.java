@@ -39,7 +39,7 @@ public class Intervention {
 	public Intervention(String description, int surgeon, String date, String room, 
 						String type, String status, Patient patient) {
 		this.description = returnValidDescription(description);
-		this.surgeon = new Surgeon(surgeon);
+		this.surgeon = new Surgeon(surgeon); //TODO : call a factory
 		this.date = returnValidDate(date);
 		this.room = returnValidRoom(room);
 		this.type = InterventionType.fromString(type);

@@ -20,6 +20,7 @@ public class InterventionService {
 	private static final String ERROR_SERVICE_REQUEST_EXCEPTION_INT011 = "INT011";
 	private static final String ERROR_SERVICE_REQUEST_EXCEPTION_INT012 = "INT012";
 
+	//TODO : that validation should not be done in the services
 	private static final InterventionType[] forbiddenInterventionTypesForAnonymousSurgicalTools = { InterventionType.EYE, InterventionType.HEART,
 			InterventionType.MARROW };
 
