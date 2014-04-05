@@ -24,6 +24,12 @@ public class InterventionCreationResponseTest {
 	}
 	
 	@Test
+	public void createDefaultAcceptedResponseReturnsAcceptedResponse(){
+		response = interventionCreationResponse.createDefaultAcceptedResponse();
+		assertEquals(Response.status(Status.ACCEPTED).build().getStatus(), response.getStatus());
+	}
+	
+	@Test
 	public void createCustomBadRequestMissingInformationResponseReturnsBadRequestResponse(){
 		response = interventionCreationResponse.createCustomBadRequestMissingInformationResponse();
 		assertEquals(Response.status(Status.BAD_REQUEST).build().getStatus(), response.getStatus());
