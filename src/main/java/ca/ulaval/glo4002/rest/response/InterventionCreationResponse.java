@@ -19,6 +19,10 @@ public class InterventionCreationResponse {
 		return Response.status(Status.BAD_REQUEST).build(); 
 	}
 	
+	public Response createDefaultAcceptedResponse(){
+		return Response.status(Status.ACCEPTED).build();
+	}
+	
 	public Response createCustomBadRequestMissingInformationResponse(){
 		JSONObject jsonResponse = new JSONObject();
 		jsonResponse.append(CODE_PARAMETER, "INT001").append(MESSAGE_PARAMETER, "Erreur - informations manquantes ou invalides");
