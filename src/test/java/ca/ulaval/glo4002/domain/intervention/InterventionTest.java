@@ -26,12 +26,11 @@ public class InterventionTest {
 	private String EMPTY_ROOM = "";
 	private String SAMPLE_DATE = "2001-07-04T12:08:56";
 	private String INVALID_DATE = "";
+	private int VALID_SURGEON_NUMBER = 56;
 	private Date VALID_DATE;
 	
 	@Mock
 	private Patient patient;
-	@Mock
-	private Surgeon surgeon;
 	
 	private Intervention intervention;
 	
@@ -42,29 +41,29 @@ public class InterventionTest {
 	
 	@Test (expected=RuntimeException.class)
 	public void doNotBuildInterventionWithInvalidDate() {
-		intervention = new Intervention(SAMPLE_DESCRIPTION, surgeon, INVALID_DATE, SAMPLE_ROOM, SAMPLE_TYPE, SAMPLE_STATUS, patient);
+		intervention = new Intervention(SAMPLE_DESCRIPTION, VALID_SURGEON_NUMBER, INVALID_DATE, SAMPLE_ROOM, SAMPLE_TYPE, SAMPLE_STATUS, patient);
 		assertEquals(InterventionStatus.PLANNED, intervention.getStatus());
 	}
 	
 	@Test
 	public void buildInterventionWithValidDate() {
-		intervention = new Intervention(SAMPLE_DESCRIPTION, surgeon, SAMPLE_DATE, SAMPLE_ROOM, SAMPLE_TYPE, SAMPLE_STATUS, patient);
+		intervention = new Intervention(SAMPLE_DESCRIPTION, VALID_SURGEON_NUMBER, SAMPLE_DATE, SAMPLE_ROOM, SAMPLE_TYPE, SAMPLE_STATUS, patient);
 		assertEquals(VALID_DATE, intervention.getDate());
 	}
 	
 	@Test (expected=RuntimeException.class)
 	public void doNotBuildInterventionWhenEmptyDescription() {
-		intervention = new Intervention(EMPTY_DESCRIPTION, surgeon, SAMPLE_DATE, SAMPLE_ROOM, SAMPLE_TYPE, SAMPLE_STATUS, patient);
+		intervention = new Intervention(EMPTY_DESCRIPTION, VALID_SURGEON_NUMBER, SAMPLE_DATE, SAMPLE_ROOM, SAMPLE_TYPE, SAMPLE_STATUS, patient);
 	}
 	
 	@Test (expected=RuntimeException.class)
 	public void doNotBuildInterventionWhenNoRoom() {
-		intervention = new Intervention(SAMPLE_DESCRIPTION, surgeon, SAMPLE_DATE, EMPTY_ROOM, SAMPLE_TYPE, SAMPLE_STATUS, patient);
+		intervention = new Intervention(SAMPLE_DESCRIPTION, VALID_SURGEON_NUMBER, SAMPLE_DATE, EMPTY_ROOM, SAMPLE_TYPE, SAMPLE_STATUS, patient);
 	}
 	
 	@Test
 	public void buildInterventionWithPlannedStatusWhenNoStatusGiven() {
-		intervention = new Intervention(SAMPLE_DESCRIPTION, surgeon, SAMPLE_DATE, SAMPLE_ROOM, SAMPLE_TYPE, EMPTY_STATUS, patient);
+		intervention = new Intervention(SAMPLE_DESCRIPTION, VALID_SURGEON_NUMBER, SAMPLE_DATE, SAMPLE_ROOM, SAMPLE_TYPE, EMPTY_STATUS, patient);
 		assertEquals(InterventionStatus.PLANNED, intervention.getStatus());
 	}
 

@@ -36,10 +36,10 @@ public class Intervention {
 		// Required for Hibernate.
 	}
 	
-	public Intervention(String description, Surgeon surgeon, String date, String room, 
+	public Intervention(String description, int surgeon, String date, String room, 
 						String type, String status, Patient patient) {
 		this.description = returnValidDescription(description);
-		this.surgeon = surgeon;
+		this.surgeon = new Surgeon(surgeon);
 		this.date = returnValidDate(date);
 		this.room = returnValidRoom(room);
 		this.type = InterventionType.fromString(type);

@@ -5,9 +5,9 @@ import javax.persistence.EntityNotFoundException;
 
 public interface PatientRepository {
 
-	void create(Patient patient) throws EntityExistsException;
+	public void create(Patient patient) throws EntityExistsException;
 
-	void update(Patient patient);
+	public void update(Patient patient);
 
-	Patient getById(int id) throws EntityNotFoundException;
+	public Patient getById(int id) throws EntityNotFoundException;
 }
