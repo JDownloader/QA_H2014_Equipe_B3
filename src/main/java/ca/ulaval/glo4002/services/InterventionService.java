@@ -9,12 +9,17 @@ import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
 import ca.ulaval.glo4002.domain.surgicaltool.*;
+import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
+import ca.ulaval.glo4002.persistence.intervention.HibernateInterventionRepository;
+import ca.ulaval.glo4002.persistence.patient.HibernatePatientRepository;
+import ca.ulaval.glo4002.persistence.surgicaltool.HibernateSurgicalToolRepository;
 import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParser;
 import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.*;
 import ca.ulaval.glo4002.services.intervention.InterventionServiceBuilder;
 
 public class InterventionService {
+	//TODO : this should not be here
 	private static final String ERROR_SERVICE_REQUEST_EXCEPTION_INT002 = "INT002";
 	private static final String ERROR_SERVICE_REQUEST_EXCEPTION_INT010 = "INT010";
 	private static final String ERROR_SERVICE_REQUEST_EXCEPTION_INT011 = "INT011";
@@ -24,16 +29,29 @@ public class InterventionService {
 	private static final InterventionType[] forbiddenInterventionTypesForAnonymousSurgicalTools = { InterventionType.EYE, InterventionType.HEART,
 			InterventionType.MARROW };
 
+	private EntityManager entityManager;
+	private EntityTransaction entityTransaction;
+	
 	private InterventionRepository interventionRepository;
 	private PatientRepository patientRepository;
 	private SurgicalToolRepository surgicalToolRepository;
-	private EntityTransaction entityTransaction;
+	
 
 	public InterventionService(InterventionServiceBuilder builder) {
 		this.entityTransaction = builder.entityTransaction;
 		this.interventionRepository = builder.interventionRepository;
 		this.surgicalToolRepository = builder.surgicalToolRepository;
 		this.patientRepository = builder.patientRepository;
+		
+		this.entityManager = new EntityManagerProvider().getEntityManager();
+		this.entityTransaction = entityManager.getTransaction();
+	}
+	
+	public InterventionService() {
+		this.interventionRepository = new HibernateInterventionRepository();
+		this.patientRepository = new HibernatePatientRepository();
+		this.surgicalToolRepository = new HibernateSurgicalToolRepository();
+		
 	}
 
 	public int createIntervention(CreateInterventionRequestParser requestParser) throws ServiceRequestException, Exception {
