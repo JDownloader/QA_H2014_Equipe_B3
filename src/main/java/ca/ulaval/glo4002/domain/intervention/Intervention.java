@@ -1,5 +1,6 @@
 package ca.ulaval.glo4002.domain.intervention;
 
+import java.text.ParseException;
 import java.util.*;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import javax.persistence.*;
 import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalTool;
+import ca.ulaval.glo4002.utils.DateParser;
 
 @Entity
 public class Intervention {
@@ -34,15 +36,23 @@ public class Intervention {
 		// Required for Hibernate.
 	}
 	
-	public Intervention(String description, Surgeon surgeon, Date date, String room, 
+	public Intervention(String description, Surgeon surgeon, String date, String room, 
 						String type, String status, Patient patient) {
 		this.description = returnValidDescription(description);
 		this.surgeon = surgeon;
-		this.date = date;
+		this.date = returnValidDate(date);
 		this.room = returnValidRoom(room);
 		this.type = InterventionType.fromString(type);
-		this.status = createInterventionStatus(status);
+		this.status = returnValidStatus(status);
 		this.patient = patient;
+	}
+	
+	private Date returnValidDate(String date) {
+		try {
+		return DateParser.parseDate(date); 
+		} catch (ParseException e) {
+			throw new RuntimeException();
+		}
 	}
 	
 	private String returnValidRoom(String room) {
@@ -59,7 +69,7 @@ public class Intervention {
 		return description;
 	}
 	
-	private InterventionStatus createInterventionStatus(String status) {
+	private InterventionStatus returnValidStatus(String status) {
 		InterventionStatus newStatus;
 		
 		if(status.isEmpty()) {
