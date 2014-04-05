@@ -9,7 +9,7 @@ import ca.ulaval.glo4002.services.dto.PrescriptionCreationDto;
 
 public class PrescriptionAssembler {
 
-	public Prescription assemblePrescription(PrescriptionCreationDto prescriptionCreationDto, DrugRepository drugRepository) {
+	public Prescription fromDto(PrescriptionCreationDto prescriptionCreationDto, DrugRepository drugRepository) {
 		Prescription prescription;
 
 		if (prescriptionCreationDto.getDin() != null) {

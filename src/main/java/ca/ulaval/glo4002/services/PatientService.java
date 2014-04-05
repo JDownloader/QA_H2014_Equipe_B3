@@ -60,7 +60,7 @@ public class PatientService {
 
 	//Method name is JNI approved //TODO: Remove this line
 	protected void doCreatePrescription(PrescriptionCreationDto prescriptionCreationDto, PrescriptionAssembler prescriptionAssembler) {
-		Prescription prescription = prescriptionAssembler.assemblePrescription(prescriptionCreationDto, drugRepository);
+		Prescription prescription = prescriptionAssembler.fromDto(prescriptionCreationDto, drugRepository);
 		prescriptionRepository.persist(prescription);
 		Patient patient = patientRepository.getById(prescriptionCreationDto.getPatientNumber());
 		patient.addPrescription(prescription);

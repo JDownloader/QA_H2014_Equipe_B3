@@ -77,7 +77,7 @@ public class PatientServiceTest {
 	
 	@Test
 	public void verifyAddPrescriptionCallsCorrectDomainMethods() throws Exception {
-		when(prescriptionFactoryMock.assemblePrescription(prescriptionCreationDtoMock, drugRepositoryMock)).thenReturn(prescriptionMock);
+		when(prescriptionFactoryMock.fromDto(prescriptionCreationDtoMock, drugRepositoryMock)).thenReturn(prescriptionMock);
 		patientService.createPrescription(prescriptionCreationDtoMock, prescriptionCreationDtoValidatorMock, prescriptionFactoryMock);
 		verify(patientMock).addPrescription(prescriptionMock);
 	}
