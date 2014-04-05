@@ -34,7 +34,43 @@ public class Intervention {
 		// Required for Hibernate.
 	}
 	
-	//TODO : constructor from DTO
+	public Intervention(String description, Surgeon surgeon, Date date, String room, 
+						String type, String status, Patient patient) {
+		this.description = returnValidDescription(description);
+		this.surgeon = surgeon;
+		this.date = date;
+		this.room = returnValidRoom(room);
+		this.type = InterventionType.fromString(type);
+		this.status = createInterventionStatus(status);
+		this.patient = patient;
+	}
+	
+	private String returnValidRoom(String room) {
+		if(room.isEmpty()) {
+			throw new RuntimeException();
+		}
+		return room;
+	}
+	
+	private String returnValidDescription(String description) {
+		if(description.isEmpty()) {
+			throw new RuntimeException();
+		}
+		return description;
+	}
+	
+	private InterventionStatus createInterventionStatus(String status) {
+		InterventionStatus newStatus;
+		
+		if(status.isEmpty()) {
+			newStatus = InterventionStatus.PLANNED;
+		}
+		else {
+			newStatus = InterventionStatus.fromString(status);
+		}
+		
+		return newStatus;
+	}
 	
 	//TODO : remove when nobody depends on this
 	public Intervention(InterventionBuilder builder) {
