@@ -42,9 +42,6 @@ public class InterventionService {
 		this.interventionRepository = builder.interventionRepository;
 		this.surgicalToolRepository = builder.surgicalToolRepository;
 		this.patientRepository = builder.patientRepository;
-		
-		this.entityManager = new EntityManagerProvider().getEntityManager();
-		this.entityTransaction = entityManager.getTransaction();
 	}
 	
 	public InterventionService() {
@@ -52,6 +49,8 @@ public class InterventionService {
 		this.patientRepository = new HibernatePatientRepository();
 		this.surgicalToolRepository = new HibernateSurgicalToolRepository();
 		
+		this.entityManager = new EntityManagerProvider().getEntityManager();
+		this.entityTransaction = entityManager.getTransaction();
 	}
 
 	public int createIntervention(CreateInterventionRequestParser requestParser) throws ServiceRequestException, Exception {
