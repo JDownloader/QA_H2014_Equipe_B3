@@ -15,7 +15,7 @@ public class InterventionCreationResponse {
 	private static final String MESSAGE_PARAMETER = "message";
 	private static final String LOCATION_PARAMETER = "location";
 	
-	public Response createDefaultBadRequestResponse(){ //TODO la tester
+	public Response createDefaultBadRequestResponse(){
 		return Response.status(Status.BAD_REQUEST).build(); 
 	}
 	
