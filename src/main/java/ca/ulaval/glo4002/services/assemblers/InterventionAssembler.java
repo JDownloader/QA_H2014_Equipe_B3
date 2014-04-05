@@ -9,6 +9,10 @@ import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
 public class InterventionAssembler {
 	private InterventionFactory interventionFactory;
 	
+	public InterventionAssembler() {
+		this.interventionFactory = new InterventionFactory();
+	}
+	
 	public Intervention assembleInterventionFromDTO(InterventionCreationDTO dto, PatientRepository patientRepository) {
 		Intervention intervention;
 		

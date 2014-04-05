@@ -5,22 +5,20 @@ import java.util.Arrays;
 import javax.persistence.*;
 
 import ca.ulaval.glo4002.domain.intervention.*;
-import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
-import ca.ulaval.glo4002.domain.staff.Surgeon;
 import ca.ulaval.glo4002.domain.surgicaltool.*;
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.persistence.intervention.HibernateInterventionRepository;
 import ca.ulaval.glo4002.persistence.patient.HibernatePatientRepository;
 import ca.ulaval.glo4002.persistence.surgicaltool.HibernateSurgicalToolRepository;
-import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParser;
 import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.*;
+import ca.ulaval.glo4002.services.assemblers.InterventionAssembler;
+import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
 import ca.ulaval.glo4002.services.intervention.InterventionServiceBuilder;
 
 public class InterventionService {
 	//TODO : this should not be here
-	private static final String ERROR_SERVICE_REQUEST_EXCEPTION_INT002 = "INT002";
 	private static final String ERROR_SERVICE_REQUEST_EXCEPTION_INT010 = "INT010";
 	private static final String ERROR_SERVICE_REQUEST_EXCEPTION_INT011 = "INT011";
 	private static final String ERROR_SERVICE_REQUEST_EXCEPTION_INT012 = "INT012";
@@ -36,60 +34,50 @@ public class InterventionService {
 	private PatientRepository patientRepository;
 	private SurgicalToolRepository surgicalToolRepository;
 	
+	private InterventionAssembler interventionAssembler;
+	
+	public InterventionService() {
+		this.entityManager = new EntityManagerProvider().getEntityManager();
+		this.entityTransaction = entityManager.getTransaction();
+		
+		this.interventionRepository = new HibernateInterventionRepository();
+		this.patientRepository = new HibernatePatientRepository();
+		this.surgicalToolRepository = new HibernateSurgicalToolRepository();
 
+		this.interventionAssembler = new InterventionAssembler();
+	}
+	
+	//Should only be used for testing
+	public InterventionService(InterventionRepository interventionRepository, PatientRepository patientRepository, SurgicalToolRepository surgicalToolRepository, InterventionAssembler interventionAssembler, EntityManager entityManager) {
+		this.entityManager = entityManager;
+		this.entityTransaction = entityManager.getTransaction();
+		
+		this.interventionRepository = interventionRepository;
+		this.patientRepository = patientRepository;
+		this.surgicalToolRepository = surgicalToolRepository;
+
+		this.interventionAssembler = interventionAssembler;
+	}
+	
 	public InterventionService(InterventionServiceBuilder builder) {
 		this.entityTransaction = builder.entityTransaction;
 		this.interventionRepository = builder.interventionRepository;
 		this.surgicalToolRepository = builder.surgicalToolRepository;
 		this.patientRepository = builder.patientRepository;
 	}
-	
-	public InterventionService() {
-		this.interventionRepository = new HibernateInterventionRepository();
-		this.patientRepository = new HibernatePatientRepository();
-		this.surgicalToolRepository = new HibernateSurgicalToolRepository();
-		
-		this.entityManager = new EntityManagerProvider().getEntityManager();
-		this.entityTransaction = entityManager.getTransaction();
-	}
 
-	public int createIntervention(CreateInterventionRequestParser requestParser) throws ServiceRequestException, Exception {
+	public int createIntervention(InterventionCreationDTO dto) {
 		try {
 			entityTransaction.begin();
-			Intervention newIntervention = doCreateIntervention(requestParser);
+			Intervention intervention = interventionAssembler.assembleInterventionFromDTO(dto, patientRepository);
+			interventionRepository.create(intervention);
 			entityTransaction.commit();
-			return newIntervention.getId();
+			return intervention.getId(); //TODO : check out if this actually works
 		} catch (Exception e) {
 			if (entityTransaction.isActive()) {
 				entityTransaction.rollback();
 			}
 			throw e;
-		}
-	}
-
-	protected Intervention doCreateIntervention(CreateInterventionRequestParser requestParser) throws ServiceRequestException {
-		Intervention intervention = buildIntervention(requestParser);
-		interventionRepository.create(intervention);
-		return intervention;
-	}
-
-	private Intervention buildIntervention(CreateInterventionRequestParser requestParser) throws ServiceRequestException {
-		InterventionBuilder interventionBuilder = new InterventionBuilder()
-				.date(requestParser.getDate())
-				.description(requestParser.getDescription())
-				.room(requestParser.getRoom())
-				.surgeon(new Surgeon(requestParser.getSurgeon()))
-				.type(requestParser.getType())
-				.status(requestParser.getStatus())
-				.patient(getPatient(requestParser));
-		return interventionBuilder.build();
-	}
-
-	private Patient getPatient(CreateInterventionRequestParser requestParser) throws ServiceRequestException {
-		try {
-			return patientRepository.getById(requestParser.getPatient());
-		} catch (EntityNotFoundException e) {
-			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT002, e.getMessage());
 		}
 	}
 

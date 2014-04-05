@@ -14,6 +14,7 @@ import ca.ulaval.glo4002.utils.DateParser;
 public class Intervention {
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	@Column
 	private String description;

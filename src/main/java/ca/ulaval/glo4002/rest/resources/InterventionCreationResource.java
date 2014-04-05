@@ -31,7 +31,7 @@ public class InterventionCreationResource {
 	public Response post(InterventionCreationDTO interventionCreationDTO) throws ServiceRequestException {
 			CreateInterventionRequestParser requestParser = null; //TODO delete when service will be refactored
 			try {
-				interventionService.createIntervention(requestParser);//TODO will have other parameters after service is refactored
+				interventionService.createIntervention(interventionCreationDTO);//TODO will have other parameters after service is refactored
 			} catch (Exception e) {
 				return interventionCreationResponse.createDefaultBadRequestResponse();
 			}  
