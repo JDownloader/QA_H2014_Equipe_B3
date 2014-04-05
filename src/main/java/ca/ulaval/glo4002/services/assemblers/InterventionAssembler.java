@@ -1,9 +1,12 @@
 package ca.ulaval.glo4002.services.assemblers;
 
+import javax.persistence.EntityNotFoundException;
+
 import ca.ulaval.glo4002.domain.intervention.Intervention;
 import ca.ulaval.glo4002.domain.intervention.InterventionFactory;
 import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
+import ca.ulaval.glo4002.exceptions.domainexceptions.interventionexceptions.PatientDoesNotExist;
 import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
 
 public class InterventionAssembler {
@@ -19,8 +22,8 @@ public class InterventionAssembler {
 		Patient patient;
 		try {
 			patient = patientRepository.getById(dto.getPatientNumber());
-		} catch (Exception e) {
-			throw new RuntimeException();
+		} catch (EntityNotFoundException e) {
+			throw new PatientDoesNotExist();
 		}
 
 		intervention = interventionFactory.createIntervention(dto, patient);
