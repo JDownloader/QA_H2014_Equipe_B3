@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.fasterxml.jackson.annotation.*;
 
 @SuppressWarnings("unused")
-public class PrescriptionCreationDto {
+public class PrescriptionCreationDTO {
 	private String din;
 	@JsonProperty("nom")
 	private String drugName;

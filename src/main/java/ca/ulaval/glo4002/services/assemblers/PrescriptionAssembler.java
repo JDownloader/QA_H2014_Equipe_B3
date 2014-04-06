@@ -5,31 +5,31 @@ import ca.ulaval.glo4002.domain.drug.Drug;
 import ca.ulaval.glo4002.domain.drug.DrugRepository;
 import ca.ulaval.glo4002.domain.prescription.Prescription;
 import ca.ulaval.glo4002.domain.staff.StaffMember;
-import ca.ulaval.glo4002.services.dto.PrescriptionCreationDto;
+import ca.ulaval.glo4002.services.dto.PrescriptionCreationDTO;
 
 public class PrescriptionAssembler {
 
-	public Prescription fromDto(PrescriptionCreationDto prescriptionCreationDto, DrugRepository drugRepository) {
+	public Prescription fromDTO(PrescriptionCreationDTO prescriptionCreationDTO, DrugRepository drugRepository) {
 		Prescription prescription;
 
-		if (prescriptionCreationDto.getDin() != null) {
+		if (prescriptionCreationDTO.getDin() != null) {
 			prescription = new Prescription(
-					getDrug(prescriptionCreationDto, drugRepository),
-					prescriptionCreationDto.getRenewals(), 
-					prescriptionCreationDto.getDate(),
-					new StaffMember(prescriptionCreationDto.getStaffMember()));
+					getDrug(prescriptionCreationDTO, drugRepository),
+					prescriptionCreationDTO.getRenewals(), 
+					prescriptionCreationDTO.getDate(),
+					new StaffMember(prescriptionCreationDTO.getStaffMember()));
 		} else {
 			prescription = new Prescription(
-					prescriptionCreationDto.getDrugName(),
-					prescriptionCreationDto.getRenewals(), 
-					prescriptionCreationDto.getDate(),
-					new StaffMember(prescriptionCreationDto.getStaffMember()));
+					prescriptionCreationDTO.getDrugName(),
+					prescriptionCreationDTO.getRenewals(), 
+					prescriptionCreationDTO.getDate(),
+					new StaffMember(prescriptionCreationDTO.getStaffMember()));
 		}
 
 		return prescription;
 	}
 
-	private Drug getDrug(PrescriptionCreationDto prescriptionCreationDto, DrugRepository drugRepository) {
-		return drugRepository.getByDin(new Din(prescriptionCreationDto.getDin()));
+	private Drug getDrug(PrescriptionCreationDTO prescriptionCreationDTO, DrugRepository drugRepository) {
+		return drugRepository.getByDin(new Din(prescriptionCreationDTO.getDin()));
 	}
 }

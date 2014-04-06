@@ -1,11 +1,8 @@
 package ca.ulaval.glo4002.persistence;
 
 import java.util.List;
-
 import javax.persistence.*;
-
 import org.apache.commons.lang3.StringUtils;
-
 import ca.ulaval.glo4002.domain.drug.*;
 
 public class HibernateDrugRepository extends HibernateRepository implements DrugRepository {
@@ -30,9 +27,9 @@ public class HibernateDrugRepository extends HibernateRepository implements Drug
 		return drug;
 	}
 
-	public List<Drug> search(String name) {
-		validateSearchParameters(name);
-		return performSearch(name);
+	public List<Drug> search(String keywords) {
+		validateSearchParameters(keywords);
+		return performSearch(keywords);
 	}
 
 	private void validateSearchParameters(String name) {
@@ -42,14 +39,13 @@ public class HibernateDrugRepository extends HibernateRepository implements Drug
 		}
 	}
 
-	private List<Drug> performSearch(String name) {
-		String likeStatement = name.replace(' ', '%').toUpperCase();
+	private List<Drug> performSearch(String keywords) {
+		String keywordsWithWildcards = keywords.replace(' ', '%').toUpperCase();
+			
+		final String DRUG_SEARCH_QUERY = "SELECT d FROM DRUG d WHERE UPPER(d.name) LIKE :keywords OR UPPER(d.description) LIKE :keywords";
 		
-		// TODO no more sql
-		String queryString = String
-				.format("SELECT d FROM DRUG d WHERE UPPER(d.name) LIKE '%s' OR UPPER(d.description) LIKE '%s'", likeStatement, likeStatement);
-
-		TypedQuery<Drug> query = entityManager.createQuery(queryString, Drug.class);
+		TypedQuery<Drug> query = entityManager.createQuery(DRUG_SEARCH_QUERY, Drug.class)
+				.setParameter("keywords", keywordsWithWildcards);
 
 		List<Drug> result = query.getResultList();
 		return result;

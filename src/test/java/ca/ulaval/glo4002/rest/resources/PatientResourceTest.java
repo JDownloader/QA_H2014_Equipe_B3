@@ -13,40 +13,40 @@ import org.junit.Test;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.services.PatientService;
 import ca.ulaval.glo4002.services.assemblers.PrescriptionAssembler;
-import ca.ulaval.glo4002.services.dto.PrescriptionCreationDto;
-import ca.ulaval.glo4002.services.dto.validators.PrescriptionCreationDtoValidator;
+import ca.ulaval.glo4002.services.dto.PrescriptionCreationDTO;
+import ca.ulaval.glo4002.services.dto.validators.PrescriptionCreationDTOValidator;
 
 public class PatientResourceTest {
 
 	private PatientService patientServiceMock;
-	private PrescriptionCreationDto prescriptionCreationDtoMock;
+	private PrescriptionCreationDTO prescriptionCreationDTOMock;
 	private PatientResource patientResource;
 
 	@Before
 	public void init() throws Exception {
 		patientServiceMock = mock(PatientService.class);
-		prescriptionCreationDtoMock = mock(PrescriptionCreationDto.class);
+		prescriptionCreationDTOMock = mock(PrescriptionCreationDTO.class);
 		patientResource = new PatientResource(patientServiceMock);
 	}
 
 	@Test
 	public void verifyPrescriptionCreationCallsServiceMethodsCorrectly() throws Exception {
-		patientResource.post(prescriptionCreationDtoMock);
-		verify(patientServiceMock).createPrescription(eq(prescriptionCreationDtoMock), any(PrescriptionCreationDtoValidator.class), any(PrescriptionAssembler.class));
+		patientResource.post(prescriptionCreationDTOMock);
+		verify(patientServiceMock).createPrescription(eq(prescriptionCreationDTOMock), any(PrescriptionCreationDTOValidator.class), any(PrescriptionAssembler.class));
 	}
 
 	@Test
 	public void verifyPrescriptionCreationReturnsCreatedResponse() throws Exception {
-		Response response = patientResource.post(prescriptionCreationDtoMock);
+		Response response = patientResource.post(prescriptionCreationDTOMock);
 		assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
 	}
 
 	@Test
-	public void verifyPrescriptionCreationReturnsBadRequestResponseWhenSpecifyingInvalidRequest() throws Exception {
-		doThrow(new ServiceRequestException()).when(patientServiceMock).createPrescription(eq(prescriptionCreationDtoMock), any(PrescriptionCreationDtoValidator.class), any(PrescriptionAssembler.class));
+	public void verifyPrescriptionCreationReturnsBadRequestResponseOnServiceRequestException() throws Exception {
+		doThrow(new ServiceRequestException()).when(patientServiceMock).createPrescription(eq(prescriptionCreationDTOMock), any(PrescriptionCreationDTOValidator.class), any(PrescriptionAssembler.class));
 
 		Response expectedResponse = Response.status(Status.BAD_REQUEST).build();
-		Response receivedResponse = patientResource.post(prescriptionCreationDtoMock);
+		Response receivedResponse = patientResource.post(prescriptionCreationDTOMock);
 
 		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
 	}

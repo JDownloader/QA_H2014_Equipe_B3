@@ -38,7 +38,7 @@ public class HospitalRestMain {
 		new HospitalRestMain().execute();
 	}
 
-	public static void doDemoRepositoryFilling() throws IOException, BadFileFormatException {
+	private static void doDemoRepositoryFilling() throws IOException, BadFileFormatException {
 		EntityManagerFactory entityManagerFactory = EntityManagerFactoryProvider.getFactory();
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		fillDrugRepository(entityManager);
@@ -46,14 +46,14 @@ public class HospitalRestMain {
 		entityManager.close();
 	}
 
-	public static void fillDrugRepository(EntityManager entityManager) throws IOException, BadFileFormatException {
+	private static void fillDrugRepository(EntityManager entityManager) throws IOException, BadFileFormatException {
 		HibernateDrugRepository hibernateDrugRepository = new HibernateDrugRepository(entityManager);
 		FileReader fileReader = new FileReader(DRUG_FILE_PATH);
 		new DemoDrugRepositoryFiller().fill(entityManager, hibernateDrugRepository, fileReader);
 		fileReader.close();
 	}
 
-	public static void fillPatientRepository(EntityManager entityManager) {
+	private static void fillPatientRepository(EntityManager entityManager) {
 		HibernatePatientRepository hibernatePatientRepository = new HibernatePatientRepository(entityManager);
 		new DemoPatientRepositoryFiller().fill(entityManager, hibernatePatientRepository);
 	}

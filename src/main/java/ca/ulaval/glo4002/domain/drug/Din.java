@@ -26,20 +26,6 @@ public class Din implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		} else if (obj == null) {
-			return false;
-		} else if (getClass() != obj.getClass()) {
-			return false;
-		}
-		
-		final Din otherDin = (Din) obj;
-
-		if (this.din != otherDin.din) {
-			return false;
-		}
-
-		return true;
-	}
+		return din.equals(obj);
+	};
 }

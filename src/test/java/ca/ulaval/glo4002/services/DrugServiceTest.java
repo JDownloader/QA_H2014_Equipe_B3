@@ -16,7 +16,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import ca.ulaval.glo4002.domain.drug.*;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.services.DrugService;
-import ca.ulaval.glo4002.services.dto.DrugSearchDto;
+import ca.ulaval.glo4002.services.dto.DrugSearchDTO;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DrugServiceTest {
@@ -29,7 +29,7 @@ public class DrugServiceTest {
 	private EntityManager entityManagerMock;
 	private EntityTransaction entityTransactionMock;
 
-	private DrugSearchDto drugSearchDtoMock;
+	private DrugSearchDTO drugSearchDTOMock;
 
 	@Before
 	public void init() {
@@ -42,24 +42,24 @@ public class DrugServiceTest {
 		drugRepositoryMock = mock(DrugRepository.class);
 		entityManagerMock = mock(EntityManager.class);
 		entityTransactionMock = mock(EntityTransaction.class);
-		drugSearchDtoMock = mock(DrugSearchDto.class);
+		drugSearchDTOMock = mock(DrugSearchDTO.class);
 	}
 
 	private void stubMethods() {
-		when(drugSearchDtoMock.getName()).thenReturn(SAMPLE_DRUG_NAME);
+		when(drugSearchDTOMock.getName()).thenReturn(SAMPLE_DRUG_NAME);
 		when(entityManagerMock.getTransaction()).thenReturn(entityTransactionMock);
 	}
 
 	@Test
 	public void verifySearchDrugCallsCorrectRepositoryMethods() throws Exception {
-		drugService.searchDrug(drugSearchDtoMock);
+		drugService.searchDrug(drugSearchDTOMock);
 
 		verify(drugRepositoryMock).search(SAMPLE_DRUG_NAME);
 	}
 
 	@Test
 	public void verifyAddPrescriptionBeginsAndCommitsTransaction() throws Exception {
-		drugService.searchDrug(drugSearchDtoMock);
+		drugService.searchDrug(drugSearchDTOMock);
 		InOrder inOrder = inOrder(entityTransactionMock);
 
 		inOrder.verify(entityTransactionMock).begin();
@@ -72,7 +72,7 @@ public class DrugServiceTest {
 		when(drugRepositoryMock.search(anyString())).thenThrow(new EntityNotFoundException());
 
 		try {
-			drugService.searchDrug(drugSearchDtoMock);
+			drugService.searchDrug(drugSearchDTOMock);
 		} catch(ServiceRequestException e) {
 			verify(entityTransactionMock).rollback();
 			return;
@@ -83,7 +83,7 @@ public class DrugServiceTest {
 	public void verifyAddPrescriptionDoesNotRollbackOnSuccessfulCommit() throws Exception {
 		when(entityTransactionMock.isActive()).thenReturn(false);
 
-		drugService.searchDrug(drugSearchDtoMock);
+		drugService.searchDrug(drugSearchDTOMock);
 		
 		verify(entityTransactionMock).commit();
 		verify(entityTransactionMock, never()).rollback();

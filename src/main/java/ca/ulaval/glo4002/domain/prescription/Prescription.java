@@ -7,7 +7,7 @@ import javax.persistence.*;
 import ca.ulaval.glo4002.domain.drug.Drug;
 import ca.ulaval.glo4002.domain.staff.StaffMember;
 
-@SuppressWarnings("unused")
+@SuppressWarnings("unused") //TODO: Check with JNI if good practice
 @Entity(name = "PRESCRIPTION")
 public class Prescription {
 

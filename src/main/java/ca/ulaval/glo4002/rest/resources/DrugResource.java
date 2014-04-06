@@ -10,7 +10,7 @@ import ca.ulaval.glo4002.domain.drug.Drug;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.utils.BadRequestJsonResponseBuilder;
 import ca.ulaval.glo4002.services.DrugService;
-import ca.ulaval.glo4002.services.dto.DrugSearchDto;
+import ca.ulaval.glo4002.services.dto.DrugSearchDTO;
 
 @Path("medicaments/dins/")
 public class DrugResource {
@@ -30,9 +30,9 @@ public class DrugResource {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response post(DrugSearchDto drugSearchDto) throws Exception {
+	public Response post(DrugSearchDTO drugSearchDTO) throws Exception {
 		try {
-			List<Drug> drugResults = drugService.searchDrug(drugSearchDto);
+			List<Drug> drugResults = drugService.searchDrug(drugSearchDTO);
 			return Response.status(Status.OK).type(MediaType.APPLICATION_JSON).entity(drugResults).build();
 		} catch (ServiceRequestException e) {
 			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());
