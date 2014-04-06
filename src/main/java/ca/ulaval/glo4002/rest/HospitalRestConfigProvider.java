@@ -1,9 +1,6 @@
 package ca.ulaval.glo4002.rest;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
+import java.io.*;
 import java.util.prefs.InvalidPreferencesFormatException;
 import java.util.prefs.Preferences;
 
