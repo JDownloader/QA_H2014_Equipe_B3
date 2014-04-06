@@ -7,8 +7,7 @@ import java.util.prefs.Preferences;
 public class HospitalRestConfigProvider {
 	private static final String XML_CONFIG_FILE_NAME = "HospitalRestConfig.xml";
 	private static final String XML_CONFIG_FILE_NODE = "HospitalRestConfigProvider";
-	private Preferences prefs;
-
+	private static Preferences prefs;
 	
 	private static class HospitalRestConfigProviderHolder {
         private static final HospitalRestConfigProvider instance = new HospitalRestConfigProvider(Preferences.userRoot().node(XML_CONFIG_FILE_NODE));

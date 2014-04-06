@@ -10,13 +10,13 @@ import org.mockito.Mockito;
 
 
 public class HospitalRestConfigProviderTest {
-	private HospitalRestConfigProvider configProvider;
 	private static final int INT_PREF_DEFAULT_VALUE = 123;
 	private static final int INT_PREF_VALUE = 321;
 	private static final String KEY_PREF_STRING = "KEY";
 	private static final String STRING_PREF_DEFAULT_VALUE = "abcdefj";
 	private static final String STRING_PREF_VALUE = "jfedcba";
 	private static Preferences prefsMock;
+	private HospitalRestConfigProvider configProvider;
 
 	@Before
 	public void init() {
@@ -25,7 +25,7 @@ public class HospitalRestConfigProviderTest {
 	}
 
 	@Test
-	public void getIntReturnPrefValue() {
+	public void getIntReturnsPrefValue() {
 		Mockito.doReturn(INT_PREF_VALUE).when(prefsMock).getInt(KEY_PREF_STRING, INT_PREF_DEFAULT_VALUE);
 		int value = configProvider.getInt(KEY_PREF_STRING, INT_PREF_DEFAULT_VALUE);
 		assertEquals(INT_PREF_VALUE, value);
@@ -39,7 +39,7 @@ public class HospitalRestConfigProviderTest {
 	}
 
 	@Test
-	public void getStringReturnPrefValue() {
+	public void getStringReturnsPrefValue() {
 		Mockito.doReturn(STRING_PREF_VALUE).when(prefsMock).get(KEY_PREF_STRING, STRING_PREF_DEFAULT_VALUE);
 		String value = configProvider.getString(KEY_PREF_STRING, STRING_PREF_DEFAULT_VALUE);
 		assertEquals(STRING_PREF_VALUE, value);
