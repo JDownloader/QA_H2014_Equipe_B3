@@ -11,45 +11,45 @@ import org.mockito.Mockito;
 
 
 public class HospitalRestConfigProviderTest {
-	private HospitalRestConfigProvider myConfig;
+	private HospitalRestConfigProvider configProvider;
 	private static final int INT_PREF_DEFAULT_VALUE = 123;
 	private static final int INT_PREF_VALUE = 321;
 	private static final String KEY_PREF_STING = "KEY";
 	private static final String STRING_PREF_DEFAULT_VALUE = "abcdefj";
 	private static final String STRING_PREF_VALUE = "jfedcba";
-	private static Preferences prefs;
+	private static Preferences prefsMock;
 
 	@Before
 	public void init() {
-		prefs = Mockito.mock(Preferences.class);
-		myConfig = new HospitalRestConfigProvider(prefs);
+		prefsMock = Mockito.mock(Preferences.class);
+		configProvider = new HospitalRestConfigProvider(prefsMock);
 	}
 
 	@Test
 	public void getInt() {
-		Mockito.doReturn(INT_PREF_VALUE).when(prefs).getInt(KEY_PREF_STING, INT_PREF_DEFAULT_VALUE);
-		int value = myConfig.getInt(KEY_PREF_STING, INT_PREF_DEFAULT_VALUE);
+		Mockito.doReturn(INT_PREF_VALUE).when(prefsMock).getInt(KEY_PREF_STING, INT_PREF_DEFAULT_VALUE);
+		int value = configProvider.getInt(KEY_PREF_STING, INT_PREF_DEFAULT_VALUE);
 		assertEquals(INT_PREF_VALUE, value);
 	}
 
 	@Test
-	public void getIntCallPreferences() {
-		Mockito.doReturn(INT_PREF_VALUE).when(prefs).getInt(KEY_PREF_STING, INT_PREF_DEFAULT_VALUE);
-		myConfig.getInt(KEY_PREF_STING, INT_PREF_DEFAULT_VALUE);
-		Mockito.verify(prefs,Mockito.times(1)).getInt(KEY_PREF_STING, INT_PREF_DEFAULT_VALUE);
+	public void getIntCallsPreferences() {
+		Mockito.doReturn(INT_PREF_VALUE).when(prefsMock).getInt(KEY_PREF_STING, INT_PREF_DEFAULT_VALUE);
+		configProvider.getInt(KEY_PREF_STING, INT_PREF_DEFAULT_VALUE);
+		Mockito.verify(prefsMock,Mockito.times(1)).getInt(KEY_PREF_STING, INT_PREF_DEFAULT_VALUE);
 	}
 
 	@Test
 	public void getString() {
-		Mockito.doReturn(STRING_PREF_VALUE).when(prefs).get(KEY_PREF_STING, STRING_PREF_DEFAULT_VALUE);
-		String value = myConfig.getString(KEY_PREF_STING, STRING_PREF_DEFAULT_VALUE);
+		Mockito.doReturn(STRING_PREF_VALUE).when(prefsMock).get(KEY_PREF_STING, STRING_PREF_DEFAULT_VALUE);
+		String value = configProvider.getString(KEY_PREF_STING, STRING_PREF_DEFAULT_VALUE);
 		assertEquals(STRING_PREF_VALUE, value);
 	}
 
 	@Test
-	public void getStringCallPreferences() {
-		Mockito.doReturn(STRING_PREF_VALUE).when(prefs).get(KEY_PREF_STING, STRING_PREF_DEFAULT_VALUE);
-		myConfig.getString(KEY_PREF_STING, STRING_PREF_DEFAULT_VALUE);
-		Mockito.verify(prefs,Mockito.times(1)).get(KEY_PREF_STING, STRING_PREF_DEFAULT_VALUE);
+	public void getStringCallsPreferences() {
+		Mockito.doReturn(STRING_PREF_VALUE).when(prefsMock).get(KEY_PREF_STING, STRING_PREF_DEFAULT_VALUE);
+		configProvider.getString(KEY_PREF_STING, STRING_PREF_DEFAULT_VALUE);
+		Mockito.verify(prefsMock,Mockito.times(1)).get(KEY_PREF_STING, STRING_PREF_DEFAULT_VALUE);
 	}
 }
