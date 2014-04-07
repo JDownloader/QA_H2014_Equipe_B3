@@ -13,6 +13,7 @@ import org.junit.Test;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.services.DrugService;
 import ca.ulaval.glo4002.services.dto.DrugSearchDTO;
+import ca.ulaval.glo4002.services.dto.validators.DrugSearchDTOValidator;
 
 public class DrugResourceTest {
 	private DrugService drugServiceMock;
@@ -29,7 +30,7 @@ public class DrugResourceTest {
 	@Test
 	public void verifyDrugSearchCallsServiceMethodsCorrectly() throws Exception {
 		drugResource.post(drugSearchDTOMock);
-		verify(drugServiceMock).searchDrug(eq(drugSearchDTOMock));
+		verify(drugServiceMock).searchDrug(eq(drugSearchDTOMock), any(DrugSearchDTOValidator.class));
 	}
 
 	@Test
@@ -40,7 +41,7 @@ public class DrugResourceTest {
 
 	@Test
 	public void verifyDrugSearchReturnsBadRequestResponseOnServiceRequestException() throws Exception {
-		doThrow(new ServiceRequestException()).when(drugServiceMock).searchDrug(eq(drugSearchDTOMock));
+		doThrow(new ServiceRequestException()).when(drugServiceMock).searchDrug(eq(drugSearchDTOMock), any(DrugSearchDTOValidator.class));
 
 		Response expectedResponse = Response.status(Status.BAD_REQUEST).build();
 		Response receivedResponse = drugResource.post(drugSearchDTOMock);

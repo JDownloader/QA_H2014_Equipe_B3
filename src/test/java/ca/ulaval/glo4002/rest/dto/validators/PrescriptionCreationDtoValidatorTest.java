@@ -36,31 +36,31 @@ public class PrescriptionCreationDTOValidatorTest {
 	}
 
 	@Test
-	public void validatingGoodRequestWithDrugNameDoesNotThrowAnException() throws Exception {
+	public void validatingGoodRequestWithDrugNameDoesNotThrowAnException() {
 		when(prescriptionCreationDTOMock.getDin()).thenReturn(null);
 		when(prescriptionCreationDTOMock.getDrugName()).thenReturn(SAMPLE_DRUG_NAME_PARAMETER);
 
 		try {
 			prescriptionCreationDTOValidator.validate(prescriptionCreationDTOMock);
 		} catch (Exception e) {
-			fail("Should not have thrown an exception");
+			fail("The validator should not have thrown an exception");
 		}
 	}
 
 	@Test
-	public void validatingGoodRequestWithDinDoesNotThrowAnException() throws Exception {
+	public void validatingGoodRequestWithDinDoesNotThrowAnException() {
 		when(prescriptionCreationDTOMock.getDin()).thenReturn(SAMPLE_DIN_PARAMETER);
 		when(prescriptionCreationDTOMock.getDrugName()).thenReturn(null);
 
 		try {
 			prescriptionCreationDTOValidator.validate(prescriptionCreationDTOMock);
 		} catch (Exception e) {
-			fail("Should not have thrown an exception");
+			fail("The validator should not have thrown an exception");
 		}
 	}
 
 	@Test(expected = PrescriptionCreationException.class)
-	public void disallowsEmptyDrugName() throws Exception {
+	public void disallowsEmptyDrugName() {
 		when(prescriptionCreationDTOMock.getDin()).thenReturn(null);
 		when(prescriptionCreationDTOMock.getDrugName()).thenReturn("");
 
@@ -68,7 +68,7 @@ public class PrescriptionCreationDTOValidatorTest {
 	}
 
 	@Test(expected = PrescriptionCreationException.class)
-	public void disallowsUnspecifiedDrugAndDrugNameParameters() throws Exception {
+	public void disallowsUnspecifiedDrugAndDrugNameParameters() {
 		when(prescriptionCreationDTOMock.getDin()).thenReturn(null);
 		when(prescriptionCreationDTOMock.getDrugName()).thenReturn(null);
 
@@ -76,7 +76,7 @@ public class PrescriptionCreationDTOValidatorTest {
 	}
 
 	@Test(expected = PrescriptionCreationException.class)
-	public void disallowsDrugAndDrugNameParametersBothSpecified() throws Exception {
+	public void disallowsDrugAndDrugNameParametersBothSpecified() {
 		when(prescriptionCreationDTOMock.getDin()).thenReturn(SAMPLE_DIN_PARAMETER);
 		when(prescriptionCreationDTOMock.getDrugName()).thenReturn(SAMPLE_DRUG_NAME_PARAMETER);
 
@@ -84,37 +84,37 @@ public class PrescriptionCreationDTOValidatorTest {
 	}
 
 	@Test(expected = PrescriptionCreationException.class)
-	public void disallowsUnspecifiedStaffMemberParameter() throws Exception {
+	public void disallowsUnspecifiedStaffMemberParameter() {
 		when(prescriptionCreationDTOMock.getStaffMember()).thenReturn(null);
 		prescriptionCreationDTOValidator.validate(prescriptionCreationDTOMock);
 	}
 
 	@Test(expected = PrescriptionCreationException.class)
-	public void disallowsUnspecifiedRenewalsParameter() throws Exception {
+	public void disallowsUnspecifiedRenewalsParameter() {
 		when(prescriptionCreationDTOMock.getRenewals()).thenReturn(null);
 		prescriptionCreationDTOValidator.validate(prescriptionCreationDTOMock);
 	}
 
 	@Test(expected = PrescriptionCreationException.class)
-	public void disallowsUnspecifiedDateParameter() throws Exception {
+	public void disallowsUnspecifiedDateParameter() {
 		when(prescriptionCreationDTOMock.getDate()).thenReturn(null);
 		prescriptionCreationDTOValidator.validate(prescriptionCreationDTOMock);
 	}
 
 	@Test(expected = PrescriptionCreationException.class)
-	public void disallowsNegativeRenewalsParameter() throws Exception {
+	public void disallowsNegativeRenewalsParameter() {
 		when(prescriptionCreationDTOMock.getRenewals()).thenReturn(-1);
 		prescriptionCreationDTOValidator.validate(prescriptionCreationDTOMock);
 	}
 
 	@Test
-	public void allowsMinimumRenewalsParameter() throws Exception {
+	public void allowsMinimumRenewalsParameter() {
 		when(prescriptionCreationDTOMock.getRenewals()).thenReturn(MIN_RENEWALS_PARAMETER);
 		
 		try {
 			prescriptionCreationDTOValidator.validate(prescriptionCreationDTOMock);
 		} catch (Exception e) {
-			fail("Should not have thrown an exception");
+			fail("The validator should not have thrown an exception");
 		}
 	}
 }
