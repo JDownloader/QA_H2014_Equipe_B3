@@ -24,7 +24,7 @@ public class SurgicalToolCreationDtoValidatorTest {
 		SurgicalToolCreationDTOMock = mock(SurgicalToolCreationDTO.class);
 
 		when(SurgicalToolCreationDTOMock.getTypeCode()).thenReturn(SAMPLE_TYPECODE_PARAMETER);
-		when(SurgicalToolCreationDTOMock.getStatut()).thenReturn(SAMPLE_STATUT_PARAMETER);
+		when(SurgicalToolCreationDTOMock.getStatus()).thenReturn(SAMPLE_STATUT_PARAMETER);
 		when(SurgicalToolCreationDTOMock.getNoSerie()).thenReturn(SAMPLE_NOSERIE_PARAMETER);
 
 	}

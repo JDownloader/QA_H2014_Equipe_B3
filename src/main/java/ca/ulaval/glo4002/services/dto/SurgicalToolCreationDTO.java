@@ -6,7 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class SurgicalToolCreationDTO { 
 
 	private String typecode;
-	private String statut;
+	@JsonProperty("statut")
+	private String status;
 	@JsonProperty("noserie")
 	private String noSerie;
 
@@ -17,18 +18,17 @@ public class SurgicalToolCreationDTO {
 		return typecode;
 	}
 	
-	public String getStatut() {
-		return statut;
+	public String getStatus() {
+		return status;
 	}
 	
 	public String getNoSerie() {
 		return noSerie;
 	}
 	
-	
-	public void setInterventionNumber(Integer interventionNumber) { //Required to set @PathParam value
+	public void setInterventionNumber(Integer interventionNumber) {
 		this.interventionNumber = interventionNumber;
 	}
 	
-	//TODO: faut-il ajouter un champ pour le type d'intervention?
+	//TODO: faut-il ajouter un champ pour le type d'intervention et ainsi pouvoir vérifier ça dans le validator?
 }
