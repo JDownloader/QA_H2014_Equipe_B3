@@ -1,5 +1,7 @@
 package ca.ulaval.glo4002.services.dto;
 
+import ca.ulaval.glo4002.domain.intervention.InterventionType;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -13,6 +15,8 @@ public class SurgicalToolCreationDTO {
 
 	@JsonIgnore
 	private Integer interventionNumber;
+	@JsonIgnore
+	private InterventionType interventionType;
 	
 	public String getTypeCode() {
 		return typecode;
@@ -30,5 +34,12 @@ public class SurgicalToolCreationDTO {
 		this.interventionNumber = interventionNumber;
 	}
 	
-	//TODO: faut-il ajouter un champ pour le type d'intervention et ainsi pouvoir vérifier ça dans le validator?
+	public void setInterventionType(InterventionType interventionType) {
+		this.interventionType = interventionType;
+	}
+	
+	public InterventionType getInterventionType() {
+		return this.interventionType;
+	}
+
 }

@@ -10,14 +10,14 @@ public class SurgicalToolAssembler {
 
 	public SurgicalTool fromDTO(SurgicalToolCreationDTO surgicalToolCreationDTO) {
 		SurgicalTool surgicalTool;
-
-		
 		if (surgicalToolCreationDTO.getNoSerie() == null) {
-			surgicalTool = new SurgicalTool(ANONYME, 
+			surgicalTool = new SurgicalTool(
+					ANONYME, 
 					surgicalToolCreationDTO.getTypeCode(),
 					SurgicalToolStatus.fromString(surgicalToolCreationDTO.getStatus()));
 		} else {
-			surgicalTool = new SurgicalTool(surgicalToolCreationDTO.getNoSerie(), 
+			surgicalTool = new SurgicalTool(
+					surgicalToolCreationDTO.getNoSerie(), 
 					surgicalToolCreationDTO.getNoSerie(),
 					SurgicalToolStatus.fromString(surgicalToolCreationDTO.getStatus()));
 		}
