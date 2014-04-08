@@ -3,7 +3,7 @@ package ca.ulaval.glo4002.services.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class SurgicalToolCreationDto { 
+public class SurgicalToolCreationDTO { 
 
 	private String typecode;
 	private String statut;
@@ -24,8 +24,11 @@ public class SurgicalToolCreationDto {
 	public String getNoSerie() {
 		return noSerie;
 	}
-
+	
+	
 	public void setInterventionNumber(Integer interventionNumber) { //Required to set @PathParam value
 		this.interventionNumber = interventionNumber;
 	}
+	
+	//TODO: faut-il ajouter un champ pour le type d'intervention?
 }
