@@ -29,11 +29,7 @@ public class SurgicalToolCreationDTO {
 	public String getNoSerie() {
 		return noSerie;
 	}
-	
-	public void setInterventionNumber(Integer interventionNumber) {
-		this.interventionNumber = interventionNumber;
-	}
-	
+
 	public void setInterventionType(InterventionType interventionType) {
 		this.interventionType = interventionType;
 	}
