@@ -55,8 +55,12 @@ public class SurgicalToolCreationDTOValidatorTest {
 
 	@Test
 	public void validatingRequestWithAllParametersDoesNotThrowAnException() {
-
-		when(SurgicalToolCreationDTOMock.getNoSerie()).thenReturn(null);
+		
+		try {
+			SurgicalToolCreationDTOValidator.validate(SurgicalToolCreationDTOMock);
+		} catch (Exception e) {
+			fail("The validator should not have thrown an exception");
+		}
 
 	}
 
