@@ -6,9 +6,9 @@ import ca.ulaval.glo4002.services.dto.SurgicalToolCreationDTO;
 
 public class SurgicalToolAssembler {
 	
-	private final String ANONYME = null; //TODO: si on laisse les anonymes à NULL, ceci est inutile
+	private final String ANONYME = null; //TODO: inutile si les NoSerie anonyme sont laissés à null
 
-	public SurgicalTool fromDTO(SurgicalToolCreationDTO surgicalToolCreationDTO) {
+	public SurgicalTool assembleFromDTO(SurgicalToolCreationDTO surgicalToolCreationDTO) {
 		SurgicalTool surgicalTool;
 		if (surgicalToolCreationDTO.getNoSerie() == null) {
 			surgicalTool = new SurgicalTool(
