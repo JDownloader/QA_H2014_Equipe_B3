@@ -37,6 +37,9 @@ public class InterventionResource {
 	private CreateInterventionRequestParserFactory createInterventionRequestParserFactory;
 	
 	public InterventionResource() {
+		
+		this.service = new InterventionService();
+		
 		EntityManager entityManager = new EntityManagerProvider().getEntityManager();
 
 		buildInterventionService(entityManager);

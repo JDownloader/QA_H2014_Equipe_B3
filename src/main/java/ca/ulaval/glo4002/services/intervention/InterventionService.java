@@ -219,14 +219,4 @@ public class InterventionService {
 		}
 	}
 
-
-	private Intervention getIntervention(SurgicalToolModificationDTO surgicalToolModificationDTO)
-			throws ServiceRequestException {
-		try {
-			return interventionRepository.getById(surgicalToolModificationDTO.getInterventionNumber());
-		} catch (EntityNotFoundException e) {
-			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT010, e.getMessage());
-		}
-	}
-
 }
