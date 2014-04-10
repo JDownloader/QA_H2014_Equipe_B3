@@ -35,18 +35,14 @@ public class InterventionResource {
 
 	private InterventionService service;
 	private CreateInterventionRequestParserFactory createInterventionRequestParserFactory;
-	private CreateSurgicalToolRequestParserFactory createSurgicalToolRequestParserFactory;
-	private SurgicalToolModificationRequestParserFactory modifySurgicalToolRequestParserFactory;
-
+	
 	public InterventionResource() {
 		EntityManager entityManager = new EntityManagerProvider().getEntityManager();
 
 		buildInterventionService(entityManager);
 
 		this.createInterventionRequestParserFactory = new CreateInterventionRequestParserFactory();
-		this.createSurgicalToolRequestParserFactory = new CreateSurgicalToolRequestParserFactory();
-		this.modifySurgicalToolRequestParserFactory = new SurgicalToolModificationRequestParserFactory();
-	}
+		}
 
 	private void buildInterventionService(EntityManager entityManager) {
 		InterventionServiceBuilder interventionServiceBuilder = new InterventionServiceBuilder()
@@ -60,9 +56,7 @@ public class InterventionResource {
 	public InterventionResource(InterventionResourceBuilder interventionResourceBuilder) {
 		this.service = interventionResourceBuilder.service;
 		this.createInterventionRequestParserFactory = interventionResourceBuilder.createInterventionRequestParserFactory;
-		this.createSurgicalToolRequestParserFactory = interventionResourceBuilder.createSurgicalToolRequestParserFactory;
-		this.modifySurgicalToolRequestParserFactory = interventionResourceBuilder.modifySurgicalToolRequestParserFactory;
-	}
+		}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -98,7 +92,7 @@ public class InterventionResource {
 	@Path("{interventionNumber: [0-9]+}/instruments/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response post(SurgicalToolCreationDTO surgicalToolCreationDTO, @PathParam("intervention_number")
+	public Response createSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO, @PathParam("intervention_number")
 	int interventionNumber) throws Exception {
 		
 		try {

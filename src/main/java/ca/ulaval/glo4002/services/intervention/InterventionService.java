@@ -177,8 +177,6 @@ public class InterventionService {
 					surgicalToolModificationDTO.getNewSerialNumber()));
 		}
 
-		updateIntervention(surgicalToolModificationDTO, surgicalTool);
-
 	}
 
 	private SurgicalTool getUpdatedSurgicalTool(SurgicalToolModificationDTO surgicalToolModificationDTO)
@@ -221,12 +219,6 @@ public class InterventionService {
 		}
 	}
 
-	private void updateIntervention(SurgicalToolModificationDTO surgicalToolModificationDTO, SurgicalTool surgicalTool)
-			throws ServiceRequestException {
-		Intervention intervention = getIntervention(surgicalToolModificationDTO);
-		intervention.addSurgicalTool(surgicalTool);
-		interventionRepository.update(intervention);
-	}
 
 	private Intervention getIntervention(SurgicalToolModificationDTO surgicalToolModificationDTO)
 			throws ServiceRequestException {
