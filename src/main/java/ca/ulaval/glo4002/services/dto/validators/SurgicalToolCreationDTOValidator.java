@@ -14,7 +14,7 @@ public class SurgicalToolCreationDTOValidator {
 		if (surgicalToolCreationDTO.getStatus() == null) {
 			// TODO: inutile vu qu'on vérifie ça dans la création du tool?
 			throw new SurgicalToolCreationException("Parameter 'statut' is required.");
-		} else if (surgicalToolCreationDTO.getTypeCode() == null) {
+		} else if (surgicalToolCreationDTO.getTypecode() == null) {
 			throw new SurgicalToolCreationException("Parameter 'typecode' is required.");
 		}
 

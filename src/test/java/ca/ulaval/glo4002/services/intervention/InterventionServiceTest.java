@@ -95,7 +95,7 @@ public class InterventionServiceTest {
 		when(surgicalToolCreationDTOMock.getInterventionType()).thenReturn(SAMPLE_TYPE);
 		when(surgicalToolCreationDTOMock.getSerialNumber()).thenReturn(SAMPLE_SERIAL_NUMBER);
 		when(surgicalToolCreationDTOMock.getStatus()).thenReturn(SAMPLE_SURGICAL_TOOL_STATUS_STRING);
-		when(surgicalToolCreationDTOMock.getTypeCode()).thenReturn(SAMPLE_TYPE_CODE);
+		when(surgicalToolCreationDTOMock.getTypecode()).thenReturn(SAMPLE_TYPE_CODE);
 
 	}
 

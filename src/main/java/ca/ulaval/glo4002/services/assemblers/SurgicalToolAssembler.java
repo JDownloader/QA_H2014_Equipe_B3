@@ -13,7 +13,7 @@ public class SurgicalToolAssembler {
 		if (surgicalToolCreationDTO.getSerialNumber() == null) {
 			surgicalTool = new SurgicalTool(
 					ANONYME, 
-					surgicalToolCreationDTO.getTypeCode(),
+					surgicalToolCreationDTO.getTypecode(),
 					SurgicalToolStatus.fromString(surgicalToolCreationDTO.getStatus()));
 		} else {
 			surgicalTool = new SurgicalTool(
