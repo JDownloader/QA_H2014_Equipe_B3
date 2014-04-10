@@ -10,7 +10,7 @@ public class PrescriptionCreationDTOValidator {
 			throw new PrescriptionCreationException("Parameter 'renouvellements' is required.");
 		} else if (prescriptionCreationDTO.getRenewals() < 0) {
 			throw new PrescriptionCreationException("Parameter 'renouvellements' must be greater or equal to 0.");
-		}	else if (prescriptionCreationDTO.getDate() == null) {
+		} else if (prescriptionCreationDTO.getDate() == null) {
 			throw new PrescriptionCreationException("Parameter 'date' is required.");
 		} else if (prescriptionCreationDTO.getStaffMember() == null) {
 			throw new PrescriptionCreationException("Parameter 'intervenant' is required.");

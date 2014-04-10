@@ -3,9 +3,12 @@ package ca.ulaval.glo4002.rest.dto.validators;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import java.text.ParseException;
+
 import org.junit.Before;
 import org.junit.Test;
 
+import ca.ulaval.glo4002.domain.drug.Din;
 import ca.ulaval.glo4002.services.dto.PrescriptionCreationDTO;
 import ca.ulaval.glo4002.services.dto.validators.*;
 import ca.ulaval.glo4002.utils.DateParser;
@@ -15,7 +18,7 @@ public class PrescriptionCreationDTOValidatorTest {
 	private static final int SAMPLE_RENEWALS_PARAMETER = 2;
 	private static final String SAMPLE_DRUG_NAME_PARAMETER = "drug_name";
 	private static final int SAMPLE_STAFF_MEMBER_PARAMETER = 3;
-	private static final String SAMPLE_DIN_PARAMETER = "098423";
+	private static final Din SAMPLE_DIN_PARAMETER = new Din("098423");
 	private static final int SAMPLE_PATIENT_NUMBER_PARAMETER = 3;
 	private static final int MIN_RENEWALS_PARAMETER = 0;
 
@@ -23,11 +26,10 @@ public class PrescriptionCreationDTOValidatorTest {
 	PrescriptionCreationDTOValidator prescriptionCreationDTOValidator;
 	
 	@Before
-	public void init() throws Exception {
+	public void init() throws ParseException {
 		prescriptionCreationDTOValidator = new PrescriptionCreationDTOValidator();
 		prescriptionCreationDTOMock = mock(PrescriptionCreationDTO.class);
 		
-		when(prescriptionCreationDTOMock.getStaffMember()).thenReturn(SAMPLE_STAFF_MEMBER_PARAMETER);
 		when(prescriptionCreationDTOMock.getStaffMember()).thenReturn(SAMPLE_STAFF_MEMBER_PARAMETER);
 		when(prescriptionCreationDTOMock.getDate()).thenReturn(DateParser.parseDate(SAMPLE_DATE_PARAMETER));
 		when(prescriptionCreationDTOMock.getRenewals()).thenReturn(SAMPLE_RENEWALS_PARAMETER);

@@ -4,11 +4,13 @@ import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 
+import ca.ulaval.glo4002.domain.drug.Din;
+
 import com.fasterxml.jackson.annotation.*;
 
 @SuppressWarnings("unused")
 public class PrescriptionCreationDTO {
-	private String din;
+	private Din din;
 	@JsonProperty("nom")
 	private String drugName;
 	@JsonProperty("intervenant")
@@ -19,7 +21,7 @@ public class PrescriptionCreationDTO {
 	@JsonIgnore
 	private Integer patientNumber;
 	
-	public String getDin() {
+	public Din getDin() {
 		return din;
 	}
 	

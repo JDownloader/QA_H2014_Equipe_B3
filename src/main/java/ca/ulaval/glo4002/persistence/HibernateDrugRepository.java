@@ -29,9 +29,8 @@ public class HibernateDrugRepository extends HibernateRepository implements Drug
 	public List<Drug> search(String keywords) {
 		String keywordsWithWildcards = keywords.replace(' ', '%').toUpperCase();
 		
-		//TODO: Check if complete removal of SQL is necessary
 		final String DRUG_SEARCH_QUERY = "SELECT d FROM DRUG d WHERE UPPER(d.name) LIKE :keywords OR UPPER(d.description) LIKE :keywords";
-		
+
 		TypedQuery<Drug> query = entityManager.createQuery(DRUG_SEARCH_QUERY, Drug.class)
 				.setParameter("keywords", keywordsWithWildcards);
 		

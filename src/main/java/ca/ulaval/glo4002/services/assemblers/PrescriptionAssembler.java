@@ -1,6 +1,5 @@
 package ca.ulaval.glo4002.services.assemblers;
 
-import ca.ulaval.glo4002.domain.drug.Din;
 import ca.ulaval.glo4002.domain.drug.Drug;
 import ca.ulaval.glo4002.domain.drug.DrugRepository;
 import ca.ulaval.glo4002.domain.prescription.Prescription;
@@ -30,6 +29,6 @@ public class PrescriptionAssembler {
 	}
 
 	private Drug getDrug(PrescriptionCreationDTO prescriptionCreationDTO, DrugRepository drugRepository) {
-		return drugRepository.getByDin(new Din(prescriptionCreationDTO.getDin()));
+		return drugRepository.getByDin(prescriptionCreationDTO.getDin());
 	}
 }
