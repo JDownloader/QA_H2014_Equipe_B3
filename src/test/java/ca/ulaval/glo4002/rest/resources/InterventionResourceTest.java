@@ -41,7 +41,7 @@ public class InterventionResourceTest {
 	private SurgicalToolModificationRequestParser modifySurgicalToolRequestParserMock;
 	private SurgicalToolModificationRequestParserFactory modifySurgicalToolRequestParserFactoryMock;
 	private InterventionResource interventionResource;
-	
+
 	private SurgicalToolCreationDTO surgicalToolCreationDTOMock;
 	private SurgicalToolModificationDTO surgicalToolModificationDTOMock;
 	private SurgicalToolCreationDTOValidator surgicalToolCreationDTOValidatorMock;
@@ -63,7 +63,7 @@ public class InterventionResourceTest {
 		createSurgicalToolRequestParserFactoryMock = mock(CreateSurgicalToolRequestParserFactory.class);
 		modifySurgicalToolRequestParserMock = mock(SurgicalToolModificationRequestParser.class);
 		modifySurgicalToolRequestParserFactoryMock = mock(SurgicalToolModificationRequestParserFactory.class);
-		
+
 		surgicalToolCreationDTOMock = mock(SurgicalToolCreationDTO.class);
 		surgicalToolModificationDTOMock = mock(SurgicalToolModificationDTO.class);
 		surgicalToolCreationDTOValidatorMock = mock(SurgicalToolCreationDTOValidator.class);
@@ -72,17 +72,20 @@ public class InterventionResourceTest {
 	}
 
 	private void stubMethods() throws RequestParseException {
-		when(createInterventionRequestParserFactoryMock.getParser(any(JSONObject.class))).thenReturn(createInterventionRequestParserMock);
-		when(createSurgicalToolRequestParserFactoryMock.getParser(any(JSONObject.class))).thenReturn(createSurgicalToolRequestParserMock);
-		when(modifySurgicalToolRequestParserFactoryMock.getParser(any(JSONObject.class))).thenReturn(modifySurgicalToolRequestParserMock);
+		when(createInterventionRequestParserFactoryMock.getParser(any(JSONObject.class))).thenReturn(
+				createInterventionRequestParserMock);
+		when(createSurgicalToolRequestParserFactoryMock.getParser(any(JSONObject.class))).thenReturn(
+				createSurgicalToolRequestParserMock);
+		when(modifySurgicalToolRequestParserFactoryMock.getParser(any(JSONObject.class))).thenReturn(
+				modifySurgicalToolRequestParserMock);
 	}
 
 	private void buildInterventionResource() {
 		InterventionResourceBuilder interventionResourceBuilder = new InterventionResourceBuilder()
-			.createInterventionRequestParserFactory(createInterventionRequestParserFactoryMock)
-			.modifySurgicalToolRequestParserFactory(modifySurgicalToolRequestParserFactoryMock)
-			.createSurgicalToolRequestParserFactory(createSurgicalToolRequestParserFactoryMock)
-			.service(interventionServiceMock);
+				.createInterventionRequestParserFactory(createInterventionRequestParserFactoryMock)
+				.modifySurgicalToolRequestParserFactory(modifySurgicalToolRequestParserFactoryMock)
+				.createSurgicalToolRequestParserFactory(createSurgicalToolRequestParserFactoryMock)
+				.service(interventionServiceMock);
 		interventionResource = interventionResourceBuilder.build();
 	}
 
@@ -100,68 +103,102 @@ public class InterventionResourceTest {
 
 	@Test
 	public void verifyCreateInterventionReturnsInvalidResponseWhenSpecifyingInvalidRequest() throws Exception {
-		doThrow(new ServiceRequestException()).when(interventionServiceMock).createIntervention(createInterventionRequestParserMock);
+		doThrow(new ServiceRequestException()).when(interventionServiceMock).createIntervention(
+				createInterventionRequestParserMock);
 
 		Response expectedResponse = Response.status(Status.BAD_REQUEST).build();
 		Response receivedResponse = interventionResource.post(SAMPLE_JSON_REQUEST);
 
 		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
 	}
-	
+
 	@Test
 	public void verifyCreateInterventionReturnsBadRequestResponseWhenSpecifyingInvalidRequestString() throws Exception {
-		doThrow(new RequestParseException()).when(createInterventionRequestParserFactoryMock).getParser(any(JSONObject.class));
+		doThrow(new RequestParseException()).when(createInterventionRequestParserFactoryMock).getParser(
+				any(JSONObject.class));
 
 		Response expectedResponse = Response.status(Status.BAD_REQUEST).build();
 		Response receivedResponse = interventionResource.post(SAMPLE_JSON_REQUEST);
-		
+
 		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
 	}
-	
+
 	@Test
 	public void verifyCreateInterventionReturnsInternalServerErrorResponseOnUnhandledException() throws Exception {
 		doThrow(new Exception()).when(interventionServiceMock).createIntervention(createInterventionRequestParserMock);
 
 		Response expectedResponse = Response.status(Status.INTERNAL_SERVER_ERROR).build();
 		Response receivedResponse = interventionResource.post(SAMPLE_JSON_REQUEST);
-		
+
 		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
 	}
-	
+
 	@Test
 	public void verifyCreateSurgicalToolSetsInterventionNumberOnTheSurgicalToolCreationDTO() throws Exception {
 		interventionResource.createSurgicalTool(surgicalToolCreationDTOMock, SAMPLE_INTERVENTION_NUMBER);
 		verify(surgicalToolCreationDTOMock).setInterventionNumber(SAMPLE_INTERVENTION_NUMBER);
 	}
-	
+
 	@Test
 	public void verifyCreateSurgicalToolCallsServiceMethodsCorrectly() throws Exception {
 		interventionResource.createSurgicalTool(surgicalToolCreationDTOMock, SAMPLE_INTERVENTION_NUMBER);
-		verify(interventionServiceMock).createSurgicalTool(eq(surgicalToolCreationDTOMock), any(SurgicalToolCreationDTOValidator.class), any(SurgicalToolAssembler.class));
+		verify(interventionServiceMock).createSurgicalTool(eq(surgicalToolCreationDTOMock),
+				any(SurgicalToolCreationDTOValidator.class), any(SurgicalToolAssembler.class));
 	}
 
 	@Test
-	public void verifyCreateSurgicalToolReturnsCreatedResponse() throws Exception {
-		Response response = interventionResource.createSurgicalTool(surgicalToolCreationDTOMock, SAMPLE_INTERVENTION_NUMBER);
+	public void verifySurgicalToolCreationReturnsCreatedResponse() throws Exception {
+		Response response = interventionResource.createSurgicalTool(surgicalToolCreationDTOMock,
+				SAMPLE_INTERVENTION_NUMBER);
 		assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
 	}
 
-
-	@Test
-	public void verifyPrescriptionCreationReturnsCreatedResponse() throws Exception {
-		Response response = interventionResource.createSurgicalTool(surgicalToolCreationDTOMock, SAMPLE_INTERVENTION_NUMBER);
-		assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
-	}
-	
 	@Test
 	public void verifyPrescriptionCreationReturnsBadRequestResponseOnServiceRequestException() throws Exception {
-		doThrow(new ServiceRequestException()).when(interventionServiceMock).createSurgicalTool(eq(surgicalToolCreationDTOMock), 
-				any(SurgicalToolCreationDTOValidator.class), any(SurgicalToolAssembler.class));
+		doThrow(new ServiceRequestException()).when(interventionServiceMock).createSurgicalTool(
+				eq(surgicalToolCreationDTOMock), any(SurgicalToolCreationDTOValidator.class),
+				any(SurgicalToolAssembler.class));
 
 		Response expectedResponse = Response.status(Status.BAD_REQUEST).build();
-		Response receivedResponse = interventionResource.createSurgicalTool(surgicalToolCreationDTOMock, SAMPLE_INTERVENTION_NUMBER);
+		Response receivedResponse = interventionResource.createSurgicalTool(surgicalToolCreationDTOMock,
+				SAMPLE_INTERVENTION_NUMBER);
 
 		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
 	}
 
+	@Test
+	public void verifyModifySurgicalToolSetsInterventionNumberOnTheSurgicalToolCreationDTO() throws Exception {
+		interventionResource.modifySurgicalTool(surgicalToolModificationDTOMock, SAMPLE_INTERVENTION_NUMBER,
+				SAMPLE_TYPE_CODE, SAMPLE_SERIAL_NUMBER);
+		verify(surgicalToolModificationDTOMock).setInterventionNumber(SAMPLE_INTERVENTION_NUMBER);
+	}
+
+	@Test
+	public void verifyModifySurgicalToolCallsServiceMethodsCorrectly() throws Exception {
+		interventionResource.modifySurgicalTool(surgicalToolModificationDTOMock, SAMPLE_INTERVENTION_NUMBER,
+				SAMPLE_TYPE_CODE, SAMPLE_SERIAL_NUMBER);
+		verify(interventionServiceMock).modifySurgicalTool(eq(surgicalToolModificationDTOMock),
+				any(SurgicalToolModificationDTOValidator.class));
+	}
+
+	
+	@Test
+	public void verifySurgicalToolModificationReturnsCreatedResponse() throws Exception {
+		Response response = interventionResource.modifySurgicalTool(surgicalToolModificationDTOMock,
+				SAMPLE_INTERVENTION_NUMBER, SAMPLE_TYPE_CODE, SAMPLE_SERIAL_NUMBER);
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void verifyModifyCreationReturnsBadRequestResponseOnServiceRequestException() throws Exception {
+		doThrow(new ServiceRequestException()).when(interventionServiceMock).modifySurgicalTool(
+				eq(surgicalToolModificationDTOMock), any(SurgicalToolModificationDTOValidator.class));
+
+		Response expectedResponse = Response.status(Status.INTERNAL_SERVER_ERROR).build();
+		Response receivedResponse = interventionResource.modifySurgicalTool(surgicalToolModificationDTOMock,
+				SAMPLE_INTERVENTION_NUMBER, SAMPLE_TYPE_CODE, SAMPLE_SERIAL_NUMBER);
+
+		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
+	}
+	
 }
