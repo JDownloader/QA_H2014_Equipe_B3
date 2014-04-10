@@ -7,6 +7,7 @@ import javax.persistence.*;
 import ca.ulaval.glo4002.domain.drug.Drug;
 import ca.ulaval.glo4002.domain.staff.StaffMember;
 
+@SuppressWarnings("unused") //Suppresses warning for private attributes used for Hibernate persistence
 @Entity(name = "PRESCRIPTION")
 public class Prescription {
 
@@ -38,25 +39,4 @@ public class Prescription {
 		this.allowedNumberOfRenewal = allowedNumberOfRenewal;
 		this.date = date;
 	}
-
-	public Drug getDrug() {
-		return drug;
-	}
-	
-	public String getDrugName() {
-		return drugName;
-	}
-
-	public int getAllowedNumberOfRenewal() {
-		return allowedNumberOfRenewal;
-	}
-
-	public Date getDate() {
-		return date;
-	}
-
-	public StaffMember getStaffMember() {
-		return staffMember;
-	}
-
 }
