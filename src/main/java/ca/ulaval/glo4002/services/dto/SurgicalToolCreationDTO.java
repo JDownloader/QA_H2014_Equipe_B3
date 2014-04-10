@@ -2,8 +2,7 @@ package ca.ulaval.glo4002.services.dto;
 
 import ca.ulaval.glo4002.domain.intervention.InterventionType;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 
 public class SurgicalToolCreationDTO { 
 	
@@ -12,14 +11,15 @@ public class SurgicalToolCreationDTO {
 	@JsonProperty("statut")
 	private String status;
 	@JsonProperty("noserie")
-	private String noSerie;
+	private String serialNumber; //TODO rendre facultatif le noSerie dans la requête json
+
 
 	@JsonIgnore
 	private Integer interventionNumber;
 
 	@JsonIgnore
 	private InterventionType interventionType;
-	
+		
 	public String getTypeCode() {
 		return typecode;
 	}
@@ -28,8 +28,8 @@ public class SurgicalToolCreationDTO {
 		return status;
 	}
 	
-	public String getNoSerie() {
-		return noSerie;
+	public String getSerialNumber() {
+		return serialNumber;
 	}
 	
 	public Integer getInterventionNumber() {

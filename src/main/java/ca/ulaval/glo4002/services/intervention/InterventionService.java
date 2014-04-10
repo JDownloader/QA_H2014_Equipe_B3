@@ -137,14 +137,13 @@ public class InterventionService {
 
 		SurgicalTool surgicalTool = surgicalToolAssembler.assembleFromDTO(surgicalToolCreationDTO);
 
-		String serialNumber = surgicalToolCreationDTO.getNoSerie();
-
-		if (serialNumber != null) {
+		if (surgicalToolCreationDTO.getSerialNumber() != null) { // TODO: remove magic null string
 
 			try {
-				surgicalToolRepository.getBySerialNumber(serialNumber);
-				throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT011, String.format(
-						"A surgical tool with serial number '%s' already exists.", serialNumber));
+				surgicalToolRepository.getBySerialNumber(surgicalToolCreationDTO.getSerialNumber());
+				throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT011,
+						String.format("A surgical tool with serial number '%s' already exists.",
+								surgicalToolCreationDTO.getSerialNumber()));
 			} catch (EntityNotFoundException e) {
 			}
 
@@ -155,7 +154,6 @@ public class InterventionService {
 			interventionRepository.update(intervention);
 
 		}
-
 	}
 
 	public void modifySurgicalTool(SurgicalToolModificationDTO surgicalToolModificationDTO,
@@ -189,7 +187,6 @@ public class InterventionService {
 					"A surgical tool with serial number '%s' already exists.",
 					surgicalToolModificationDTO.getNewSerialNumber()));
 		}
-
 	}
 
 	private SurgicalTool getUpdatedSurgicalTool(SurgicalToolModificationDTO surgicalToolModificationDTO)

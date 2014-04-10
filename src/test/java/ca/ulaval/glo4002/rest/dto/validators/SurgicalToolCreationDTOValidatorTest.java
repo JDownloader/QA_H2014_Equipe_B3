@@ -29,7 +29,7 @@ public class SurgicalToolCreationDTOValidatorTest {
 
 		when(SurgicalToolCreationDTOMock.getTypeCode()).thenReturn(SAMPLE_TYPECODE_PARAMETER);
 		when(SurgicalToolCreationDTOMock.getStatus()).thenReturn(SAMPLE_STATUT_PARAMETER);
-		when(SurgicalToolCreationDTOMock.getNoSerie()).thenReturn(SAMPLE_NOSERIE_PARAMETER);
+		when(SurgicalToolCreationDTOMock.getSerialNumber()).thenReturn(SAMPLE_NOSERIE_PARAMETER);
 		when(SurgicalToolCreationDTOMock.getInterventionType()).thenReturn(SAMPLE_INTERVENTIONTYPE_PARAMETER);
 
 	}
@@ -44,7 +44,7 @@ public class SurgicalToolCreationDTOValidatorTest {
 	@Test
 	public void validatingRequestWithoutSerialNumberDoesNotThrowAnException() {
 
-		when(SurgicalToolCreationDTOMock.getNoSerie()).thenReturn(null);
+		when(SurgicalToolCreationDTOMock.getSerialNumber()).thenReturn(null);
 
 		try {
 			SurgicalToolCreationDTOValidator.validate(SurgicalToolCreationDTOMock);
@@ -67,7 +67,7 @@ public class SurgicalToolCreationDTOValidatorTest {
 	@Test(expected = SurgicalToolCreationException.class)
 	public void disallowsAnonymousToolForForbiddenInterventionTypes() {
 
-		when(SurgicalToolCreationDTOMock.getNoSerie()).thenReturn(SAMPLE_ANONYMOUS_NOSERIE_PARAMETER);
+		when(SurgicalToolCreationDTOMock.getSerialNumber()).thenReturn(SAMPLE_ANONYMOUS_NOSERIE_PARAMETER);
 		when(SurgicalToolCreationDTOMock.getInterventionType()).thenReturn(
 				SAMPLE_NONANONYMOUS_INTERVENTIONTYPE_PARAMETER);
 

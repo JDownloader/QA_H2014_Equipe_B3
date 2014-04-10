@@ -93,7 +93,7 @@ public class InterventionServiceTest {
 	private void stubSurgicalToolDTOMockMethods() {
 		when(surgicalToolCreationDTOMock.getInterventionNumber()).thenReturn(SAMPLE_INTERVENTION_NUMBER);
 		when(surgicalToolCreationDTOMock.getInterventionType()).thenReturn(SAMPLE_TYPE);
-		when(surgicalToolCreationDTOMock.getNoSerie()).thenReturn(SAMPLE_SERIAL_NUMBER);
+		when(surgicalToolCreationDTOMock.getSerialNumber()).thenReturn(SAMPLE_SERIAL_NUMBER);
 		when(surgicalToolCreationDTOMock.getStatus()).thenReturn(SAMPLE_SURGICAL_TOOL_STATUS_STRING);
 		when(surgicalToolCreationDTOMock.getTypeCode()).thenReturn(SAMPLE_TYPE_CODE);
 
