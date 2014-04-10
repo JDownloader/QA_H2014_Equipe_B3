@@ -21,6 +21,7 @@ public class SurgicalToolCreationDTOValidator {
 		validateSerialNumber(surgicalToolCreationDTO);
 	}
 
+	//TODO: devrait se faire dans la logique d'affaire: dans la méthode addSurgicalTool de l'intervention
 	private void validateSerialNumber(SurgicalToolCreationDTO surgicalToolCreationDTO) {
 
 		boolean hasSerialNumber = (surgicalToolCreationDTO.getNoSerie() != null);

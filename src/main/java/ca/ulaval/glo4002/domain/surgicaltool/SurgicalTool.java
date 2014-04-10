@@ -6,6 +6,8 @@ import javax.persistence.*;
 @Table(name = "SURGICAL_TOOL", uniqueConstraints = { @UniqueConstraint(columnNames = { "SERIAL_NUMBER" }) }, indexes = { @Index(name = "SERIAL_NUMBER_IDX", columnList = "SERIAL_NUMBER") })
 public class SurgicalTool {
 
+	//TODO: cas ou méthode pour vérifier si un instrument est anonyme?
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "SURGICAL_TOOL_ID", nullable = false)

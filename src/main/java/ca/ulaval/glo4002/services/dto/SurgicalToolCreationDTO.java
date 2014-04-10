@@ -15,6 +15,7 @@ public class SurgicalToolCreationDTO {
 
 	@JsonIgnore
 	private Integer interventionNumber;
+
 	@JsonIgnore
 	private InterventionType interventionType;
 	
@@ -26,16 +27,25 @@ public class SurgicalToolCreationDTO {
 		return status;
 	}
 	
-	public String getNoSerie() {
+	public String getNoSerie() { //TODO: Pourquoi get/set plutôt que public?
 		return noSerie;
 	}
+	
+	public Integer getInterventionNumber() {
+		return interventionNumber;
+	}
 
-	public void setInterventionType(InterventionType interventionType) {
-		this.interventionType = interventionType;
+	public void setInterventionNumber(Integer interventionNumber) {
+		this.interventionNumber = interventionNumber;
 	}
 	
 	public InterventionType getInterventionType() {
 		return this.interventionType;
 	}
+
+	public void setInterventionType(InterventionType interventionType) {
+		this.interventionType = interventionType;
+	}
+
 
 }

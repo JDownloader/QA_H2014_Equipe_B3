@@ -20,6 +20,11 @@ import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequ
 import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParserFactory;
 import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.*;
 import ca.ulaval.glo4002.rest.utils.BadRequestJsonResponseBuilder;
+import ca.ulaval.glo4002.services.assemblers.SurgicalToolAssembler;
+import ca.ulaval.glo4002.services.dto.SurgicalToolCreationDTO;
+import ca.ulaval.glo4002.services.dto.SurgicalToolModificationDTO;
+import ca.ulaval.glo4002.services.dto.validators.SurgicalToolCreationDTOValidator;
+import ca.ulaval.glo4002.services.dto.validators.SurgicalToolModificationDTOValidator;
 import ca.ulaval.glo4002.services.intervention.InterventionService;
 import ca.ulaval.glo4002.services.intervention.InterventionServiceBuilder;
 
@@ -86,72 +91,42 @@ public class InterventionResource {
 		CreateInterventionRequestParser interventionRequestParser = createInterventionRequestParserFactory.getParser(jsonRequest);
 		return interventionRequestParser;
 	}
+	
+
 
 	@POST
 	@Path("{interventionNumber: [0-9]+}/instruments/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createSurgicalTool(String request, @PathParam("interventionNumber") int interventionNumber) {
+	public Response post(SurgicalToolCreationDTO surgicalToolCreationDTO, @PathParam("intervention_number")
+	int interventionNumber) throws Exception {
+		
 		try {
-			SurgicalToolCreationRequestParser requestParser = getCreateSurgicalToolRequestParser(request, interventionNumber);
-			int surgicalToolId = service.createSurgicalTool(requestParser);
-			String newResourceLocation = getNewSurgicalToolResourceLocation(requestParser, surgicalToolId);
-			return Response.status(Status.CREATED).location(new URI(newResourceLocation)).build();
-		} catch (RequestParseException | JSONException e) {
-			return BadRequestJsonResponseBuilder.build(BAD_REQUEST_ERROR_CODE_INT010, e.getMessage());
+			surgicalToolCreationDTO.setInterventionNumber(interventionNumber);
+			service.createSurgicalTool(surgicalToolCreationDTO, new SurgicalToolCreationDTOValidator(),
+					new SurgicalToolAssembler());
+			return Response.status(Status.CREATED).build();
 		} catch (ServiceRequestException e) {
 			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());
-		} catch (Exception e) {
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
 
-	private String getNewSurgicalToolResourceLocation(SurgicalToolCreationRequestParser requestParser, int surgicalToolId) {
-		return String.format("/%s/%s", requestParser.getTypeCode(), surgicalToolId);
-	}
-
-	private SurgicalToolCreationRequestParser getCreateSurgicalToolRequestParser(String request, int interventionNumber) throws RequestParseException {
-		JSONObject jsonRequest = new JSONObject(request);
-		jsonRequest.put(SurgicalToolCreationRequestParser.INTERVENTION_NUMBER_PARAMETER_NAME, String.valueOf(interventionNumber));
-
-		SurgicalToolCreationRequestParser requestParser = createSurgicalToolRequestParserFactory.getParser(jsonRequest);
-		return requestParser;
-	}
-
+	
 	@PUT
 	@Path("{interventionNumber: [0-9]+}/instruments/{surgicalToolTypeCode}/{surgicalToolSerialNumber}/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response modifySurgicalTool(String request, @PathParam("interventionNumber") int interventionNumber,
-			@PathParam("surgicalToolTypeCode") String surgicalToolTypeCode, @PathParam("surgicalToolSerialNumber") String surgicalToolSerialNumber) {
+	public Response modifySurgicalTool(SurgicalToolModificationDTO surgicalToolModificationDTO, @PathParam("interventionNumber") int interventionNumber,
+			@PathParam("surgicalToolTypeCode") String surgicalToolTypeCode, @PathParam("surgicalToolSerialNumber") String surgicalToolSerialNumber) throws Exception{
+		
 		try {
-			SurgicalToolModificationRequestParser requestParser = getModifySurgicalToolRequestParser(request, interventionNumber, surgicalToolTypeCode,
-					surgicalToolSerialNumber);
-			service.modifySurgicalTool(requestParser);
+			surgicalToolModificationDTO.setInterventionNumber(interventionNumber);
+			surgicalToolModificationDTO.setOriginalSerialNumber(surgicalToolSerialNumber);
+			surgicalToolModificationDTO.setTypecode(surgicalToolTypeCode);
+			service.modifySurgicalTool(surgicalToolModificationDTO, new SurgicalToolModificationDTOValidator());
 			return Response.status(Status.OK).build();
-		} catch (RequestParseException | JSONException e) {
-			return BadRequestJsonResponseBuilder.build(BAD_REQUEST_ERROR_CODE_INT010, e.getMessage());
-		} catch (ServiceRequestException e) {
-			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());
 		} catch (Exception e) {
 			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 		}
-	}
-
-	private SurgicalToolModificationRequestParser getModifySurgicalToolRequestParser(String request, int interventionNumber, String surgicalToolTypeCode,
-			String surgicalToolSerialNumber) throws RequestParseException {
-		JSONObject jsonRequest = new JSONObject(request);
-		addPathParametersToJsonObject(jsonRequest, interventionNumber, surgicalToolTypeCode, surgicalToolSerialNumber);
-
-		SurgicalToolModificationRequestParser requestParser = modifySurgicalToolRequestParserFactory.getParser(jsonRequest);
-		return requestParser;
-	}
-
-	private void addPathParametersToJsonObject(JSONObject jsonRequest, int interventionNumber, String surgicalToolTypeCode, String surgicalToolSerialNumber) {
-		jsonRequest.put(SurgicalToolModificationRequestParser.INTERVENTION_NUMBER_PARAMETER_NAME, String.valueOf(interventionNumber));
-		jsonRequest.put(SurgicalToolModificationRequestParser.NEW_TYPECODE_PARAMETER_NAME, jsonRequest.opt("typecode"));
-		jsonRequest.put(SurgicalToolModificationRequestParser.TYPECODE_PARAMETER_NAME, String.valueOf(surgicalToolTypeCode));
-		jsonRequest.put(SurgicalToolModificationRequestParser.NEW_SERIAL_NUMBER_PARAMETER_NAME, jsonRequest.opt("noserie"));
-		jsonRequest.put(SurgicalToolModificationRequestParser.SERIAL_NUMBER_PARAMETER_NAME, String.valueOf(surgicalToolSerialNumber));
 	}
 }
