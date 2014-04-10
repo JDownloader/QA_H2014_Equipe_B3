@@ -6,7 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SurgicalToolCreationDTO { 
-
+	
+	@JsonProperty("typecode")
 	private String typecode;
 	@JsonProperty("statut")
 	private String status;
@@ -27,7 +28,7 @@ public class SurgicalToolCreationDTO {
 		return status;
 	}
 	
-	public String getNoSerie() { //TODO: Pourquoi get/set plutôt que public?
+	public String getNoSerie() {
 		return noSerie;
 	}
 	
@@ -36,6 +37,7 @@ public class SurgicalToolCreationDTO {
 	}
 
 	public void setInterventionNumber(Integer interventionNumber) {
+		
 		this.interventionNumber = interventionNumber;
 	}
 	

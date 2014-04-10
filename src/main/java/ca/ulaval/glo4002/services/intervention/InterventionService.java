@@ -114,11 +114,12 @@ public class InterventionService {
 			SurgicalToolCreationDTOValidator surgicalToolCreationDTOValidator,
 			SurgicalToolAssembler surgicalToolAssembler) throws ServiceRequestException {
 		try {
-
-			// TODO: set le intervention type avant de valider?
+			
 			surgicalToolCreationDTOValidator.validate(surgicalToolCreationDTO);
-			entityTransaction.begin();
 
+			entityTransaction.begin();
+			
+			
 			doCreateSurgicalTool(surgicalToolCreationDTO, surgicalToolAssembler);
 
 			entityTransaction.commit();
@@ -137,12 +138,12 @@ public class InterventionService {
 
 		SurgicalTool surgicalTool = surgicalToolAssembler.assembleFromDTO(surgicalToolCreationDTO);
 
-		surgicalToolRepository.create(surgicalTool);
 		// TODO: create plutot que persist: un peu incohérent?
-
+		surgicalToolRepository.create(surgicalTool);
 		Intervention intervention = interventionRepository.getById(surgicalToolCreationDTO.getInterventionNumber());
 		intervention.addSurgicalTool(surgicalTool);
 		interventionRepository.update(intervention);
+
 	}
 
 	public void modifySurgicalTool(SurgicalToolModificationDTO surgicalToolModificationDTO,

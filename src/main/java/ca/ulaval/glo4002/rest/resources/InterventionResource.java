@@ -95,7 +95,7 @@ public class InterventionResource {
 	@Path("{interventionNumber: [0-9]+}/instruments/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO, @PathParam("intervention_number")
+	public Response createSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO, @PathParam("interventionNumber")
 	int interventionNumber) throws Exception {
 		
 		try {
