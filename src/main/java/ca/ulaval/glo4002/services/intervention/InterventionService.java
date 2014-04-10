@@ -114,12 +114,11 @@ public class InterventionService {
 			SurgicalToolCreationDTOValidator surgicalToolCreationDTOValidator,
 			SurgicalToolAssembler surgicalToolAssembler) throws ServiceRequestException {
 		try {
-			
+
 			surgicalToolCreationDTOValidator.validate(surgicalToolCreationDTO);
 
 			entityTransaction.begin();
-			
-			
+
 			doCreateSurgicalTool(surgicalToolCreationDTO, surgicalToolAssembler);
 
 			entityTransaction.commit();
@@ -134,15 +133,28 @@ public class InterventionService {
 	}
 
 	private void doCreateSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO,
-			SurgicalToolAssembler surgicalToolAssembler) {
+			SurgicalToolAssembler surgicalToolAssembler) throws ServiceRequestException {
 
 		SurgicalTool surgicalTool = surgicalToolAssembler.assembleFromDTO(surgicalToolCreationDTO);
 
-		// TODO: create plutot que persist: un peu incohérent?
-		surgicalToolRepository.create(surgicalTool);
-		Intervention intervention = interventionRepository.getById(surgicalToolCreationDTO.getInterventionNumber());
-		intervention.addSurgicalTool(surgicalTool);
-		interventionRepository.update(intervention);
+		String serialNumber = surgicalToolCreationDTO.getNoSerie();
+
+		if (serialNumber != null) {
+
+			try {
+				surgicalToolRepository.getBySerialNumber(serialNumber);
+				throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT011, String.format(
+						"A surgical tool with serial number '%s' already exists.", serialNumber));
+			} catch (EntityNotFoundException e) {
+			}
+
+			// TODO: create plutot que persist: un peu incohérent?
+			surgicalToolRepository.create(surgicalTool);
+			Intervention intervention = interventionRepository.getById(surgicalToolCreationDTO.getInterventionNumber());
+			intervention.addSurgicalTool(surgicalTool);
+			interventionRepository.update(intervention);
+
+		}
 
 	}
 
