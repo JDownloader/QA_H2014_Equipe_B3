@@ -2,8 +2,6 @@ package ca.ulaval.glo4002.domain.drug;
 
 import java.io.Serializable;
 
-import ca.ulaval.glo4002.domain.staff.StaffMember;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
@@ -37,7 +35,7 @@ public class Din implements Serializable {
 	
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof StaffMember) {
+		if (obj instanceof Din) {
 			return din.equals(((Din)obj).din);
 		}
 		return false;
