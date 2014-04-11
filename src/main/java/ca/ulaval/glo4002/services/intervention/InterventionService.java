@@ -206,10 +206,10 @@ public class InterventionService {
 	}
 	
 	private void verifyIfTypeCodesMatch(SurgicalToolModificationDTO surgicalToolModificationDTO, SurgicalTool surgicalTool) throws ServiceRequestException {
-		if (surgicalTool.getTypeCode().compareToIgnoreCase(surgicalToolModificationDTO.getTypecode()) != 0) {
+		if (surgicalTool.getTypeCode().compareToIgnoreCase(surgicalToolModificationDTO.getTypeCode()) != 0) {
 			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT011, String.format(
 					"Type code of specified surgical tool ('%s') does not match the specified type code parameter ('%s').", surgicalTool.getTypeCode(),
-					surgicalToolModificationDTO.getTypecode()));
+					surgicalToolModificationDTO.getTypeCode()));
 		}
 	}
 

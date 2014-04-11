@@ -14,18 +14,18 @@ public class SurgicalToolModificationDTO {
 	private Integer interventionNumber;
 	
 	@JsonIgnore
-	private String typecode;
+	private String typeCode;
 	
 	@JsonIgnore
 	private String originalSerialNumber;
 
 
-	public String getTypecode() {
-		return typecode;
+	public String getTypeCode() {
+		return typeCode;
 	}
 
-	public void setTypecode(String typecode) {
-		this.typecode = typecode;
+	public void setTypeCode(String typecode) {
+		this.typeCode = typecode;
 	}
 
 	public String getOriginalSerialNumber() {

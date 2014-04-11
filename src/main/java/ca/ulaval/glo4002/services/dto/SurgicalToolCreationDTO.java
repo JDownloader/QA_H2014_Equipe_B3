@@ -6,7 +6,8 @@ import com.fasterxml.jackson.annotation.*;
 
 public class SurgicalToolCreationDTO {
 
-	private String typecode;
+	@JsonProperty("typecode")
+	private String typeCode;
 	@JsonProperty("statut")
 	private String status;
 
@@ -20,8 +21,8 @@ public class SurgicalToolCreationDTO {
 	@JsonIgnore
 	private InterventionType interventionType;
 
-	public String getTypecode() {
-		return typecode;
+	public String getTypeCode() {
+		return typeCode;
 	}
 
 	public String getStatus() {

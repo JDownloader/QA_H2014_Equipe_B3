@@ -27,7 +27,7 @@ public class SurgicalToolCreationDTOValidatorTest {
 		SurgicalToolCreationDTOValidator = new SurgicalToolCreationDTOValidator();
 		SurgicalToolCreationDTOMock = mock(SurgicalToolCreationDTO.class);
 
-		when(SurgicalToolCreationDTOMock.getTypecode()).thenReturn(SAMPLE_TYPECODE_PARAMETER);
+		when(SurgicalToolCreationDTOMock.getTypeCode()).thenReturn(SAMPLE_TYPECODE_PARAMETER);
 		when(SurgicalToolCreationDTOMock.getStatus()).thenReturn(SAMPLE_STATUT_PARAMETER);
 		when(SurgicalToolCreationDTOMock.getSerialNumber()).thenReturn(SAMPLE_NOSERIE_PARAMETER);
 		when(SurgicalToolCreationDTOMock.getInterventionType()).thenReturn(SAMPLE_INTERVENTIONTYPE_PARAMETER);
@@ -36,7 +36,7 @@ public class SurgicalToolCreationDTOValidatorTest {
 
 	@Test(expected = SurgicalToolCreationException.class)
 	public void disallowsEmptyTypecode() {
-		when(SurgicalToolCreationDTOMock.getTypecode()).thenReturn(null);
+		when(SurgicalToolCreationDTOMock.getTypeCode()).thenReturn(null);
 
 		SurgicalToolCreationDTOValidator.validate(SurgicalToolCreationDTOMock);
 	}

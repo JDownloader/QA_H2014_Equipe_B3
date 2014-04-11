@@ -119,7 +119,7 @@ public class InterventionResource {
 		try {
 			surgicalToolModificationDTO.setInterventionNumber(interventionNumber);
 			surgicalToolModificationDTO.setOriginalSerialNumber(surgicalToolSerialNumber);
-			surgicalToolModificationDTO.setTypecode(surgicalToolTypeCode);
+			surgicalToolModificationDTO.setTypeCode(surgicalToolTypeCode);
 			service.modifySurgicalTool(surgicalToolModificationDTO, new SurgicalToolModificationDTOValidator());
 			return Response.status(Status.OK).build();
 		} catch (ServiceRequestException e) {
