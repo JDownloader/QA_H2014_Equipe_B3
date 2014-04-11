@@ -145,7 +145,7 @@ public class InterventionService {
 
 	private void verifyIfNonAnonymousSurgicalToolHasUniqueSerial(String serialNumber) throws ServiceRequestException {
 
-		if (serialNumber != null) { // TODO: remove magic null string
+		if (SurgicalTool.isAnonymous(serialNumber) == false) {
 			try {
 				surgicalToolRepository.getBySerialNumber(serialNumber);
 				throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT011, String.format(
