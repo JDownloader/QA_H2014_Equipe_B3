@@ -122,8 +122,8 @@ public class InterventionResource {
 			surgicalToolModificationDTO.setTypecode(surgicalToolTypeCode);
 			service.modifySurgicalTool(surgicalToolModificationDTO, new SurgicalToolModificationDTOValidator());
 			return Response.status(Status.OK).build();
-		} catch (Exception e) {
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+		} catch (ServiceRequestException e) {
+			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());
 		}
 	}
 }

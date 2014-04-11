@@ -171,10 +171,10 @@ public class InterventionService {
 
 		} catch (ServiceRequestException e) {
 			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT010, e.getMessage());
-		}
-
-		if (entityTransaction.isActive()) {
-			entityTransaction.rollback();
+		} finally {
+			if (entityTransaction.isActive()) {
+				entityTransaction.rollback();
+			}
 		}
 	}
 

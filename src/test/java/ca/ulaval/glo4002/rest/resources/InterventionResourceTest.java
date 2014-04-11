@@ -194,7 +194,7 @@ public class InterventionResourceTest {
 		doThrow(new ServiceRequestException()).when(interventionServiceMock).modifySurgicalTool(
 				eq(surgicalToolModificationDTOMock), any(SurgicalToolModificationDTOValidator.class));
 
-		Response expectedResponse = Response.status(Status.INTERNAL_SERVER_ERROR).build();
+		Response expectedResponse = Response.status(Status.BAD_REQUEST).build();
 		Response receivedResponse = interventionResource.modifySurgicalTool(surgicalToolModificationDTOMock,
 				SAMPLE_INTERVENTION_NUMBER, SAMPLE_TYPE_CODE, SAMPLE_SERIAL_NUMBER);
 
