@@ -319,6 +319,7 @@ public class InterventionServiceTest {
 	 * 
 	 * verify(entityTransactionMock).commit(); verify(entityTransactionMock, never()).rollback(); }
 	 */
+	
 	private void stubSurgicalToolConflictCheck() {
 		doThrow(new EntityNotFoundException()).when(surgicalToolRepositoryMock).getBySerialNumber(anyString());
 	}

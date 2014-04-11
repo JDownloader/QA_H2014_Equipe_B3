@@ -6,13 +6,14 @@ import com.fasterxml.jackson.annotation.*;
 
 public class SurgicalToolCreationDTO { 
 	
-	//@JsonProperty("typecode")
 	private String typecode;
 	@JsonProperty("statut")
 	private String status;
+	
+	@JsonInclude()
 	@JsonProperty("noserie")
-	private String serialNumber; //TODO rendre facultatif le noSerie dans la requête json
-
+	private String serialNumber;
+	
 	@JsonIgnore
 	private Integer interventionNumber;
 
