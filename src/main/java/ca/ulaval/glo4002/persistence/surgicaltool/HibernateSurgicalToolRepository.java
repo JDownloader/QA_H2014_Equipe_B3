@@ -36,6 +36,21 @@ public class HibernateSurgicalToolRepository extends HibernateRepository impleme
 					String.format("Cannot find Surgical Tool with serial '%s'.", serialNumber));
 		}
 	}
+	
+	//TODO: Fonction et requête écrite mais aucunement testée, ne fonctionne certainement pas
+	public SurgicalTool getByTypeCode(String typeCode) throws EntityNotFoundException {
+		String queryString = String.format("SELECT s FROM SURGICAL_TOOL s WHERE s.typecode = '%s' AND WHERE s.serialNumber = null", typeCode);
+	
+		TypedQuery<SurgicalTool> query = entityManager.createQuery(queryString, SurgicalTool.class);
+
+		try {
+			SurgicalTool result = (SurgicalTool) query.getParameter(query.getFirstResult());
+			return result;
+		} catch (NoResultException e) {
+			throw new EntityNotFoundException(
+					String.format("Cannot find anonymous Surgical Tool with typecode '%s'.", typeCode));
+		}
+	}
 
 	public HibernateSurgicalToolRepository() {
 		super();

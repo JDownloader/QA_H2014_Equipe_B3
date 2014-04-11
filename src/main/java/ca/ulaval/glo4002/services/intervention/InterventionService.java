@@ -148,7 +148,6 @@ public class InterventionService {
 	private void verifyIfNonAnonymousSurgicalToolHasUniqueSerial(String serialNumber) throws ServiceRequestException {
 
 		if (serialNumber != null) { // TODO: remove magic null string
-
 			try {
 				surgicalToolRepository.getBySerialNumber(serialNumber);
 				throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT011, String.format(
@@ -184,11 +183,16 @@ public class InterventionService {
 		SurgicalTool surgicalTool;
 
 		try {
-			// TODO: s'il est anonyme daudrait plutot faire un get by typecode&Status et prendre n'importe lequel
-			surgicalTool = surgicalToolRepository.getBySerialNumber(surgicalToolModificationDTO
-					.getOriginalSerialNumber());
-		} catch (EntityNotFoundException e) {
+			if (surgicalToolModificationDTO.getOriginalSerialNumber() == null) { // TODO: magic anonymous null
+				surgicalTool = surgicalToolRepository.getByTypeCode(surgicalToolModificationDTO.getTypecode());
+				// TODO: BUG: si plusieurs tools anonyme ou non avec le même typecode et différents status, ça change le
+				// premier dans la BD
+			} else {
+				surgicalTool = surgicalToolRepository.getBySerialNumber(surgicalToolModificationDTO
+						.getOriginalSerialNumber());
+			}
 
+		} catch (EntityNotFoundException e) {
 			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT010, e.getMessage());
 		}
 

@@ -11,5 +11,7 @@ public interface SurgicalToolRepository {
 	SurgicalTool getById(int id) throws EntityNotFoundException;
 
 	SurgicalTool getBySerialNumber(String serialNumber) throws EntityNotFoundException;
+	
+	SurgicalTool getByTypeCode(String typeCode) throws EntityNotFoundException;
 
 }
