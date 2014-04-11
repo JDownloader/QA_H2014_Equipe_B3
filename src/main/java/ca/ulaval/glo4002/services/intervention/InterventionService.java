@@ -184,9 +184,9 @@ public class InterventionService {
 
 		try {
 			if (surgicalToolModificationDTO.getOriginalSerialNumber() == null) { // TODO: magic anonymous null
-				surgicalTool = surgicalToolRepository.getByTypeCode(surgicalToolModificationDTO.getTypecode());
-				// TODO: BUG: si plusieurs tools anonyme ou non avec le même typecode et différents status, ça change le
-				// premier dans la BD
+				int surgicalToolId = Integer.parseInt(surgicalToolModificationDTO.getOriginalSerialNumber());
+				surgicalTool = surgicalToolRepository.getById(surgicalToolId);
+				verifyIfTypeCodesMatch(surgicalToolModificationDTO, surgicalTool);
 			} else {
 				surgicalTool = surgicalToolRepository.getBySerialNumber(surgicalToolModificationDTO
 						.getOriginalSerialNumber());
@@ -203,6 +203,14 @@ public class InterventionService {
 
 		surgicalToolRepository.update(surgicalTool);
 
+	}
+	
+	private void verifyIfTypeCodesMatch(SurgicalToolModificationDTO surgicalToolModificationDTO, SurgicalTool surgicalTool) throws ServiceRequestException {
+		if (surgicalTool.getTypeCode().compareToIgnoreCase(surgicalToolModificationDTO.getTypecode()) != 0) {
+			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT011, String.format(
+					"Type code of specified surgical tool ('%s') does not match the specified type code parameter ('%s').", surgicalTool.getTypeCode(),
+					surgicalToolModificationDTO.getTypecode()));
+		}
 	}
 
 }
