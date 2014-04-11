@@ -1,7 +1,5 @@
 package ca.ulaval.glo4002.services.intervention;
 
-import java.util.Arrays;
-
 import javax.persistence.*;
 
 import ca.ulaval.glo4002.domain.intervention.*;
@@ -181,35 +179,46 @@ public class InterventionService {
 			throws ServiceRequestException {
 
 		SurgicalTool surgicalTool;
-
 		try {
-			if (surgicalToolModificationDTO.getOriginalSerialNumber() == null) { // TODO: magic anonymous null
-				int surgicalToolId = Integer.parseInt(surgicalToolModificationDTO.getOriginalSerialNumber());
-				surgicalTool = surgicalToolRepository.getById(surgicalToolId);
-				verifyIfTypeCodesMatch(surgicalToolModificationDTO, surgicalTool);
-			} else {
-				surgicalTool = surgicalToolRepository.getBySerialNumber(surgicalToolModificationDTO
-						.getOriginalSerialNumber());
-			}
-
+			surgicalTool = surgicalToolRepository.getBySerialNumber(surgicalToolModificationDTO
+					.getOriginalSerialNumber());
 		} catch (EntityNotFoundException e) {
-			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT010, e.getMessage());
+			surgicalTool = getSurgicalToolById(surgicalToolModificationDTO);
 		}
 
+		verifyIfTypeCodesMatch(surgicalToolModificationDTO, surgicalTool);
 		verifyIfNonAnonymousSurgicalToolHasUniqueSerial(surgicalToolModificationDTO.getNewSerialNumber());
 
-		surgicalTool.setSerialNumber(surgicalToolModificationDTO.getNewSerialNumber());
-		surgicalTool.setStatus(SurgicalToolStatus.fromString(surgicalToolModificationDTO.getNewStatus()));
-
+		if (surgicalToolModificationDTO.getNewSerialNumber() != null) {
+			surgicalTool.setSerialNumber(surgicalToolModificationDTO.getNewSerialNumber());
+		}
+		if (surgicalToolModificationDTO.getNewStatus() != null) {
+			surgicalTool.setStatus(SurgicalToolStatus.fromString(surgicalToolModificationDTO.getNewStatus()));
+		}
 		surgicalToolRepository.update(surgicalTool);
 
 	}
-	
-	private void verifyIfTypeCodesMatch(SurgicalToolModificationDTO surgicalToolModificationDTO, SurgicalTool surgicalTool) throws ServiceRequestException {
+
+	private SurgicalTool getSurgicalToolById(SurgicalToolModificationDTO surgicalToolModificationDTO)
+			throws ServiceRequestException {
+		try {
+			int surgicalToolId = Integer.parseInt(surgicalToolModificationDTO.getOriginalSerialNumber());
+			return surgicalToolRepository.getById(surgicalToolId);
+		} catch (EntityNotFoundException | NumberFormatException e) {
+			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT010, String.format(
+					"Cannot find Surgical Tool with serial or id '%s'",
+					surgicalToolModificationDTO.getNewSerialNumber()));
+		}
+	}
+
+	private void verifyIfTypeCodesMatch(SurgicalToolModificationDTO surgicalToolModificationDTO,
+			SurgicalTool surgicalTool) throws ServiceRequestException {
 		if (surgicalTool.getTypeCode().compareToIgnoreCase(surgicalToolModificationDTO.getTypeCode()) != 0) {
-			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT011, String.format(
-					"Type code of specified surgical tool ('%s') does not match the specified type code parameter ('%s').", surgicalTool.getTypeCode(),
-					surgicalToolModificationDTO.getTypeCode()));
+			throw new ServiceRequestException(
+					ERROR_SERVICE_REQUEST_EXCEPTION_INT011,
+					String.format(
+							"Type code of specified surgical tool ('%s') does not match the specified type code parameter ('%s').",
+							surgicalTool.getTypeCode(), surgicalToolModificationDTO.getTypeCode()));
 		}
 	}
 

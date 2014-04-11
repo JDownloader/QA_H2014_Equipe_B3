@@ -42,7 +42,7 @@ public class InterventionServiceTest {
 	private static final String SAMPLE_NEW_SERIAL_NUMBER = "684513";
 	private static final String SAMPLE_OTHER_SERIAL_NUMBER = "a123654";
 	private static final String SAMPLE_TYPE_CODE = "56465T";
-	private static final String ANOTHER_SAMPLE_TYPE_CODE = "56462T";
+	private static final String DIFFERENT_SAMPLE_TYPE_CODE = "716462T";
 	private static final SurgicalToolStatus SAMPLE_SURGICAL_TOOL_STATUS = SurgicalToolStatus.INUTILISE;
 	private static final String SAMPLE_SURGICAL_TOOL_STATUS_STRING = "INUTILISE";
 	private static final String SAMPLE_SURGICAL_TOOL_STATUS_STRING_DIFFERENT = "UTILISE_PATIENT";
@@ -113,6 +113,7 @@ public class InterventionServiceTest {
 		when(surgicalToolModificationDTOMock.getTypeCode()).thenReturn(SAMPLE_TYPE_CODE);
 
 		when(surgicalToolMock.getTypeCode()).thenReturn(SAMPLE_TYPE_CODE);
+		
 	}
 
 	private void buildInterventionService() {
@@ -151,6 +152,9 @@ public class InterventionServiceTest {
 		when(surgicalToolRepositoryMock.getBySerialNumber(anyString())).thenReturn(surgicalToolMock);
 		when(surgicalToolRepositoryMock.getBySerialNumber(SAMPLE_NEW_SERIAL_NUMBER)).thenThrow(
 				new EntityNotFoundException());
+		when(surgicalToolRepositoryMock.getById(any(Integer.class))).thenReturn(
+				new SurgicalTool(null, SAMPLE_TYPE_CODE, SAMPLE_SURGICAL_TOOL_STATUS));
+
 
 	}
 
@@ -339,7 +343,6 @@ public class InterventionServiceTest {
 
 	@Test
 	public void verifyModifySurgicalToolDoesNotRollbackOnSuccessfulCommit() throws Exception {
-		when(entityTransactionMock.isActive()).thenReturn(false);
 
 		interventionService.modifySurgicalTool(surgicalToolModificationDTOMock,
 				surgicalToolModificationDTOValidatorMock);
@@ -347,6 +350,31 @@ public class InterventionServiceTest {
 		verify(entityTransactionMock).commit();
 		verify(entityTransactionMock, never()).rollback();
 	}
+
+	@Test
+	public void verifyModifySurgicalToolFindsAnonymousToolByID() throws ServiceRequestException {
+
+		when(surgicalToolRepositoryMock.getBySerialNumber(any(String.class))).thenThrow(new EntityNotFoundException());
+		
+		interventionService.modifySurgicalTool(surgicalToolModificationDTOMock,
+				surgicalToolModificationDTOValidatorMock);
+
+		verify(surgicalToolRepositoryMock).getById(any(Integer.class));
+
+	}
+	
+	@Test(expected = ServiceRequestException.class)
+	public void verifyModifySurgicalToolThrowsExceptionForTypeCodeMismatch() throws ServiceRequestException {
+
+		when(surgicalToolRepositoryMock.getBySerialNumber(any(String.class))).thenThrow(new EntityNotFoundException());
+		when(surgicalToolRepositoryMock.getById(any(Integer.class))).thenReturn(
+				new SurgicalTool(null, DIFFERENT_SAMPLE_TYPE_CODE, SAMPLE_SURGICAL_TOOL_STATUS));
+
+		interventionService.modifySurgicalTool(surgicalToolModificationDTOMock,
+				surgicalToolModificationDTOValidatorMock);
+
+	}
+	
 
 	private void stubSurgicalToolConflictCheck() {
 		doThrow(new EntityNotFoundException()).when(surgicalToolRepositoryMock).getBySerialNumber(anyString());
