@@ -6,8 +6,8 @@ import javax.persistence.*;
 @Table(name = "SURGICAL_TOOL", uniqueConstraints = { @UniqueConstraint(columnNames = { "SERIAL_NUMBER" }) }, indexes = { @Index(name = "SERIAL_NUMBER_IDX", columnList = "SERIAL_NUMBER") })
 public class SurgicalTool {
 
-	//TODO: cas ou méthode pour vérifier si un instrument est anonyme?
-	
+	// TODO: cas ou méthode pour vérifier si un instrument est anonyme?
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "SURGICAL_TOOL_ID", nullable = false)
@@ -26,7 +26,7 @@ public class SurgicalTool {
 		// Required for Hibernate
 	}
 
-	public SurgicalTool(String serialNumber, String typeCode, SurgicalToolStatus status){
+	public SurgicalTool(String serialNumber, String typeCode, SurgicalToolStatus status) {
 		this.serialNumber = serialNumber;
 		this.typeCode = typeCode;
 		this.status = status;
@@ -56,4 +56,3 @@ public class SurgicalTool {
 		this.status = status;
 	}
 }
-

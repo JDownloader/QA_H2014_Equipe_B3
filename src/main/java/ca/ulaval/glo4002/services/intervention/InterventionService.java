@@ -135,7 +135,7 @@ public class InterventionService {
 
 		SurgicalTool surgicalTool = surgicalToolAssembler.assembleFromDTO(surgicalToolCreationDTO);
 
-		verifyNonAnonymousSurgicalToolHasUniqueSerial(surgicalToolCreationDTO);
+		verifyIfNonAnonymousSurgicalToolHasUniqueSerial(surgicalToolCreationDTO.getSerialNumber());
 
 		// TODO: create plutot que persist: un peu incohérent?
 		surgicalToolRepository.create(surgicalTool);
@@ -145,18 +145,17 @@ public class InterventionService {
 
 	}
 
-	private void verifyNonAnonymousSurgicalToolHasUniqueSerial(SurgicalToolCreationDTO surgicalToolCreationDTO)
-			throws ServiceRequestException {
-		if (surgicalToolCreationDTO.getSerialNumber() != null) { // TODO: remove magic null string
+	private void verifyIfNonAnonymousSurgicalToolHasUniqueSerial(String serialNumber) throws ServiceRequestException {
+
+		if (serialNumber != null) { // TODO: remove magic null string
 
 			try {
-				surgicalToolRepository.getBySerialNumber(surgicalToolCreationDTO.getSerialNumber());
+				surgicalToolRepository.getBySerialNumber(serialNumber);
 				throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT011, String.format(
-						"A surgical tool with serial number '%s' already exists.",
-						surgicalToolCreationDTO.getSerialNumber()));
+						"A surgical tool with serial number '%s' already exists.", serialNumber));
 			} catch (EntityNotFoundException e) {
+				return;
 			}
-
 		}
 	}
 
@@ -165,77 +164,41 @@ public class InterventionService {
 
 		try {
 			surgicalToolModificationDTOValidator.validate(surgicalToolModificationDTO);
+
 			entityTransaction.begin();
-
 			doModifySurgicalTool(surgicalToolModificationDTO);
-
 			entityTransaction.commit();
-		} catch (Exception e) {
 
-		} finally {
-			if (entityTransaction.isActive()) {
-				entityTransaction.rollback();
-			}
+		} catch (ServiceRequestException e) {
+			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT010, e.getMessage());
+		}
+
+		if (entityTransaction.isActive()) {
+			entityTransaction.rollback();
 		}
 	}
 
 	private void doModifySurgicalTool(SurgicalToolModificationDTO surgicalToolModificationDTO)
 			throws ServiceRequestException {
 
-		SurgicalTool surgicalTool = getSurgicalTool(surgicalToolModificationDTO); //On va chercher celui dans le Repo
-		surgicalTool.setSerialNumber(surgicalToolModificationDTO.getNewSerialNumber());
-		surgicalTool.setStatus(SurgicalToolStatus.fromString(surgicalToolModificationDTO.getNewStatus()));
-		
-		verifyTypeCodeMatch(surgicalToolModificationDTO, surgicalTool);
+		SurgicalTool surgicalTool;
+
 		try {
-			surgicalToolRepository.update(surgicalTool);
-		} catch (EntityExistsException e) {
-			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT011, String.format(
-					"A surgical tool with serial number '%s' already exists.",
-					surgicalToolModificationDTO.getNewSerialNumber()));
-		}
-	}
-/*
-	private SurgicalTool getUpdatedSurgicalTool(SurgicalToolModificationDTO surgicalToolModificationDTO)
-			throws ServiceRequestException {
-		SurgicalTool surgicalTool = getSurgicalTool(surgicalToolModificationDTO);
-		surgicalTool.setSerialNumber(surgicalToolModificationDTO.getNewSerialNumber());
-		surgicalTool.setStatus(SurgicalToolStatus.fromString(surgicalToolModificationDTO.getNewStatus()));
-		return surgicalTool;
-	}
-*/
-	private SurgicalTool getSurgicalTool(SurgicalToolModificationDTO surgicalToolModificationDTO)
-			throws ServiceRequestException {
-		try {
-			return surgicalToolRepository.getBySerialNumber(surgicalToolModificationDTO.getOriginalSerialNumber());
+			// TODO: s'il est anonyme daudrait plutot faire un get by typecode&Status et prendre n'importe lequel
+			surgicalTool = surgicalToolRepository.getBySerialNumber(surgicalToolModificationDTO
+					.getOriginalSerialNumber());
 		} catch (EntityNotFoundException e) {
-			return getSurgicalToolById(surgicalToolModificationDTO);
-		}
-	}
 
-	private SurgicalTool getSurgicalToolById(SurgicalToolModificationDTO surgicalToolModificationDTO)
-			throws ServiceRequestException {
-		try {
-			int surgicalToolId = Integer.parseInt(surgicalToolModificationDTO.getOriginalSerialNumber());
-			return surgicalToolRepository.getById(surgicalToolId);
-		} catch (EntityNotFoundException | NumberFormatException e) {
-			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT010, String.format(
-					"Cannot find Surgical Tool with serial or id '%s'",
-					surgicalToolModificationDTO.getOriginalSerialNumber()));
+			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT010, e.getMessage());
 		}
-	}
 
-	private void verifyTypeCodeMatch(SurgicalToolModificationDTO surgicalToolModificationDTO, SurgicalTool surgicalTool)
-			throws ServiceRequestException {
-		if (surgicalTool.getTypeCode().compareToIgnoreCase(surgicalToolModificationDTO.getTypecode()) != 0) {
-			throw new ServiceRequestException(
-					ERROR_SERVICE_REQUEST_EXCEPTION_INT011,
-					String.format(
-							"Type code of specified surgical tool ('%s') does not match the specified type code parameter ('%s').",
-							surgicalTool.getTypeCode(), surgicalToolModificationDTO.getTypecode()));
-		}
-	}
-	
+		verifyIfNonAnonymousSurgicalToolHasUniqueSerial(surgicalToolModificationDTO.getNewSerialNumber());
 
+		surgicalTool.setSerialNumber(surgicalToolModificationDTO.getNewSerialNumber());
+		surgicalTool.setStatus(SurgicalToolStatus.fromString(surgicalToolModificationDTO.getNewStatus()));
+
+		surgicalToolRepository.update(surgicalTool);
+
+	}
 
 }

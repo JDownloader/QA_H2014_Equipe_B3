@@ -33,9 +33,7 @@ public class HibernateSurgicalToolRepository extends HibernateRepository impleme
 			return result;
 		} catch (NoResultException e) {
 			throw new EntityNotFoundException(
-					String.format(
-							"Cannot find Surgical Tool with serial '%s'.",
-							serialNumber));
+					String.format("Cannot find Surgical Tool with serial '%s'.", serialNumber));
 		}
 	}
 
