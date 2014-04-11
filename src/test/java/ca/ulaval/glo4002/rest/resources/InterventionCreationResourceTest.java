@@ -23,24 +23,11 @@ public class InterventionCreationResourceTest {
 	private InterventionCreationDTO interventionCreationDTOMock;
 	private InterventionService interventionServiceMock;
 	
-	private static final String VALID_DESCRIPTION = "description";
-	private static final String VALID_DATE = "0000-00-00T24:01:00";
-	private static final Integer VALID_PATIENT_NUMBER = 1;
-	private static final String VALID_ROOM = "blocB";
-	private static final Integer VALID_SURGEON_NUMBER = 1;
-	private static final String VALID_TYPE = "OEIL"; 
-	
 	@Before
 	public void initialize(){
 		interventionCreationDTOMock = mock(InterventionCreationDTO.class);
 		interventionServiceMock = mock(InterventionService.class);
 		interventionCreationResource = new InterventionCreationResource(interventionServiceMock);
-		when(interventionCreationDTOMock.getDescription()).thenReturn(VALID_DESCRIPTION);
-		when(interventionCreationDTOMock.getDate()).thenReturn(VALID_DATE);
-		when(interventionCreationDTOMock.getPatientNumber()).thenReturn(VALID_PATIENT_NUMBER);
-		when(interventionCreationDTOMock.getRoom()).thenReturn(VALID_ROOM);
-		when(interventionCreationDTOMock.getSurgeonNumber()).thenReturn(VALID_SURGEON_NUMBER);
-		when(interventionCreationDTOMock.getType()).thenReturn(VALID_TYPE);
 	}
 	
 	@Test()

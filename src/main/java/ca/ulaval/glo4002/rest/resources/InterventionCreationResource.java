@@ -3,8 +3,6 @@ package ca.ulaval.glo4002.rest.resources;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.response.InterventionCreationResponse;
 import ca.ulaval.glo4002.services.InterventionService;
