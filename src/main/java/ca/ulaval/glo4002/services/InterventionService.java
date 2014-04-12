@@ -75,7 +75,6 @@ public class InterventionService {
 			return intervention.getId(); //TODO : check out if this actually works
 		} catch (Exception e) {
 			if (entityTransaction.isActive()) {
-				
 				entityTransaction.rollback();
 			}
 			throw e;

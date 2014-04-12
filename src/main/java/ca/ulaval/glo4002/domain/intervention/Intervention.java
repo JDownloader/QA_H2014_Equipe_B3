@@ -43,7 +43,7 @@ public class Intervention {
 		this.date = date;
 		this.room = returnValidRoom(room);
 		this.type = InterventionType.fromString(type);
-		this.status = returnValidStatus(status);
+		this.status = buildStatus(status);
 		this.patient = patient;
 	}
 	
@@ -61,7 +61,7 @@ public class Intervention {
 		return description;
 	}
 	
-	private InterventionStatus returnValidStatus(String status) {
+	private InterventionStatus buildStatus(String status) {
 		InterventionStatus newStatus;
 		
 		if(status.isEmpty()) {

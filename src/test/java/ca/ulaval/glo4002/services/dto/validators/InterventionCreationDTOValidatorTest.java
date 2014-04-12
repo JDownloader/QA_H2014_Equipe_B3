@@ -2,9 +2,6 @@ package ca.ulaval.glo4002.services.dto.validators;
 
 import java.text.ParseException;
 
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
 import org.junit.Before;
 import org.junit.Test;
 

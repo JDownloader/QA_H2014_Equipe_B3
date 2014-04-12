@@ -6,14 +6,18 @@ import javax.ws.rs.core.Response.Status;
 
 import org.json.JSONObject;
 
+import ca.ulaval.glo4002.exceptions.domainexceptions.DomainException;
+
 public class InterventionCreationResponse {
 	
 	private static final String CODE_PARAMETER = "code";
 	private static final String MESSAGE_PARAMETER = "message";
 	private static final String LOCATION_PARAMETER = "location";
 	
-	public Response createDefaultBadRequestResponse(){
-		return Response.status(Status.BAD_REQUEST).build(); 
+	public Response createDefaultBadRequestResponse(DomainException e){
+		JSONObject jsonResponse = new JSONObject();
+		jsonResponse.append(CODE_PARAMETER, e.getCode()).append(MESSAGE_PARAMETER, e.getMessage());
+		return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(jsonResponse.toString()).build(); 
 	}
 	
 	public Response createDefaultAcceptedResponse(){
