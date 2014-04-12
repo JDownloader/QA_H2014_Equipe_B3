@@ -184,6 +184,7 @@ public class InterventionService {
 			throws ServiceRequestException {
 
 		SurgicalTool surgicalTool;
+
 		try {
 			surgicalTool = surgicalToolRepository.getBySerialNumber(surgicalToolModificationDTO
 					.getOriginalSerialNumber());
@@ -194,15 +195,19 @@ public class InterventionService {
 		verifyIfTypeCodesMatch(surgicalToolModificationDTO, surgicalTool);
 
 		if (surgicalToolModificationDTO.getNewSerialNumber() != null) {
-			// TODO: On ne peut rendre un tool nonanonyme anonyme, autrement la requête ne spécifiant pas de
-			// serial number rendrait chaque tool anonyme. Fix possible: utiliser un flag et un setter dans le dto avec
-			// jackson?
-
 			verifyIfSerialNumberAlreadyExists(surgicalToolModificationDTO.getNewSerialNumber());
 			surgicalTool.setSerialNumber(surgicalToolModificationDTO.getNewSerialNumber());
 		}
 		if (surgicalToolModificationDTO.getNewStatus() != null) {
 			surgicalTool.setStatus(SurgicalToolStatus.fromString(surgicalToolModificationDTO.getNewStatus()));
+		}
+
+		Intervention intervention = interventionRepository.getById(surgicalToolModificationDTO.getInterventionNumber());
+		try {
+			intervention.verifyIfSurgicalToolRequiresASerialNumber(surgicalTool);
+		} catch (Exception e) {
+			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT012,
+					"An anonymous surgical tool cannot be used with this type of intervention.");
 		}
 
 		surgicalToolRepository.update(surgicalTool);

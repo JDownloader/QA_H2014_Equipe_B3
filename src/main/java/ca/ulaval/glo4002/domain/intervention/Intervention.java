@@ -96,16 +96,12 @@ public class Intervention {
 		verifyIfSurgicalToolRequiresASerialNumber(surgicalTool);
 		surgicalTools.add(surgicalTool);
 	}
-	
-	public void modifySurgicalTool(SurgicalTool oldSurgicalTool, SurgicalTool newSurgicalTool){
-		//TODO: vérif
-	}
 
 	public boolean hasSurgicalTool(SurgicalTool surgicalTool) {
 		return surgicalTools.contains(surgicalTool);
 	}
 	
-	private void verifyIfSurgicalToolRequiresASerialNumber(SurgicalTool surgicalTool){
+	public void verifyIfSurgicalToolRequiresASerialNumber(SurgicalTool surgicalTool){
 				
 		if (surgicalTool.isAnonymous()
 				&& Arrays.asList(forbiddenInterventionTypesForAnonymousSurgicalTools).contains(
