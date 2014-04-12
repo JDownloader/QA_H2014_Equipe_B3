@@ -130,29 +130,35 @@ public class InterventionService {
 			SurgicalToolAssembler surgicalToolAssembler) throws ServiceRequestException {
 
 		SurgicalTool surgicalTool = surgicalToolAssembler.assembleFromDTO(surgicalToolCreationDTO);
+		if (surgicalTool.isAnonymous() == false) {
+			verifyIfSerialNumberAlreadyExists(surgicalTool.getSerialNumber());
+		}
 
-		verifyIfNonAnonymousSurgicalToolHasUniqueSerial(surgicalToolCreationDTO.getSerialNumber());
-
-		// TODO: create plutot que persist: un peu incohérent?
+		// TODO: create plutot que persist: un peu incohérent avec les autres services?
 		surgicalToolRepository.create(surgicalTool);
 
 		Intervention intervention = interventionRepository.getById(surgicalToolCreationDTO.getInterventionNumber());
 
-		intervention.addSurgicalTool(surgicalTool);
+		try {
+			intervention.addSurgicalTool(surgicalTool);
+		} catch (Exception e) {
+			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT012,
+					"An anonymous surgical tool cannot be used with this type of intervention.");
+		}
 		interventionRepository.update(intervention);
+
 	}
 
-	private void verifyIfNonAnonymousSurgicalToolHasUniqueSerial(String serialNumber) throws ServiceRequestException {
+	private void verifyIfSerialNumberAlreadyExists(String serialNumber) throws ServiceRequestException {
 
-		if (SurgicalTool.isAnonymous(serialNumber) == false) {
-			try {
-				surgicalToolRepository.getBySerialNumber(serialNumber);
-				throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT011, String.format(
-						"A surgical tool with serial number '%s' already exists.", serialNumber));
-			} catch (EntityNotFoundException e) {
-				return;
-			}
+		try {
+			surgicalToolRepository.getBySerialNumber(serialNumber);
+			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT011, String.format(
+					"A surgical tool with serial number '%s' already exists.", serialNumber));
+		} catch (EntityNotFoundException e) {
+			return;
 		}
+
 	}
 
 	public void modifySurgicalTool(SurgicalToolModificationDTO surgicalToolModificationDTO,
@@ -186,16 +192,19 @@ public class InterventionService {
 		}
 
 		verifyIfTypeCodesMatch(surgicalToolModificationDTO, surgicalTool);
-		verifyIfNonAnonymousSurgicalToolHasUniqueSerial(surgicalToolModificationDTO.getNewSerialNumber());
 
 		if (surgicalToolModificationDTO.getNewSerialNumber() != null) {
-			//TODO: On ne peut rendre un tool nonanonyme anonyme, autrement la requête ne spécifiant pas de
-			//serial number rendrait chaque tool anonyme. Fix possible: utiliser un flag et un setter dans le dto avec jackson?
+			// TODO: On ne peut rendre un tool nonanonyme anonyme, autrement la requête ne spécifiant pas de
+			// serial number rendrait chaque tool anonyme. Fix possible: utiliser un flag et un setter dans le dto avec
+			// jackson?
+
+			verifyIfSerialNumberAlreadyExists(surgicalToolModificationDTO.getNewSerialNumber());
 			surgicalTool.setSerialNumber(surgicalToolModificationDTO.getNewSerialNumber());
 		}
 		if (surgicalToolModificationDTO.getNewStatus() != null) {
 			surgicalTool.setStatus(SurgicalToolStatus.fromString(surgicalToolModificationDTO.getNewStatus()));
 		}
+
 		surgicalToolRepository.update(surgicalTool);
 
 	}
@@ -208,7 +217,7 @@ public class InterventionService {
 		} catch (EntityNotFoundException | NumberFormatException e) {
 			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT010, String.format(
 					"Cannot find Surgical Tool with serial or id '%s'",
-					surgicalToolModificationDTO.getNewSerialNumber()));
+					surgicalToolModificationDTO.getOriginalSerialNumber()));
 		}
 	}
 

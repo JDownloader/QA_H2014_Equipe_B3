@@ -55,21 +55,7 @@ public class SurgicalToolCreationDTOValidatorTest {
 
 	@Test
 	public void validatingRequestWithAllParametersDoesNotThrowAnException() {
-		
-		try {
-			SurgicalToolCreationDTOValidator.validate(SurgicalToolCreationDTOMock);
-		} catch (Exception e) {
-			fail("The validator should not have thrown an exception");
-		}
 
-	}
-
-
-	@Test
-	public void allowsNonAnonymousToolForForbiddenInterventionTypes() {
-
-		when(SurgicalToolCreationDTOMock.getInterventionType()).thenReturn(
-				SAMPLE_NONANONYMOUS_INTERVENTIONTYPE_PARAMETER);
 		try {
 			SurgicalToolCreationDTOValidator.validate(SurgicalToolCreationDTOMock);
 		} catch (Exception e) {

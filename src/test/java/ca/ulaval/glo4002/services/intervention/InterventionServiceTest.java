@@ -45,7 +45,6 @@ public class InterventionServiceTest {
 	private static final String DIFFERENT_SAMPLE_TYPE_CODE = "716462T";
 	private static final SurgicalToolStatus SAMPLE_SURGICAL_TOOL_STATUS = SurgicalToolStatus.INUTILISE;
 	private static final String SAMPLE_SURGICAL_TOOL_STATUS_STRING = "INUTILISE";
-	private static final String SAMPLE_SURGICAL_TOOL_STATUS_STRING_DIFFERENT = "UTILISE_PATIENT";
 
 	private InterventionRepository interventionRepositoryMock;
 	private PatientRepository patientRepositoryMock;
@@ -112,8 +111,13 @@ public class InterventionServiceTest {
 		when(surgicalToolModificationDTOMock.getNewStatus()).thenReturn(SAMPLE_SURGICAL_TOOL_STATUS_STRING);
 		when(surgicalToolModificationDTOMock.getTypeCode()).thenReturn(SAMPLE_TYPE_CODE);
 
+		when(surgicalToolAssemblerMock.assembleFromDTO(surgicalToolCreationDTOMock)).thenReturn(surgicalToolMock);
+		when(surgicalToolRepositoryMock.getById(anyInt())).thenReturn(surgicalToolMock);
+		when(surgicalToolRepositoryMock.getBySerialNumber(anyString())).thenReturn(surgicalToolMock);
+
 		when(surgicalToolMock.getTypeCode()).thenReturn(SAMPLE_TYPE_CODE);
-		
+		when(surgicalToolMock.isAnonymous()).thenReturn(false);
+
 	}
 
 	private void buildInterventionService() {
@@ -150,11 +154,6 @@ public class InterventionServiceTest {
 		when(patientRepositoryMock.getById(anyInt())).thenReturn(patientMock);
 		when(interventionRepositoryMock.getById(anyInt())).thenReturn(interventionMock);
 		when(surgicalToolRepositoryMock.getBySerialNumber(anyString())).thenReturn(surgicalToolMock);
-		when(surgicalToolRepositoryMock.getBySerialNumber(SAMPLE_NEW_SERIAL_NUMBER)).thenThrow(
-				new EntityNotFoundException());
-		when(surgicalToolRepositoryMock.getById(any(Integer.class))).thenReturn(
-				new SurgicalTool(null, SAMPLE_TYPE_CODE, SAMPLE_SURGICAL_TOOL_STATUS));
-
 
 	}
 
@@ -209,6 +208,7 @@ public class InterventionServiceTest {
 
 	@Test
 	public void verifyCreateSurgicalToolCallsCorrectRepositoryMethods() throws Exception {
+
 		stubSurgicalToolConflictCheck();
 
 		interventionService.createSurgicalTool(surgicalToolCreationDTOMock, surgicalToolCreationDTOValidatorMock,
@@ -288,6 +288,8 @@ public class InterventionServiceTest {
 	@Test
 	public void verifyModifySurgicalToolCallsCorrectRepositoryMethods() throws Exception {
 
+		stubSurgicalToolConflictCheck();
+
 		interventionService.modifySurgicalTool(surgicalToolModificationDTOMock,
 				surgicalToolModificationDTOValidatorMock);
 
@@ -300,6 +302,9 @@ public class InterventionServiceTest {
 
 	@Test
 	public void verifyModifySurgicalToolBeginsAndCommitsTransaction() throws Exception {
+
+		stubSurgicalToolConflictCheck();
+
 		interventionService.modifySurgicalTool(surgicalToolModificationDTOMock,
 				surgicalToolModificationDTOValidatorMock);
 		InOrder inOrder = inOrder(entityTransactionMock);
@@ -344,6 +349,8 @@ public class InterventionServiceTest {
 	@Test
 	public void verifyModifySurgicalToolDoesNotRollbackOnSuccessfulCommit() throws Exception {
 
+		stubSurgicalToolConflictCheck();
+
 		interventionService.modifySurgicalTool(surgicalToolModificationDTOMock,
 				surgicalToolModificationDTOValidatorMock);
 
@@ -354,15 +361,17 @@ public class InterventionServiceTest {
 	@Test
 	public void verifyModifySurgicalToolFindsAnonymousToolByID() throws ServiceRequestException {
 
+		when(surgicalToolMock.isAnonymous()).thenReturn(true);
+
 		when(surgicalToolRepositoryMock.getBySerialNumber(any(String.class))).thenThrow(new EntityNotFoundException());
-		
+
 		interventionService.modifySurgicalTool(surgicalToolModificationDTOMock,
 				surgicalToolModificationDTOValidatorMock);
 
 		verify(surgicalToolRepositoryMock).getById(any(Integer.class));
 
 	}
-	
+
 	@Test(expected = ServiceRequestException.class)
 	public void verifyModifySurgicalToolThrowsExceptionForTypeCodeMismatch() throws ServiceRequestException {
 
@@ -374,7 +383,6 @@ public class InterventionServiceTest {
 				surgicalToolModificationDTOValidatorMock);
 
 	}
-	
 
 	private void stubSurgicalToolConflictCheck() {
 		doThrow(new EntityNotFoundException()).when(surgicalToolRepositoryMock).getBySerialNumber(anyString());

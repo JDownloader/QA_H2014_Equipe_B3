@@ -53,22 +53,12 @@ public class SurgicalTool {
 	public void setStatus(SurgicalToolStatus status) {
 		this.status = status;
 	}
-	
-	public boolean isAnonymous(){
-		if(serialNumber == null){
+
+	public boolean isAnonymous() {
+		if (serialNumber == null) {
 			return true;
-		} 
-		
-		return false; 
-	}
-	
-	public static boolean isAnonymous(String serialNumber){
-		
-		if(serialNumber == null){
-			return true;
-		} 
-		
+		}
+
 		return false;
 	}
-	
 }
