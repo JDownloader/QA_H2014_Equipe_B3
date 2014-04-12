@@ -1,5 +1,7 @@
 package ca.ulaval.glo4002.services.dto;
 
+import java.util.Date;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class InterventionCreationDTO {
@@ -8,7 +10,7 @@ public class InterventionCreationDTO {
 	@JsonProperty("chirurgien")
 	private Integer surgeonNumber;
 	@JsonProperty("date")
-	private String date;
+	private Date date;
 	@JsonProperty("salle")
 	private String room;
 	@JsonProperty("type")
@@ -26,7 +28,7 @@ public class InterventionCreationDTO {
 		return surgeonNumber;
 	}
 	
-	public String getDate(){
+	public Date getDate(){
 		return date;
 	}
 	

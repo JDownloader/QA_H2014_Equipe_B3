@@ -1,5 +1,7 @@
 package ca.ulaval.glo4002.services.dto.validators;
 
+import java.text.ParseException;
+
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -10,6 +12,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import ca.ulaval.glo4002.exceptions.InterventionValidationException;
 import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
+import ca.ulaval.glo4002.utils.DateParser;
 
 public class InterventionCreationDTOValidatorTest {
 	
@@ -19,17 +22,17 @@ public class InterventionCreationDTOValidatorTest {
 	private InterventionCreationDTO interventionCreationDTOMock;
 	private static final Integer INVALID_PATIENT_NUMBER = -1;
 	private static final String VALID_DESCRIPTION = "description";
-	private static final String VALID_DATE = "0000-00-00T24:01:00";
+	private static final String VALID_DATE = "2001-07-04T12:08:56";
 	private static final Integer VALID_PATIENT_NUMBER = 1;
 	private static final String VALID_ROOM = "blocB";
 	private static final Integer VALID_SURGEON_NUMBER = 1;
 	private static final String VALID_TYPE = "OEIL"; 
 	
 	@Before
-	public void createDTO(){
+	public void createDTO() throws ParseException{
 		interventionCreationDTOMock = mock(InterventionCreationDTO.class);
 		when(interventionCreationDTOMock.getDescription()).thenReturn(VALID_DESCRIPTION);
-		when(interventionCreationDTOMock.getDate()).thenReturn(VALID_DATE);
+		when(interventionCreationDTOMock.getDate()).thenReturn(DateParser.parseDate(VALID_DATE));
 		when(interventionCreationDTOMock.getPatientNumber()).thenReturn(VALID_PATIENT_NUMBER);
 		when(interventionCreationDTOMock.getRoom()).thenReturn(VALID_ROOM);
 		when(interventionCreationDTOMock.getSurgeonNumber()).thenReturn(VALID_SURGEON_NUMBER);

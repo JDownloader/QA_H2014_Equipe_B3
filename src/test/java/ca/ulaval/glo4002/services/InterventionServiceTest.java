@@ -1,7 +1,6 @@
 package ca.ulaval.glo4002.services;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -9,12 +8,9 @@ import javax.persistence.EntityTransaction;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import com.sun.jersey.server.impl.provider.RuntimeDelegateImpl;
 
 import ca.ulaval.glo4002.domain.intervention.Intervention;
 import ca.ulaval.glo4002.persistence.intervention.HibernateInterventionRepository;

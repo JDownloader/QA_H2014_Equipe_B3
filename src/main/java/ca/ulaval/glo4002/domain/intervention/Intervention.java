@@ -1,6 +1,5 @@
 package ca.ulaval.glo4002.domain.intervention;
 
-import java.text.ParseException;
 import java.util.*;
 
 import javax.persistence.*;
@@ -8,7 +7,7 @@ import javax.persistence.*;
 import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalTool;
-import ca.ulaval.glo4002.utils.DateParser;
+import ca.ulaval.glo4002.exceptions.domainexceptions.interventionexceptions.InvalidArgument;
 
 @Entity
 public class Intervention {
@@ -37,35 +36,27 @@ public class Intervention {
 		// Required for Hibernate.
 	}
 	
-	public Intervention(String description, int surgeon, String date, String room, 
+	public Intervention(String description, int surgeon, Date date, String room, 
 						String type, String status, Patient patient) {
 		this.description = returnValidDescription(description);
 		this.surgeon = new Surgeon(surgeon); //TODO : call a factory
-		this.date = returnValidDate(date);
+		this.date = date;
 		this.room = returnValidRoom(room);
 		this.type = InterventionType.fromString(type);
 		this.status = returnValidStatus(status);
 		this.patient = patient;
 	}
 	
-	private Date returnValidDate(String date) {
-		try {
-		return DateParser.parseDate(date); 
-		} catch (ParseException e) {
-			throw new RuntimeException();
-		}
-	}
-	
 	private String returnValidRoom(String room) {
 		if(room.isEmpty()) {
-			throw new RuntimeException();
+			throw new InvalidArgument();
 		}
 		return room;
 	}
 	
 	private String returnValidDescription(String description) {
 		if(description.isEmpty()) {
-			throw new RuntimeException();
+			throw new InvalidArgument();
 		}
 		return description;
 	}
