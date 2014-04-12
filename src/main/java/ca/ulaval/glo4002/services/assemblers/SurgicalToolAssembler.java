@@ -9,7 +9,7 @@ public class SurgicalToolAssembler {
 	public SurgicalTool assembleFromDTO(SurgicalToolCreationDTO surgicalToolCreationDTO) {
 
 		SurgicalTool surgicalTool = new SurgicalTool(surgicalToolCreationDTO.getSerialNumber(),
-				surgicalToolCreationDTO.getSerialNumber(), SurgicalToolStatus.fromString(surgicalToolCreationDTO
+				surgicalToolCreationDTO.getTypeCode(), SurgicalToolStatus.fromString(surgicalToolCreationDTO
 						.getStatus()));
 
 		return surgicalTool;

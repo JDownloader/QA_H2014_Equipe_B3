@@ -114,9 +114,7 @@ public class InterventionService {
 			surgicalToolCreationDTOValidator.validate(surgicalToolCreationDTO);
 
 			entityTransaction.begin();
-
 			doCreateSurgicalTool(surgicalToolCreationDTO, surgicalToolAssembler);
-
 			entityTransaction.commit();
 
 		} catch (Exception e) {
@@ -137,10 +135,11 @@ public class InterventionService {
 
 		// TODO: create plutot que persist: un peu incohérent?
 		surgicalToolRepository.create(surgicalTool);
+
 		Intervention intervention = interventionRepository.getById(surgicalToolCreationDTO.getInterventionNumber());
+
 		intervention.addSurgicalTool(surgicalTool);
 		interventionRepository.update(intervention);
-
 	}
 
 	private void verifyIfNonAnonymousSurgicalToolHasUniqueSerial(String serialNumber) throws ServiceRequestException {
@@ -190,6 +189,8 @@ public class InterventionService {
 		verifyIfNonAnonymousSurgicalToolHasUniqueSerial(surgicalToolModificationDTO.getNewSerialNumber());
 
 		if (surgicalToolModificationDTO.getNewSerialNumber() != null) {
+			//TODO: On ne peut rendre un tool nonanonyme anonyme, autrement la requête ne spécifiant pas de
+			//serial number rendrait chaque tool anonyme. Fix possible: utiliser un flag et un setter dans le dto avec jackson?
 			surgicalTool.setSerialNumber(surgicalToolModificationDTO.getNewSerialNumber());
 		}
 		if (surgicalToolModificationDTO.getNewStatus() != null) {

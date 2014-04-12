@@ -64,16 +64,6 @@ public class SurgicalToolCreationDTOValidatorTest {
 
 	}
 
-	@Test(expected = SurgicalToolCreationException.class)
-	public void disallowsAnonymousToolForForbiddenInterventionTypes() {
-
-		when(SurgicalToolCreationDTOMock.getSerialNumber()).thenReturn(SAMPLE_ANONYMOUS_NOSERIE_PARAMETER);
-		when(SurgicalToolCreationDTOMock.getInterventionType()).thenReturn(
-				SAMPLE_NONANONYMOUS_INTERVENTIONTYPE_PARAMETER);
-
-		SurgicalToolCreationDTOValidator.validate(SurgicalToolCreationDTOMock);
-
-	}
 
 	@Test
 	public void allowsNonAnonymousToolForForbiddenInterventionTypes() {
