@@ -11,5 +11,5 @@ public class SurgicalToolModificationException extends RuntimeException {
 	public SurgicalToolModificationException(String message) {
 		super(message);
 	}
-	
+
 }

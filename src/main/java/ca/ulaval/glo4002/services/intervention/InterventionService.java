@@ -9,6 +9,7 @@ import ca.ulaval.glo4002.domain.staff.Surgeon;
 import ca.ulaval.glo4002.domain.surgicaltool.*;
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
+import ca.ulaval.glo4002.exceptions.SurgicalToolRequiresSerialNumberException;
 import ca.ulaval.glo4002.persistence.intervention.HibernateInterventionRepository;
 import ca.ulaval.glo4002.persistence.patient.HibernatePatientRepository;
 import ca.ulaval.glo4002.persistence.surgicaltool.HibernateSurgicalToolRepository;
@@ -141,7 +142,7 @@ public class InterventionService {
 
 		try {
 			intervention.addSurgicalTool(surgicalTool);
-		} catch (Exception e) {
+		} catch (SurgicalToolRequiresSerialNumberException e) {
 			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT012,
 					"An anonymous surgical tool cannot be used with this type of intervention.");
 		}
@@ -205,7 +206,7 @@ public class InterventionService {
 		Intervention intervention = interventionRepository.getById(surgicalToolModificationDTO.getInterventionNumber());
 		try {
 			intervention.verifyIfSurgicalToolRequiresASerialNumber(surgicalTool);
-		} catch (Exception e) {
+		} catch (SurgicalToolRequiresSerialNumberException e) {
 			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT012,
 					"An anonymous surgical tool cannot be used with this type of intervention.");
 		}

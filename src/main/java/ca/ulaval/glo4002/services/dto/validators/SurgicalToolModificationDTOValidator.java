@@ -8,6 +8,6 @@ public class SurgicalToolModificationDTOValidator {
 		if ((surgicalToolModificationDTO.getNewStatus() == null)
 				&& (surgicalToolModificationDTO.getNewSerialNumber() == null)) {
 			throw new SurgicalToolModificationException("Parameter 'statut' and/or 'noserie' is required.");
-		}		
+		}
 	}
 }

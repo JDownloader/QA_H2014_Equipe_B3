@@ -7,15 +7,14 @@ import javax.persistence.*;
 import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalTool;
-import ca.ulaval.glo4002.services.dto.validators.SurgicalToolCreationException;
+import ca.ulaval.glo4002.exceptions.SurgicalToolRequiresSerialNumberException;
 
 @Entity(name = "INTERVENTION")
 public class Intervention {
-	
-	private static final InterventionType[] forbiddenInterventionTypesForAnonymousSurgicalTools = {
-		InterventionType.OEIL, InterventionType.COEUR, InterventionType.MOELLE };
 
-	
+	private static final InterventionType[] forbiddenInterventionTypesForAnonymousSurgicalTools = {
+			InterventionType.OEIL, InterventionType.COEUR, InterventionType.MOELLE };
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -100,17 +99,15 @@ public class Intervention {
 	public boolean hasSurgicalTool(SurgicalTool surgicalTool) {
 		return surgicalTools.contains(surgicalTool);
 	}
-	
-	public void verifyIfSurgicalToolRequiresASerialNumber(SurgicalTool surgicalTool){
-				
+
+	public void verifyIfSurgicalToolRequiresASerialNumber(SurgicalTool surgicalTool) {
+
 		if (surgicalTool.isAnonymous()
-				&& Arrays.asList(forbiddenInterventionTypesForAnonymousSurgicalTools).contains(
-						type)) {
-			throw new SurgicalToolCreationException(
+				&& Arrays.asList(forbiddenInterventionTypesForAnonymousSurgicalTools).contains(type)) {
+			throw new SurgicalToolRequiresSerialNumberException(
 					"An anonymous surgical tool cannot be used with this type of intervention.");
 		}
-		
-		
+
 	}
-	
+
 }

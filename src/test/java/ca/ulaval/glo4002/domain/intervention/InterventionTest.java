@@ -11,7 +11,7 @@ import org.junit.Test;
 import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalTool;
-import ca.ulaval.glo4002.services.dto.validators.SurgicalToolCreationException;
+import ca.ulaval.glo4002.exceptions.SurgicalToolRequiresSerialNumberException;
 
 public class InterventionTest {
 
@@ -93,7 +93,7 @@ public class InterventionTest {
 		assertTrue(intervention.hasSurgicalTool(surgicalToolMock));
 	}
 	
-	@Test(expected = SurgicalToolCreationException.class)
+	@Test(expected = SurgicalToolRequiresSerialNumberException.class)
 	public void addingAnonymousSurgicalToolToAForbiddenInterventionTypeThrowsException() {
 		
 		when(surgicalToolMock.isAnonymous()).thenReturn(true);

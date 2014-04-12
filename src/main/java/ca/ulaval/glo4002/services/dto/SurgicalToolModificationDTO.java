@@ -12,13 +12,12 @@ public class SurgicalToolModificationDTO {
 
 	@JsonIgnore
 	private Integer interventionNumber;
-	
+
 	@JsonIgnore
 	private String typeCode;
-	
+
 	@JsonIgnore
 	private String originalSerialNumber;
-
 
 	public String getTypeCode() {
 		return typeCode;
@@ -39,11 +38,11 @@ public class SurgicalToolModificationDTO {
 	public String getNewStatus() {
 		return newStatus;
 	}
-	
-	public String getNewSerialNumber() { //TODO: Pourquoi get/set plutôt que public?
+
+	public String getNewSerialNumber() { // TODO: Pourquoi get/set plutôt que public?
 		return newSerialNumber;
 	}
-	
+
 	public Integer getInterventionNumber() {
 		return interventionNumber;
 	}
@@ -51,6 +50,5 @@ public class SurgicalToolModificationDTO {
 	public void setInterventionNumber(Integer interventionNumber) {
 		this.interventionNumber = interventionNumber;
 	}
-	
-	
+
 }
