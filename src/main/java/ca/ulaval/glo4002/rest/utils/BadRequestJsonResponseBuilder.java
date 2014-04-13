@@ -7,7 +7,7 @@ import org.json.JSONObject;
 
 public class BadRequestJsonResponseBuilder {
 	
-	//TODO: REMOVE THIS CLASS AND USE BadResponseDTO
+	//TODO: REMOVE THIS CLASS AND USE BadResponseDTO (Jackson)
 
 	private static final String CODE_PARAMETER = "code";
 	private static final String MESSAGE_PARAMETER = "message";
