@@ -46,7 +46,7 @@ public class HibernateSurgicalToolRepository extends HibernateRepository impleme
 		}
 	}
 
-	public SurgicalTool getById(int id) throws SurgicalToolNotFoundException {
+	public SurgicalTool getById(Integer id) throws SurgicalToolNotFoundException {
 		SurgicalTool surgicalTool = entityManager.find(SurgicalTool.class, id);
 		if (surgicalTool == null) {
 			throw new SurgicalToolNotFoundException(String.format("Impossible de trouver l'instrument avec id '%s'.", id));
