@@ -31,7 +31,7 @@ public class HospitalRestMain {
 		try {
 			doDemoRepositoryFilling();
 		} catch (Exception e) {
-			System.out.println(String.format("An error occured while filling one or more repositories: %s", e.getMessage()));
+			System.out.println(String.format("Une erreur est survenue lors du remplissage des entrepôts: %s", e.getMessage()));
 			return;
 		}
 
