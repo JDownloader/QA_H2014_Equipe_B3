@@ -96,7 +96,7 @@ public class Intervention {
 
 	public void checkForAnonymousSurgicalToolViolation(SurgicalTool surgicalTool) {
 		if (surgicalTool.isAnonymous() && Arrays.asList(forbiddenInterventionTypesForAnonymousSurgicalTools).contains(type)) {
-			throw new SurgicalToolRequiresSerialNumberException("An anonymous surgical tool cannot be used with this type of intervention.");
+			throw new SurgicalToolRequiresSerialNumberException("Erreur - requiert numéro de série.");
 		}
 	}
 }

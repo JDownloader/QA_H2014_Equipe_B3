@@ -28,7 +28,7 @@ public class HibernateSurgicalToolRepository extends HibernateRepository impleme
 			try {
 				return this.getById(Integer.parseInt(serialNumberOrId));
 			} catch (NumberFormatException numberFormatException) {
-				throw new SurgicalToolNotFoundException(String.format("Cannot find Surgical Tool with serial number or id '%s'.", serialNumberOrId), numberFormatException);
+				throw new SurgicalToolNotFoundException(String.format("Impossible de trouver l'instrument avec numéro de série ou no unique '%s'.", serialNumberOrId), numberFormatException);
 			}
 		}
 	}
@@ -42,14 +42,14 @@ public class HibernateSurgicalToolRepository extends HibernateRepository impleme
 		try {
 			return query.getSingleResult();
 		} catch (NoResultException e) {
-			throw new SurgicalToolNotFoundException(String.format("Cannot find Surgical Tool with serial '%s'.", serialNumber), e);
+			throw new SurgicalToolNotFoundException(String.format("Impossible de trouver l'instrument avec numéro de série '%s'.", serialNumber), e);
 		}
 	}
 
 	public SurgicalTool getById(int id) throws SurgicalToolNotFoundException {
 		SurgicalTool surgicalTool = entityManager.find(SurgicalTool.class, id);
 		if (surgicalTool == null) {
-			throw new SurgicalToolNotFoundException(String.format("Cannot find Surgical Tool with id '%s'.", id));
+			throw new SurgicalToolNotFoundException(String.format("Impossible de trouver l'instrument avec id '%s'.", id));
 		}
 		return surgicalTool;
 	}
