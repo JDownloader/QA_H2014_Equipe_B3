@@ -7,7 +7,7 @@ import ca.ulaval.glo4002.services.dto.DrugSearchDTO;
 public class DrugSearchDTOValidator {
 	
 	public void validate(DrugSearchDTO drugSearchDTO) {
-		String searchCriteria = drugSearchDTO.getName();
+		String searchCriteria = drugSearchDTO.name;
 		
 		if (StringUtils.isBlank(searchCriteria)) {
 			throw new DrugSearchException("Parameter 'nom' is required.");

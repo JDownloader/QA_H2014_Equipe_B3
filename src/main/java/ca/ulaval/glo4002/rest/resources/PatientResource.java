@@ -32,7 +32,7 @@ public class PatientResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response post(PrescriptionCreationDTO prescriptionCreationDTO) throws Exception {
 		try {
-			prescriptionCreationDTO.setPatientNumber(patientNumber);
+			prescriptionCreationDTO.patientNumber = patientNumber;
 			patientService.createPrescription(prescriptionCreationDTO, new PrescriptionCreationDTOValidator(), new PrescriptionAssembler());
 			return Response.status(Status.CREATED).build();
 		} catch (ServiceRequestException e) {

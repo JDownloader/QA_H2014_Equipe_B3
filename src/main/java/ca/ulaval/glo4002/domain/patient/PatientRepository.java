@@ -9,5 +9,5 @@ public interface PatientRepository {
 
 	void update(Patient patient);
 
-	Patient getById(int id) throws EntityNotFoundException;
+	Patient getById(Integer id) throws EntityNotFoundException;
 }

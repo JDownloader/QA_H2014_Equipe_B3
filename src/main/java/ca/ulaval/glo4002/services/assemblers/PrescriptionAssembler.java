@@ -8,27 +8,27 @@ import ca.ulaval.glo4002.services.dto.PrescriptionCreationDTO;
 
 public class PrescriptionAssembler {
 
-	public Prescription fromDTO(PrescriptionCreationDTO prescriptionCreationDTO, DrugRepository drugRepository) {
+	public Prescription assembleFromDTO(PrescriptionCreationDTO prescriptionCreationDTO, DrugRepository drugRepository) {
 		Prescription prescription;
 
-		if (prescriptionCreationDTO.getDin() != null) {
+		if (prescriptionCreationDTO.din != null) {
 			prescription = new Prescription(
 					getDrug(prescriptionCreationDTO, drugRepository),
-					prescriptionCreationDTO.getRenewals(), 
-					prescriptionCreationDTO.getDate(),
-					new StaffMember(prescriptionCreationDTO.getStaffMember()));
+					prescriptionCreationDTO.renewals, 
+					prescriptionCreationDTO.date,
+					new StaffMember(prescriptionCreationDTO.staffMember));
 		} else {
 			prescription = new Prescription(
-					prescriptionCreationDTO.getDrugName(),
-					prescriptionCreationDTO.getRenewals(), 
-					prescriptionCreationDTO.getDate(),
-					new StaffMember(prescriptionCreationDTO.getStaffMember()));
+					prescriptionCreationDTO.drugName,
+					prescriptionCreationDTO.renewals, 
+					prescriptionCreationDTO.date,
+					new StaffMember(prescriptionCreationDTO.staffMember));
 		}
 
 		return prescription;
 	}
 
 	private Drug getDrug(PrescriptionCreationDTO prescriptionCreationDTO, DrugRepository drugRepository) {
-		return drugRepository.getByDin(prescriptionCreationDTO.getDin());
+		return drugRepository.getByDin(prescriptionCreationDTO.din);
 	}
 }

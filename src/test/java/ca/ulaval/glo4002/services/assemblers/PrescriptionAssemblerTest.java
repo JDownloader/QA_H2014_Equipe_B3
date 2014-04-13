@@ -23,34 +23,36 @@ public class PrescriptionAssemblerTest {
 	private static final Din SAMPLE_DIN_PARAMETER = new Din("098423");
 	
 	PrescriptionAssembler prescriptionAssembler = new PrescriptionAssembler();
-	PrescriptionCreationDTO prescriptionCreationDTOMock;
+	PrescriptionCreationDTO prescriptionCreationDTO = new PrescriptionCreationDTO();
 	DrugRepository drugRepositoryMock;
 	Drug drugMock;
 	
 	@Before
 	public void init() throws ParseException {
-		prescriptionCreationDTOMock = mock(PrescriptionCreationDTO.class);
+		setupDTO();
 		drugRepositoryMock = mock(DrugRepository.class);
 		drugMock = mock(Drug.class);
-		
-		when(prescriptionCreationDTOMock.getStaffMember()).thenReturn(SAMPLE_STAFF_MEMBER_PARAMETER);
-		when(prescriptionCreationDTOMock.getDate()).thenReturn(DateParser.parseDate(SAMPLE_DATE_PARAMETER));
-		when(prescriptionCreationDTOMock.getRenewals()).thenReturn(SAMPLE_RENEWALS_PARAMETER);
-		when(prescriptionCreationDTOMock.getDrugName()).thenReturn(SAMPLE_DRUG_NAME_PARAMETER);
 		when(drugRepositoryMock.getByDin(any(Din.class))).thenReturn(drugMock);
+	}
+
+	private void setupDTO() throws ParseException {
+		prescriptionCreationDTO.staffMember = SAMPLE_STAFF_MEMBER_PARAMETER;
+		prescriptionCreationDTO.date = DateParser.parseDate(SAMPLE_DATE_PARAMETER);
+		prescriptionCreationDTO.renewals = SAMPLE_RENEWALS_PARAMETER;
+		prescriptionCreationDTO.drugName = SAMPLE_DRUG_NAME_PARAMETER;
 	}
 	
 	@Test
 	public void callsCorrectRepositoryMethod() {
-		prescriptionAssembler.fromDTO(prescriptionCreationDTOMock, drugRepositoryMock);
+		prescriptionAssembler.assembleFromDTO(prescriptionCreationDTO, drugRepositoryMock);
 		verify(drugRepositoryMock.getByDin(any(Din.class)));
 	}
 	
 	@Test
 	public void assemblesPrescriptionWithDinCorrectly() throws ParseException {
-		when(prescriptionCreationDTOMock.getDin()).thenReturn(SAMPLE_DIN_PARAMETER);
+		prescriptionCreationDTO.din = SAMPLE_DIN_PARAMETER;
 		
-		Prescription assembledPrescription = prescriptionAssembler.fromDTO(prescriptionCreationDTOMock, drugRepositoryMock);
+		Prescription assembledPrescription = prescriptionAssembler.assembleFromDTO(prescriptionCreationDTO, drugRepositoryMock);
 		Prescription expectedprescription = new Prescription(drugMock, SAMPLE_RENEWALS_PARAMETER, 
 				DateParser.parseDate(SAMPLE_DATE_PARAMETER), new StaffMember(SAMPLE_STAFF_MEMBER_PARAMETER));
 		
@@ -59,9 +61,9 @@ public class PrescriptionAssemblerTest {
 	
 	@Test
 	public void assemblesPrescriptionWithNoDinCorrectly() throws ParseException {
-		when(prescriptionCreationDTOMock.getDin()).thenReturn(null);
+		prescriptionCreationDTO.din = null;
 		
-		Prescription assembledPrescription = prescriptionAssembler.fromDTO(prescriptionCreationDTOMock, drugRepositoryMock);
+		Prescription assembledPrescription = prescriptionAssembler.assembleFromDTO(prescriptionCreationDTO, drugRepositoryMock);
 		Prescription expectedprescription = new Prescription(SAMPLE_DRUG_NAME_PARAMETER, SAMPLE_RENEWALS_PARAMETER, 
 				DateParser.parseDate(SAMPLE_DATE_PARAMETER), new StaffMember(SAMPLE_STAFF_MEMBER_PARAMETER));
 		

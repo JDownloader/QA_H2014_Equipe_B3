@@ -1,7 +1,6 @@
 package ca.ulaval.glo4002.rest.dto.validators;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 import java.text.ParseException;
 
@@ -22,28 +21,31 @@ public class PrescriptionCreationDTOValidatorTest {
 	private static final int SAMPLE_PATIENT_NUMBER_PARAMETER = 3;
 	private static final int MIN_RENEWALS_PARAMETER = 0;
 
-	PrescriptionCreationDTO prescriptionCreationDTOMock;
+	PrescriptionCreationDTO prescriptionCreationDTO = new PrescriptionCreationDTO();
 	PrescriptionCreationDTOValidator prescriptionCreationDTOValidator;
 	
 	@Before
 	public void init() throws ParseException {
 		prescriptionCreationDTOValidator = new PrescriptionCreationDTOValidator();
-		prescriptionCreationDTOMock = mock(PrescriptionCreationDTO.class);
 		
-		when(prescriptionCreationDTOMock.getStaffMember()).thenReturn(SAMPLE_STAFF_MEMBER_PARAMETER);
-		when(prescriptionCreationDTOMock.getDate()).thenReturn(DateParser.parseDate(SAMPLE_DATE_PARAMETER));
-		when(prescriptionCreationDTOMock.getRenewals()).thenReturn(SAMPLE_RENEWALS_PARAMETER);
-		when(prescriptionCreationDTOMock.getPatientNumber()).thenReturn(SAMPLE_PATIENT_NUMBER_PARAMETER);
-		when(prescriptionCreationDTOMock.getDin()).thenReturn(SAMPLE_DIN_PARAMETER);
+		setupDTO();
+	}
+
+	private void setupDTO() throws ParseException {
+		prescriptionCreationDTO.staffMember = SAMPLE_STAFF_MEMBER_PARAMETER;
+		prescriptionCreationDTO.date = DateParser.parseDate(SAMPLE_DATE_PARAMETER);
+		prescriptionCreationDTO.renewals = SAMPLE_RENEWALS_PARAMETER;
+		prescriptionCreationDTO.patientNumber = SAMPLE_PATIENT_NUMBER_PARAMETER;
+		prescriptionCreationDTO.din = SAMPLE_DIN_PARAMETER;
 	}
 
 	@Test
 	public void validatingGoodRequestWithDrugNameDoesNotThrowAnException() {
-		when(prescriptionCreationDTOMock.getDin()).thenReturn(null);
-		when(prescriptionCreationDTOMock.getDrugName()).thenReturn(SAMPLE_DRUG_NAME_PARAMETER);
+		prescriptionCreationDTO.din = null;
+		prescriptionCreationDTO.drugName = SAMPLE_DRUG_NAME_PARAMETER;
 
 		try {
-			prescriptionCreationDTOValidator.validate(prescriptionCreationDTOMock);
+			prescriptionCreationDTOValidator.validate(prescriptionCreationDTO);
 		} catch (Exception e) {
 			fail("The validator should not have thrown an exception");
 		}
@@ -51,11 +53,11 @@ public class PrescriptionCreationDTOValidatorTest {
 
 	@Test
 	public void validatingGoodRequestWithDinDoesNotThrowAnException() {
-		when(prescriptionCreationDTOMock.getDin()).thenReturn(SAMPLE_DIN_PARAMETER);
-		when(prescriptionCreationDTOMock.getDrugName()).thenReturn(null);
+		prescriptionCreationDTO.din = SAMPLE_DIN_PARAMETER;
+		prescriptionCreationDTO.drugName = null;
 
 		try {
-			prescriptionCreationDTOValidator.validate(prescriptionCreationDTOMock);
+			prescriptionCreationDTOValidator.validate(prescriptionCreationDTO);
 		} catch (Exception e) {
 			fail("The validator should not have thrown an exception");
 		}
@@ -63,58 +65,58 @@ public class PrescriptionCreationDTOValidatorTest {
 
 	@Test(expected = PrescriptionCreationException.class)
 	public void disallowsEmptyDrugName() {
-		when(prescriptionCreationDTOMock.getDin()).thenReturn(null);
-		when(prescriptionCreationDTOMock.getDrugName()).thenReturn("");
+		prescriptionCreationDTO.din = null;
+		prescriptionCreationDTO.drugName = "";
 
-		prescriptionCreationDTOValidator.validate(prescriptionCreationDTOMock);
+		prescriptionCreationDTOValidator.validate(prescriptionCreationDTO);
 	}
 
 	@Test(expected = PrescriptionCreationException.class)
 	public void disallowsUnspecifiedDrugAndDrugNameParameters() {
-		when(prescriptionCreationDTOMock.getDin()).thenReturn(null);
-		when(prescriptionCreationDTOMock.getDrugName()).thenReturn(null);
+		prescriptionCreationDTO.din = null;
+		prescriptionCreationDTO.drugName = null;
 
-		prescriptionCreationDTOValidator.validate(prescriptionCreationDTOMock);
+		prescriptionCreationDTOValidator.validate(prescriptionCreationDTO);
 	}
 
 	@Test(expected = PrescriptionCreationException.class)
 	public void disallowsDrugAndDrugNameParametersBothSpecified() {
-		when(prescriptionCreationDTOMock.getDin()).thenReturn(SAMPLE_DIN_PARAMETER);
-		when(prescriptionCreationDTOMock.getDrugName()).thenReturn(SAMPLE_DRUG_NAME_PARAMETER);
+		prescriptionCreationDTO.din = SAMPLE_DIN_PARAMETER;
+		prescriptionCreationDTO.drugName = SAMPLE_DRUG_NAME_PARAMETER;
 
-		prescriptionCreationDTOValidator.validate(prescriptionCreationDTOMock);
+		prescriptionCreationDTOValidator.validate(prescriptionCreationDTO);
 	}
 
 	@Test(expected = PrescriptionCreationException.class)
 	public void disallowsUnspecifiedStaffMemberParameter() {
-		when(prescriptionCreationDTOMock.getStaffMember()).thenReturn(null);
-		prescriptionCreationDTOValidator.validate(prescriptionCreationDTOMock);
+		prescriptionCreationDTO.staffMember = null;
+		prescriptionCreationDTOValidator.validate(prescriptionCreationDTO);
 	}
 
 	@Test(expected = PrescriptionCreationException.class)
 	public void disallowsUnspecifiedRenewalsParameter() {
-		when(prescriptionCreationDTOMock.getRenewals()).thenReturn(null);
-		prescriptionCreationDTOValidator.validate(prescriptionCreationDTOMock);
+		prescriptionCreationDTO.renewals = null;
+		prescriptionCreationDTOValidator.validate(prescriptionCreationDTO);
 	}
 
 	@Test(expected = PrescriptionCreationException.class)
 	public void disallowsUnspecifiedDateParameter() {
-		when(prescriptionCreationDTOMock.getDate()).thenReturn(null);
-		prescriptionCreationDTOValidator.validate(prescriptionCreationDTOMock);
+		prescriptionCreationDTO.date = null;
+		prescriptionCreationDTOValidator.validate(prescriptionCreationDTO);
 	}
 
 	@Test(expected = PrescriptionCreationException.class)
 	public void disallowsNegativeRenewalsParameter() {
-		when(prescriptionCreationDTOMock.getRenewals()).thenReturn(-1);
-		prescriptionCreationDTOValidator.validate(prescriptionCreationDTOMock);
+		prescriptionCreationDTO.renewals = -1;
+		prescriptionCreationDTOValidator.validate(prescriptionCreationDTO);
 	}
 
 	@Test
 	public void allowsMinimumRenewalsParameter() {
-		when(prescriptionCreationDTOMock.getRenewals()).thenReturn(MIN_RENEWALS_PARAMETER);
+		prescriptionCreationDTO.renewals = MIN_RENEWALS_PARAMETER;
 		
 		try {
-			prescriptionCreationDTOValidator.validate(prescriptionCreationDTOMock);
+			prescriptionCreationDTOValidator.validate(prescriptionCreationDTO);
 		} catch (Exception e) {
 			fail("The validator should not have thrown an exception");
 		}

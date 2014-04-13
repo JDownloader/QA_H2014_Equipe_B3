@@ -59,9 +59,9 @@ public class PatientService {
 	}
 
 	protected void doCreatePrescription(PrescriptionCreationDTO prescriptionCreationDTO, PrescriptionAssembler prescriptionAssembler) {
-		Prescription prescription = prescriptionAssembler.fromDTO(prescriptionCreationDTO, drugRepository);
+		Prescription prescription = prescriptionAssembler.assembleFromDTO(prescriptionCreationDTO, drugRepository);
 		prescriptionRepository.persist(prescription);
-		Patient patient = patientRepository.getById(prescriptionCreationDTO.getPatientNumber());
+		Patient patient = patientRepository.getById(prescriptionCreationDTO.patientNumber);
 		patient.addPrescription(prescription);
 		patientRepository.update(patient);
 	}

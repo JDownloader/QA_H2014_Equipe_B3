@@ -2,51 +2,19 @@ package ca.ulaval.glo4002.services.dto;
 
 import java.util.Date;
 
-import org.apache.commons.lang3.StringUtils;
-
 import ca.ulaval.glo4002.domain.drug.Din;
 
 import com.fasterxml.jackson.annotation.*;
 
-@SuppressWarnings("unused")
 public class PrescriptionCreationDTO {
-	private Din din;
+	public Din din;
 	@JsonProperty("nom")
-	private String drugName;
+	public String drugName;
 	@JsonProperty("intervenant")
-	private Integer staffMember; //TODO: Change to string; Impacts StaffMember -> Surgeon -> Intervention;
+	public Integer staffMember; //TODO: Change to string; Impacts StaffMember -> Surgeon -> Intervention;
 	@JsonProperty("renouvellements")
-	private Integer renewals;
-	private Date date;
+	public Integer renewals;
+	public Date date;
 	@JsonIgnore
-	private Integer patientNumber;
-	
-	public Din getDin() {
-		return din;
-	}
-	
-	public String getDrugName() {
-		return drugName;
-	}
-	
-	public Integer getStaffMember() {
-		return staffMember;
-	}
-
-	public Integer getRenewals() {
-		return renewals;
-	}
-	
-	public Date getDate() {
-		return date;
-	}
-
-	public Integer getPatientNumber() {
-		return patientNumber;
-	}
-
-	public void setPatientNumber(Integer patientNumber) {
-		//Required to set @PathParam value
-		this.patientNumber = patientNumber;
-	}
+	public Integer patientNumber;
 }
