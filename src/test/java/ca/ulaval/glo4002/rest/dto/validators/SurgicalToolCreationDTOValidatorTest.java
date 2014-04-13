@@ -12,9 +12,8 @@ import ca.ulaval.glo4002.services.dto.validators.*;
 public class SurgicalToolCreationDTOValidatorTest {
 
 	private static final String SAMPLE_TYPECODE_PARAMETER = "IT72353";
-	private static final SurgicalToolStatus SAMPLE_STATUS_PARAMETER = SurgicalToolStatus.INUTILISE;
+	private static final SurgicalToolStatus SAMPLE_STATUS_PARAMETER = SurgicalToolStatus.UNUSED;
 	private static final String SAMPLE_SERIAL_NUMBER_PARAMETER = "23562543-3635345";
-	private static final Integer SAMPLE_INTERVENTION_NUMBER_PARAMETER = 3;
 
 	SurgicalToolCreationDTO SurgicalToolCreationDTO = new SurgicalToolCreationDTO();
 	SurgicalToolCreationDTOValidator SurgicalToolCreationDTOValidator;
@@ -26,7 +25,6 @@ public class SurgicalToolCreationDTOValidatorTest {
 		SurgicalToolCreationDTO.typeCode = SAMPLE_TYPECODE_PARAMETER;
 		SurgicalToolCreationDTO.status = SAMPLE_STATUS_PARAMETER;
 		SurgicalToolCreationDTO.serialNumber = SAMPLE_SERIAL_NUMBER_PARAMETER;
-		SurgicalToolCreationDTO.interventionNumber = SAMPLE_INTERVENTION_NUMBER_PARAMETER;
 	}
 
 	@Test

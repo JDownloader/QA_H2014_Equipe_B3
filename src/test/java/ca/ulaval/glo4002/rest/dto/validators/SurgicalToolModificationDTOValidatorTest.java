@@ -12,7 +12,7 @@ import ca.ulaval.glo4002.services.dto.validators.SurgicalToolModificationDTOVali
 
 public class SurgicalToolModificationDTOValidatorTest {
 
-	private static final SurgicalToolStatus SAMPLE_STATUS_PARAMETER = SurgicalToolStatus.INUTILISE;
+	private static final SurgicalToolStatus SAMPLE_STATUS_PARAMETER = SurgicalToolStatus.UNUSED;
 	private static final String SAMPLE_SERIAL_NUMBER_PARAMETER = "23562543-3635345";
 	
 	SurgicalToolModificationDTO surgicalToolModificationDTO = new SurgicalToolModificationDTO();

@@ -5,7 +5,7 @@ import java.io.Serializable;
 import com.fasterxml.jackson.annotation.*;
 
 public enum SurgicalToolStatus implements Serializable {
-	UTILISE_PATIENT("Utilise_Patient"), SOUILLE("Souille"), INUTILISE("Inutilise");
+	PATIENT_USED("Utilise_Patient"), CONTAMINATED("Souille"), UNUSED("Inutilise");
 	
 	private String value;
 

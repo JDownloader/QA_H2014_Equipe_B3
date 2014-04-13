@@ -10,7 +10,7 @@ public class SurgicalToolTest {
 
 	private static final String SAMPLE_SERIAL_NUMBER = "2321984423QTY";
 	private static final String SAMPLE_TYPE_CODE = "1FT566";
-	private static final SurgicalToolStatus SAMPLE_STATUS = SurgicalToolStatus.INUTILISE;
+	private static final SurgicalToolStatus SAMPLE_STATUS = SurgicalToolStatus.UNUSED;
 
 	@Before
 	public void init() {

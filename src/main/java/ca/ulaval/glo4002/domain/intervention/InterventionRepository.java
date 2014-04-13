@@ -7,5 +7,5 @@ public interface InterventionRepository {
 
 	void update(Intervention intervention);
 
-	Intervention getById(int id) throws InterventionNotFoundException;
+	Intervention getById(Integer id) throws InterventionNotFoundException;
 }
