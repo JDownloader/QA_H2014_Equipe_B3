@@ -8,10 +8,10 @@ public class SurgicalToolCreationDTO {
 
 	@JsonProperty("typecode")
 	private String typeCode;
+	
 	@JsonProperty("statut")
 	private String status;
-
-	@JsonInclude()
+	
 	@JsonProperty("noserie")
 	private String serialNumber;
 
@@ -38,7 +38,6 @@ public class SurgicalToolCreationDTO {
 	}
 
 	public void setInterventionNumber(Integer interventionNumber) {
-
 		this.interventionNumber = interventionNumber;
 	}
 
@@ -49,5 +48,4 @@ public class SurgicalToolCreationDTO {
 	public void setInterventionType(InterventionType interventionType) {
 		this.interventionType = interventionType;
 	}
-
 }

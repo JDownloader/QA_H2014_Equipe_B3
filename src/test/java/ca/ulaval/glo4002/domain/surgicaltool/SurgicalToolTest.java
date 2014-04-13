@@ -21,13 +21,13 @@ public class SurgicalToolTest {
 
 	@Test
 	public void returnsSerialNumberCorrectly() {
-		assertEquals(SAMPLE_SERIAL_NUMBER, surgicalTool.getSerialNumber());
+		assertEquals(SAMPLE_SERIAL_NUMBER, surgicalTool.getSerialNumberOrId());
 	}
 
 	@Test
 	public void setsSerialNumberCorrectly() {
 		surgicalTool.setSerialNumber(SAMPLE_SERIAL_NUMBER_2);
-		assertEquals(SAMPLE_SERIAL_NUMBER_2, surgicalTool.getSerialNumber());
+		assertEquals(SAMPLE_SERIAL_NUMBER_2, surgicalTool.getSerialNumberOrId());
 	}
 
 	@Test

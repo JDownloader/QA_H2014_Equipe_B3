@@ -4,7 +4,7 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 public interface SurgicalToolRepository {
-	void create(SurgicalTool surgicalTool) throws EntityExistsException;
+	void persist(SurgicalTool surgicalTool) throws EntityExistsException;
 
 	void update(SurgicalTool surgicalTool);
 

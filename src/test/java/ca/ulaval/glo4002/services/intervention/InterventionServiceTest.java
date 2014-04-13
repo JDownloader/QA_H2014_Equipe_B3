@@ -106,7 +106,7 @@ public class InterventionServiceTest {
 		when(surgicalToolCreationDTOMock.getTypeCode()).thenReturn(SAMPLE_TYPE_CODE);
 
 		when(surgicalToolModificationDTOMock.getInterventionNumber()).thenReturn(SAMPLE_INTERVENTION_NUMBER);
-		when(surgicalToolModificationDTOMock.getOriginalSerialNumber()).thenReturn(SAMPLE_SERIAL_NUMBER);
+		when(surgicalToolModificationDTOMock.getSerialNumberOrId()).thenReturn(SAMPLE_SERIAL_NUMBER);
 		when(surgicalToolModificationDTOMock.getNewSerialNumber()).thenReturn(SAMPLE_NEW_SERIAL_NUMBER);
 		when(surgicalToolModificationDTOMock.getNewStatus()).thenReturn(SAMPLE_SURGICAL_TOOL_STATUS_STRING);
 		when(surgicalToolModificationDTOMock.getTypeCode()).thenReturn(SAMPLE_TYPE_CODE);
@@ -138,7 +138,7 @@ public class InterventionServiceTest {
 	}
 
 	private void stubSurgicalToolRequestMockMethods(SurgicalToolRequestParser surgicalToolRequestParserMock) {
-		when(surgicalToolRequestParserMock.getSerialNumber()).thenReturn(SAMPLE_SERIAL_NUMBER);
+		when(surgicalToolRequestParserMock.getSerialNumberOrId()).thenReturn(SAMPLE_SERIAL_NUMBER);
 		when(surgicalToolRequestParserMock.hasSerialNumber()).thenReturn(true);
 		when(surgicalToolRequestParserMock.getTypeCode()).thenReturn(SAMPLE_TYPE_CODE);
 		when(surgicalToolRequestParserMock.getStatus()).thenReturn(SAMPLE_SURGICAL_TOOL_STATUS);
@@ -217,7 +217,7 @@ public class InterventionServiceTest {
 		verify(interventionRepositoryMock).getById(SAMPLE_INTERVENTION_NUMBER);
 		verify(interventionRepositoryMock).update(any(Intervention.class));
 		verify(surgicalToolRepositoryMock).getBySerialNumber(anyString());
-		verify(surgicalToolRepositoryMock).create(any(SurgicalTool.class));
+		verify(surgicalToolRepositoryMock).persist(any(SurgicalTool.class));
 	}
 
 	@Test
@@ -234,7 +234,7 @@ public class InterventionServiceTest {
 
 	@Test(expected = ServiceRequestException.class)
 	public void verifyCreateSurgicalToolThrowsWhenSerialNumberAlreadyExists() throws Exception {
-		doThrow(new EntityExistsException()).when(surgicalToolRepositoryMock).create(any(SurgicalTool.class));
+		doThrow(new EntityExistsException()).when(surgicalToolRepositoryMock).persist(any(SurgicalTool.class));
 
 		interventionService.createSurgicalTool(surgicalToolCreationDTOMock, surgicalToolCreationDTOValidatorMock,
 				surgicalToolAssemblerMock);

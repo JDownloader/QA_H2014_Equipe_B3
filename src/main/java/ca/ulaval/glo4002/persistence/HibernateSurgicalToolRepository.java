@@ -1,14 +1,13 @@
-package ca.ulaval.glo4002.persistence.surgicaltool;
+package ca.ulaval.glo4002.persistence;
 
 import javax.persistence.*;
 
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalTool;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolRepository;
-import ca.ulaval.glo4002.persistence.HibernateRepository;
 
 public class HibernateSurgicalToolRepository extends HibernateRepository implements SurgicalToolRepository {
 
-	public void create(SurgicalTool surgicalTool) {
+	public void persist(SurgicalTool surgicalTool) {
 		entityManager.persist(surgicalTool);
 	}
 
@@ -32,8 +31,7 @@ public class HibernateSurgicalToolRepository extends HibernateRepository impleme
 			SurgicalTool result = query.getSingleResult();
 			return result;
 		} catch (NoResultException e) {
-			throw new EntityNotFoundException(
-					String.format("Cannot find Surgical Tool with serial '%s'.", serialNumber));
+			throw new EntityNotFoundException(String.format("Cannot find Surgical Tool with serial '%s'.", serialNumber));
 		}
 	}
 

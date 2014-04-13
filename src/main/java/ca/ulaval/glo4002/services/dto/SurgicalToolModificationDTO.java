@@ -17,7 +17,7 @@ public class SurgicalToolModificationDTO {
 	private String typeCode;
 
 	@JsonIgnore
-	private String originalSerialNumber;
+	private String serialNumberOrId;
 
 	public String getTypeCode() {
 		return typeCode;
@@ -27,19 +27,19 @@ public class SurgicalToolModificationDTO {
 		this.typeCode = typecode;
 	}
 
-	public String getOriginalSerialNumber() {
-		return originalSerialNumber;
+	public String getSerialNumberOrId() {
+		return serialNumberOrId;
 	}
 
 	public void setOriginalSerialNumber(String originalSerialNumber) {
-		this.originalSerialNumber = originalSerialNumber;
+		this.serialNumberOrId = originalSerialNumber;
 	}
 
 	public String getNewStatus() {
 		return newStatus;
 	}
 
-	public String getNewSerialNumber() { // TODO: Pourquoi get/set plutôt que public?
+	public String getNewSerialNumber() {
 		return newSerialNumber;
 	}
 

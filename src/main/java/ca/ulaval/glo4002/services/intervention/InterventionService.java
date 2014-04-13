@@ -10,9 +10,9 @@ import ca.ulaval.glo4002.domain.surgicaltool.*;
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.exceptions.SurgicalToolRequiresSerialNumberException;
+import ca.ulaval.glo4002.persistence.HibernateSurgicalToolRepository;
 import ca.ulaval.glo4002.persistence.intervention.HibernateInterventionRepository;
 import ca.ulaval.glo4002.persistence.patient.HibernatePatientRepository;
-import ca.ulaval.glo4002.persistence.surgicaltool.HibernateSurgicalToolRepository;
 import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParser;
 import ca.ulaval.glo4002.services.assemblers.SurgicalToolAssembler;
 import ca.ulaval.glo4002.services.dto.SurgicalToolCreationDTO;
@@ -33,8 +33,6 @@ public class InterventionService {
 	private PatientRepository patientRepository;
 	private SurgicalToolRepository surgicalToolRepository;
 
-	private InterventionAssembler interventionAssembler;
-
 	public InterventionService() {
 		this.entityManager = new EntityManagerProvider().getEntityManager();
 		this.entityTransaction = entityManager.getTransaction();
@@ -42,32 +40,18 @@ public class InterventionService {
 		this.interventionRepository = new HibernateInterventionRepository();
 		this.patientRepository = new HibernatePatientRepository();
 		this.surgicalToolRepository = new HibernateSurgicalToolRepository();
-
-		this.interventionAssembler = new InterventionAssembler();
 	}
 
-	// Should only be used for testing
 	public InterventionService(InterventionRepository interventionRepository, PatientRepository patientRepository,
-			SurgicalToolRepository surgicalToolRepository, InterventionAssembler interventionAssembler,
-			SurgicalToolAssembler surgicalToolAssembler, EntityManager entityManager) {
-		this.entityManager = entityManager;
-		this.entityTransaction = entityManager.getTransaction();
-
+			SurgicalToolRepository surgicalToolRepository, EntityManager entityManager) {
 		this.interventionRepository = interventionRepository;
 		this.patientRepository = patientRepository;
 		this.surgicalToolRepository = surgicalToolRepository;
-
-		this.interventionAssembler = interventionAssembler;
-
+		this.entityManager = entityManager;
+		this.entityTransaction = entityManager.getTransaction();
 	}
 
-	public InterventionService(InterventionServiceBuilder builder) {
-		this.entityTransaction = builder.entityTransaction;
-		this.interventionRepository = builder.interventionRepository;
-		this.surgicalToolRepository = builder.surgicalToolRepository;
-		this.patientRepository = builder.patientRepository;
-	}
-
+	//Refactor NewMarie BEGIN
 	public int createIntervention(CreateInterventionRequestParser requestParser) throws ServiceRequestException,
 			Exception {
 		try {
@@ -106,18 +90,19 @@ public class InterventionService {
 			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT002, e.getMessage());
 		}
 	}
+	//Refactor NewMarie END
 
-	public void createSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO,
-			SurgicalToolCreationDTOValidator surgicalToolCreationDTOValidator,
+	public int createSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO, SurgicalToolCreationDTOValidator surgicalToolCreationDTOValidator,
 			SurgicalToolAssembler surgicalToolAssembler) throws ServiceRequestException {
 		try {
 
 			surgicalToolCreationDTOValidator.validate(surgicalToolCreationDTO);
-
 			entityTransaction.begin();
-			doCreateSurgicalTool(surgicalToolCreationDTO, surgicalToolAssembler);
+			
+			SurgicalTool newSurgicalTool =  doCreateSurgicalTool(surgicalToolCreationDTO, surgicalToolAssembler);
+			
 			entityTransaction.commit();
-
+			return newSurgicalTool.getId();
 		} catch (Exception e) {
 			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT010, e.getMessage());
 		} finally {
@@ -127,115 +112,50 @@ public class InterventionService {
 		}
 	}
 
-	private void doCreateSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO,
-			SurgicalToolAssembler surgicalToolAssembler) throws ServiceRequestException {
-
+	private SurgicalTool doCreateSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO, SurgicalToolAssembler surgicalToolAssembler) throws ServiceRequestException {
 		SurgicalTool surgicalTool = surgicalToolAssembler.assembleFromDTO(surgicalToolCreationDTO);
-		if (surgicalTool.isAnonymous() == false) {
-			verifyIfSerialNumberAlreadyExists(surgicalTool.getSerialNumber());
-		}
-
-		// TODO: create plutot que persist: un peu incohérent avec les autres services?
-		surgicalToolRepository.create(surgicalTool);
-
 		Intervention intervention = interventionRepository.getById(surgicalToolCreationDTO.getInterventionNumber());
-
-		try {
-			intervention.addSurgicalTool(surgicalTool);
-		} catch (SurgicalToolRequiresSerialNumberException e) {
-			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT012,
-					"An anonymous surgical tool cannot be used with this type of intervention.");
-		}
+		intervention.addSurgicalTool(surgicalTool);
 		interventionRepository.update(intervention);
-
+		return surgicalTool;
 	}
 
-	private void verifyIfSerialNumberAlreadyExists(String serialNumber) throws ServiceRequestException {
+	public void modifySurgicalTool(SurgicalToolModificationDTO surgicalToolModificationDTO, SurgicalToolModificationDTOValidator surgicalToolModificationDTOValidator) throws ServiceRequestException {
 
-		try {
-			surgicalToolRepository.getBySerialNumber(serialNumber);
-			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT011, String.format(
-					"A surgical tool with serial number '%s' already exists.", serialNumber));
-		} catch (EntityNotFoundException e) {
-			return;
-		}
-
+//		try {
+//			surgicalToolModificationDTOValidator.validate(surgicalToolModificationDTO);
+//			entityTransaction.begin();
+//			
+//			doModifySurgicalTool(surgicalToolModificationDTO);
+//			
+//			entityTransaction.commit();
+//		} catch (ServiceRequestException e) {
+//			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT010, e.getMessage());
+//		} finally {
+//			if (entityTransaction.isActive()) {
+//				entityTransaction.rollback();
+//			}
+//		}
 	}
 
-	public void modifySurgicalTool(SurgicalToolModificationDTO surgicalToolModificationDTO,
-			SurgicalToolModificationDTOValidator surgicalToolModificationDTOValidator) throws ServiceRequestException {
-
-		try {
-			surgicalToolModificationDTOValidator.validate(surgicalToolModificationDTO);
-
-			entityTransaction.begin();
-			doModifySurgicalTool(surgicalToolModificationDTO);
-			entityTransaction.commit();
-
-		} catch (ServiceRequestException e) {
-			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT010, e.getMessage());
-		} finally {
-			if (entityTransaction.isActive()) {
-				entityTransaction.rollback();
-			}
-		}
-	}
-
-	private void doModifySurgicalTool(SurgicalToolModificationDTO surgicalToolModificationDTO)
-			throws ServiceRequestException {
-
-		SurgicalTool surgicalTool;
-
-		try {
-			surgicalTool = surgicalToolRepository.getBySerialNumber(surgicalToolModificationDTO
-					.getOriginalSerialNumber());
-		} catch (EntityNotFoundException e) {
-			surgicalTool = getSurgicalToolById(surgicalToolModificationDTO);
-		}
-
-		verifyIfTypeCodesMatch(surgicalToolModificationDTO, surgicalTool);
-
-		if (surgicalToolModificationDTO.getNewSerialNumber() != null) {
-			verifyIfSerialNumberAlreadyExists(surgicalToolModificationDTO.getNewSerialNumber());
-			surgicalTool.setSerialNumber(surgicalToolModificationDTO.getNewSerialNumber());
-		}
-		if (surgicalToolModificationDTO.getNewStatus() != null) {
-			surgicalTool.setStatus(SurgicalToolStatus.fromString(surgicalToolModificationDTO.getNewStatus()));
-		}
-
-		Intervention intervention = interventionRepository.getById(surgicalToolModificationDTO.getInterventionNumber());
-		try {
-			intervention.verifyIfSurgicalToolRequiresASerialNumber(surgicalTool);
-		} catch (SurgicalToolRequiresSerialNumberException e) {
-			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT012,
-					"An anonymous surgical tool cannot be used with this type of intervention.");
-		}
-
-		surgicalToolRepository.update(surgicalTool);
-
-	}
-
-	private SurgicalTool getSurgicalToolById(SurgicalToolModificationDTO surgicalToolModificationDTO)
-			throws ServiceRequestException {
-		try {
-			int surgicalToolId = Integer.parseInt(surgicalToolModificationDTO.getOriginalSerialNumber());
-			return surgicalToolRepository.getById(surgicalToolId);
-		} catch (EntityNotFoundException | NumberFormatException e) {
-			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT010, String.format(
-					"Cannot find Surgical Tool with serial or id '%s'",
-					surgicalToolModificationDTO.getOriginalSerialNumber()));
-		}
-	}
-
-	private void verifyIfTypeCodesMatch(SurgicalToolModificationDTO surgicalToolModificationDTO,
-			SurgicalTool surgicalTool) throws ServiceRequestException {
-		if (surgicalTool.getTypeCode().compareToIgnoreCase(surgicalToolModificationDTO.getTypeCode()) != 0) {
-			throw new ServiceRequestException(
-					ERROR_SERVICE_REQUEST_EXCEPTION_INT011,
-					String.format(
-							"Type code of specified surgical tool ('%s') does not match the specified type code parameter ('%s').",
-							surgicalTool.getTypeCode(), surgicalToolModificationDTO.getTypeCode()));
-		}
-	}
+//	private void doModifySurgicalTool(SurgicalToolModificationDTO surgicalToolModificationDTO) throws ServiceRequestException {
+//
+//		SurgicalTool surgicalTool;
+//
+//		try {
+//			surgicalTool = surgicalToolRepository.getBySerialNumber(surgicalToolModificationDTO.getSerialNumberOrId());
+//		} catch (EntityNotFoundException e) {
+//			surgicalTool = surgicalToolRepository.getById(Integer.parseInt(surgicalToolModificationDTO.getSerialNumberOrId()));
+//		}
+//
+//		surgicalTool.changeSerialNumber(surgicalToolModificationDTO.getNewSerialNumber());
+//		surgicalTool.changeStatus(SurgicalToolStatus.fromString(surgicalToolModificationDTO.getNewStatus()));
+//
+//		Intervention intervention = interventionRepository.getById(surgicalToolModificationDTO.getInterventionNumber());
+//		intervention.modifySurgicalTool();
+//
+//		surgicalToolRepository.update(surgicalTool);
+//
+//	}
 
 }

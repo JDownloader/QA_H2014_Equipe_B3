@@ -19,30 +19,17 @@ public class Intervention {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(name = "DESCRIPTION", nullable = false)
 	private String description;
-
-	@Column(name = "SURGEON", nullable = false)
 	private Surgeon surgeon;
-
-	@Column(name = "DATE", nullable = false)
 	private Date date;
-
-	@Column(name = "ROOM", nullable = false)
 	private String room;
-
-	@Column(name = "TYPE", nullable = false)
 	private InterventionType type;
-
-	@Column(name = "STATUS", nullable = false)
 	private InterventionStatus status;
 
 	@ManyToOne()
-	@JoinColumn(name = "PATIENT", nullable = false)
 	private Patient patient;
 
-	@ElementCollection()
-	@JoinColumn(name = "INTERVENTION")
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<SurgicalTool> surgicalTools = new ArrayList<SurgicalTool>();
 
 	protected Intervention() {

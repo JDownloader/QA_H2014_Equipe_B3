@@ -91,7 +91,7 @@ public class CreateSurgicalToolRequestTest {
 	@Test
 	public void returnsCorrectSerialNumber() throws Exception {
 		createRequestParser();
-		assertEquals(SAMPLE_SERIAL_NUMBER, surgicalToolRequest.getSerialNumber());
+		assertEquals(SAMPLE_SERIAL_NUMBER, surgicalToolRequest.getSerialNumberOrId());
 	}
 
 	@Test
