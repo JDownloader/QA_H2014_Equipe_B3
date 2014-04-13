@@ -1,21 +1,19 @@
 package ca.ulaval.glo4002.services.dto;
 
+import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolStatus;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SurgicalToolModificationDTO {
-
 	@JsonProperty("statut")
-	private String newStatus;
+	private SurgicalToolStatus newStatus;
 	@JsonProperty("noserie")
 	private String newSerialNumber;
-
 	@JsonIgnore
 	private Integer interventionNumber;
-
 	@JsonIgnore
 	private String typeCode;
-
 	@JsonIgnore
 	private String serialNumberOrId;
 
@@ -35,7 +33,7 @@ public class SurgicalToolModificationDTO {
 		this.serialNumberOrId = originalSerialNumber;
 	}
 
-	public String getNewStatus() {
+	public SurgicalToolStatus getNewStatus() {
 		return newStatus;
 	}
 
@@ -50,5 +48,4 @@ public class SurgicalToolModificationDTO {
 	public void setInterventionNumber(Integer interventionNumber) {
 		this.interventionNumber = interventionNumber;
 	}
-
 }

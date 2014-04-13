@@ -3,36 +3,55 @@ package ca.ulaval.glo4002.persistence;
 import javax.persistence.*;
 
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalTool;
+import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolExistsException;
+import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolNotFoundException;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolRepository;
 
 public class HibernateSurgicalToolRepository extends HibernateRepository implements SurgicalToolRepository {
 
-	public void persist(SurgicalTool surgicalTool) {
-		entityManager.persist(surgicalTool);
+	public void persist(SurgicalTool surgicalTool) throws SurgicalToolExistsException {
+		try {
+			entityManager.persist(surgicalTool);
+		} catch (PersistenceException e) {
+			throw new SurgicalToolExistsException("Erreur - Numéro de série déjà utilisé", e);
+		}
 	}
 
 	public void update(SurgicalTool surgicalTool) {
 		entityManager.merge(surgicalTool);
 	}
-
-	public SurgicalTool getById(int id) throws EntityNotFoundException {
-		SurgicalTool surgicalTool = entityManager.find(SurgicalTool.class, id);
-		if (surgicalTool == null) {
-			throw new EntityNotFoundException(String.format("Cannot find Surgical Tool with id '%s'.", id));
+	
+	public SurgicalTool getBySerialNumberOrId(String serialNumberOrId) throws SurgicalToolNotFoundException {
+		try {
+			return this.getBySerialNumber(serialNumberOrId);
+		} catch (SurgicalToolNotFoundException e) {
+			try {
+				return this.getById(Integer.parseInt(serialNumberOrId));
+			} catch (NumberFormatException numberFormatException) {
+				throw new SurgicalToolNotFoundException(String.format("Cannot find Surgical Tool with serial number or id '%s'.", serialNumberOrId), numberFormatException);
+			}
 		}
-		return surgicalTool;
 	}
-
-	public SurgicalTool getBySerialNumber(String serialNumber) throws EntityNotFoundException {
-		String queryString = String.format("SELECT s FROM SURGICAL_TOOL s WHERE s.serialNumber = '%s'", serialNumber);
-		TypedQuery<SurgicalTool> query = entityManager.createQuery(queryString, SurgicalTool.class);
+	
+	public SurgicalTool getBySerialNumber(String serialNumber) throws SurgicalToolNotFoundException {
+		final String QUERY = "SELECT s FROM SURGICAL_TOOL s WHERE s.serialNumber = :serialNumber";
+		
+		TypedQuery<SurgicalTool> query = entityManager.createQuery(QUERY, SurgicalTool.class)
+				.setParameter("serialNumber", serialNumber);
 
 		try {
-			SurgicalTool result = query.getSingleResult();
-			return result;
+			return query.getSingleResult();
 		} catch (NoResultException e) {
-			throw new EntityNotFoundException(String.format("Cannot find Surgical Tool with serial '%s'.", serialNumber));
+			throw new SurgicalToolNotFoundException(String.format("Cannot find Surgical Tool with serial '%s'.", serialNumber), e);
 		}
+	}
+
+	public SurgicalTool getById(int id) throws SurgicalToolNotFoundException {
+		SurgicalTool surgicalTool = entityManager.find(SurgicalTool.class, id);
+		if (surgicalTool == null) {
+			throw new SurgicalToolNotFoundException(String.format("Cannot find Surgical Tool with id '%s'.", id));
+		}
+		return surgicalTool;
 	}
 
 	public HibernateSurgicalToolRepository() {

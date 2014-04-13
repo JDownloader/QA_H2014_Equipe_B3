@@ -34,7 +34,7 @@ public class SurgicalToolCreationDTOValidatorTest {
 
 	}
 
-	@Test(expected = SurgicalToolCreationException.class)
+	@Test(expected = DTOValidationException.class)
 	public void disallowsEmptyTypecode() {
 		when(SurgicalToolCreationDTOMock.getTypeCode()).thenReturn(null);
 

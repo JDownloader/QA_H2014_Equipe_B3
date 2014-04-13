@@ -1,15 +1,13 @@
 package ca.ulaval.glo4002.domain.surgicaltool;
 
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
-
 public interface SurgicalToolRepository {
-	void persist(SurgicalTool surgicalTool) throws EntityExistsException;
+	void persist(SurgicalTool surgicalTool) throws SurgicalToolExistsException;
 
 	void update(SurgicalTool surgicalTool);
 
-	SurgicalTool getById(int id) throws EntityNotFoundException;
+	SurgicalTool getById(int id) throws SurgicalToolNotFoundException;
 
-	SurgicalTool getBySerialNumber(String serialNumber) throws EntityNotFoundException;
+	SurgicalTool getBySerialNumber(String serialNumber) throws SurgicalToolNotFoundException;
 
+	SurgicalTool getBySerialNumberOrId(String serialNumberOrId) throws SurgicalToolNotFoundException;
 }

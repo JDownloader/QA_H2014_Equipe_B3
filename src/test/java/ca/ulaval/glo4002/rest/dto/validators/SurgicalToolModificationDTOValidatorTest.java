@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import ca.ulaval.glo4002.services.dto.SurgicalToolModificationDTO;
 import ca.ulaval.glo4002.services.dto.validators.SurgicalToolModificationDTOValidator;
-import ca.ulaval.glo4002.services.dto.validators.SurgicalToolModificationException;
+import ca.ulaval.glo4002.services.dto.validators.SurgicalToolModificationDTOValidationException;
 
 public class SurgicalToolModificationDTOValidatorTest {
 
@@ -52,7 +52,7 @@ public class SurgicalToolModificationDTOValidatorTest {
 		}
 	}
 
-	@Test(expected = SurgicalToolModificationException.class)
+	@Test(expected = SurgicalToolModificationDTOValidationException.class)
 	public void validatingRequestWithoutStatusAndSerialNumberThrowsAnException() {
 
 		when(surgicalToolModificationDTOMock.getNewStatus()).thenReturn(null);

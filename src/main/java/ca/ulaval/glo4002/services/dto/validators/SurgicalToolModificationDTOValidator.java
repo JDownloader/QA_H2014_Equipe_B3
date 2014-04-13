@@ -7,7 +7,7 @@ public class SurgicalToolModificationDTOValidator {
 	public void validate(SurgicalToolModificationDTO surgicalToolModificationDTO) {
 		if ((surgicalToolModificationDTO.getNewStatus() == null)
 				&& (surgicalToolModificationDTO.getNewSerialNumber() == null)) {
-			throw new SurgicalToolModificationException("Parameter 'statut' and/or 'noserie' is required.");
+			throw new DTOValidationException("Parameter 'statut' and/or 'noserie' is required.");
 		}
 	}
 }

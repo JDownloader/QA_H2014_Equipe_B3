@@ -29,8 +29,16 @@ public class SurgicalTool {
 	public int getId() {
 		return id;
 	}
+	
+	public void setSerialNumber(String serialNumber) {
+		this.serialNumber = serialNumber;
+	}
 
 	public boolean isAnonymous() {
 		return serialNumber == null;
+	}
+	
+	public void setStatus(SurgicalToolStatus status) {
+		this.status = status;
 	}
 }

@@ -7,7 +7,7 @@ import javax.persistence.*;
 import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalTool;
-import ca.ulaval.glo4002.exceptions.SurgicalToolRequiresSerialNumberException;
+import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolRequiresSerialNumberException;
 
 @Entity(name = "INTERVENTION")
 public class Intervention {
@@ -36,6 +36,7 @@ public class Intervention {
 		// Required for Hibernate.
 	}
 
+	//Refactor NewMarie BEGIN
 	public Intervention(InterventionBuilder builder) {
 		this.description = builder.description;
 		this.surgeon = builder.surgeon;
@@ -77,24 +78,25 @@ public class Intervention {
 	public Patient getPatient() {
 		return patient;
 	}
+	//Refactor NewMarie END
 
 	public void addSurgicalTool(SurgicalTool surgicalTool) {
-		verifyIfSurgicalToolRequiresASerialNumber(surgicalTool);
+		checkForAnonymousSurgicalToolViolation(surgicalTool);
 		surgicalTools.add(surgicalTool);
+	}
+	
+	public void changeSurgicalToolSerialNumber(SurgicalTool surgicalTool, String newSerialNumber) {
+		surgicalTool.setSerialNumber(newSerialNumber);
+		checkForAnonymousSurgicalToolViolation(surgicalTool);
 	}
 
 	public boolean hasSurgicalTool(SurgicalTool surgicalTool) {
 		return surgicalTools.contains(surgicalTool);
 	}
 
-	public void verifyIfSurgicalToolRequiresASerialNumber(SurgicalTool surgicalTool) {
-
-		if (surgicalTool.isAnonymous()
-				&& Arrays.asList(forbiddenInterventionTypesForAnonymousSurgicalTools).contains(type)) {
-			throw new SurgicalToolRequiresSerialNumberException(
-					"An anonymous surgical tool cannot be used with this type of intervention.");
+	public void checkForAnonymousSurgicalToolViolation(SurgicalTool surgicalTool) {
+		if (surgicalTool.isAnonymous() && Arrays.asList(forbiddenInterventionTypesForAnonymousSurgicalTools).contains(type)) {
+			throw new SurgicalToolRequiresSerialNumberException("An anonymous surgical tool cannot be used with this type of intervention.");
 		}
-
 	}
-
 }
