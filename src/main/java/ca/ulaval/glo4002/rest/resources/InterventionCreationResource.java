@@ -32,11 +32,11 @@ public class InterventionCreationResource {
 		try {
 				interventionId = interventionService.createIntervention(interventionCreationDTO);
 			} catch (DomainException e) {
-				return interventionCreationResponse.createDefaultBadRequestResponse(e);
+				return interventionCreationResponse.createBadRequestResponse(e);
 			}  catch (Exception e) {
 				throw e;
 			}
-			return interventionCreationResponse.createCustomCreatedSuccessResponse(interventionId);
+			return interventionCreationResponse.createSuccessResponse(interventionId);
 	}
 	
 }

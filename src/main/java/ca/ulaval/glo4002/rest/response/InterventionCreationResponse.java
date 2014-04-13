@@ -14,29 +14,13 @@ public class InterventionCreationResponse {
 	private static final String MESSAGE_PARAMETER = "message";
 	private static final String LOCATION_PARAMETER = "location";
 	
-	public Response createDefaultBadRequestResponse(DomainException e){
+	public Response createBadRequestResponse(DomainException e){
 		JSONObject jsonResponse = new JSONObject();
 		jsonResponse.put(CODE_PARAMETER, e.getCode()).put(MESSAGE_PARAMETER, e.getMessage());
 		return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(jsonResponse.toString()).build(); 
 	}
 	
-	public Response createDefaultAcceptedResponse(){
-		return Response.status(Status.ACCEPTED).build();
-	}
-	
-	public Response createCustomBadRequestMissingInformationResponse(){
-		JSONObject jsonResponse = new JSONObject();
-		jsonResponse.append(CODE_PARAMETER, "INT001").append(MESSAGE_PARAMETER, "Erreur - informations manquantes ou invalides");
-		return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(jsonResponse.toString()).build();
-	}
-	
-	public Response createCustomBadRequestNonExistingPatientResponse(){
-		JSONObject jsonResponse = new JSONObject();
-		jsonResponse.append(CODE_PARAMETER, "INT002").append(MESSAGE_PARAMETER, "Erreur - Patient inexistant");
-		return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(jsonResponse.toString()).build();
-	}
-	
-	public Response createCustomCreatedSuccessResponse(int interventionNumber){
+	public Response createSuccessResponse(int interventionNumber){
 		JSONObject jsonResponse = new JSONObject();
 		jsonResponse.put(LOCATION_PARAMETER, "/interventions/"+interventionNumber).put(MESSAGE_PARAMETER, "Succès");
 		return Response.status(Status.CREATED).type(MediaType.APPLICATION_JSON).entity(jsonResponse.toString()).build();
