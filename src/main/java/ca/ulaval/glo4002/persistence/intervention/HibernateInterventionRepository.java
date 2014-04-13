@@ -28,7 +28,7 @@ public class HibernateInterventionRepository extends HibernateRepository impleme
 	public Intervention getById(Integer id) throws InterventionNotFoundException {
 		Intervention intervention = entityManager.find(Intervention.class, id);
 		if (intervention == null) {
-			throw new InterventionNotFoundException(String.format("Cannot find Intervention with id '%s'.", id));
+			throw new InterventionNotFoundException(String.format("Impossible de trouver l'intervention avec id '%s'.", id));
 		}
 		return intervention;
 	}

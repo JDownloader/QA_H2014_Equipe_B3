@@ -25,7 +25,6 @@ public enum SurgicalToolStatus implements Serializable {
 				return surgicalToolStatus;
 			}
 		}
-		throw new IllegalArgumentException(String.format(
-				"'%s' is not a valid value for enumeration SurgicalToolStatus.", statusName));
+		throw new IllegalArgumentException(String.format("'%s' n'est pas une valeur valide pour le statut d'un instrument.", statusName));
 	}
 }
