@@ -5,6 +5,7 @@ import javax.persistence.EntityTransaction;
 
 import ca.ulaval.glo4002.domain.drug.*;
 import ca.ulaval.glo4002.domain.patient.Patient;
+import ca.ulaval.glo4002.domain.patient.PatientNotFoundException;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
 import ca.ulaval.glo4002.domain.prescription.*;
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
@@ -14,6 +15,7 @@ import ca.ulaval.glo4002.persistence.HibernatePatientRepository;
 import ca.ulaval.glo4002.persistence.HibernatePrescriptionRepository;
 import ca.ulaval.glo4002.services.assemblers.PrescriptionAssembler;
 import ca.ulaval.glo4002.services.dto.PrescriptionCreationDTO;
+import ca.ulaval.glo4002.services.dto.validators.DTOValidationException;
 import ca.ulaval.glo4002.services.dto.validators.PrescriptionCreationDTOValidator;
 
 public class PatientService {
@@ -49,7 +51,7 @@ public class PatientService {
 			doCreatePrescription(prescriptionCreationDTO, prescriptionAssembler);
 			
 			entityTransaction.commit();
-		} catch (Exception e) {
+		} catch (DTOValidationException | PatientNotFoundException e) {
 			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_PRES001, e.getMessage());
 		} finally {
 			if (entityTransaction.isActive()) {

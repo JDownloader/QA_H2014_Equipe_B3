@@ -43,21 +43,21 @@ public class DrugSearchDTOValidatorTest {
 		}
 	}
 	
-	@Test(expected = DrugSearchException.class)
+	@Test(expected = DTOValidationException.class)
 	public void disallowsTwoLetterDrugName() throws Exception {
 		drugSearchDTO.name = SAMPLE_TWO_LETTER_PARAMETER;
 
 		drugSearchDTOValidator.validate(drugSearchDTO);
 	}
 
-	@Test(expected = DrugSearchException.class)
+	@Test(expected = DTOValidationException.class)
 	public void disallowsEmptyDrugName(){
 		drugSearchDTO.name = "";
 
 		drugSearchDTOValidator.validate(drugSearchDTO);
 	}
 
-	@Test(expected = DrugSearchException.class)
+	@Test(expected = DTOValidationException.class)
 	public void disallowsUnspecifiedDrugNameParameter() {
 		drugSearchDTOValidator.validate(drugSearchDTO);
 	}

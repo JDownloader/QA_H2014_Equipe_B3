@@ -1,14 +1,14 @@
 package ca.ulaval.glo4002.services.dto.validators;
 
-public class DrugSearchException extends RuntimeException {
+public class DTOValidationException extends RuntimeException {
 
 	private static final long serialVersionUID = -8241484806743744792L;
 
-	public DrugSearchException() {
+	public DTOValidationException() {
 		super();
 	}
 	
-	public DrugSearchException(String message) {
+	public DTOValidationException(String message) {
 		super(message);
 	}
 }

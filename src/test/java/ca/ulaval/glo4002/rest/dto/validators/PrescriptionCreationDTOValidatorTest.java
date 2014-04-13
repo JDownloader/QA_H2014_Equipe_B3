@@ -63,7 +63,7 @@ public class PrescriptionCreationDTOValidatorTest {
 		}
 	}
 
-	@Test(expected = PrescriptionCreationException.class)
+	@Test(expected = DTOValidationException.class)
 	public void disallowsEmptyDrugName() {
 		prescriptionCreationDTO.din = null;
 		prescriptionCreationDTO.drugName = "";
@@ -71,7 +71,7 @@ public class PrescriptionCreationDTOValidatorTest {
 		prescriptionCreationDTOValidator.validate(prescriptionCreationDTO);
 	}
 
-	@Test(expected = PrescriptionCreationException.class)
+	@Test(expected = DTOValidationException.class)
 	public void disallowsUnspecifiedDrugAndDrugNameParameters() {
 		prescriptionCreationDTO.din = null;
 		prescriptionCreationDTO.drugName = null;
@@ -79,7 +79,7 @@ public class PrescriptionCreationDTOValidatorTest {
 		prescriptionCreationDTOValidator.validate(prescriptionCreationDTO);
 	}
 
-	@Test(expected = PrescriptionCreationException.class)
+	@Test(expected = DTOValidationException.class)
 	public void disallowsDrugAndDrugNameParametersBothSpecified() {
 		prescriptionCreationDTO.din = SAMPLE_DIN_PARAMETER;
 		prescriptionCreationDTO.drugName = SAMPLE_DRUG_NAME_PARAMETER;
@@ -87,25 +87,25 @@ public class PrescriptionCreationDTOValidatorTest {
 		prescriptionCreationDTOValidator.validate(prescriptionCreationDTO);
 	}
 
-	@Test(expected = PrescriptionCreationException.class)
+	@Test(expected = DTOValidationException.class)
 	public void disallowsUnspecifiedStaffMemberParameter() {
 		prescriptionCreationDTO.staffMember = null;
 		prescriptionCreationDTOValidator.validate(prescriptionCreationDTO);
 	}
 
-	@Test(expected = PrescriptionCreationException.class)
+	@Test(expected = DTOValidationException.class)
 	public void disallowsUnspecifiedRenewalsParameter() {
 		prescriptionCreationDTO.renewals = null;
 		prescriptionCreationDTOValidator.validate(prescriptionCreationDTO);
 	}
 
-	@Test(expected = PrescriptionCreationException.class)
+	@Test(expected = DTOValidationException.class)
 	public void disallowsUnspecifiedDateParameter() {
 		prescriptionCreationDTO.date = null;
 		prescriptionCreationDTOValidator.validate(prescriptionCreationDTO);
 	}
 
-	@Test(expected = PrescriptionCreationException.class)
+	@Test(expected = DTOValidationException.class)
 	public void disallowsNegativeRenewalsParameter() {
 		prescriptionCreationDTO.renewals = -1;
 		prescriptionCreationDTOValidator.validate(prescriptionCreationDTO);

@@ -11,11 +11,6 @@ public class ServiceRequestException extends RuntimeException {
 		this.internalCode = internalCode;
 	}
 
-	public ServiceRequestException(String internalCode) {
-		super();
-		this.internalCode = internalCode;
-	}
-
 	public ServiceRequestException() {
 		super();
 	}

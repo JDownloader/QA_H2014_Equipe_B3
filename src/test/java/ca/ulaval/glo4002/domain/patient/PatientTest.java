@@ -7,7 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ca.ulaval.glo4002.domain.prescription.Prescription;
-import ca.ulaval.glo4002.exceptions.ItemNotFoundException;
 
 public class PatientTest {
 
@@ -20,7 +19,7 @@ public class PatientTest {
 	}
 
 	@Test
-	public void addsPrescriptionCorrectly() throws ItemNotFoundException {
+	public void addsPrescriptionCorrectly() {
 		Prescription prescriptionMock = mock(Prescription.class);
 		patient.addPrescription(prescriptionMock);
 		assertTrue(patient.hasPrescription(prescriptionMock));

@@ -5,7 +5,7 @@ import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public class Din implements Serializable {
+public final class Din implements Serializable {
 	private static final long serialVersionUID = 7369022975618045987L;
 	@JsonProperty
 	private String din;

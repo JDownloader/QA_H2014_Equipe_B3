@@ -2,7 +2,7 @@ package ca.ulaval.glo4002.domain.staff;
 
 import java.io.Serializable;
 
-public class StaffMember implements Serializable {
+public class StaffMember implements Serializable { //TODO: Make final
 
 	private static final long serialVersionUID = -7716343327245896940L;
 
