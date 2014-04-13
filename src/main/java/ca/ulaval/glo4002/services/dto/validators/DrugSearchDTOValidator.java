@@ -10,9 +10,9 @@ public class DrugSearchDTOValidator {
 		String searchCriteria = drugSearchDTO.name;
 		
 		if (StringUtils.isBlank(searchCriteria)) {
-			throw new DTOValidationException("Parameter 'nom' is required.");
+			throw new DTOValidationException("Le paramètre 'nom' est requis.");
 		} else if (searchCriteria.replace(" ", "").length() < 3) {
-			throw new DTOValidationException("Length of search criteria (excluding wildcards) must not be less than 3 characters.");
+			throw new DTOValidationException("La taille minimale du critère de recherche (excluant les patrons génériques) est de 3 caractères.");
 		}
 	}
 	

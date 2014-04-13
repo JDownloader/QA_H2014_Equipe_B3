@@ -40,7 +40,7 @@ public class PrescriptionCreationDTOValidatorTest {
 	}
 
 	@Test
-	public void validatingGoodRequestWithDrugNameDoesNotThrowAnException() {
+	public void validatingRequestWithDrugNameDoesNotThrowAnException() {
 		prescriptionCreationDTO.din = null;
 		prescriptionCreationDTO.drugName = SAMPLE_DRUG_NAME_PARAMETER;
 
@@ -52,7 +52,7 @@ public class PrescriptionCreationDTOValidatorTest {
 	}
 
 	@Test
-	public void validatingGoodRequestWithDinDoesNotThrowAnException() {
+	public void validatingRequestWithDinDoesNotThrowAnException() {
 		prescriptionCreationDTO.din = SAMPLE_DIN_PARAMETER;
 		prescriptionCreationDTO.drugName = null;
 

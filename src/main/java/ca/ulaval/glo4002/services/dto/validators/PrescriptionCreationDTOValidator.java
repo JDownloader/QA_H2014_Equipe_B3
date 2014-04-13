@@ -7,13 +7,13 @@ import ca.ulaval.glo4002.services.dto.PrescriptionCreationDTO;
 public class PrescriptionCreationDTOValidator {
 	public void validate(PrescriptionCreationDTO prescriptionCreationDTO) {
 		if (prescriptionCreationDTO.renewals == null) {
-			throw new DTOValidationException("Parameter 'renouvellements' is required.");
+			throw new DTOValidationException("Le paramètre 'renouvellements' est requis.");
 		} else if (prescriptionCreationDTO.renewals < 0) {
-			throw new DTOValidationException("Parameter 'renouvellements' must be greater or equal to 0.");
+			throw new DTOValidationException("Le paramètre 'renouvellements' doit être égal ou supérieur à 0.");
 		} else if (prescriptionCreationDTO.date == null) {
-			throw new DTOValidationException("Parameter 'date' is required.");
+			throw new DTOValidationException("Le paramètre 'date' est requis.");
 		} else if (prescriptionCreationDTO.staffMember == null) {
-			throw new DTOValidationException("Parameter 'intervenant' is required.");
+			throw new DTOValidationException("Le paramètre 'intervenant' est requis.");
 		} 
 		validateDinAndName(prescriptionCreationDTO);
 	}
@@ -23,9 +23,9 @@ public class PrescriptionCreationDTOValidator {
 		boolean hasDin = prescriptionCreationDTO.din != null;
 
 		if (hasDrugName && hasDin) {
-			throw new DTOValidationException("Either parameter 'din' or 'nom' must be specified, but not both.");
+			throw new DTOValidationException("Un seul des paramètres 'din' ou 'nom' doit être spécifié.");
 		} else if (!hasDrugName && !hasDin) {
-			throw new DTOValidationException("Parameter 'din' or 'nom' must be specified.");
+			throw new DTOValidationException("Les paramètres 'din' ou 'nom' sont requis.");
 		}
 	}
 }
