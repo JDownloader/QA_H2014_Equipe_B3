@@ -2,6 +2,8 @@ package ca.ulaval.glo4002.domain.surgicaltool;
 
 import javax.persistence.*;
 
+import org.apache.commons.lang3.StringUtils;
+
 @SuppressWarnings("unused") //Suppresses warning for private attributes used for Hibernate persistence
 
 @Entity(name = "SURGICAL_TOOL")
@@ -35,7 +37,7 @@ public class SurgicalTool {
 	}
 
 	public boolean isAnonymous() {
-		return serialNumber == null;
+		return StringUtils.isBlank(serialNumber);
 	}
 	
 	public void setStatus(SurgicalToolStatus status) {

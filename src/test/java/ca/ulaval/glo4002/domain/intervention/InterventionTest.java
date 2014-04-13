@@ -11,7 +11,7 @@ import org.junit.Test;
 import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalTool;
-import ca.ulaval.glo4002.exceptions.SurgicalToolRequiresSerialNumberException;
+import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolRequiresSerialNumberException;
 
 public class InterventionTest {
 
@@ -19,7 +19,8 @@ public class InterventionTest {
 	private static final String SAMPLE_DESCRIPTION = "description";
 	private static final String SAMPLE_ROOM = "room";
 	private static final InterventionStatus SAMPLE_STATUS = InterventionStatus.EN_COURS;
-	private static final InterventionType SAMPLE_TYPE_FOR_NONANONYMOUS_TOOLS = InterventionType.MOELLE;
+	private static final InterventionType SAMPLE_TYPE = InterventionType.MOELLE;
+	private static final String SAMPLE_SERIAL_NUMBER = "serialnumber";
 
 	private Patient patientMock;
 	private Surgeon surgeonMock;
@@ -37,6 +38,7 @@ public class InterventionTest {
 		buildInterventionMock();
 	}
 
+	//Refactor NewMarie BEGIN
 	private void buildInterventionMock() {
 		interventionBuilder = new InterventionBuilder()
 			.date(SAMPLE_DATE)
@@ -45,72 +47,35 @@ public class InterventionTest {
 			.status(SAMPLE_STATUS)
 			.room(SAMPLE_ROOM)
 			.surgeon(surgeonMock)
-			.type(SAMPLE_TYPE_FOR_NONANONYMOUS_TOOLS);
+			.type(SAMPLE_TYPE);
 		intervention = interventionBuilder.build();
 	}
-
-	@Test
-	public void returnsDescriptionCorrectly() {
-		assertEquals(SAMPLE_DESCRIPTION, intervention.getDescription());
-	}
-
-	@Test
-	public void returnsSurgeonCorrectly() {
-		assertSame(surgeonMock, intervention.getSurgeon());
-	}
-
-	@Test
-	public void returnsDateCorrectly() {
-		assertEquals(SAMPLE_DATE, intervention.getDate());
-	}
-
-	@Test
-	public void returnsRoomCorrectly() {
-		assertEquals(SAMPLE_ROOM, intervention.getRoom());
-	}
-
-	@Test
-	public void returnsTypeCorrectly() {
-		assertEquals(SAMPLE_TYPE_FOR_NONANONYMOUS_TOOLS, intervention.getType());
-	}
-
-	@Test
-	public void returnsSatusCorrectly() {
-		assertSame(SAMPLE_STATUS, intervention.getStatus());
-	}
-
-	@Test
-	public void returnsPatientCorrectly() {
-		assertSame(patientMock, intervention.getPatient());
-	}
+	//Refactor NewMarie END
 
 	@Test
 	public void addsNonAnonymousSurgicalToolCorrectly() {
-		
 		when(surgicalToolMock.isAnonymous()).thenReturn(false);
-
 		intervention.addSurgicalTool(surgicalToolMock);
 		assertTrue(intervention.hasSurgicalTool(surgicalToolMock));
 	}
 	
 	@Test(expected = SurgicalToolRequiresSerialNumberException.class)
-	public void addingAnonymousSurgicalToolToAForbiddenInterventionTypeThrowsException() {
-		
+	public void disallowsAddingAnonymousSurgicalToolToAForbiddenInterventionType() {
 		when(surgicalToolMock.isAnonymous()).thenReturn(true);
-		
 		intervention.addSurgicalTool(surgicalToolMock);
 	}
-	
-	@Test
-	public void addingNonAnonymousSurgicalToolToAForbiddenInterventionTypeWorks() {
-		
-		when(surgicalToolMock.isAnonymous()).thenReturn(false);
-		
-		intervention.addSurgicalTool(surgicalToolMock);
 
-		assertTrue(intervention.hasSurgicalTool(surgicalToolMock));
+	@Test
+	public void changesSerialNumberOfSurgicalToolCorrectly() {
+		when(surgicalToolMock.isAnonymous()).thenReturn(false);
+		intervention.changeSurgicalToolSerialNumber(surgicalToolMock, SAMPLE_SERIAL_NUMBER);
+		verify(surgicalToolMock).setSerialNumber(SAMPLE_SERIAL_NUMBER);
 	}
 	
-	
+	@Test(expected = SurgicalToolRequiresSerialNumberException.class)
+	public void disallowsRemovingSerialNumberOfSurgicalToolWhenAssociatedWithForbiddenInterventionType() {
+		when(surgicalToolMock.isAnonymous()).thenReturn(true);
+		intervention.changeSurgicalToolSerialNumber(surgicalToolMock, "");
+	}
 	
 }

@@ -1,67 +1,58 @@
 package ca.ulaval.glo4002.rest.dto.validators;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.ulaval.glo4002.domain.intervention.InterventionType;
+import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolStatus;
 import ca.ulaval.glo4002.services.dto.SurgicalToolCreationDTO;
 import ca.ulaval.glo4002.services.dto.validators.*;
 
 public class SurgicalToolCreationDTOValidatorTest {
 
 	private static final String SAMPLE_TYPECODE_PARAMETER = "IT72353";
-	private static final String SAMPLE_STATUT_PARAMETER = "INUTILISE";
-	private static final String SAMPLE_NOSERIE_PARAMETER = "23562543-3635345";
-	private static final String SAMPLE_ANONYMOUS_NOSERIE_PARAMETER = null;
-	private static final InterventionType SAMPLE_INTERVENTIONTYPE_PARAMETER = InterventionType.AUTRE;
-	private static final InterventionType SAMPLE_NONANONYMOUS_INTERVENTIONTYPE_PARAMETER = InterventionType.COEUR;
+	private static final SurgicalToolStatus SAMPLE_STATUS_PARAMETER = SurgicalToolStatus.INUTILISE;
+	private static final String SAMPLE_SERIAL_NUMBER_PARAMETER = "23562543-3635345";
+	private static final Integer SAMPLE_INTERVENTION_NUMBER_PARAMETER = 3;
 
-	SurgicalToolCreationDTO SurgicalToolCreationDTOMock;
+	SurgicalToolCreationDTO SurgicalToolCreationDTO = new SurgicalToolCreationDTO();
 	SurgicalToolCreationDTOValidator SurgicalToolCreationDTOValidator;
 
 	@Before
 	public void init() throws Exception {
 		SurgicalToolCreationDTOValidator = new SurgicalToolCreationDTOValidator();
-		SurgicalToolCreationDTOMock = mock(SurgicalToolCreationDTO.class);
 
-		when(SurgicalToolCreationDTOMock.getTypeCode()).thenReturn(SAMPLE_TYPECODE_PARAMETER);
-		when(SurgicalToolCreationDTOMock.getStatus()).thenReturn(SAMPLE_STATUT_PARAMETER);
-		when(SurgicalToolCreationDTOMock.getSerialNumber()).thenReturn(SAMPLE_NOSERIE_PARAMETER);
-		when(SurgicalToolCreationDTOMock.getInterventionType()).thenReturn(SAMPLE_INTERVENTIONTYPE_PARAMETER);
-
+		SurgicalToolCreationDTO.typeCode = SAMPLE_TYPECODE_PARAMETER;
+		SurgicalToolCreationDTO.status = SAMPLE_STATUS_PARAMETER;
+		SurgicalToolCreationDTO.serialNumber = SAMPLE_SERIAL_NUMBER_PARAMETER;
+		SurgicalToolCreationDTO.interventionNumber = SAMPLE_INTERVENTION_NUMBER_PARAMETER;
 	}
 
+	@Test
+	public void validatingCompleteRequestDoesNotThrowAnException() {
+		try {
+			SurgicalToolCreationDTOValidator.validate(SurgicalToolCreationDTO);
+		} catch (Exception e) {
+			fail("The validator should not have thrown an exception");
+		}
+	}
+	
+	@Test
+	public void allowsRequestWithNoSerialNumber() {
+		SurgicalToolCreationDTO.serialNumber = null;
+
+		try {
+			SurgicalToolCreationDTOValidator.validate(SurgicalToolCreationDTO);
+		} catch (Exception e) {
+			fail("The validator should not have thrown an exception");
+		}
+	}
+	
 	@Test(expected = DTOValidationException.class)
-	public void disallowsEmptyTypecode() {
-		when(SurgicalToolCreationDTOMock.getTypeCode()).thenReturn(null);
+	public void disallowsEmptyTypeCode() {
+		SurgicalToolCreationDTO.typeCode = null;
 
-		SurgicalToolCreationDTOValidator.validate(SurgicalToolCreationDTOMock);
+		SurgicalToolCreationDTOValidator.validate(SurgicalToolCreationDTO);
 	}
-
-	@Test
-	public void validatingRequestWithoutSerialNumberDoesNotThrowAnException() {
-
-		when(SurgicalToolCreationDTOMock.getSerialNumber()).thenReturn(null);
-
-		try {
-			SurgicalToolCreationDTOValidator.validate(SurgicalToolCreationDTOMock);
-		} catch (Exception e) {
-			fail("The validator should not have thrown an exception");
-		}
-	}
-
-	@Test
-	public void validatingRequestWithAllParametersDoesNotThrowAnException() {
-
-		try {
-			SurgicalToolCreationDTOValidator.validate(SurgicalToolCreationDTOMock);
-		} catch (Exception e) {
-			fail("The validator should not have thrown an exception");
-		}
-
-	}
-
 }

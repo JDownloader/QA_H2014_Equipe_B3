@@ -1,76 +1,74 @@
 package ca.ulaval.glo4002.rest.dto.validators;
 
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolStatus;
 import ca.ulaval.glo4002.services.dto.SurgicalToolModificationDTO;
+import ca.ulaval.glo4002.services.dto.validators.DTOValidationException;
 import ca.ulaval.glo4002.services.dto.validators.SurgicalToolModificationDTOValidator;
-import ca.ulaval.glo4002.services.dto.validators.SurgicalToolModificationDTOValidationException;
 
 public class SurgicalToolModificationDTOValidatorTest {
 
-	private static final String SAMPLE_STATUT_PARAMETER = "INUTILISE";
-	private static final String SAMPLE_NOSERIE_PARAMETER = "23562543-3635345";
-	SurgicalToolModificationDTO surgicalToolModificationDTOMock;
+	private static final SurgicalToolStatus SAMPLE_STATUS_PARAMETER = SurgicalToolStatus.INUTILISE;
+	private static final String SAMPLE_SERIAL_NUMBER_PARAMETER = "23562543-3635345";
+	
+	SurgicalToolModificationDTO surgicalToolModificationDTO = new SurgicalToolModificationDTO();
 	SurgicalToolModificationDTOValidator surgicalToolModificationDTOValidator;
 
 	@Before
 	public void init() throws Exception {
 		surgicalToolModificationDTOValidator = new SurgicalToolModificationDTOValidator();
-		surgicalToolModificationDTOMock = mock(SurgicalToolModificationDTO.class);
 
-		when(surgicalToolModificationDTOMock.getNewStatus()).thenReturn(SAMPLE_STATUT_PARAMETER);
-		when(surgicalToolModificationDTOMock.getNewSerialNumber()).thenReturn(SAMPLE_NOSERIE_PARAMETER);
-
+		surgicalToolModificationDTO.newStatus = SAMPLE_STATUS_PARAMETER;
+		surgicalToolModificationDTO.newSerialNumber = SAMPLE_SERIAL_NUMBER_PARAMETER;
 	}
 
 	@Test
-	public void validatingRequestWithoutSerialNumberDoesNotThrowAnException() {
-
-		when(surgicalToolModificationDTOMock.getNewSerialNumber()).thenReturn(null);
+	public void validatingCompleteRequestDoesNotThrowAnException() {
+		try {
+			surgicalToolModificationDTOValidator.validate(surgicalToolModificationDTO);
+		} catch (Exception e) {
+			fail("The validator should not have thrown an exception");
+		}
+	}
+	
+	@Test
+	public void allowsUnspecifiedSerialNumber() {
+		surgicalToolModificationDTO.newSerialNumber = null;
 
 		try {
-			surgicalToolModificationDTOValidator.validate(surgicalToolModificationDTOMock);
+			surgicalToolModificationDTOValidator.validate(surgicalToolModificationDTO);
+		} catch (Exception e) {
+			fail("The validator should not have thrown an exception");
+		}
+	}
+	
+	@Test(expected = DTOValidationException.class)
+	public void disallowsEmptySerialNumber() {
+		surgicalToolModificationDTO.newSerialNumber = "";
+
+		surgicalToolModificationDTOValidator.validate(surgicalToolModificationDTO);
+	}
+
+	@Test
+	public void allowsUnspecifiedStatus() {
+		surgicalToolModificationDTO.newStatus = null;
+
+		try {
+			surgicalToolModificationDTOValidator.validate(surgicalToolModificationDTO);
 		} catch (Exception e) {
 			fail("The validator should not have thrown an exception");
 		}
 	}
 
-	@Test
-	public void validatingRequestWithoutStatusDoesNotThrowAnException() {
+	@Test(expected = DTOValidationException.class)
+	public void disallowsStatusAndSerialNumberBothUnspecified() {
+		surgicalToolModificationDTO.newStatus = null;
+		surgicalToolModificationDTO.newSerialNumber = null;
 
-		when(surgicalToolModificationDTOMock.getNewStatus()).thenReturn(null);
-
-		try {
-			surgicalToolModificationDTOValidator.validate(surgicalToolModificationDTOMock);
-		} catch (Exception e) {
-			fail("The validator should not have thrown an exception");
-		}
+		surgicalToolModificationDTOValidator.validate(surgicalToolModificationDTO);
 	}
-
-	@Test(expected = SurgicalToolModificationDTOValidationException.class)
-	public void validatingRequestWithoutStatusAndSerialNumberThrowsAnException() {
-
-		when(surgicalToolModificationDTOMock.getNewStatus()).thenReturn(null);
-		when(surgicalToolModificationDTOMock.getNewSerialNumber()).thenReturn(null);
-
-		surgicalToolModificationDTOValidator.validate(surgicalToolModificationDTOMock);
-
-	}
-
-	@Test
-	public void validatingRequestWithAllParametersDoesNotThrowAnException() {
-
-		try {
-			surgicalToolModificationDTOValidator.validate(surgicalToolModificationDTOMock);
-		} catch (Exception e) {
-			fail("The validator should not have thrown an exception");
-		}
-
-	}
-
 }

@@ -9,6 +9,7 @@ import ca.ulaval.glo4002.domain.staff.Surgeon;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalTool;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolRequiresSerialNumberException;
 
+@SuppressWarnings("unused") //Suppresses warning for private attributes used for Hibernate persistence
 @Entity(name = "INTERVENTION")
 public class Intervention {
 
@@ -46,40 +47,12 @@ public class Intervention {
 		this.patient = builder.patient;
 		this.status = builder.status;
 	}
-
-	public int getId() {
-		return id;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public Surgeon getSurgeon() {
-		return surgeon;
-	}
-
-	public Date getDate() {
-		return date;
-	}
-
-	public String getRoom() {
-		return room;
-	}
-
-	public InterventionType getType() {
-		return type;
-	}
-
-	public InterventionStatus getStatus() {
-		return status;
-	}
-
-	public Patient getPatient() {
-		return patient;
-	}
 	//Refactor NewMarie END
 
+	public int getId() {
+		return this.id;
+	}
+	
 	public void addSurgicalTool(SurgicalTool surgicalTool) {
 		checkForAnonymousSurgicalToolViolation(surgicalTool);
 		surgicalTools.add(surgicalTool);
@@ -89,14 +62,14 @@ public class Intervention {
 		surgicalTool.setSerialNumber(newSerialNumber);
 		checkForAnonymousSurgicalToolViolation(surgicalTool);
 	}
-
-	public boolean hasSurgicalTool(SurgicalTool surgicalTool) {
-		return surgicalTools.contains(surgicalTool);
-	}
-
-	public void checkForAnonymousSurgicalToolViolation(SurgicalTool surgicalTool) {
+	
+	private void checkForAnonymousSurgicalToolViolation(SurgicalTool surgicalTool) {
 		if (surgicalTool.isAnonymous() && Arrays.asList(forbiddenInterventionTypesForAnonymousSurgicalTools).contains(type)) {
 			throw new SurgicalToolRequiresSerialNumberException("Erreur - requiert numéro de série.");
 		}
+	}
+
+	public boolean hasSurgicalTool(SurgicalTool surgicalTool) {
+		return surgicalTools.contains(surgicalTool);
 	}
 }

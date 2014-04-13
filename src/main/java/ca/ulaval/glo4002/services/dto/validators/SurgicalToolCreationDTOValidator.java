@@ -6,7 +6,7 @@ public class SurgicalToolCreationDTOValidator {
 
 	public void validate(SurgicalToolCreationDTO surgicalToolCreationDTO) {
 		if (surgicalToolCreationDTO.typeCode == null) {
-			throw new DTOValidationException("Parameter 'typecode' is required.");
+			throw new DTOValidationException("Le paramètre 'typecode' est requis.");
 		}
 	}
 }
