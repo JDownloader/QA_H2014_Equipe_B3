@@ -40,7 +40,7 @@ public class InterventionCreationDTOValidatorTest {
 	public void validateDTOReturnsBadRequestResponseWhenDescriptionIsNull() throws InterventionValidationException{
 		when(interventionCreationDTOMock.getDescription()).thenReturn(null);
 		interventionCreationDTOMock.getDescription();
-		interventionCreationDTOValidator.validateDTO(interventionCreationDTOMock);
+		interventionCreationDTOValidator.validate(interventionCreationDTOMock);
 		assertEquals(InterventionValidationException.class, interventionValidationException.getCause().getClass());
 		assertEquals("Parameter 'description' is required", interventionValidationException.getMessage());
 	}
@@ -49,7 +49,7 @@ public class InterventionCreationDTOValidatorTest {
 	public void validateDTOReturnsBadRequestResponseWhenDateIsNull() throws InterventionValidationException{
 		when(interventionCreationDTOMock.getDate()).thenReturn(null);
 		interventionCreationDTOMock.getDate();
-		interventionCreationDTOValidator.validateDTO(interventionCreationDTOMock);
+		interventionCreationDTOValidator.validate(interventionCreationDTOMock);
 		assertEquals(InterventionValidationException.class, interventionValidationException.getCause().getClass());
 		assertEquals("Parameter 'date' is required", interventionValidationException.getMessage());
 	}
@@ -58,7 +58,7 @@ public class InterventionCreationDTOValidatorTest {
 	public void validateDTOReturnsBadRequestResponseWhenPatientNumberIsNull() throws InterventionValidationException{
 		when(interventionCreationDTOMock.getPatientNumber()).thenReturn(null);
 		interventionCreationDTOMock.getPatientNumber();
-		interventionCreationDTOValidator.validateDTO(interventionCreationDTOMock);
+		interventionCreationDTOValidator.validate(interventionCreationDTOMock);
 		assertEquals(InterventionValidationException.class, interventionValidationException.getCause().getClass());
 		assertEquals("Parameter 'patient' is required", interventionValidationException.getMessage());
 	}
@@ -67,7 +67,7 @@ public class InterventionCreationDTOValidatorTest {
 	public void validateDTOReturnsBadRequestResponseWhenRoomIsNull() throws InterventionValidationException{
 		when(interventionCreationDTOMock.getRoom()).thenReturn(null);
 		interventionCreationDTOMock.getRoom();
-		interventionCreationDTOValidator.validateDTO(interventionCreationDTOMock);
+		interventionCreationDTOValidator.validate(interventionCreationDTOMock);
 		assertEquals(InterventionValidationException.class, interventionValidationException.getCause().getClass());
 		assertEquals("Parameter 'salle' is required", interventionValidationException.getMessage());
 	}
@@ -76,7 +76,7 @@ public class InterventionCreationDTOValidatorTest {
 	public void vaidateDTOReturnsBadRequestResponseWhenSurgeonNumberIsNull() throws InterventionValidationException{
 		when(interventionCreationDTOMock.getSurgeonNumber()).thenReturn(null);
 		interventionCreationDTOMock.getSurgeonNumber();
-		interventionCreationDTOValidator.validateDTO(interventionCreationDTOMock);
+		interventionCreationDTOValidator.validate(interventionCreationDTOMock);
 		assertEquals(InterventionValidationException.class, interventionValidationException.getCause().getClass());
 		assertEquals("Parameter 'chirurgien' is required", interventionValidationException.getMessage());
 	}
@@ -85,7 +85,7 @@ public class InterventionCreationDTOValidatorTest {
 	public void validateDTOReturnsBadRequestWhenTypeIsNull() throws InterventionValidationException{
 		when(interventionCreationDTOMock.getType()).thenReturn(null);
 		interventionCreationDTOMock.getType();
-		interventionCreationDTOValidator.validateDTO(interventionCreationDTOMock);
+		interventionCreationDTOValidator.validate(interventionCreationDTOMock);
 		assertEquals(InterventionValidationException.class, interventionValidationException.getCause().getClass());
 		assertEquals("Parameter 'type' is required", interventionValidationException.getMessage());
 	}
@@ -94,7 +94,7 @@ public class InterventionCreationDTOValidatorTest {
 	public void validateDTOReturnsBadRequestResponseWhenPatientNumberIsNegative() throws InterventionValidationException{
 		when(interventionCreationDTOMock.getPatientNumber()).thenReturn(INVALID_PATIENT_NUMBER);
 		interventionCreationDTOMock.getPatientNumber();
-		interventionCreationDTOValidator.validateDTO(interventionCreationDTOMock);
+		interventionCreationDTOValidator.validate(interventionCreationDTOMock);
 		assertEquals(InterventionValidationException.class, interventionValidationException.getCause().getClass());
 		assertEquals("Parameter 'patient' must be greater than 0", interventionValidationException.getMessage());
 	}

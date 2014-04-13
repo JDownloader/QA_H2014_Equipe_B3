@@ -16,7 +16,7 @@ public class InterventionCreationResponse {
 	
 	public Response createDefaultBadRequestResponse(DomainException e){
 		JSONObject jsonResponse = new JSONObject();
-		jsonResponse.append(CODE_PARAMETER, e.getCode()).append(MESSAGE_PARAMETER, e.getMessage());
+		jsonResponse.put(CODE_PARAMETER, e.getCode()).put(MESSAGE_PARAMETER, e.getMessage());
 		return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(jsonResponse.toString()).build(); 
 	}
 	
@@ -38,7 +38,7 @@ public class InterventionCreationResponse {
 	
 	public Response createCustomCreatedSuccessResponse(int interventionNumber){
 		JSONObject jsonResponse = new JSONObject();
-		jsonResponse.append(LOCATION_PARAMETER, "/interventions/"+interventionNumber).append(MESSAGE_PARAMETER, "Succès");
+		jsonResponse.put(LOCATION_PARAMETER, "/interventions/"+interventionNumber).put(MESSAGE_PARAMETER, "Succès");
 		return Response.status(Status.CREATED).type(MediaType.APPLICATION_JSON).entity(jsonResponse.toString()).build();
 	}
 }

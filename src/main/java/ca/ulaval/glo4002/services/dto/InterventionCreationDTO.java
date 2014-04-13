@@ -2,18 +2,16 @@ package ca.ulaval.glo4002.services.dto;
 
 import java.util.Date;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class InterventionCreationDTO {
-	@JsonProperty("description")
+	
 	private String description;
 	@JsonProperty("chirurgien")
 	private Integer surgeonNumber;
-	@JsonProperty("date")
 	private Date date;
 	@JsonProperty("salle")
 	private String room;
-	@JsonProperty("type")
 	private String type;
 	@JsonProperty("statut")
 	private String status;

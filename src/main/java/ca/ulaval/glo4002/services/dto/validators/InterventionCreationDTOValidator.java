@@ -7,9 +7,12 @@ import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
 public class InterventionCreationDTOValidator {
 	InterventionCreationResponse interventionCreationResponse = new InterventionCreationResponse();
 	
-	public void validateDTO(InterventionCreationDTO interventionCreationDTO) throws InterventionValidationException{
+	public void validate(InterventionCreationDTO interventionCreationDTO) throws InterventionValidationException {
 		if(interventionCreationDTO.getDescription() == null){
 			throw new InterventionValidationException("Parameter 'description' is required");
+		}
+		else if(interventionCreationDTO.getSurgeonNumber() == null){
+			throw new InterventionValidationException("Parameter 'chirurgien' is required");
 		}
 		else if(interventionCreationDTO.getDate() == null) {
 			throw new InterventionValidationException("Parameter 'date' is required");
@@ -19,9 +22,6 @@ public class InterventionCreationDTOValidator {
 		}
 		else if(interventionCreationDTO.getRoom() == null) {
 			throw new InterventionValidationException("Parameter 'salle' is required");
-		}
-		else if(interventionCreationDTO.getSurgeonNumber() == null){
-			throw new InterventionValidationException("Parameter 'chirurgien' is required");
 		}
 		else if(interventionCreationDTO.getType() == null){
 			throw new InterventionValidationException("Parameter 'type' is required");
