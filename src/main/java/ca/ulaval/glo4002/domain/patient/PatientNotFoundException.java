@@ -4,6 +4,10 @@ public class PatientNotFoundException extends RuntimeException {
 	
 	private static final long serialVersionUID = 5500330764535025554L;
 
+	public PatientNotFoundException() {
+		super();
+	}
+	
 	public PatientNotFoundException(String message) {
 		super(message);
 	}

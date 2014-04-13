@@ -4,7 +4,6 @@ import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityTransaction;
 
 import org.junit.Before;
@@ -15,6 +14,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import ca.ulaval.glo4002.domain.drug.*;
 import ca.ulaval.glo4002.domain.patient.Patient;
+import ca.ulaval.glo4002.domain.patient.PatientNotFoundException;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
 import ca.ulaval.glo4002.domain.prescription.Prescription;
 import ca.ulaval.glo4002.domain.prescription.PrescriptionRepository;
@@ -92,7 +92,7 @@ public class PatientServiceTest {
 	@Test
 	public void verifyAddPrescriptionRollsbackOnException() throws Exception {
 		when(entityTransactionMock.isActive()).thenReturn(true);
-		when(patientRepositoryMock.getById(anyInt())).thenThrow(new EntityNotFoundException());
+		when(patientRepositoryMock.getById(anyInt())).thenThrow(new PatientNotFoundException());
 
 		try {
 			patientService.createPrescription(prescriptionCreationDTO, prescriptionCreationDTOValidatorMock, prescriptionFactoryMock);

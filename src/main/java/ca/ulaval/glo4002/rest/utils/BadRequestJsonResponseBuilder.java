@@ -6,6 +6,8 @@ import javax.ws.rs.core.Response.Status;
 import org.json.JSONObject;
 
 public class BadRequestJsonResponseBuilder {
+	
+	//TODO: REMOVE THIS CLASS AND USE BadResponseDTO
 
 	private static final String CODE_PARAMETER = "code";
 	private static final String MESSAGE_PARAMETER = "message";

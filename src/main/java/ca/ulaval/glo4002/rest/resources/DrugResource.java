@@ -8,8 +8,8 @@ import javax.ws.rs.core.Response.Status;
 
 import ca.ulaval.glo4002.domain.drug.Drug;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
-import ca.ulaval.glo4002.rest.utils.BadRequestJsonResponseBuilder;
 import ca.ulaval.glo4002.services.DrugService;
+import ca.ulaval.glo4002.services.dto.BadResponseDTO;
 import ca.ulaval.glo4002.services.dto.DrugSearchDTO;
 import ca.ulaval.glo4002.services.dto.validators.DrugSearchDTOValidator;
 
@@ -36,7 +36,7 @@ public class DrugResource {
 			List<Drug> drugResults = drugService.searchDrug(drugSearchDTO, new DrugSearchDTOValidator());
 			return Response.status(Status.OK).type(MediaType.APPLICATION_JSON).entity(drugResults).build();
 		} catch (ServiceRequestException e) {
-			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());
+			return Response.status(Status.BAD_REQUEST).entity(new BadResponseDTO(e.getInternalCode(), e.getMessage())).build();
 		}
 	}
 }
