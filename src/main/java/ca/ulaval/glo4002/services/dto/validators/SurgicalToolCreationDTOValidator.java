@@ -5,7 +5,7 @@ import ca.ulaval.glo4002.services.dto.SurgicalToolCreationDTO;
 public class SurgicalToolCreationDTOValidator {
 
 	public void validate(SurgicalToolCreationDTO surgicalToolCreationDTO) {
-		if (surgicalToolCreationDTO.getTypeCode() == null) {
+		if (surgicalToolCreationDTO.typeCode == null) {
 			throw new DTOValidationException("Parameter 'typecode' is required.");
 		}
 	}

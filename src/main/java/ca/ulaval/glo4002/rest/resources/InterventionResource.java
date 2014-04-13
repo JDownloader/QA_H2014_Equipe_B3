@@ -12,7 +12,6 @@ import org.json.JSONObject;
 import ca.ulaval.glo4002.exceptions.RequestParseException;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParser;
-import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParserFactory;
 import ca.ulaval.glo4002.rest.utils.BadRequestJsonResponseBuilder;
 import ca.ulaval.glo4002.services.assemblers.SurgicalToolAssembler;
 import ca.ulaval.glo4002.services.dto.SurgicalToolCreationDTO;
@@ -27,7 +26,6 @@ public class InterventionResource {
 	public static final String BAD_REQUEST_ERROR_CODE_INT010 = "INT010";
 
 	private InterventionService interventionService;
-	private CreateInterventionRequestParserFactory createInterventionRequestParserFactory;
 
 	public InterventionResource() {
 		this.interventionService = new InterventionService();
@@ -75,9 +73,9 @@ public class InterventionResource {
 	public Response createSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO, 
 			@PathParam("interventionNumber") int interventionNumber) throws Exception {
 		try {
-			surgicalToolCreationDTO.setInterventionNumber(interventionNumber);
+			surgicalToolCreationDTO.interventionNumber = interventionNumber;
 			int surgicalToolId = interventionService.createSurgicalTool(surgicalToolCreationDTO, new SurgicalToolCreationDTOValidator(), new SurgicalToolAssembler());
-			String newResourceLocation = String.format("/%s/%s", surgicalToolCreationDTO.getTypeCode(), surgicalToolId);
+			String newResourceLocation = String.format("/%s/%s", surgicalToolCreationDTO.typeCode, surgicalToolId);
 			return Response.status(Status.CREATED).location(new URI(newResourceLocation)).build();
 		} catch (ServiceRequestException e) {
 			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());
@@ -85,18 +83,18 @@ public class InterventionResource {
 	}
 
 	@PUT
-	@Path("{interventionNumber: [0-9]+}/instruments/{surgicalToolTypeCode}/{surgicalToolSerialNumber}/")
+	@Path("{interventionNumber: [0-9]+}/instruments/{surgicalToolTypeCode}/{surgicalToolSerialNumberOrId}/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response modifySurgicalTool(SurgicalToolModificationDTO surgicalToolModificationDTO,
 			@PathParam("interventionNumber") int interventionNumber,
 			@PathParam("surgicalToolTypeCode") String surgicalToolTypeCode,
-			@PathParam("surgicalToolSerialNumber") String surgicalToolSerialNumber) throws Exception {
+			@PathParam("surgicalToolSerialNumberOrId") String surgicalToolSerialNumberOrId) throws Exception {
 
 		try {
-			surgicalToolModificationDTO.setInterventionNumber(interventionNumber);
-			surgicalToolModificationDTO.setOriginalSerialNumber(surgicalToolSerialNumber);
-			surgicalToolModificationDTO.setTypeCode(surgicalToolTypeCode);
+			surgicalToolModificationDTO.interventionNumber = interventionNumber;
+			surgicalToolModificationDTO.serialNumberOrId = surgicalToolSerialNumberOrId;
+			surgicalToolModificationDTO.typeCode = surgicalToolTypeCode;
 			interventionService.modifySurgicalTool(surgicalToolModificationDTO, new SurgicalToolModificationDTOValidator());
 			return Response.status(Status.OK).build();
 		} catch (ServiceRequestException e) {

@@ -117,7 +117,7 @@ public class InterventionService {
 	private SurgicalTool doCreateSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO, SurgicalToolAssembler surgicalToolAssembler) throws ServiceRequestException {
 		SurgicalTool surgicalTool = surgicalToolAssembler.assembleFromDTO(surgicalToolCreationDTO);
 		surgicalToolRepository.persist(surgicalTool);
-		Intervention intervention = interventionRepository.getById(surgicalToolCreationDTO.getInterventionNumber());
+		Intervention intervention = interventionRepository.getById(surgicalToolCreationDTO.interventionNumber);
 		intervention.addSurgicalTool(surgicalTool);
 		interventionRepository.update(intervention);
 		return surgicalTool;
@@ -145,10 +145,10 @@ public class InterventionService {
 	}
 
 	private void doModifySurgicalTool(SurgicalToolModificationDTO surgicalToolModificationDTO) throws ServiceRequestException {
-		SurgicalTool surgicalTool = surgicalToolRepository.getBySerialNumberOrId(surgicalToolModificationDTO.getSerialNumberOrId());
-		Intervention intervention = interventionRepository.getById(surgicalToolModificationDTO.getInterventionNumber());
-		surgicalTool.setStatus(surgicalToolModificationDTO.getNewStatus());
-		intervention.changeSurgicalToolSerialNumber(surgicalTool, surgicalToolModificationDTO.getNewSerialNumber());
+		SurgicalTool surgicalTool = surgicalToolRepository.getBySerialNumberOrId(surgicalToolModificationDTO.serialNumberOrId);
+		Intervention intervention = interventionRepository.getById(surgicalToolModificationDTO.interventionNumber);
+		surgicalTool.setStatus(surgicalToolModificationDTO.newStatus);
+		intervention.changeSurgicalToolSerialNumber(surgicalTool, surgicalToolModificationDTO.newSerialNumber);
 		surgicalToolRepository.update(surgicalTool);
 	}
 }
