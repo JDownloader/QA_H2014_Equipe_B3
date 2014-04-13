@@ -2,6 +2,8 @@ package ca.ulaval.glo4002.services.dto;
 
 import java.util.Date;
 
+import ca.ulaval.glo4002.domain.intervention.InterventionStatus;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class InterventionCreationDTO {
@@ -13,8 +15,9 @@ public class InterventionCreationDTO {
 	@JsonProperty("salle")
 	private String room;
 	private String type;
+	//TODO : see if you can move this away from here
 	@JsonProperty("statut")
-	private String status;
+	private String status = InterventionStatus.PLANNED.getValue();
 	@JsonProperty("patient")
 	private Integer patientNumber;
 	

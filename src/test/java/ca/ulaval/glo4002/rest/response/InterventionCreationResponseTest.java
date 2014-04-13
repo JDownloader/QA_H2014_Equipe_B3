@@ -26,13 +26,13 @@ public class InterventionCreationResponseTest {
 	
 	@Test
 	public void createCustomCreatedSuccessResponseReturnsCreatedResponse(){
-		response = interventionCreationResponse.createCustomCreatedSuccessResponse(SAMPLE_INTERVENTION_NO);
+		response = interventionCreationResponse.createSuccessResponse(SAMPLE_INTERVENTION_NO);
 		assertEquals(Response.status(Status.CREATED).build().getStatus(), response.getStatus());
 	}
 	
 	@Test
 	public void createCustomCreatedSuccessResponseReturnsGoodMessageAndCode(){
-		response = interventionCreationResponse.createCustomCreatedSuccessResponse(SAMPLE_INTERVENTION_NO);
+		response = interventionCreationResponse.createSuccessResponse(SAMPLE_INTERVENTION_NO);
 		assertEquals(SUCCESS_RESPONSE, response.getEntity());
 	}
 }
