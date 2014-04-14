@@ -6,8 +6,7 @@ import javax.persistence.*;
 
 import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
-import ca.ulaval.glo4002.domain.surgicaltool.SurgicalTool;
-import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolRequiresSerialNumberException;
+import ca.ulaval.glo4002.domain.surgicaltool.*;
 
 @SuppressWarnings("unused") //Suppresses warning for private attributes used for Hibernate persistence
 @Entity(name = "INTERVENTION")

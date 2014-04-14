@@ -2,10 +2,7 @@ package ca.ulaval.glo4002.persistence;
 
 import javax.persistence.*;
 
-import ca.ulaval.glo4002.domain.surgicaltool.SurgicalTool;
-import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolExistsException;
-import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolNotFoundException;
-import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolRepository;
+import ca.ulaval.glo4002.domain.surgicaltool.*;
 
 public class HibernateSurgicalToolRepository extends HibernateRepository implements SurgicalToolRepository {
 
