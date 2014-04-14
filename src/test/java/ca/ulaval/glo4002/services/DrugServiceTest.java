@@ -15,8 +15,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import ca.ulaval.glo4002.domain.drug.*;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
-import ca.ulaval.glo4002.rest.dto.DrugSearchDto;
 import ca.ulaval.glo4002.services.DrugService;
+import ca.ulaval.glo4002.services.dto.DrugSearchDTO;
+import ca.ulaval.glo4002.services.dto.validators.DrugSearchDTOValidator;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DrugServiceTest {
@@ -29,12 +30,14 @@ public class DrugServiceTest {
 	private EntityManager entityManagerMock;
 	private EntityTransaction entityTransactionMock;
 
-	private DrugSearchDto drugSearchDtoMock;
+	private DrugSearchDTO drugSearchDTO = new DrugSearchDTO();
+	private DrugSearchDTOValidator drugSearchDToValidatorMock;
 
 	@Before
 	public void init() {
 		createMocks();
 		stubMethods();
+		setupDTO();
 		drugService = new DrugService(drugRepositoryMock, entityManagerMock);
 	}
 
@@ -42,24 +45,27 @@ public class DrugServiceTest {
 		drugRepositoryMock = mock(DrugRepository.class);
 		entityManagerMock = mock(EntityManager.class);
 		entityTransactionMock = mock(EntityTransaction.class);
-		drugSearchDtoMock = mock(DrugSearchDto.class);
+		drugSearchDToValidatorMock = mock(DrugSearchDTOValidator.class);
 	}
 
 	private void stubMethods() {
-		when(drugSearchDtoMock.getName()).thenReturn(SAMPLE_DRUG_NAME);
 		when(entityManagerMock.getTransaction()).thenReturn(entityTransactionMock);
+	}
+	
+	private void setupDTO() {
+		drugSearchDTO.name = SAMPLE_DRUG_NAME;
 	}
 
 	@Test
 	public void verifySearchDrugCallsCorrectRepositoryMethods() throws Exception {
-		drugService.searchDrug(drugSearchDtoMock);
+		drugService.searchDrug(drugSearchDTO, drugSearchDToValidatorMock);
 
 		verify(drugRepositoryMock).search(SAMPLE_DRUG_NAME);
 	}
 
 	@Test
 	public void verifyAddPrescriptionBeginsAndCommitsTransaction() throws Exception {
-		drugService.searchDrug(drugSearchDtoMock);
+		drugService.searchDrug(drugSearchDTO, drugSearchDToValidatorMock);
 		InOrder inOrder = inOrder(entityTransactionMock);
 
 		inOrder.verify(entityTransactionMock).begin();
@@ -72,7 +78,7 @@ public class DrugServiceTest {
 		when(drugRepositoryMock.search(anyString())).thenThrow(new EntityNotFoundException());
 
 		try {
-			drugService.searchDrug(drugSearchDtoMock);
+			drugService.searchDrug(drugSearchDTO, drugSearchDToValidatorMock);
 		} catch(ServiceRequestException e) {
 			verify(entityTransactionMock).rollback();
 			return;
@@ -83,7 +89,7 @@ public class DrugServiceTest {
 	public void verifyAddPrescriptionDoesNotRollbackOnSuccessfulCommit() throws Exception {
 		when(entityTransactionMock.isActive()).thenReturn(false);
 
-		drugService.searchDrug(drugSearchDtoMock);
+		drugService.searchDrug(drugSearchDTO, drugSearchDToValidatorMock);
 		
 		verify(entityTransactionMock).commit();
 		verify(entityTransactionMock, never()).rollback();

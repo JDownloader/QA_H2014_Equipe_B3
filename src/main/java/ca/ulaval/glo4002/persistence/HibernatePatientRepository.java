@@ -23,10 +23,10 @@ public class HibernatePatientRepository extends HibernateRepository implements P
 		entityManager.merge(patient);
 	}
 
-	public Patient getById(int id) throws EntityNotFoundException {
+	public Patient getById(Integer id) throws EntityNotFoundException {
 		Patient patient = entityManager.find(Patient.class, id);
 		if (patient == null) {
-			throw new EntityNotFoundException(String.format("Cannot find Patient with id '%s'.", id));
+			throw new EntityNotFoundException(String.format("Impossible de trouver le patient avec id '%s'.", id));
 		}
 		return patient;
 	}

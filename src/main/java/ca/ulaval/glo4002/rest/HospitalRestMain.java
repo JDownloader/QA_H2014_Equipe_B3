@@ -29,16 +29,16 @@ public class HospitalRestMain {
 
 	public static void main(String[] args) throws Exception {
 		try {
-			doRepositoryFill();
+			doDemoRepositoryFilling();
 		} catch (Exception e) {
-			System.out.println(String.format("An error occured while filling one or more repositories: %s", e.getMessage()));
+			System.out.println(String.format("Une erreur est survenue lors du remplissage des entrepôts: %s", e.getMessage()));
 			return;
 		}
 
 		new HospitalRestMain().execute();
 	}
 
-	public static void doRepositoryFill() throws IOException, BadFileFormatException {
+	private static void doDemoRepositoryFilling() throws IOException, BadFileFormatException {
 		EntityManagerFactory entityManagerFactory = EntityManagerFactoryProvider.getFactory();
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		fillDrugRepository(entityManager);
@@ -46,21 +46,21 @@ public class HospitalRestMain {
 		entityManager.close();
 	}
 
-	public static void fillDrugRepository(EntityManager entityManager) throws IOException, BadFileFormatException {
+	private static void fillDrugRepository(EntityManager entityManager) throws IOException, BadFileFormatException {
 		HibernateDrugRepository hibernateDrugRepository = new HibernateDrugRepository(entityManager);
 		FileReader fileReader = new FileReader(DRUG_FILE_PATH);
 		new DemoDrugRepositoryFiller().fill(entityManager, hibernateDrugRepository, fileReader);
 		fileReader.close();
 	}
 
-	public static void fillPatientRepository(EntityManager entityManager) {
+	private static void fillPatientRepository(EntityManager entityManager) {
 		HibernatePatientRepository hibernatePatientRepository = new HibernatePatientRepository(entityManager);
 		new DemoPatientRepositoryFiller().fill(entityManager, hibernatePatientRepository);
 	}
 
 	public void execute() throws Exception {
 		Server server = new Server(HTTP_SERVER_PORT);
-
+		
 		ServletContextHandler servletContextHandler = new ServletContextHandler(server, "/");
 		servletContextHandler.addFilter(EntityManagerContextFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
 

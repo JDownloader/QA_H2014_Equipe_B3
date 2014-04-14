@@ -10,7 +10,8 @@ import ca.ulaval.glo4002.domain.drug.DrugRepository;
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.persistence.HibernateDrugRepository;
-import ca.ulaval.glo4002.rest.dto.DrugSearchDto;
+import ca.ulaval.glo4002.services.dto.DrugSearchDTO;
+import ca.ulaval.glo4002.services.dto.validators.DrugSearchDTOValidator;
 
 public class DrugService {
 	public static final String ERROR_SERVICE_REQUEST_EXCEPTION_DIN001 = "DIN001";
@@ -31,17 +32,19 @@ public class DrugService {
 		this.entityTransaction = entityManager.getTransaction();		
 	}
 
-	public List<Drug> searchDrug(DrugSearchDto drugSearchDto) throws ServiceRequestException, Exception {
+	public List<Drug> searchDrug(DrugSearchDTO drugSearchDTO, DrugSearchDTOValidator drugSearchDTOValidator) throws ServiceRequestException {
 		try {
+			drugSearchDTOValidator.validate(drugSearchDTO);
 			entityTransaction.begin();
-			List<Drug> drugResults = drugRepository.search(drugSearchDto.getName());
+			List<Drug> drugResults = drugRepository.search(drugSearchDTO.name);
 			entityTransaction.commit();
 			return drugResults;
 		} catch (Exception e) {
+			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_DIN001, e.getMessage());
+		} finally {
 			if (entityTransaction.isActive()) {
 				entityTransaction.rollback();
 			}
-			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_DIN001, e.getMessage());
 		}
 	}
 }

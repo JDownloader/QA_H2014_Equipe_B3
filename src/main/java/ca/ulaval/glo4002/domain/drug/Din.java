@@ -5,7 +5,7 @@ import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public class Din implements Serializable {
+public final class Din implements Serializable {
 	private static final long serialVersionUID = 7369022975618045987L;
 	@JsonProperty
 	private String din;
@@ -18,6 +18,10 @@ public class Din implements Serializable {
 	public String getDin() {
 		return din;
 	}
+	
+	public String setDin() {
+		return din;
+	}
 
 	@Override
 	public String toString() {
@@ -25,21 +29,15 @@ public class Din implements Serializable {
 	}
 
 	@Override
+	public int hashCode() {
+		return din.hashCode();
+	};
+	
+	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		} else if (obj == null) {
-			return false;
-		} else if (getClass() != obj.getClass()) {
-			return false;
+		if (obj instanceof Din) {
+			return din.equals(((Din)obj).din);
 		}
-		
-		final Din otherDin = (Din) obj;
-
-		if (this.din != otherDin.din) {
-			return false;
-		}
-
-		return true;
-	}
+		return false;
+	};
 }

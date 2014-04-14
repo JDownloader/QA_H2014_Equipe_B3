@@ -1,7 +1,6 @@
 package ca.ulaval.glo4002.domain.drug;
 
 import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.*;
 
 @Entity(name = "DRUG")
@@ -26,11 +25,6 @@ public class Drug {
 	public Din getDin() {
 		return this.din;
 	}
-	
-	public void setDin(Din din) {
-		din = this.din;
-	}
-
 
 	public String getName() {
 		return this.name;
