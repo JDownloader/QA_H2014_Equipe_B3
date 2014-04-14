@@ -51,7 +51,7 @@ public class InterventionService {
 		this.entityTransaction = entityManager.getTransaction();
 	}
 
-	//Refactor NewMarie BEGIN
+	//TODO: Refactor NewMarie BEGIN
 	public int createIntervention(CreateInterventionRequestParser requestParser) throws ServiceRequestException,
 			Exception {
 		try {
@@ -90,7 +90,7 @@ public class InterventionService {
 			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT002, e.getMessage());
 		}
 	}
-	//Refactor NewMarie END
+	//TODO: Refactor NewMarie END
 
 	public int createSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO, SurgicalToolCreationDTOValidator surgicalToolCreationDTOValidator, SurgicalToolAssembler surgicalToolAssembler) throws ServiceRequestException {
 		try {

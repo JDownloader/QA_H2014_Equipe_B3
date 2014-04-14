@@ -38,7 +38,7 @@ public class InterventionTest {
 		buildInterventionMock();
 	}
 
-	//Refactor NewMarie BEGIN
+	//TODO: Refactor NewMarie BEGIN
 	private void buildInterventionMock() {
 		interventionBuilder = new InterventionBuilder()
 			.date(SAMPLE_DATE)
@@ -50,7 +50,7 @@ public class InterventionTest {
 			.type(SAMPLE_TYPE);
 		intervention = interventionBuilder.build();
 	}
-	//Refactor NewMarie END
+	//TODO: Refactor NewMarie END
 
 	@Test
 	public void addsNonAnonymousSurgicalToolCorrectly() {

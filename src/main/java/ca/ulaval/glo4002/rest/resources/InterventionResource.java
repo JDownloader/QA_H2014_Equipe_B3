@@ -36,7 +36,7 @@ public class InterventionResource {
 		this.interventionService = interventionService;
 	}
 
-	//Refactor NewMarie BEGIN
+	//TODO: Refactor NewMarie BEGIN
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -65,7 +65,7 @@ public class InterventionResource {
 		CreateInterventionRequestParser interventionRequestParser = new CreateInterventionRequestParser(jsonRequest);
 		return interventionRequestParser;
 	}
-	//Refactor NewMarie END
+	//TODO: Refactor NewMarie END
 
 	@POST
 	@Path("{interventionNumber: [0-9]+}/instruments/")

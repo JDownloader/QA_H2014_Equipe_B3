@@ -36,7 +36,7 @@ public class Intervention {
 		// Required for Hibernate.
 	}
 
-	//Refactor NewMarie BEGIN
+	//TODO: Refactor NewMarie BEGIN
 	public Intervention(InterventionBuilder builder) {
 		this.description = builder.description;
 		this.surgeon = builder.surgeon;
@@ -46,7 +46,7 @@ public class Intervention {
 		this.patient = builder.patient;
 		this.status = builder.status;
 	}
-	//Refactor NewMarie END
+	//TODO: Refactor NewMarie END
 
 	public int getId() {
 		return this.id;
