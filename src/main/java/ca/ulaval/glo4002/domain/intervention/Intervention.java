@@ -7,7 +7,6 @@ import javax.persistence.*;
 import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalTool;
-import ca.ulaval.glo4002.exceptions.domainexceptions.interventionexceptions.InvalidArgument;
 
 @Entity
 public class Intervention {
@@ -36,42 +35,15 @@ public class Intervention {
 		// Required for Hibernate.
 	}
 	
-	public Intervention(String description, int surgeon, Date date, String room, 
-						String type, String status, Patient patient) {
-		this.description = returnValidDescription(description);
-		this.surgeon = new Surgeon(surgeon); //TODO : call a factory
+	public Intervention(String description, Surgeon surgeon, Date date, String room, 
+						InterventionType type, InterventionStatus status, Patient patient) {
+		this.description = description;
+		this.surgeon = surgeon;
 		this.date = date;
-		this.room = returnValidRoom(room);
-		this.type = InterventionType.fromString(type);
-		this.status = buildStatus(status);
+		this.room = room;
+		this.type = type;
+		this.status = status;
 		this.patient = patient;
-	}
-	
-	private String returnValidRoom(String room) {
-		if(room.isEmpty()) {
-			throw new InvalidArgument();
-		}
-		return room;
-	}
-	
-	private String returnValidDescription(String description) {
-		if(description.isEmpty()) {
-			throw new InvalidArgument();
-		}
-		return description;
-	}
-	
-	private InterventionStatus buildStatus(String status) {
-		InterventionStatus newStatus;
-		
-		if(status.isEmpty()) {
-			newStatus = InterventionStatus.PLANNED;
-		}
-		else {
-			newStatus = InterventionStatus.fromString(status);
-		}
-		
-		return newStatus;
 	}
 	
 	//TODO : remove when nobody depends on this

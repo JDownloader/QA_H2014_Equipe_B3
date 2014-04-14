@@ -8,8 +8,6 @@ import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 import org.jbehave.core.junit.JUnitStory;
 
-import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
-
 public class InterventionCreationAcceptationTest extends JUnitStory {
 	//First scenario : créer une intervention avec des informations manquantes
 	@Given("a $patient")

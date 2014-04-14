@@ -15,6 +15,7 @@ import ca.ulaval.glo4002.persistence.surgicaltool.HibernateSurgicalToolRepositor
 import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.*;
 import ca.ulaval.glo4002.services.assemblers.InterventionAssembler;
 import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
+import ca.ulaval.glo4002.services.dto.validators.InterventionCreationDTOValidator;
 import ca.ulaval.glo4002.services.intervention.InterventionServiceBuilder;
 
 public class InterventionService {
@@ -67,6 +68,8 @@ public class InterventionService {
 	}
 
 	public int createIntervention(InterventionCreationDTO dto) {
+		validateInterventionCreationDTO(dto);
+		
 		try {
 			entityTransaction.begin();
 			Intervention intervention = interventionAssembler.assembleInterventionFromDTO(dto, patientRepository);
@@ -79,6 +82,11 @@ public class InterventionService {
 			}
 			throw e;
 		}
+	}
+	
+	private void validateInterventionCreationDTO(InterventionCreationDTO dto) {
+		InterventionCreationDTOValidator validator = new InterventionCreationDTOValidator();
+		validator.validate(dto);
 	}
 
 	public int createSurgicalTool(CreateSurgicalToolRequestParser requestParser) throws ServiceRequestException, Exception {

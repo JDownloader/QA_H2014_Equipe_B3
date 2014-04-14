@@ -7,14 +7,14 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-import ca.ulaval.glo4002.exceptions.InterventionValidationException;
+import ca.ulaval.glo4002.exceptions.domainexceptions.interventionexceptions.InvalidArgument;
 import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
 import ca.ulaval.glo4002.utils.DateParser;
 
 public class InterventionCreationDTOValidatorTest {
 	
 	private InterventionCreationDTOValidator interventionCreationDTOValidator = new InterventionCreationDTOValidator();
-	private InterventionValidationException interventionValidationException = new InterventionValidationException();
+	private InvalidArgument interventionValidationException = new InvalidArgument();
 	
 	private InterventionCreationDTO interventionCreationDTOMock;
 	private static final Integer INVALID_PATIENT_NUMBER = -1;
@@ -36,66 +36,65 @@ public class InterventionCreationDTOValidatorTest {
 		when(interventionCreationDTOMock.getType()).thenReturn(VALID_TYPE);
 	}
 	
-	@Test(expected=InterventionValidationException.class)
-	public void validateDTOReturnsBadRequestResponseWhenDescriptionIsNull() throws InterventionValidationException{
+	@Test(expected=InvalidArgument.class)
+	public void validateDTOReturnsBadRequestResponseWhenDescriptionIsNull() {
 		when(interventionCreationDTOMock.getDescription()).thenReturn(null);
 		interventionCreationDTOMock.getDescription();
 		interventionCreationDTOValidator.validate(interventionCreationDTOMock);
-		assertEquals(InterventionValidationException.class, interventionValidationException.getCause().getClass());
-		assertEquals("Parameter 'description' is required", interventionValidationException.getMessage());
+		assertEquals(InvalidArgument.class, interventionValidationException.getClass());
 	}
 	
-	@Test(expected=InterventionValidationException.class)
-	public void validateDTOReturnsBadRequestResponseWhenDateIsNull() throws InterventionValidationException{
+	@Test(expected=InvalidArgument.class)
+	public void validateDTOReturnsBadRequestResponseWhenDateIsNull() {
 		when(interventionCreationDTOMock.getDate()).thenReturn(null);
 		interventionCreationDTOMock.getDate();
 		interventionCreationDTOValidator.validate(interventionCreationDTOMock);
-		assertEquals(InterventionValidationException.class, interventionValidationException.getCause().getClass());
+		assertEquals(InvalidArgument.class, interventionValidationException.getCause().getClass());
 		assertEquals("Parameter 'date' is required", interventionValidationException.getMessage());
 	}
 	
-	@Test(expected=InterventionValidationException.class)
-	public void validateDTOReturnsBadRequestResponseWhenPatientNumberIsNull() throws InterventionValidationException{
+	@Test(expected=InvalidArgument.class)
+	public void validateDTOReturnsBadRequestResponseWhenPatientNumberIsNull() {
 		when(interventionCreationDTOMock.getPatientNumber()).thenReturn(null);
 		interventionCreationDTOMock.getPatientNumber();
 		interventionCreationDTOValidator.validate(interventionCreationDTOMock);
-		assertEquals(InterventionValidationException.class, interventionValidationException.getCause().getClass());
+		assertEquals(InvalidArgument.class, interventionValidationException.getCause().getClass());
 		assertEquals("Parameter 'patient' is required", interventionValidationException.getMessage());
 	}
 	
-	@Test(expected=InterventionValidationException.class)
-	public void validateDTOReturnsBadRequestResponseWhenRoomIsNull() throws InterventionValidationException{
+	@Test(expected=InvalidArgument.class)
+	public void validateDTOReturnsBadRequestResponseWhenRoomIsNull() {
 		when(interventionCreationDTOMock.getRoom()).thenReturn(null);
 		interventionCreationDTOMock.getRoom();
 		interventionCreationDTOValidator.validate(interventionCreationDTOMock);
-		assertEquals(InterventionValidationException.class, interventionValidationException.getCause().getClass());
+		assertEquals(InvalidArgument.class, interventionValidationException.getCause().getClass());
 		assertEquals("Parameter 'salle' is required", interventionValidationException.getMessage());
 	}
 	
-	@Test(expected=InterventionValidationException.class)
-	public void vaidateDTOReturnsBadRequestResponseWhenSurgeonNumberIsNull() throws InterventionValidationException{
+	@Test(expected=InvalidArgument.class)
+	public void vaidateDTOReturnsBadRequestResponseWhenSurgeonNumberIsNull() {
 		when(interventionCreationDTOMock.getSurgeonNumber()).thenReturn(null);
 		interventionCreationDTOMock.getSurgeonNumber();
 		interventionCreationDTOValidator.validate(interventionCreationDTOMock);
-		assertEquals(InterventionValidationException.class, interventionValidationException.getCause().getClass());
+		assertEquals(InvalidArgument.class, interventionValidationException.getCause().getClass());
 		assertEquals("Parameter 'chirurgien' is required", interventionValidationException.getMessage());
 	}
 	
-	@Test(expected=InterventionValidationException.class)
-	public void validateDTOReturnsBadRequestWhenTypeIsNull() throws InterventionValidationException{
+	@Test(expected=InvalidArgument.class)
+	public void validateDTOReturnsBadRequestWhenTypeIsNull() {
 		when(interventionCreationDTOMock.getType()).thenReturn(null);
 		interventionCreationDTOMock.getType();
 		interventionCreationDTOValidator.validate(interventionCreationDTOMock);
-		assertEquals(InterventionValidationException.class, interventionValidationException.getCause().getClass());
+		assertEquals(InvalidArgument.class, interventionValidationException.getCause().getClass());
 		assertEquals("Parameter 'type' is required", interventionValidationException.getMessage());
 	}
 	
-	@Test(expected=InterventionValidationException.class)
-	public void validateDTOReturnsBadRequestResponseWhenPatientNumberIsNegative() throws InterventionValidationException{
+	@Test(expected=InvalidArgument.class)
+	public void validateDTOReturnsBadRequestResponseWhenPatientNumberIsNegative() {
 		when(interventionCreationDTOMock.getPatientNumber()).thenReturn(INVALID_PATIENT_NUMBER);
 		interventionCreationDTOMock.getPatientNumber();
 		interventionCreationDTOValidator.validate(interventionCreationDTOMock);
-		assertEquals(InterventionValidationException.class, interventionValidationException.getCause().getClass());
+		assertEquals(InvalidArgument.class, interventionValidationException.getCause().getClass());
 		assertEquals("Parameter 'patient' must be greater than 0", interventionValidationException.getMessage());
 	}
 }
