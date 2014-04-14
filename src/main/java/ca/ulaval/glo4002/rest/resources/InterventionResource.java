@@ -14,6 +14,7 @@ import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParser;
 import ca.ulaval.glo4002.rest.utils.BadRequestJsonResponseBuilder;
 import ca.ulaval.glo4002.services.assemblers.SurgicalToolAssembler;
+import ca.ulaval.glo4002.services.dto.BadResponseDTO;
 import ca.ulaval.glo4002.services.dto.SurgicalToolCreationDTO;
 import ca.ulaval.glo4002.services.dto.SurgicalToolModificationDTO;
 import ca.ulaval.glo4002.services.dto.validators.SurgicalToolCreationDTOValidator;
@@ -74,11 +75,13 @@ public class InterventionResource {
 			@PathParam("interventionNumber") int interventionNumber) throws Exception {
 		try {
 			surgicalToolCreationDTO.interventionNumber = interventionNumber;
+			
 			int surgicalToolId = interventionService.createSurgicalTool(surgicalToolCreationDTO, new SurgicalToolCreationDTOValidator(), new SurgicalToolAssembler());
+			
 			String newResourceLocation = String.format("/%s/%s", surgicalToolCreationDTO.typeCode, surgicalToolId);
 			return Response.status(Status.CREATED).location(new URI(newResourceLocation)).build();
 		} catch (ServiceRequestException e) {
-			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());
+			return Response.status(Status.BAD_REQUEST).entity(new BadResponseDTO(e.getInternalCode(), e.getMessage())).build();
 		}
 	}
 
@@ -95,10 +98,12 @@ public class InterventionResource {
 			surgicalToolModificationDTO.interventionNumber = interventionNumber;
 			surgicalToolModificationDTO.serialNumberOrId = surgicalToolSerialNumberOrId;
 			surgicalToolModificationDTO.typeCode = surgicalToolTypeCode;
+			
 			interventionService.modifySurgicalTool(surgicalToolModificationDTO, new SurgicalToolModificationDTOValidator());
+			
 			return Response.status(Status.OK).build();
 		} catch (ServiceRequestException e) {
-			return BadRequestJsonResponseBuilder.build(e.getInternalCode(), e.getMessage());
+			return Response.status(Status.BAD_REQUEST).entity(new BadResponseDTO(e.getInternalCode(), e.getMessage())).build();
 		}
 	}
 }
