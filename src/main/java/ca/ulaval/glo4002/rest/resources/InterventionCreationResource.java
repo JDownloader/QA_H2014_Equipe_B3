@@ -32,8 +32,6 @@ public class InterventionCreationResource {
 				interventionId = interventionService.createIntervention(interventionCreationDTO);
 			} catch (ServiceRequestException e) {
 				return interventionCreationResponse.createBadRequestResponse(e);
-			}  catch (Exception e) {
-				throw e;
 			}
 			return interventionCreationResponse.createSuccessResponse(interventionId);
 	}
