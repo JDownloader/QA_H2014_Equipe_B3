@@ -7,10 +7,10 @@ import javax.ws.rs.core.Response.Status;
 import org.json.JSONObject;
 
 import ca.ulaval.glo4002.exceptions.domainexceptions.DomainException;
+import ca.ulaval.glo4002.services.dto.BadResponseDTO;
 
 public class InterventionCreationResponse {
 
-	private static final String CODE_PARAMETER = "code";
 	private static final String MESSAGE_PARAMETER = "message";
 	private static final String LOCATION_PARAMETER = "location";
 
@@ -18,12 +18,10 @@ public class InterventionCreationResponse {
 		// TODO : This code does not send back the JSON in the right order (JSON
 		// by definition does not respect a particular order, see if this can be
 		// fixed. LinkedHashMap doesn't work to order the attributes.)
-		JSONObject jsonResponse = new JSONObject();
-		jsonResponse.put(CODE_PARAMETER, e.getCode()).put(MESSAGE_PARAMETER,
-				e.getMessage());
+		BadResponseDTO badResponseDto = new BadResponseDTO(e);
 		return Response.status(Status.BAD_REQUEST)
 				.type(MediaType.APPLICATION_JSON)
-				.entity(jsonResponse.toString()).build();
+				.entity(badResponseDto).build();
 	}
 
 	public Response createSuccessResponse(int interventionNumber) {
