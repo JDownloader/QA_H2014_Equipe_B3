@@ -26,6 +26,7 @@ public class InterventionCreationDTOValidator {
 			else if(interventionCreationDTO.getType() == null){
 				throw new InvalidArgument(INVALID_ARGUMENT_CODE, INVALID_ARGUMENT_MESSAGE);
 			}
+			//TODO : following cases belong to domain logic?
 			else if(interventionCreationDTO.getPatientNumber() < 0){
 				throw new InvalidArgument(INVALID_ARGUMENT_CODE, INVALID_ARGUMENT_MESSAGE);
 			}

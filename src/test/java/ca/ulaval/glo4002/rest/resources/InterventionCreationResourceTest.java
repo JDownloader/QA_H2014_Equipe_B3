@@ -16,9 +16,11 @@ import ca.ulaval.glo4002.services.InterventionService;
 import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
 
 public class InterventionCreationResourceTest {
+	private String SAMPLE_EXCEPTION_CODE = "";
+	private String SAMPLE_EXCEPTION_MESSAGE = "";
 
 	private InterventionCreationResource interventionCreationResource;
-	private DomainException domainException = new PatientDoesNotExist();
+	private DomainException domainException = new PatientDoesNotExist(SAMPLE_EXCEPTION_CODE, SAMPLE_EXCEPTION_MESSAGE);
 	
 	private InterventionCreationDTO interventionCreationDTOMock;
 	private InterventionService interventionServiceMock;
