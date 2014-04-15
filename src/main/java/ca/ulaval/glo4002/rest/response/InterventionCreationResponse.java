@@ -21,8 +21,7 @@ public class InterventionCreationResponse {
 
 	public Response createSuccessResponse(int interventionNumber) {
 		String message = "/interventions/" + interventionNumber;
-		CreatedWithLocationResponseDTO createdWithMessageResponseDTO = new CreatedWithLocationResponseDTO(
-				message);
+		CreatedWithLocationResponseDTO createdWithMessageResponseDTO = new CreatedWithLocationResponseDTO(message);
 		return Response.status(Status.CREATED).type(MediaType.APPLICATION_JSON)
 				.entity(createdWithMessageResponseDTO).build();
 	}

@@ -13,27 +13,27 @@ import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
 public class InterventionCreationResource {
 	private InterventionService interventionService;
 	private InterventionCreationResponse interventionCreationResponse = new InterventionCreationResponse();
-	
-	public InterventionCreationResource(){
+
+	public InterventionCreationResource() {
 		this.interventionService = new InterventionService();
 	}
-	
-	//Utilisé dans les tests
-	public InterventionCreationResource(InterventionService interventionService){
+
+	// Utilisé dans les tests
+	public InterventionCreationResource(InterventionService interventionService) {
 		this.interventionService = interventionService;
 	}
-	
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response post(InterventionCreationDTO interventionCreationDTO) throws ServiceRequestException {
-		int interventionId = 0;	
+	public Response post(InterventionCreationDTO interventionCreationDTO) {
+		int interventionId = 0;
 		try {
-				interventionId = interventionService.createIntervention(interventionCreationDTO);
-			} catch (ServiceRequestException e) {
-				return interventionCreationResponse.createBadRequestResponse(e);
-			}
-			return interventionCreationResponse.createSuccessResponse(interventionId);
+			interventionId = interventionService.createIntervention(interventionCreationDTO);
+		} catch (ServiceRequestException e) {
+			return interventionCreationResponse.createBadRequestResponse(e);
+		}
+		return interventionCreationResponse.createSuccessResponse(interventionId);
 	}
-	
+
 }
