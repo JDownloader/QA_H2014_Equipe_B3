@@ -20,10 +20,11 @@ import org.jbehave.core.steps.InjectableStepsFactory;
 import org.jbehave.core.steps.InstanceStepsFactory;
 
 import ca.ulaval.glo4002.uats.runners.JettyTestRunner;
-import ca.ulaval.glo4002.uats.steps.HospitalSteps;
+import ca.ulaval.glo4002.uats.steps.PatientSteps;
+import ca.ulaval.glo4002.uats.steps.PrescriptionSteps;
 
 public class HospitalStories extends JUnitStories {
-	private static final LocalizedKeywords keywords = new LocalizedKeywords(Locale.FRENCH);
+	private static final LocalizedKeywords keywords = new LocalizedKeywords(Locale.ENGLISH);
 
 	@Override
 	public Configuration configuration() {
@@ -44,7 +45,7 @@ public class HospitalStories extends JUnitStories {
 	@Override
 	public InjectableStepsFactory stepsFactory() {
 		return new InstanceStepsFactory(configuration(),
-				new HospitalSteps(), new JettyTestRunner());
+				new PrescriptionSteps(), new PatientSteps(), new JettyTestRunner());
 	}
 
 	@Override

@@ -11,14 +11,13 @@ import org.jbehave.core.annotations.When;
 import org.json.JSONObject;
 import org.junit.Assert;
 
-import ca.ulaval.glo4002.domain.drug.Din;
-import ca.ulaval.glo4002.services.dto.PrescriptionCreationDTO;
 import ca.ulaval.glo4002.uats.runners.JettyTestRunner;
 import static com.jayway.restassured.RestAssured.*;
 
+import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
 
-public class HospitalSteps {
+public class PrescriptionSteps {
 	private static final String DATE_PARAMETER = "date";
 	private static final String RENEWALS_PARAMETER = "renouvellements";
 	private static final String DRUG_NAME_PARAMETER = "nom";
@@ -29,34 +28,31 @@ public class HospitalSteps {
 	private static final int RENEWALS_VALUE = 2;
 	private static final String DRUG_NAME_VALUE = "drug_name";
 	private static final int STAFF_MEMBER_VALUE = 3;
-	private static final Din DIN_VALUE = new Din("098423");
+	private static final String DIN_VALUE = "098423";
 	private static final int PATIENT_NUMBER_VALUE = 3;
 
 	private Response response;
-	public PrescriptionCreationDTO prescriptionCreationDTO;
+	JSONObject prescriptionJson;
 
 	@BeforeScenario
 	public void clearResults() throws ParseException {
 		response = null;
 	}
 
-	@Given("un patient existant")
-	public void createPatient() {
-		//Patient already created by demo repository filling
-	}
-
 	@Given("une prescription valide avec des données manquantes")
 	public void createValidPrescriptionWithMissingValues() {
-		//TODO: ???
+		prescriptionJson = new JSONObject();
+		prescriptionJson.put(DATE_PARAMETER, DATE_VALUE);
+		prescriptionJson.put(DRUG_NAME_PARAMETER, DRUG_NAME_VALUE);
+		prescriptionJson.put(STAFF_MEMBER_PARAMETER, STAFF_MEMBER_VALUE);
 	}
 
 	@When("j'ajoute cette prescription au dossier du patient")
 	public void addPrescription() {
 		response = given().port(JettyTestRunner.JETTY_TEST_PORT)
-				.parameters(DATE_PARAMETER, DATE_VALUE)
-				.parameters(DRUG_NAME_PARAMETER, DRUG_NAME_VALUE)
-				.parameters(STAFF_MEMBER_PARAMETER, STAFF_MEMBER_VALUE)
-				.when().get(String.format("patient/%d/prescriptions/", PATIENT_NUMBER_VALUE));
+				.body(prescriptionJson.toString())
+				.contentType(ContentType.JSON)
+				.when().post(String.format("patient/%d/prescriptions/", PATIENT_NUMBER_VALUE));
 	}
 	
 	@Then("une erreur est retournée")
@@ -67,7 +63,7 @@ public class HospitalSteps {
 	
 	@Then("cette erreur a le code \"PRES001\"")
 	public void errorIsPRES001() {
-		String bodyString = response.body().toString();
+		String bodyString = response.getBody().asString();
 		JSONObject jsonObject = new JSONObject(bodyString);
 		Assert.assertEquals("PRES001", jsonObject.get("code"));
 	}
