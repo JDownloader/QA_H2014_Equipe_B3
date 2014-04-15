@@ -14,7 +14,7 @@ import ca.ulaval.glo4002.domain.intervention.Intervention;
 import ca.ulaval.glo4002.domain.intervention.InterventionFactory;
 import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
-import ca.ulaval.glo4002.exceptions.domainexceptions.interventionexceptions.PatientDoesNotExist;
+import ca.ulaval.glo4002.exceptions.domainexceptions.PatientDoesNotExist;
 import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
 
 @RunWith(MockitoJUnitRunner.class)

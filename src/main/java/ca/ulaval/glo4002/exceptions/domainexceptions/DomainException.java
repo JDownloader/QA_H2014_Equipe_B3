@@ -7,11 +7,11 @@ public abstract class DomainException extends RuntimeException {
 	protected String message;
 	
 	public String getCode() {
-		return code;
+		return this.code;
 	}
 	
 	public String getMessage() {
-		return message;
+		return this.message;
 	}
 
 }

@@ -11,7 +11,7 @@ import org.junit.Test;
 import static org.mockito.Mockito.*;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.exceptions.domainexceptions.DomainException;
-import ca.ulaval.glo4002.exceptions.domainexceptions.interventionexceptions.PatientDoesNotExist;
+import ca.ulaval.glo4002.exceptions.domainexceptions.PatientDoesNotExist;
 import ca.ulaval.glo4002.services.InterventionService;
 import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
 

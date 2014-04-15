@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-import ca.ulaval.glo4002.exceptions.domainexceptions.interventionexceptions.InvalidArgument;
+import ca.ulaval.glo4002.exceptions.domainexceptions.InvalidArgument;
 import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
 import ca.ulaval.glo4002.utils.DateParser;
 

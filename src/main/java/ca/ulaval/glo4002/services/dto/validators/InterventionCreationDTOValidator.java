@@ -1,6 +1,6 @@
 package ca.ulaval.glo4002.services.dto.validators;
 
-import ca.ulaval.glo4002.exceptions.domainexceptions.interventionexceptions.InvalidArgument;
+import ca.ulaval.glo4002.exceptions.domainexceptions.InvalidArgument;
 import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
 
 public class InterventionCreationDTOValidator {

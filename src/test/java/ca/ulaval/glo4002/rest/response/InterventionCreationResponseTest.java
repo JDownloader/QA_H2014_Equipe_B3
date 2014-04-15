@@ -7,7 +7,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.junit.Test;
 
-import ca.ulaval.glo4002.exceptions.domainexceptions.interventionexceptions.PatientDoesNotExist;
+import ca.ulaval.glo4002.exceptions.domainexceptions.PatientDoesNotExist;
 
 public class InterventionCreationResponseTest {
 	
