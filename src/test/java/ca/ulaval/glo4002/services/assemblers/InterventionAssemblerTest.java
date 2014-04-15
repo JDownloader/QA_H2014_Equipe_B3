@@ -1,8 +1,5 @@
 package ca.ulaval.glo4002.services.assemblers;
 
-import javax.persistence.EntityNotFoundException;
-
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -20,7 +17,6 @@ import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
 @RunWith(MockitoJUnitRunner.class)
 public class InterventionAssemblerTest {
 	private int SAMPLE_ID = 56;
-	private EntityNotFoundException entityNotFound;
 	
 	@Mock
 	private Intervention intervention;
@@ -35,14 +31,9 @@ public class InterventionAssemblerTest {
 	@InjectMocks
 	private InterventionAssembler assembler;
 	
-	@Before
-	public void init() {
-		entityNotFound = new EntityNotFoundException();
-	}
-	
 	@Test (expected=PatientDoesNotExist.class)
 	public void doNotAssembleWhenNoPatientFound() {
-		Mockito.when(dto.getPatientNumber()).thenThrow(entityNotFound);
+		Mockito.when(dto.getPatientNumber()).thenThrow(new PatientDoesNotExist());
 		
 		assembler.assembleInterventionFromDTO(dto, patientRepository);
 	}

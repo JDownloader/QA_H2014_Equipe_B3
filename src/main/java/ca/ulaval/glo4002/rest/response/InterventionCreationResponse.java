@@ -5,13 +5,13 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
-import ca.ulaval.glo4002.services.dto.BadResponseDTO;
+import ca.ulaval.glo4002.services.dto.BadRequestDTO;
 import ca.ulaval.glo4002.services.dto.CreatedWithLocationResponseDTO;
 
 public class InterventionCreationResponse {
 
 	public Response createBadRequestResponse(ServiceRequestException e) {
-		BadResponseDTO badResponseDto = new BadResponseDTO(e);
+		BadRequestDTO badResponseDto = new BadRequestDTO(e);
 		return Response.status(Status.BAD_REQUEST)
 				.type(MediaType.APPLICATION_JSON).entity(badResponseDto)
 				.build();
