@@ -17,7 +17,7 @@ import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.*;
 import ca.ulaval.glo4002.services.assemblers.InterventionAssembler;
 import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
 import ca.ulaval.glo4002.services.dto.validators.InterventionCreationDTOValidator;
-import ca.ulaval.glo4002.services.dto.validators.InvalidArgument;
+import ca.ulaval.glo4002.services.dto.validators.InvalidDTOAttribute;
 import ca.ulaval.glo4002.services.intervention.InterventionServiceBuilder;
 
 public class InterventionService {
@@ -83,7 +83,7 @@ public class InterventionService {
 	private void validateInterventionCreationDTO(InterventionCreationDTO dto) {
 		try {
 			interventionCreationValidator.validate(dto);
-		} catch (InvalidArgument e) {
+		} catch (InvalidDTOAttribute e) {
 			throw new ServiceRequestException(INVALID_ARGUMENT_CODE, INVALID_ARGUMENT_MESSAGE);
 		}
 	}
