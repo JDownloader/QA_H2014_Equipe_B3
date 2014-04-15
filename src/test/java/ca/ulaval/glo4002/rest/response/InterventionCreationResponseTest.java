@@ -14,8 +14,7 @@ public class InterventionCreationResponseTest {
 	private String SAMPLE_EXCEPTION_CODE = "";
 	private String SAMPLE_EXCEPTION_MESSAGE = "";
 	static private final int SAMPLE_INTERVENTION_NO = 0;
-	static private final String SUCCESS_RESPONSE = "{"+"\"message\""+":"+"\"Succès\""+","+"\"location\""+":"+"\"/interventions/"+SAMPLE_INTERVENTION_NO+"\""+"}";
-	static private final String SUCCESS_WITH_MESSAGE_RESPONSE = "message: Succès, location: /interventions/" + SAMPLE_INTERVENTION_NO;
+	static private final String SUCCESS_WITH_MESSAGE_RESPONSE = "{ Location: \"/interventions/" + SAMPLE_INTERVENTION_NO + " \" }";
 	private PatientDoesNotExist e = new PatientDoesNotExist(SAMPLE_EXCEPTION_CODE, SAMPLE_EXCEPTION_MESSAGE);
 	
 	private Response response;
@@ -36,7 +35,6 @@ public class InterventionCreationResponseTest {
 	@Test
 	public void createCustomCreatedSuccessResponseReturnsGoodMessageAndCode(){
 		response = interventionCreationResponse.createSuccessResponse(SAMPLE_INTERVENTION_NO);
-		assertEquals(SUCCESS_WITH_MESSAGE_RESPONSE, response.getEntity());
-		System.out.println(response.getEntity());
+		assertEquals(SUCCESS_WITH_MESSAGE_RESPONSE, response.getEntity().toString());
 	}
 }
