@@ -5,6 +5,7 @@ import java.util.Arrays;
 import javax.persistence.*;
 
 import ca.ulaval.glo4002.domain.intervention.*;
+import ca.ulaval.glo4002.domain.patient.PatientDoesNotExist;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
 import ca.ulaval.glo4002.domain.surgicaltool.*;
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
@@ -16,26 +17,29 @@ import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.*;
 import ca.ulaval.glo4002.services.assemblers.InterventionAssembler;
 import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
 import ca.ulaval.glo4002.services.dto.validators.InterventionCreationDTOValidator;
+import ca.ulaval.glo4002.services.dto.validators.InvalidArgument;
 import ca.ulaval.glo4002.services.intervention.InterventionServiceBuilder;
 
 public class InterventionService {
-	//TODO : this should not be here
 	private static final String ERROR_SERVICE_REQUEST_EXCEPTION_INT010 = "INT010";
 	private static final String ERROR_SERVICE_REQUEST_EXCEPTION_INT011 = "INT011";
 	private static final String ERROR_SERVICE_REQUEST_EXCEPTION_INT012 = "INT012";
+	
+	private String PATIENT_DOES_NOT_EXIST_CODE = "INT002";
+	private String PATIENT_DOES_NOT_EXIST_MESSAGE = "Erreur - Patient inexistant";
+	private String INVALID_ARGUMENT_CODE = "INT001";
+	private String INVALID_ARGUMENT_MESSAGE = "Erreur - informations manquantes ou invalides";
 
-	//TODO : that validation should not be done in the services
 	private static final InterventionType[] forbiddenInterventionTypesForAnonymousSurgicalTools = { InterventionType.EYE, InterventionType.HEART,
 			InterventionType.MARROW };
-
+	
 	private EntityManager entityManager;
 	private EntityTransaction entityTransaction;
-	
 	private InterventionRepository interventionRepository;
 	private PatientRepository patientRepository;
 	private SurgicalToolRepository surgicalToolRepository;
-	
 	private InterventionAssembler interventionAssembler;
+	private InterventionCreationDTOValidator interventionCreationValidator;
 	
 	public InterventionService() {
 		this.entityManager = new EntityManagerProvider().getEntityManager();
@@ -46,10 +50,11 @@ public class InterventionService {
 		this.surgicalToolRepository = new HibernateSurgicalToolRepository();
 
 		this.interventionAssembler = new InterventionAssembler();
+		this.interventionCreationValidator = new InterventionCreationDTOValidator();
 	}
 	
 	//Should only be used for testing
-	public InterventionService(InterventionRepository interventionRepository, PatientRepository patientRepository, SurgicalToolRepository surgicalToolRepository, InterventionAssembler interventionAssembler, EntityManager entityManager) {
+	public InterventionService(InterventionRepository interventionRepository, PatientRepository patientRepository, SurgicalToolRepository surgicalToolRepository, InterventionAssembler interventionAssembler, EntityManager entityManager, InterventionCreationDTOValidator interventionCreationValidator) {
 		this.entityManager = entityManager;
 		this.entityTransaction = entityManager.getTransaction();
 		
@@ -58,6 +63,7 @@ public class InterventionService {
 		this.surgicalToolRepository = surgicalToolRepository;
 
 		this.interventionAssembler = interventionAssembler;
+		this.interventionCreationValidator = interventionCreationValidator;
 	}
 	
 	public InterventionService(InterventionServiceBuilder builder) {
@@ -67,26 +73,35 @@ public class InterventionService {
 		this.patientRepository = builder.patientRepository;
 	}
 
+	//TODO : class has too many roles. It validates the DTO it receives, applies the business logic and handles exceptions.
+	//This could be divided in 3 classes.
 	public int createIntervention(InterventionCreationDTO dto) {
 		validateInterventionCreationDTO(dto);
-		
+		return addIntervention(dto).getId();
+	}
+	
+	private void validateInterventionCreationDTO(InterventionCreationDTO dto) {
+		try {
+			interventionCreationValidator.validate(dto);
+		} catch (InvalidArgument e) {
+			throw new ServiceRequestException(INVALID_ARGUMENT_CODE, INVALID_ARGUMENT_MESSAGE);
+		}
+	}
+	
+	private Intervention addIntervention(InterventionCreationDTO dto) {
 		try {
 			entityTransaction.begin();
 			Intervention intervention = interventionAssembler.assembleInterventionFromDTO(dto, patientRepository);
 			interventionRepository.create(intervention);
 			entityTransaction.commit();
-			return intervention.getId(); //TODO : check out if this actually works
-		} catch (Exception e) {
+			return intervention;
+		} catch (PatientDoesNotExist e) {
+			throw new ServiceRequestException(PATIENT_DOES_NOT_EXIST_CODE, PATIENT_DOES_NOT_EXIST_MESSAGE);
+		} finally {
 			if (entityTransaction.isActive()) {
 				entityTransaction.rollback();
 			}
-			throw e;
 		}
-	}
-	
-	private void validateInterventionCreationDTO(InterventionCreationDTO dto) {
-		InterventionCreationDTOValidator validator = new InterventionCreationDTOValidator();
-		validator.validate(dto);
 	}
 
 	public int createSurgicalTool(CreateSurgicalToolRequestParser requestParser) throws ServiceRequestException, Exception {

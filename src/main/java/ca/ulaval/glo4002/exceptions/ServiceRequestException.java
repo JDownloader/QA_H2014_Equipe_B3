@@ -1,6 +1,7 @@
 package ca.ulaval.glo4002.exceptions;
 
-public class ServiceRequestException extends Exception {
+//TODO : fix redundant naming. We already knows it's an exception. Might as well name it something like "ServiceFailure".
+public class ServiceRequestException extends RuntimeException {
 
 	private static final long serialVersionUID = -4693484254820695541L;
 

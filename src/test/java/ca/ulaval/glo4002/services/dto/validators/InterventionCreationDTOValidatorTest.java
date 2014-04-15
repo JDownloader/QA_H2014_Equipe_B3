@@ -7,15 +7,12 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-import ca.ulaval.glo4002.exceptions.domainexceptions.InvalidArgument;
 import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
 import ca.ulaval.glo4002.utils.DateParser;
 
 public class InterventionCreationDTOValidatorTest {
-	private String SAMPLE_CODE = "";
-	private String SAMPLE_MESSAGE = "";
 	private InterventionCreationDTOValidator interventionCreationDTOValidator = new InterventionCreationDTOValidator();
-	private InvalidArgument interventionValidationException = new InvalidArgument(SAMPLE_CODE,SAMPLE_MESSAGE);
+	private InvalidArgument interventionValidationException = new InvalidArgument();
 	
 	private InterventionCreationDTO interventionCreationDTOMock;
 	private static final Integer INVALID_PATIENT_NUMBER = -1;

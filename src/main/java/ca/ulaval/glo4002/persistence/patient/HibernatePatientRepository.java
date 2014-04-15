@@ -3,6 +3,7 @@ package ca.ulaval.glo4002.persistence.patient;
 import javax.persistence.*;
 
 import ca.ulaval.glo4002.domain.patient.Patient;
+import ca.ulaval.glo4002.domain.patient.PatientDoesNotExist;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
 import ca.ulaval.glo4002.persistence.HibernateRepository;
 
@@ -24,10 +25,10 @@ public class HibernatePatientRepository extends HibernateRepository implements P
 		entityManager.merge(patient);
 	}
 
-	public Patient getById(int id) throws EntityNotFoundException {
+	public Patient getById(int id) {
 		Patient patient = entityManager.find(Patient.class, id);
 		if (patient == null) {
-			throw new EntityNotFoundException(String.format("Cannot find Patient with id '%s'.", id));
+			throw new PatientDoesNotExist();
 		}
 		return patient;
 	}

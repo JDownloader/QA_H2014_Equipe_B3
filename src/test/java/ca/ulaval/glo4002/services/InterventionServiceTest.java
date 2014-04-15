@@ -1,6 +1,6 @@
 package ca.ulaval.glo4002.services;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -13,23 +13,24 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import ca.ulaval.glo4002.domain.intervention.Intervention;
+import ca.ulaval.glo4002.domain.patient.PatientDoesNotExist;
+import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.persistence.intervention.HibernateInterventionRepository;
 import ca.ulaval.glo4002.persistence.patient.HibernatePatientRepository;
 import ca.ulaval.glo4002.persistence.surgicaltool.HibernateSurgicalToolRepository;
 import ca.ulaval.glo4002.services.assemblers.InterventionAssembler;
 import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
+import ca.ulaval.glo4002.services.dto.validators.InterventionCreationDTOValidator;
 
 @RunWith(MockitoJUnitRunner.class)
 public class InterventionServiceTest {
-
-	private int SAMPLE_ID = 1;
-	private Exception SAMPLE_EXCEPTION = new RuntimeException();
 	
+	@Mock
+	private ServiceRequestException serviceException;
 	@Mock
 	private Intervention intervention;
 	@Mock
 	private InterventionCreationDTO interventionCreationDTO;
-	
 	@Mock
 	private EntityManager entityManager;
 	@Mock
@@ -42,17 +43,27 @@ public class InterventionServiceTest {
 	private HibernateSurgicalToolRepository surgicalToolRepository;
 	@Mock
 	private InterventionAssembler interventionAssembler;
-	//Do not use @InjectMocks here, it won't mock the EntityManager properly
+	@Mock
+	private InterventionCreationDTOValidator interventionCreationValidator;
+	//Do not use @InjectMocks here, it won't mock the EntityManager/EntityTransaction properly
 	private InterventionService interventionService;
+	
+	private int SAMPLE_ID = 1;
 	
 	@Before
 	public void init() {
 		Mockito.when(entityManager.getTransaction()).thenReturn(entityTransaction);
-		interventionService = new InterventionService(interventionRepository, patientRepository, surgicalToolRepository, interventionAssembler, entityManager);
+		interventionService = new InterventionService(interventionRepository, patientRepository, surgicalToolRepository, interventionAssembler, entityManager, interventionCreationValidator);
 	}
 
+	private void mockSucessfulInterventionCreation() {
+		Mockito.doNothing().when(interventionCreationValidator).validate(interventionCreationDTO);
+		Mockito.when(interventionAssembler.assembleInterventionFromDTO(interventionCreationDTO, patientRepository)).thenReturn(intervention);
+		Mockito.when(intervention.getId()).thenReturn(SAMPLE_ID);
+	}
+	
 	@Test
-	public void returnIdOfInterventionWhenCreationIsASuccess() {
+	public void returnInterventionIdWhenCreated() {
 		Mockito.when(interventionAssembler.assembleInterventionFromDTO(interventionCreationDTO, patientRepository)).thenReturn(intervention);
 		Mockito.when(intervention.getId()).thenReturn(SAMPLE_ID);
 		
@@ -61,40 +72,63 @@ public class InterventionServiceTest {
 		assertEquals(SAMPLE_ID, resultingId);
 	}
 	
+	@Test (expected=ServiceRequestException.class)
+	public void doNotCreateInterventionWhenServiceException() {
+		Mockito.doThrow(serviceException).when(interventionCreationValidator).validate(interventionCreationDTO);
+		
+		interventionService.createIntervention(interventionCreationDTO);
+		
+		Mockito.verify(intervention, Mockito.never()).getId();
+	}
+	
 	@Test
-	public void commitTransactionWhenCreationOfIntervention() {
-		Mockito.when(interventionAssembler.assembleInterventionFromDTO(interventionCreationDTO, patientRepository)).thenReturn(intervention);
-		Mockito.when(intervention.getId()).thenReturn(SAMPLE_ID);
+	public void commitTransactionWhenInterventionIsCreated() {
+		mockSucessfulInterventionCreation();
 		
 		interventionService.createIntervention(interventionCreationDTO);
 		
 		Mockito.verify(entityTransaction).commit();
 	}
 	
-	@Test (expected=RuntimeException.class)
-	public void doNotCommitTransactionWhenCreationOfInterventionFails() {
-		Mockito.when(interventionAssembler.assembleInterventionFromDTO(interventionCreationDTO, patientRepository))
-		.thenThrow(SAMPLE_EXCEPTION);
-		
-		interventionService.createIntervention(interventionCreationDTO);
-		
-		Mockito.verify(entityTransaction, Mockito.never()).commit();
-	}
-	
-	@Test (expected=RuntimeException.class)
-	public void makeRollbackWhenCreationOfInterventionFails() {
-		Mockito.when(interventionAssembler.assembleInterventionFromDTO(interventionCreationDTO, patientRepository))
-		.thenThrow(SAMPLE_EXCEPTION);
-		Mockito.when(entityTransaction.isActive()).thenReturn(true);
+	@Test (expected=ServiceRequestException.class)
+	public void rollbackTransactionNoPatientFoundInInterventionCreation() {
+		mockSucessfulInterventionCreation();
+		Mockito.doThrow(new PatientDoesNotExist()).when(interventionAssembler).assembleInterventionFromDTO(interventionCreationDTO, patientRepository);
 		
 		interventionService.createIntervention(interventionCreationDTO);
 		
 		Mockito.verify(entityTransaction).rollback();
 	}
 	
-	@Test (expected=RuntimeException.class)
-	public void throwExceptionWhenAssemblingOfInterventionFails() {
-		Mockito.when(interventionAssembler.assembleInterventionFromDTO(interventionCreationDTO, patientRepository)).thenThrow(SAMPLE_EXCEPTION);
+	@Test
+	public void callInterventionAssemblerWhenValidInterventionCreation() {
+		mockSucessfulInterventionCreation();
+		
+		interventionService.createIntervention(interventionCreationDTO);
+		
+		Mockito.verify(interventionAssembler).assembleInterventionFromDTO(interventionCreationDTO, patientRepository);
+	}
+	
+	@Test
+	public void createInRepositoryWhenValidInterventionCreation() {
+		mockSucessfulInterventionCreation();
+		
+		interventionService.createIntervention(interventionCreationDTO);
+		
+		Mockito.verify(interventionRepository).create(intervention);
+	}
+	
+	@Test (expected=ServiceRequestException.class)
+	public void expectServiceExceptionWhenInvalidInterventionCreationDTO() {
+		Mockito.doThrow(serviceException).when(interventionCreationValidator).validate(interventionCreationDTO);
+		
+		interventionService.createIntervention(interventionCreationDTO);
+	}
+	
+	@Test (expected=ServiceRequestException.class)
+	public void expectServiceExceptionWhenPatientNotFoundInRepository() {
+		Mockito.doNothing().when(interventionCreationValidator).validate(interventionCreationDTO);
+		Mockito.doThrow(new PatientDoesNotExist()).when(interventionAssembler).assembleInterventionFromDTO(interventionCreationDTO, patientRepository);
 		
 		interventionService.createIntervention(interventionCreationDTO);
 	}

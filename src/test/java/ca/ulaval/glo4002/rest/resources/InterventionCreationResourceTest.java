@@ -10,8 +10,6 @@ import org.junit.Test;
 
 import static org.mockito.Mockito.*;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
-import ca.ulaval.glo4002.exceptions.domainexceptions.DomainException;
-import ca.ulaval.glo4002.exceptions.domainexceptions.PatientDoesNotExist;
 import ca.ulaval.glo4002.services.InterventionService;
 import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
 
@@ -20,7 +18,7 @@ public class InterventionCreationResourceTest {
 	private String SAMPLE_EXCEPTION_MESSAGE = "";
 
 	private InterventionCreationResource interventionCreationResource;
-	private DomainException domainException = new PatientDoesNotExist(SAMPLE_EXCEPTION_CODE, SAMPLE_EXCEPTION_MESSAGE);
+	private ServiceRequestException domainException = new ServiceRequestException(SAMPLE_EXCEPTION_CODE, SAMPLE_EXCEPTION_MESSAGE);
 	
 	private InterventionCreationDTO interventionCreationDTOMock;
 	private InterventionService interventionServiceMock;

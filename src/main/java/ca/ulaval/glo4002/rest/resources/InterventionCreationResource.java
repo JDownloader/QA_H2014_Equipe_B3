@@ -5,7 +5,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
-import ca.ulaval.glo4002.exceptions.domainexceptions.DomainException;
 import ca.ulaval.glo4002.rest.response.InterventionCreationResponse;
 import ca.ulaval.glo4002.services.InterventionService;
 import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
@@ -31,7 +30,7 @@ public class InterventionCreationResource {
 		int interventionId = 0;	
 		try {
 				interventionId = interventionService.createIntervention(interventionCreationDTO);
-			} catch (DomainException e) {
+			} catch (ServiceRequestException e) {
 				return interventionCreationResponse.createBadRequestResponse(e);
 			}  catch (Exception e) {
 				throw e;
