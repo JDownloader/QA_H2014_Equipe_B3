@@ -33,13 +33,13 @@ public class HibernateDrugRepository extends HibernateRepository implements Drug
 	}
 
 	public List<Drug> search(String keywords) {
-		String keywordsWithWildcards = keywords.replace(' ', '%').toUpperCase();
+		String keywordsWithWildcards = String.format("%%%s%%", keywords.replace(' ', '%'));
 
 		final String DRUG_SEARCH_QUERY = "SELECT d FROM DRUG d WHERE UPPER(d.name) LIKE :keywords OR UPPER(d.description) LIKE :keywords";
 
-		TypedQuery<Drug> query = entityManager.createQuery(DRUG_SEARCH_QUERY, Drug.class).setParameter("keywords", keywordsWithWildcards);
+		TypedQuery<Drug> query = entityManager.createQuery(DRUG_SEARCH_QUERY, Drug.class)
+				.setParameter("keywords", keywordsWithWildcards.toUpperCase());
 
-		List<Drug> result = query.getResultList();
-		return result;
+		return query.getResultList();
 	}
 }

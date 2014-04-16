@@ -9,7 +9,6 @@ import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 import org.json.JSONObject;
-import org.junit.Assert;
 
 import ca.ulaval.glo4002.uats.runners.JettyTestRunner;
 import static com.jayway.restassured.RestAssured.*;
@@ -32,17 +31,17 @@ public class PrescriptionSteps {
 	private static final String NON_EXISTING_DIN_VALUE = "025555";
 	private static final int PATIENT_NUMBER_VALUE = 2;
 
-	private Response response;
+	private Response response = null;
 	JSONObject prescriptionJson;
 
 	@BeforeScenario
-	public void clearResults() throws ParseException {
+	public void init() throws ParseException {
 		response = null;
+		prescriptionJson = new JSONObject();
 	}
 
 	@Given("une prescription valide avec des données manquantes")
 	public void createValidPrescriptionWithMissingValues() {
-		prescriptionJson = new JSONObject();
 		prescriptionJson.put(DATE_PARAMETER, DATE_VALUE);
 		prescriptionJson.put(DRUG_NAME_PARAMETER, DRUG_NAME_VALUE);
 		prescriptionJson.put(STAFF_MEMBER_PARAMETER, STAFF_MEMBER_VALUE);
@@ -50,7 +49,6 @@ public class PrescriptionSteps {
 	
 	@Given("une prescription valide avec DIN")
 	public void createValidPrescriptionWithDin() {
-		prescriptionJson = new JSONObject();
 		prescriptionJson.put(DATE_PARAMETER, DATE_VALUE);
 		prescriptionJson.put(RENEWALS_PARAMETER , RENEWALS_VALUE);
 		prescriptionJson.put(DIN_PARAMETER, DIN_VALUE);
@@ -64,7 +62,6 @@ public class PrescriptionSteps {
 	
 	@Given("une prescription valide avec nom de médicament")
 	public void createValidPrescriptionWithDrugName() {
-		prescriptionJson = new JSONObject();
 		prescriptionJson.put(DATE_PARAMETER, DATE_VALUE);
 		prescriptionJson.put(RENEWALS_PARAMETER , RENEWALS_VALUE);
 		prescriptionJson.put(DRUG_NAME_PARAMETER, DRUG_NAME_VALUE);
@@ -77,19 +74,8 @@ public class PrescriptionSteps {
 				.body(prescriptionJson.toString())
 				.contentType(ContentType.JSON)
 				.when().post(String.format("patient/%d/prescriptions/", PATIENT_NUMBER_VALUE));
-	}
-	
-	@Then("une erreur est retournée")
-	public void returnsAnError() {
-		response.then().
-			statusCode(Status.BAD_REQUEST.getStatusCode());
-	}
-	
-	@Then("cette erreur a le code \"PRES001\"")
-	public void errorIsPRES001() {
-		String bodyString = response.getBody().asString();
-		JSONObject jsonObject = new JSONObject(bodyString);
-		Assert.assertEquals("PRES001", jsonObject.get("code"));
+		
+		ThreadLocalMap.putObject(HttpResponseSteps.RESPONSE_OBJECT_KEY, response);
 	}
 	
 	@Then("cette prescription est conservée")
@@ -97,5 +83,4 @@ public class PrescriptionSteps {
 		response.then().
 			statusCode(Status.CREATED.getStatusCode());
 	}
-	
 }

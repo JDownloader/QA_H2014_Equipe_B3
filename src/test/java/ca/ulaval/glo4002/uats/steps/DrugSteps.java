@@ -3,79 +3,90 @@ package ca.ulaval.glo4002.uats.steps;
 import static com.jayway.restassured.RestAssured.*;
 
 import java.text.ParseException;
-
-import javax.ws.rs.core.Response.Status;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.jbehave.core.annotations.*;
+import org.json.JSONArray;
 import org.json.JSONObject;
-import org.junit.Assert;
 
+import static org.junit.Assert.*;
 import ca.ulaval.glo4002.uats.runners.JettyTestRunner;
 
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
 
 public class DrugSteps {
+	private static final String DIN_PARAMETER = "din";
+	private static final String KEYWORD_PARAMETER = "nom";
 
-	private static final String DRUG_NAME_PARAMETER = "nom";
-
-	private static final String DRUG_NAME_VALUE_WITHOUT_ENOUGH_CHARACTER = "AD";
-	private static final String DRUG_NAME_VALUE_WITH_ENOUGH_CHARACTER = "EMCYT";
-	private static final String DRUG_DESCRIPTION_VALUE = "FOR COMMERCIAL ";
-
+	private static final String KEYWORD_WITH_TWO_CHARACTERS = "AB";
+	private static final String SHARED_DRUG_NAME_KEYWORD = "ROSALIAC";
+	private static final String SHARED_DESCRIPTION_KEYWORD = "0.8MG/HOUR";
+	private static final String WILDCARD_KEYWORD = "ROSAL AC";
+	
+	private static final String ROSALIAC_UV_RICHE_DIN = "02330857";
+	private static final String ROSALIAC_UV_LEGERE_DIN = "02330792";
+	private static final String MYLAN_NITRO_PATCH_0_8_DIN = "02407477";
+	private static final String NITRO_DUR_0_8_DIN = "02011271";
+	
 	private Response response;
+	private ArrayList<String> expectedDins;
 	JSONObject drugSearchJson;
 
 	@BeforeScenario
-	public void clearResults() throws ParseException {
+	public void init() throws ParseException {
 		response = null;
+		drugSearchJson = new JSONObject();
 	}
 
 	@When("je cherche un médicaments avec moins de caractères que la limite requise")
-	public void SearchDrugWithoutEnoughCharacters() {
-		drugSearchJson = new JSONObject();
-		drugSearchJson.put(DRUG_NAME_PARAMETER, DRUG_NAME_VALUE_WITHOUT_ENOUGH_CHARACTER);
-		response = given().port(JettyTestRunner.JETTY_TEST_PORT).body(drugSearchJson.toString()).contentType(ContentType.JSON).when()
-				.post(String.format("medicaments/dins/"));
-	}
-
-	// TODO @Then en double ,avec prescription, ajouté un * pour le moment pour
-	// faire une difference. Faire une classe ExceptionSteps.java ?
-	@Then("une erreur est retournée*")
-	public void returnsAnError() {
-		response.then().statusCode(Status.BAD_REQUEST.getStatusCode());
-	}
-
-	@Then("cette erreur a le code \"DIN001\"")
-	public void errorIsDIN001() {
-		String bodyString = response.getBody().asString();
-		JSONObject jsonObject = new JSONObject(bodyString);
-		Assert.assertEquals("DIN001", jsonObject.get("code"));
+	public void SearchUsingTwoCharacterKeyword() {
+		drugSearchJson.put(KEYWORD_PARAMETER, KEYWORD_WITH_TWO_CHARACTERS);
+		post(drugSearchJson);
 	}
 
 	@When("je cherche des médicaments avec un mot-clé qui se retrouve dans quelques noms de médicaments")
-	public void searchDrugByName() {
-		drugSearchJson = new JSONObject();
-		drugSearchJson.put(DRUG_NAME_PARAMETER, DRUG_NAME_VALUE_WITH_ENOUGH_CHARACTER);
-		response = given().port(JettyTestRunner.JETTY_TEST_PORT).body(drugSearchJson.toString()).contentType(ContentType.JSON).when()
+	public void searchUsingSharedDrugNameKeyword() {
+		drugSearchJson.put(KEYWORD_PARAMETER, SHARED_DRUG_NAME_KEYWORD);
+		post(drugSearchJson);
+		expectedDins = new ArrayList<String>(Arrays.asList(ROSALIAC_UV_RICHE_DIN, ROSALIAC_UV_LEGERE_DIN));
+	}
+	
+	@When("je cherche des médicaments avec un mot-clé qui se retrouve dans quelques descriptions de médicaments")
+	public void searchUsingSharedDescriptionKeyword() {
+		drugSearchJson.put(KEYWORD_PARAMETER, SHARED_DESCRIPTION_KEYWORD);
+		post(drugSearchJson);
+		expectedDins = new ArrayList<String>(Arrays.asList(MYLAN_NITRO_PATCH_0_8_DIN, NITRO_DUR_0_8_DIN));
+	}
+	
+	@When("je cherche des médicaments avec un mot-clé qui contient un patron générique")
+	public void searchDrugByDescription() {
+		drugSearchJson.put(KEYWORD_PARAMETER, WILDCARD_KEYWORD);
+		post(drugSearchJson);
+		expectedDins = new ArrayList<String>(Arrays.asList(ROSALIAC_UV_RICHE_DIN, ROSALIAC_UV_LEGERE_DIN));
+	}
+	
+	private void post(JSONObject jsonObject) {
+		response = given().port(JettyTestRunner.JETTY_TEST_PORT)
+				.body(drugSearchJson.toString())
+				.contentType(ContentType.JSON).when()
 				.post(String.format("medicaments/dins/"));
+		
+		ThreadLocalMap.putObject(HttpResponseSteps.RESPONSE_OBJECT_KEY, response);
 	}
 
-	// TODO Verifie juste que ca retourne quelque chose, non ce qui est
-	// retourner. Pas capable de voir ce qui est dans le Json, seulement ce qui
-	// est dans l'Array contenant le JSON
 	@Then("la liste de médicaments retournée contient ceux-ci")
 	public void returnDrugList() {
-		byte[] bodyArray = response.getBody().asByteArray();
-		JSONObject jsonObject = new JSONObject(bodyArray);
-		Assert.assertEquals("{}", jsonObject.toString());
-	}
+		String bodyString = response.getBody().asString();
+		JSONArray actualDrugList = new JSONArray(bodyString);
 
-	@When("je cherche des médicaments avec un mot-clé qui se retrouve dans quelques descriptions de médicaments")
-	public void searchDrugByDescription() {
-		drugSearchJson = new JSONObject();
-		drugSearchJson.put(DRUG_NAME_PARAMETER, DRUG_DESCRIPTION_VALUE);
-		response = given().port(JettyTestRunner.JETTY_TEST_PORT).body(drugSearchJson.toString()).contentType(ContentType.JSON).when()
-				.post(String.format("medicaments/dins/"));
+		assertEquals(expectedDins.size(), actualDrugList.length());
+		
+		for (int i = 0; i < expectedDins.size(); i++) {
+			String expectedDin = expectedDins.get(i);
+			String actualDin = actualDrugList.getJSONObject(i).getString(DIN_PARAMETER);
+			assertEquals(expectedDin, actualDin);
+		}
 	}
 }
