@@ -5,9 +5,9 @@ public interface SurgicalToolRepository {
 
 	void update(SurgicalTool surgicalTool);
 
-	SurgicalTool getById(Integer id) throws SurgicalToolNotFoundException;
+	SurgicalTool getById(Integer id);
 
-	SurgicalTool getBySerialNumber(String serialNumber) throws SurgicalToolNotFoundException;
+	SurgicalTool getBySerialNumber(String serialNumber);
 
-	SurgicalTool getBySerialNumberOrId(String serialNumberOrId) throws SurgicalToolNotFoundException;
+	SurgicalTool getBySerialNumberOrId(String serialNumberOrId);
 }

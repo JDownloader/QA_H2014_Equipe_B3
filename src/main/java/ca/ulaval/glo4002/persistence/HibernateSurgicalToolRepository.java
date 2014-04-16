@@ -6,7 +6,7 @@ import ca.ulaval.glo4002.domain.surgicaltool.*;
 
 public class HibernateSurgicalToolRepository extends HibernateRepository implements SurgicalToolRepository {
 
-	public void persist(SurgicalTool surgicalTool) throws SurgicalToolExistsException {
+	public void persist(SurgicalTool surgicalTool) {
 		try {
 			entityManager.persist(surgicalTool);
 		} catch (PersistenceException e) {
@@ -18,7 +18,7 @@ public class HibernateSurgicalToolRepository extends HibernateRepository impleme
 		entityManager.merge(surgicalTool);
 	}
 	
-	public SurgicalTool getBySerialNumberOrId(String serialNumberOrId) throws SurgicalToolNotFoundException {
+	public SurgicalTool getBySerialNumberOrId(String serialNumberOrId){
 		try {
 			return this.getBySerialNumber(serialNumberOrId);
 		} catch (SurgicalToolNotFoundException e) {
@@ -30,7 +30,7 @@ public class HibernateSurgicalToolRepository extends HibernateRepository impleme
 		}
 	}
 	
-	public SurgicalTool getBySerialNumber(String serialNumber) throws SurgicalToolNotFoundException {
+	public SurgicalTool getBySerialNumber(String serialNumber) {
 		final String QUERY = "SELECT s FROM SURGICAL_TOOL s WHERE s.serialNumber = :serialNumber";
 		
 		TypedQuery<SurgicalTool> query = entityManager.createQuery(QUERY, SurgicalTool.class)
@@ -43,7 +43,7 @@ public class HibernateSurgicalToolRepository extends HibernateRepository impleme
 		}
 	}
 
-	public SurgicalTool getById(Integer id) throws SurgicalToolNotFoundException {
+	public SurgicalTool getById(Integer id){
 		SurgicalTool surgicalTool = entityManager.find(SurgicalTool.class, id);
 		if (surgicalTool == null) {
 			throw new SurgicalToolNotFoundException(String.format("Impossible de trouver l'instrument avec id '%s'.", id));
