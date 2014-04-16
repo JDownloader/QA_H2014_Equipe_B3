@@ -28,8 +28,9 @@ public class PrescriptionSteps {
 	private static final int RENEWALS_VALUE = 2;
 	private static final String DRUG_NAME_VALUE = "drug_name";
 	private static final int STAFF_MEMBER_VALUE = 3;
-	private static final String DIN_VALUE = "098423";
-	private static final int PATIENT_NUMBER_VALUE = 3;
+	private static final String DIN_VALUE = "02240541";
+	private static final String NON_EXISTING_DIN_VALUE = "025555";
+	private static final int PATIENT_NUMBER_VALUE = 2;
 
 	private Response response;
 	JSONObject prescriptionJson;
@@ -43,6 +44,29 @@ public class PrescriptionSteps {
 	public void createValidPrescriptionWithMissingValues() {
 		prescriptionJson = new JSONObject();
 		prescriptionJson.put(DATE_PARAMETER, DATE_VALUE);
+		prescriptionJson.put(DRUG_NAME_PARAMETER, DRUG_NAME_VALUE);
+		prescriptionJson.put(STAFF_MEMBER_PARAMETER, STAFF_MEMBER_VALUE);
+	}
+	
+	@Given("une prescription valide avec DIN")
+	public void createValidPrescriptionWithDin() {
+		prescriptionJson = new JSONObject();
+		prescriptionJson.put(DATE_PARAMETER, DATE_VALUE);
+		prescriptionJson.put(RENEWALS_PARAMETER , RENEWALS_VALUE);
+		prescriptionJson.put(DIN_PARAMETER, DIN_VALUE);
+		prescriptionJson.put(STAFF_MEMBER_PARAMETER, STAFF_MEMBER_VALUE);
+	}
+	
+	@Given("que ce DIN n'existe pas")
+	public void setPrescriptionWithNonExistingDin() {
+		prescriptionJson.put(DIN_PARAMETER, NON_EXISTING_DIN_VALUE);
+	}
+	
+	@Given("une prescription valide avec nom de médicament")
+	public void createValidPrescriptionWithDrugName() {
+		prescriptionJson = new JSONObject();
+		prescriptionJson.put(DATE_PARAMETER, DATE_VALUE);
+		prescriptionJson.put(RENEWALS_PARAMETER , RENEWALS_VALUE);
 		prescriptionJson.put(DRUG_NAME_PARAMETER, DRUG_NAME_VALUE);
 		prescriptionJson.put(STAFF_MEMBER_PARAMETER, STAFF_MEMBER_VALUE);
 	}
@@ -66,6 +90,12 @@ public class PrescriptionSteps {
 		String bodyString = response.getBody().asString();
 		JSONObject jsonObject = new JSONObject(bodyString);
 		Assert.assertEquals("PRES001", jsonObject.get("code"));
+	}
+	
+	@Then("cette prescription est conservée")
+	public void prescriptionIsSaved() {
+		response.then().
+			statusCode(Status.CREATED.getStatusCode());
 	}
 	
 }

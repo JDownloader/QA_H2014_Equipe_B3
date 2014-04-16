@@ -51,7 +51,7 @@ public class PatientService {
 			doCreatePrescription(prescriptionCreationDTO, prescriptionAssembler);
 			
 			entityTransaction.commit();
-		} catch (DTOValidationException | PatientNotFoundException e) {
+		} catch (DTOValidationException | PatientNotFoundException | DrugNotFoundException e) {
 			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_PRES001, e.getMessage());
 		} finally {
 			if (entityTransaction.isActive()) {

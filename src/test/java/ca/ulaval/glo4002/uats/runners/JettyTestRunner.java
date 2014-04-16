@@ -4,6 +4,7 @@ import org.eclipse.jetty.server.Server;
 import org.jbehave.core.annotations.AfterStories;
 import org.jbehave.core.annotations.BeforeStories;
 
+import ca.ulaval.glo4002.contexts.DemoRepositoryFiller;
 import ca.ulaval.glo4002.rest.JettyServer;
 
 public class JettyTestRunner {
@@ -12,6 +13,8 @@ public class JettyTestRunner {
 
 	@BeforeStories
 	public void startJetty() throws Exception {
+		DemoRepositoryFiller.fillRepositories();
+		
 		server = new JettyServer().create(JETTY_TEST_PORT);
 		server.start();
 	}
