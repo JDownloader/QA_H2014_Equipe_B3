@@ -1,8 +1,8 @@
 package ca.ulaval.glo4002.uats;
 
-import static java.util.Arrays.asList;
-import static org.jbehave.core.io.CodeLocations.codeLocationFromClass;
-import static org.jbehave.core.reporters.Format.CONSOLE;
+import static java.util.Arrays.*;
+import static org.jbehave.core.io.CodeLocations.*;
+import static org.jbehave.core.reporters.Format.*;
 
 import java.util.List;
 import java.util.Locale;
@@ -20,37 +20,28 @@ import org.jbehave.core.steps.InjectableStepsFactory;
 import org.jbehave.core.steps.InstanceStepsFactory;
 
 import ca.ulaval.glo4002.uats.runners.JettyTestRunner;
-import ca.ulaval.glo4002.uats.steps.PatientSteps;
-import ca.ulaval.glo4002.uats.steps.PrescriptionSteps;
+import ca.ulaval.glo4002.uats.steps.*;
 
 public class HospitalStories extends JUnitStories {
 	private static final LocalizedKeywords keywords = new LocalizedKeywords(Locale.ENGLISH);
 
 	@Override
 	public Configuration configuration() {
-		StoryReporterBuilder reporterBuilder = new StoryReporterBuilder()
-				.withKeywords(keywords)
-				.withCodeLocation(codeLocationFromClass(HospitalStories.class))
-				.withFailureTrace(true).withFailureTraceCompression(true)
-				.withDefaultFormats().withFormats(CONSOLE);
+		StoryReporterBuilder reporterBuilder = new StoryReporterBuilder().withKeywords(keywords).withCodeLocation(codeLocationFromClass(HospitalStories.class))
+				.withFailureTrace(true).withFailureTraceCompression(true).withDefaultFormats().withFormats(CONSOLE);
 
-		return new MostUsefulConfiguration()
-				.useKeywords(keywords)
-				.usePendingStepStrategy(new FailingUponPendingStep())
-				.useStoryParser(new RegexStoryParser(keywords))
-				.useStoryLoader(new LoadFromClasspath(HospitalStories.class))
+		return new MostUsefulConfiguration().useKeywords(keywords).usePendingStepStrategy(new FailingUponPendingStep())
+				.useStoryParser(new RegexStoryParser(keywords)).useStoryLoader(new LoadFromClasspath(HospitalStories.class))
 				.useStoryReporterBuilder(reporterBuilder);
 	}
 
 	@Override
 	public InjectableStepsFactory stepsFactory() {
-		return new InstanceStepsFactory(configuration(),
-				new PrescriptionSteps(), new PatientSteps(), new JettyTestRunner());
+		return new InstanceStepsFactory(configuration(), new PrescriptionSteps(), new PatientSteps(), new DrugSteps(), new JettyTestRunner());
 	}
 
 	@Override
 	protected List<String> storyPaths() {
-		return new StoryFinder().findPaths(codeLocationFromClass(this.getClass()).getFile(),
-				asList("**/*.story", "*.story"), null);
+		return new StoryFinder().findPaths(codeLocationFromClass(this.getClass()).getFile(), asList("**/*.story", "*.story"), null);
 	}
 }
