@@ -19,7 +19,8 @@ public final class Din implements Serializable {
 		return din;
 	}
 	
-	public String setDin() {
+	@SuppressWarnings("unused")
+	private String setDin() {
 		return din;
 	}
 

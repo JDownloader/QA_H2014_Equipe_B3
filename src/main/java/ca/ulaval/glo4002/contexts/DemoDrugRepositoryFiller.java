@@ -27,7 +27,7 @@ public class DemoDrugRepositoryFiller {
 		int lineNumber = 0;
 		while ((nextLine = csvReader.readNext()) != null) {
 			Drug drug = parseDrug(nextLine, ++lineNumber);
-			drugRepository.create(drug);
+			drugRepository.persist(drug);
 		}
 		csvReader.close();
 	}

@@ -4,7 +4,7 @@ public class PatientExistsException extends RuntimeException {
 	
 	private static final long serialVersionUID = 2411650399227995793L;
 
-	public PatientExistsException(String message) {
-		super(message);
+	public PatientExistsException(String message, RuntimeException e) {
+		super(message, e);
 	}
 }
