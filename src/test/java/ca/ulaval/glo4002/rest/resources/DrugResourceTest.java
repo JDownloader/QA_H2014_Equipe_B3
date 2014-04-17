@@ -19,20 +19,18 @@ public class DrugResourceTest {
 	private static final String SAMPLE_DRUG_NAME = "ROSAVIL";
 	
 	private DrugService drugServiceMock;
-	private DrugSearchDTO drugSearchDTOMock;
 	private DrugResource drugResource;
 
 	@Before
 	public void init() throws Exception {
 		drugServiceMock = mock(DrugService.class);
-		drugSearchDTOMock = mock(DrugSearchDTO.class);
 		drugResource = new DrugResource(drugServiceMock);
 	}
 
 	@Test
 	public void verifyDrugSearchCallsServiceMethodsCorrectly() throws Exception {
 		drugResource.get(SAMPLE_DRUG_NAME);
-		verify(drugServiceMock).searchDrug(eq(drugSearchDTOMock), any(DrugSearchDTOValidator.class));
+		verify(drugServiceMock).searchDrug(any(DrugSearchDTO.class), any(DrugSearchDTOValidator.class));
 	}
 
 	@Test
@@ -43,7 +41,7 @@ public class DrugResourceTest {
 
 	@Test
 	public void verifyDrugSearchReturnsBadRequestResponseOnServiceRequestException() throws Exception {
-		doThrow(new ServiceRequestException()).when(drugServiceMock).searchDrug(eq(drugSearchDTOMock), any(DrugSearchDTOValidator.class));
+		doThrow(new ServiceRequestException()).when(drugServiceMock).searchDrug(any(DrugSearchDTO.class), any(DrugSearchDTOValidator.class));
 
 		Response expectedResponse = Response.status(Status.BAD_REQUEST).build();
 		Response receivedResponse = drugResource.get(SAMPLE_DRUG_NAME);
