@@ -22,9 +22,9 @@ import ca.ulaval.glo4002.services.dto.validators.SurgicalToolModificationDTOVali
 
 public class InterventionService {
 	private static final String ERROR_SERVICE_REQUEST_EXCEPTION_INT002 = "INT002";
-	private static final String ERROR_SERVICE_REQUEST_EXCEPTION_INT010 = "INT010";
-	private static final String ERROR_SERVICE_REQUEST_EXCEPTION_INT011 = "INT011";
-	private static final String ERROR_SERVICE_REQUEST_EXCEPTION_INT012 = "INT012";
+	public static final String ERROR_INT010 = "INT010";
+	public static final String ERROR_INT011 = "INT011";
+	public static final String ERROR_INT012 = "INT012";
 
 	private EntityManager entityManager;
 	private EntityTransaction entityTransaction;
@@ -102,11 +102,11 @@ public class InterventionService {
 			entityTransaction.commit();
 			return newSurgicalTool.getId();
 		} catch (DTOValidationException | InterventionNotFoundException e) {
-			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT010, e.getMessage());
+			throw new ServiceRequestException(ERROR_INT010, e.getMessage());
 		} catch (SurgicalToolExistsException e) {
-			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT011, e.getMessage());
+			throw new ServiceRequestException(ERROR_INT011, e.getMessage());
 		} catch (SurgicalToolRequiresSerialNumberException e) {
-			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT012, e.getMessage());
+			throw new ServiceRequestException(ERROR_INT012, e.getMessage());
 		} finally {
 			if (entityTransaction.isActive()) {
 				entityTransaction.rollback();
@@ -132,11 +132,11 @@ public class InterventionService {
 			
 			entityTransaction.commit();
 		} catch (DTOValidationException | SurgicalToolNotFoundException e) {
-			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT010, e.getMessage());
+			throw new ServiceRequestException(ERROR_INT010, e.getMessage());
 		} catch (SurgicalToolExistsException e) {
-			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT011, e.getMessage());
+			throw new ServiceRequestException(ERROR_INT011, e.getMessage());
 		} catch (SurgicalToolRequiresSerialNumberException e) {
-			throw new ServiceRequestException(ERROR_SERVICE_REQUEST_EXCEPTION_INT012, e.getMessage());
+			throw new ServiceRequestException(ERROR_INT012, e.getMessage());
 		} finally {
 			if (entityTransaction.isActive()) {
 				entityTransaction.rollback();
