@@ -18,10 +18,13 @@ import org.jbehave.core.parsers.RegexStoryParser;
 import org.jbehave.core.reporters.StoryReporterBuilder;
 import org.jbehave.core.steps.InjectableStepsFactory;
 import org.jbehave.core.steps.InstanceStepsFactory;
+import org.junit.runner.RunWith;
 
 import ca.ulaval.glo4002.uats.runners.JettyTestRunner;
 import ca.ulaval.glo4002.uats.steps.*;
+import de.codecentric.jbehave.junit.monitoring.JUnitReportingRunner;
 
+@RunWith(JUnitReportingRunner.class)
 public class HospitalStories extends JUnitStories {
 	private static final LocalizedKeywords keywords = new LocalizedKeywords(Locale.ENGLISH);
 
