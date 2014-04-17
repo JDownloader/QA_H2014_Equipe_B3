@@ -65,10 +65,6 @@ public class PatientServiceTest {
 		when(patientRepositoryMock.getById(anyInt())).thenReturn(patientMock);
 		when(entityManagerMock.getTransaction()).thenReturn(entityTransactionMock);
 	}
-	
-	private void createPrescription() {
-		patientService.createPrescription(prescriptionCreationDTO, prescriptionCreationDTOValidatorMock, prescriptionAssemblerMock);
-	}
 
 	@Test
 	public void verifyPrescriptionCreationCallsCorrectRepositoryMethods() throws Exception {
@@ -149,5 +145,9 @@ public class PatientServiceTest {
 		} catch(ServiceRequestException e) {
 			assertEquals(PatientService.ERROR_PRES001, e.getInternalCode());
 		}
+	}
+	
+	private void createPrescription() {
+		patientService.createPrescription(prescriptionCreationDTO, prescriptionCreationDTOValidatorMock, prescriptionAssemblerMock);
 	}
 }
