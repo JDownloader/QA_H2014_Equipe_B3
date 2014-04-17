@@ -22,14 +22,18 @@ public class DrugSteps {
 	private static final String KEYWORD_PARAMETER = "nom";
 
 	private static final String KEYWORD_WITH_TWO_CHARACTERS = "AB";
-	private static final String SHARED_DRUG_NAME_KEYWORD = "ROSALIAC";
-	private static final String SHARED_DESCRIPTION_KEYWORD = "0.8MG/HOUR";
+	private static final String DRUG_NAME_KEYWORD = "ROSALIAC";
+	private static final String NON_EXISTING_DRUG_NAME_KEYWORD = "AHSDSS";
+	private static final String DESCRIPTION_KEYWORD = "0.8MG/HOUR";
+	private static final String NON_EXISTING_DESCRIPTION_KEYWORD = "OIJFS";
 	private static final String WILDCARD_KEYWORD = "ROSAL AC";
 	
 	private static final String ROSALIAC_UV_RICHE_DIN = "02330857";
 	private static final String ROSALIAC_UV_LEGERE_DIN = "02330792";
 	private static final String MYLAN_NITRO_PATCH_0_8_DIN = "02407477";
 	private static final String NITRO_DUR_0_8_DIN = "02011271";
+	
+	private static final int EMPTY_SIZE = 0;
 	
 	private Response response;
 	private ArrayList<String> expectedDins;
@@ -48,17 +52,29 @@ public class DrugSteps {
 	}
 
 	@When("je cherche des médicaments avec un mot-clé qui se retrouve dans quelques noms de médicaments")
-	public void searchUsingSharedDrugNameKeyword() {
-		drugSearchJson.put(KEYWORD_PARAMETER, SHARED_DRUG_NAME_KEYWORD);
+	public void searchUsingDrugNameKeyword() {
+		drugSearchJson.put(KEYWORD_PARAMETER, DRUG_NAME_KEYWORD);
 		post(drugSearchJson);
 		expectedDins = new ArrayList<String>(Arrays.asList(ROSALIAC_UV_RICHE_DIN, ROSALIAC_UV_LEGERE_DIN));
 	}
 	
 	@When("je cherche des médicaments avec un mot-clé qui se retrouve dans quelques descriptions de médicaments")
-	public void searchUsingSharedDescriptionKeyword() {
-		drugSearchJson.put(KEYWORD_PARAMETER, SHARED_DESCRIPTION_KEYWORD);
+	public void searchUsingDescriptionKeyword() {
+		drugSearchJson.put(KEYWORD_PARAMETER, DESCRIPTION_KEYWORD);
 		post(drugSearchJson);
 		expectedDins = new ArrayList<String>(Arrays.asList(MYLAN_NITRO_PATCH_0_8_DIN, NITRO_DUR_0_8_DIN));
+	}
+	
+	@When("je cherche des médicaments avec un mot-clé qui ne se retrouve pas dans aucun nom de médicaments")
+	public void searchUsingNonExistingDrugNameKeyword() {
+		drugSearchJson.put(KEYWORD_PARAMETER, NON_EXISTING_DRUG_NAME_KEYWORD);
+		post(drugSearchJson);
+	}
+	
+	@When("je cherche des médicaments avec un mot-clé qui ne se retrouve pas dans aucune description de médicaments")
+	public void searchUsingNonExistinDescriptionKeyword() {
+		drugSearchJson.put(KEYWORD_PARAMETER, NON_EXISTING_DESCRIPTION_KEYWORD);
+		post(drugSearchJson);
 	}
 	
 	@When("je cherche des médicaments avec un mot-clé qui contient un patron générique")
@@ -78,7 +94,7 @@ public class DrugSteps {
 	}
 
 	@Then("la liste de médicaments retournée contient ceux-ci")
-	public void returnDrugList() {
+	public void isReturnedDrugListMatching() {
 		String bodyString = response.getBody().asString();
 		JSONArray actualDrugList = new JSONArray(bodyString);
 
@@ -89,5 +105,13 @@ public class DrugSteps {
 			String actualDin = actualDrugList.getJSONObject(i).getString(DIN_PARAMETER);
 			assertEquals(expectedDin, actualDin);
 		}
+	}
+	
+	@Then("la liste de médicaments retournée est vide")
+	public void isReturnedDrugListEmpty() {
+		String bodyString = response.getBody().asString();
+		JSONArray actualDrugList = new JSONArray(bodyString);
+
+		assertEquals(EMPTY_SIZE, actualDrugList.length());
 	}
 }

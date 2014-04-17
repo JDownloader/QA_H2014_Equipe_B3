@@ -26,11 +26,11 @@ public class PrescriptionSteps {
 	
 	private static final String DATE_VALUE = "2001-07-04T12:08:56";
 	private static final int RENEWALS_VALUE = 2;
+	private static final int INVALID_RENEWALS_VALUE = -1;
 	private static final String DRUG_NAME_VALUE = "drug_name";
 	private static final int STAFF_MEMBER_VALUE = 3;
 	private static final String ROSALIAC_UV_RICHE_DIN = "02330857";
 	private static final String NON_EXISTING_DIN_VALUE = "025555";
-	private static final int PATIENT_NUMBER_VALUE = 2;
 
 	private Response response = null;
 	JSONObject prescriptionJson;
@@ -39,21 +39,30 @@ public class PrescriptionSteps {
 	public void init() throws ParseException {
 		response = null;
 		prescriptionJson = new JSONObject();
+		createDefaultPrescription();
+	}
+	
+	private void createDefaultPrescription() {
+		prescriptionJson.put(DATE_PARAMETER, DATE_VALUE);
+		prescriptionJson.put(RENEWALS_PARAMETER, RENEWALS_VALUE);
+		prescriptionJson.put(DIN_PARAMETER, ROSALIAC_UV_RICHE_DIN);
+		prescriptionJson.put(STAFF_MEMBER_PARAMETER, STAFF_MEMBER_VALUE);
 	}
 
 	@Given("une prescription valide avec des données manquantes")
 	public void createValidPrescriptionWithMissingValues() {
-		prescriptionJson.put(DATE_PARAMETER, DATE_VALUE);
-		prescriptionJson.put(DRUG_NAME_PARAMETER, DRUG_NAME_VALUE);
-		prescriptionJson.put(STAFF_MEMBER_PARAMETER, STAFF_MEMBER_VALUE);
+		prescriptionJson.remove(RENEWALS_PARAMETER);
+	}
+	
+	@Given("une prescription avec des données invalides")
+	public void createValidPrescriptionWithInvalidValues() {
+		prescriptionJson.put(RENEWALS_PARAMETER, INVALID_RENEWALS_VALUE);
 	}
 	
 	@Given("une prescription valide avec DIN")
 	public void createValidPrescriptionWithDin() {
-		prescriptionJson.put(DATE_PARAMETER, DATE_VALUE);
-		prescriptionJson.put(RENEWALS_PARAMETER , RENEWALS_VALUE);
+		prescriptionJson.remove(DRUG_NAME_PARAMETER);
 		prescriptionJson.put(DIN_PARAMETER, ROSALIAC_UV_RICHE_DIN);
-		prescriptionJson.put(STAFF_MEMBER_PARAMETER, STAFF_MEMBER_VALUE);
 	}
 	
 	@Given("que ce DIN n'existe pas")
@@ -63,18 +72,24 @@ public class PrescriptionSteps {
 	
 	@Given("une prescription valide avec nom de médicament")
 	public void createValidPrescriptionWithDrugName() {
-		prescriptionJson.put(DATE_PARAMETER, DATE_VALUE);
-		prescriptionJson.put(RENEWALS_PARAMETER , RENEWALS_VALUE);
+		prescriptionJson.remove(DIN_PARAMETER);
 		prescriptionJson.put(DRUG_NAME_PARAMETER, DRUG_NAME_VALUE);
-		prescriptionJson.put(STAFF_MEMBER_PARAMETER, STAFF_MEMBER_VALUE);
+	}
+	
+	@Given("une prescription valide avec DIN et un nom de médicament")
+	public void createValidPrescriptionWithDinAndDrugName() {
+		prescriptionJson.put(DRUG_NAME_PARAMETER, DRUG_NAME_VALUE);
 	}
 
 	@When("j'ajoute cette prescription au dossier du patient")
 	public void addPrescription() {
+		int patientId = (int) ThreadLocalContext.getObject(PatientSteps.PATIENT_ID_KEY);
+		
 		response = given().port(JettyTestRunner.JETTY_TEST_PORT)
 				.body(prescriptionJson.toString())
 				.contentType(ContentType.JSON)
-				.when().post(String.format("patient/%d/prescriptions/", PATIENT_NUMBER_VALUE));
+				.when()
+				.post(String.format("patient/%d/prescriptions/", patientId));
 		
 		ThreadLocalContext.putObject(HttpResponseSteps.RESPONSE_OBJECT_KEY, response);
 	}
