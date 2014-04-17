@@ -11,9 +11,18 @@ import ca.ulaval.glo4002.persistence.HibernateDrugRepository;
 import ca.ulaval.glo4002.persistence.HibernatePatientRepository;
 
 public class DemoRepositoryFiller {
-	private static final String DRUG_FILE_PATH = "data/drug.txt";
+	private static final String DEFAULT_DRUG_FILE_PATH = "data/drug.txt";
+	private String drugFilePath;
 	
-	public static void fillRepositories() throws IOException {
+	public DemoRepositoryFiller() {
+		drugFilePath = DEFAULT_DRUG_FILE_PATH;
+	}
+	
+	public DemoRepositoryFiller(String drugFilePath) {
+		this.drugFilePath = drugFilePath;
+	}
+	
+	public void fillRepositories() throws IOException {
 		EntityManagerFactory entityManagerFactory = EntityManagerFactoryProvider.getFactory();
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		
@@ -23,16 +32,16 @@ public class DemoRepositoryFiller {
 		entityManager.close();
 	}
 
-	private static void fillDrugRepository(EntityManager entityManager) throws IOException, BadFileFormatException {
+	private void fillDrugRepository(EntityManager entityManager) throws IOException, BadFileFormatException {
 		HibernateDrugRepository hibernateDrugRepository = new HibernateDrugRepository(entityManager);
-		FileReader fileReader = new FileReader(DRUG_FILE_PATH);
+		FileReader fileReader = new FileReader(drugFilePath);
 		
 		new DemoDrugRepositoryFiller().fill(entityManager, hibernateDrugRepository, fileReader);
 		
 		fileReader.close();
 	}
 
-	private static void fillPatientRepository(EntityManager entityManager) {
+	private void fillPatientRepository(EntityManager entityManager) {
 		HibernatePatientRepository hibernatePatientRepository = new HibernatePatientRepository(entityManager);
 		
 		new DemoPatientRepositoryFiller().fill(entityManager, hibernatePatientRepository);

@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import static org.junit.Assert.*;
 import ca.ulaval.glo4002.uats.runners.JettyTestRunner;
+import ca.ulaval.glo4002.uats.steps.contexts.ThreadLocalContext;
 
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
@@ -73,7 +74,7 @@ public class DrugSteps {
 				.contentType(ContentType.JSON).when()
 				.post(String.format("medicaments/dins/"));
 		
-		ThreadLocalMap.putObject(HttpResponseSteps.RESPONSE_OBJECT_KEY, response);
+		ThreadLocalContext.putObject(HttpResponseSteps.RESPONSE_OBJECT_KEY, response);
 	}
 
 	@Then("la liste de médicaments retournée contient ceux-ci")

@@ -13,7 +13,7 @@ public class DemoMain {
 
 	public static void main(String[] args) throws Exception {
 		try {
-			DemoRepositoryFiller.fillRepositories();
+			new DemoRepositoryFiller().fillRepositories();
 		} catch (IOException | BadFileFormatException e) {
 			System.out.println(String.format("Une erreur est survenue lors du remplissage des entrepôts: %s", e.getMessage()));
 			return;

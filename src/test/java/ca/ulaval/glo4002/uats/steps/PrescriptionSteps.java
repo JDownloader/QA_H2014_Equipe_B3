@@ -11,6 +11,7 @@ import org.jbehave.core.annotations.When;
 import org.json.JSONObject;
 
 import ca.ulaval.glo4002.uats.runners.JettyTestRunner;
+import ca.ulaval.glo4002.uats.steps.contexts.ThreadLocalContext;
 import static com.jayway.restassured.RestAssured.*;
 
 import com.jayway.restassured.http.ContentType;
@@ -27,7 +28,7 @@ public class PrescriptionSteps {
 	private static final int RENEWALS_VALUE = 2;
 	private static final String DRUG_NAME_VALUE = "drug_name";
 	private static final int STAFF_MEMBER_VALUE = 3;
-	private static final String DIN_VALUE = "02240541";
+	private static final String ROSALIAC_UV_RICHE_DIN = "02330857";
 	private static final String NON_EXISTING_DIN_VALUE = "025555";
 	private static final int PATIENT_NUMBER_VALUE = 2;
 
@@ -51,7 +52,7 @@ public class PrescriptionSteps {
 	public void createValidPrescriptionWithDin() {
 		prescriptionJson.put(DATE_PARAMETER, DATE_VALUE);
 		prescriptionJson.put(RENEWALS_PARAMETER , RENEWALS_VALUE);
-		prescriptionJson.put(DIN_PARAMETER, DIN_VALUE);
+		prescriptionJson.put(DIN_PARAMETER, ROSALIAC_UV_RICHE_DIN);
 		prescriptionJson.put(STAFF_MEMBER_PARAMETER, STAFF_MEMBER_VALUE);
 	}
 	
@@ -75,7 +76,7 @@ public class PrescriptionSteps {
 				.contentType(ContentType.JSON)
 				.when().post(String.format("patient/%d/prescriptions/", PATIENT_NUMBER_VALUE));
 		
-		ThreadLocalMap.putObject(HttpResponseSteps.RESPONSE_OBJECT_KEY, response);
+		ThreadLocalContext.putObject(HttpResponseSteps.RESPONSE_OBJECT_KEY, response);
 	}
 	
 	@Then("cette prescription est conservée")
