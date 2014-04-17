@@ -28,11 +28,11 @@ public class DrugResource {
 		this.drugService = drugService;
 	}
 
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
+	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response post(DrugSearchDTO drugSearchDTO) throws Exception {
+	public Response get(@QueryParam("nom") String name) throws Exception {
 		try {
+			DrugSearchDTO drugSearchDTO = new DrugSearchDTO(name);
 			List<Drug> drugResults = drugService.searchDrug(drugSearchDTO, new DrugSearchDTOValidator());
 			return Response.status(Status.OK).type(MediaType.APPLICATION_JSON).entity(drugResults).build();
 		} catch (ServiceRequestException e) {

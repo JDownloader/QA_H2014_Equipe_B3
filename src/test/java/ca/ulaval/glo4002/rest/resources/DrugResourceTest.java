@@ -16,6 +16,8 @@ import ca.ulaval.glo4002.services.dto.DrugSearchDTO;
 import ca.ulaval.glo4002.services.dto.validators.DrugSearchDTOValidator;
 
 public class DrugResourceTest {
+	private static final String SAMPLE_DRUG_NAME = "ROSAVIL";
+	
 	private DrugService drugServiceMock;
 	private DrugSearchDTO drugSearchDTOMock;
 	private DrugResource drugResource;
@@ -29,13 +31,13 @@ public class DrugResourceTest {
 
 	@Test
 	public void verifyDrugSearchCallsServiceMethodsCorrectly() throws Exception {
-		drugResource.post(drugSearchDTOMock);
+		drugResource.get(SAMPLE_DRUG_NAME);
 		verify(drugServiceMock).searchDrug(eq(drugSearchDTOMock), any(DrugSearchDTOValidator.class));
 	}
 
 	@Test
 	public void verifyDrugSearchReturnsOkResponse() throws Exception {
-		Response response = drugResource.post(drugSearchDTOMock);
+		Response response = drugResource.get(SAMPLE_DRUG_NAME);
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}
 
@@ -44,7 +46,7 @@ public class DrugResourceTest {
 		doThrow(new ServiceRequestException()).when(drugServiceMock).searchDrug(eq(drugSearchDTOMock), any(DrugSearchDTOValidator.class));
 
 		Response expectedResponse = Response.status(Status.BAD_REQUEST).build();
-		Response receivedResponse = drugResource.post(drugSearchDTOMock);
+		Response receivedResponse = drugResource.get(SAMPLE_DRUG_NAME);
 
 		assertEquals(expectedResponse.getStatus(), receivedResponse.getStatus());
 	}

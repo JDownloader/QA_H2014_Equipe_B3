@@ -8,19 +8,16 @@ import java.util.Arrays;
 
 import org.jbehave.core.annotations.*;
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import static org.junit.Assert.*;
 import ca.ulaval.glo4002.uats.runners.JettyTestRunner;
 import ca.ulaval.glo4002.uats.steps.contexts.ThreadLocalContext;
 
-import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
 
 public class DrugSteps {
 	private static final String DIN_PARAMETER = "din";
-	private static final String KEYWORD_PARAMETER = "nom";
-
+	
 	private static final String KEYWORD_WITH_TWO_CHARACTERS = "AB";
 	private static final String DRUG_NAME_KEYWORD = "ROSALIAC";
 	private static final String NON_EXISTING_DRUG_NAME_KEYWORD = "AHSDSS";
@@ -37,58 +34,57 @@ public class DrugSteps {
 	
 	private Response response;
 	private ArrayList<String> expectedDins;
-	JSONObject drugSearchJson;
+	private String drugName;
 
 	@BeforeScenario
 	public void init() throws ParseException {
 		response = null;
-		drugSearchJson = new JSONObject();
+		drugName = "";
 	}
 
 	@When("je cherche un médicaments avec moins de caractères que la limite requise")
 	public void SearchUsingTwoCharacterKeyword() {
-		drugSearchJson.put(KEYWORD_PARAMETER, KEYWORD_WITH_TWO_CHARACTERS);
-		post(drugSearchJson);
+		drugName = KEYWORD_WITH_TWO_CHARACTERS;
+		doHttpGet();
 	}
 
 	@When("je cherche des médicaments avec un mot-clé qui se retrouve dans quelques noms de médicaments")
 	public void searchUsingDrugNameKeyword() {
-		drugSearchJson.put(KEYWORD_PARAMETER, DRUG_NAME_KEYWORD);
-		post(drugSearchJson);
+		drugName = DRUG_NAME_KEYWORD;
+		doHttpGet();
 		expectedDins = new ArrayList<String>(Arrays.asList(ROSALIAC_UV_RICHE_DIN, ROSALIAC_UV_LEGERE_DIN));
 	}
 	
 	@When("je cherche des médicaments avec un mot-clé qui se retrouve dans quelques descriptions de médicaments")
 	public void searchUsingDescriptionKeyword() {
-		drugSearchJson.put(KEYWORD_PARAMETER, DESCRIPTION_KEYWORD);
-		post(drugSearchJson);
+		drugName = DESCRIPTION_KEYWORD;
+		doHttpGet();
 		expectedDins = new ArrayList<String>(Arrays.asList(MYLAN_NITRO_PATCH_0_8_DIN, NITRO_DUR_0_8_DIN));
 	}
 	
 	@When("je cherche des médicaments avec un mot-clé qui ne se retrouve pas dans aucun nom de médicaments")
 	public void searchUsingNonExistingDrugNameKeyword() {
-		drugSearchJson.put(KEYWORD_PARAMETER, NON_EXISTING_DRUG_NAME_KEYWORD);
-		post(drugSearchJson);
+		drugName = NON_EXISTING_DRUG_NAME_KEYWORD;
+		doHttpGet();
 	}
 	
 	@When("je cherche des médicaments avec un mot-clé qui ne se retrouve pas dans aucune description de médicaments")
 	public void searchUsingNonExistinDescriptionKeyword() {
-		drugSearchJson.put(KEYWORD_PARAMETER, NON_EXISTING_DESCRIPTION_KEYWORD);
-		post(drugSearchJson);
+		drugName = NON_EXISTING_DESCRIPTION_KEYWORD;
+		doHttpGet();
 	}
 	
 	@When("je cherche des médicaments avec un mot-clé qui contient un patron générique")
 	public void searchDrugByDescription() {
-		drugSearchJson.put(KEYWORD_PARAMETER, WILDCARD_KEYWORD);
-		post(drugSearchJson);
+		drugName = WILDCARD_KEYWORD;
+		doHttpGet();
 		expectedDins = new ArrayList<String>(Arrays.asList(ROSALIAC_UV_RICHE_DIN, ROSALIAC_UV_LEGERE_DIN));
 	}
 	
-	private void post(JSONObject jsonObject) {
+	private void doHttpGet() {
 		response = given().port(JettyTestRunner.JETTY_TEST_PORT)
-				.body(drugSearchJson.toString())
-				.contentType(ContentType.JSON).when()
-				.post(String.format("medicaments/dins/"));
+				.when()
+				.get(String.format("medicaments/dins/?nom=%s", drugName));
 		
 		ThreadLocalContext.putObject(HttpResponseSteps.RESPONSE_OBJECT_KEY, response);
 	}
