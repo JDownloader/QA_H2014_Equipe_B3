@@ -1,6 +1,6 @@
 package ca.ulaval.glo4002.services.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.codehaus.jackson.annotate.*;
 
 public class DrugSearchDTO {
 	@JsonProperty("nom")

@@ -9,6 +9,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
+import org.glassfish.jersey.jackson.JacksonFeature;
 
 import ca.ulaval.glo4002.rest.filters.EntityManagerContextFilter;
 
@@ -24,7 +25,7 @@ public class JettyServer {
     }
 
     private void configureRestInterface(ServletContextHandler servletContextHandler) {
-        ServletContainer container = new ServletContainer(new ResourceConfig().packages(REST_PACKAGE));
+        ServletContainer container = new ServletContainer(new ResourceConfig().packages(REST_PACKAGE).register(JacksonFeature.class));
         ServletHolder jerseyServletHolder = new ServletHolder(container);
         servletContextHandler.addServlet(jerseyServletHolder, "/*");
     }

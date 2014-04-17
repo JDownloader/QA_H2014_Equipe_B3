@@ -1,7 +1,8 @@
 package ca.ulaval.glo4002.domain.drug;
 
 import javax.persistence.*;
-import com.fasterxml.jackson.annotation.*;
+
+import org.codehaus.jackson.annotate.*;
 
 @Entity(name = "DRUG")
 @Table(name = "DRUG", indexes = { @Index(name = "NAME_IDX", columnList = "NAME") })

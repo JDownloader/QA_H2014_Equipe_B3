@@ -2,9 +2,9 @@ package ca.ulaval.glo4002.services.dto;
 
 import java.util.Date;
 
-import ca.ulaval.glo4002.domain.drug.Din;
+import org.codehaus.jackson.annotate.*;
 
-import com.fasterxml.jackson.annotation.*;
+import ca.ulaval.glo4002.domain.drug.Din;
 
 public class PrescriptionCreationDTO {
 	public Din din;

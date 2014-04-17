@@ -2,8 +2,7 @@ package ca.ulaval.glo4002.domain.drug;
 
 import java.io.Serializable;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
+import org.codehaus.jackson.annotate.*;
 
 public final class Din implements Serializable {
 	private static final long serialVersionUID = 7369022975618045987L;
