@@ -53,16 +53,16 @@ public class Intervention {
 	}
 	
 	public void addSurgicalTool(SurgicalTool surgicalTool) {
-		checkForAnonymousSurgicalToolViolation(surgicalTool);
+		checkAnonymousSurgicalToolIsAuthorized(surgicalTool);
 		surgicalTools.add(surgicalTool);
 	}
 	
 	public void changeSurgicalToolSerialNumber(SurgicalTool surgicalTool, String newSerialNumber) {
 		surgicalTool.setSerialNumber(newSerialNumber);
-		checkForAnonymousSurgicalToolViolation(surgicalTool);
+		checkAnonymousSurgicalToolIsAuthorized(surgicalTool);
 	}
 	
-	private void checkForAnonymousSurgicalToolViolation(SurgicalTool surgicalTool) {
+	private void checkAnonymousSurgicalToolIsAuthorized(SurgicalTool surgicalTool) {
 		if (surgicalTool.isAnonymous() && Arrays.asList(forbiddenInterventionTypesForAnonymousSurgicalTools).contains(type)) {
 			throw new SurgicalToolRequiresSerialNumberException("Erreur - requiert numéro de série.");
 		}
