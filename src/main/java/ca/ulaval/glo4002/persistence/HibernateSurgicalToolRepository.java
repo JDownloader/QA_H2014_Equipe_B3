@@ -5,7 +5,18 @@ import javax.persistence.*;
 import ca.ulaval.glo4002.domain.surgicaltool.*;
 
 public class HibernateSurgicalToolRepository extends HibernateRepository implements SurgicalToolRepository {
+	
+	private static final String SELECT_SURGICALTOOL_BY_SERIALNUMBER_QUERY = "SELECT s FROM SURGICAL_TOOL s WHERE s.serialNumber = :serialNumber";
+	private static final String SERIAL_NUMBER_PARAMETER = "serialNumber";
+	
+	public HibernateSurgicalToolRepository() {
+		super();
+	}
 
+	public HibernateSurgicalToolRepository(EntityManager entityManager) {
+		super(entityManager);
+	}
+	
 	public void persist(SurgicalTool surgicalTool) {
 		try {
 			entityManager.persist(surgicalTool);
@@ -31,10 +42,8 @@ public class HibernateSurgicalToolRepository extends HibernateRepository impleme
 	}
 	
 	public SurgicalTool getBySerialNumber(String serialNumber) {
-		final String QUERY = "SELECT s FROM SURGICAL_TOOL s WHERE s.serialNumber = :serialNumber";
-		
-		TypedQuery<SurgicalTool> query = entityManager.createQuery(QUERY, SurgicalTool.class)
-				.setParameter("serialNumber", serialNumber);
+		TypedQuery<SurgicalTool> query = entityManager.createQuery(SELECT_SURGICALTOOL_BY_SERIALNUMBER_QUERY, SurgicalTool.class)
+				.setParameter(SERIAL_NUMBER_PARAMETER, serialNumber);
 
 		try {
 			return query.getSingleResult();
@@ -49,13 +58,5 @@ public class HibernateSurgicalToolRepository extends HibernateRepository impleme
 			throw new SurgicalToolNotFoundException(String.format("Impossible de trouver l'instrument avec id '%s'.", id));
 		}
 		return surgicalTool;
-	}
-
-	public HibernateSurgicalToolRepository() {
-		super();
-	}
-
-	public HibernateSurgicalToolRepository(EntityManager entityManager) {
-		super(entityManager);
 	}
 }

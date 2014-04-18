@@ -27,9 +27,9 @@ public class SurgicalToolAssemblerTest {
 
 	@Test
 	public void assemblesSurgicalToolCorrectly() {
-		SurgicalTool assembledPrescription = surgicalToolAssembler.assembleFromDTO(surgicalToolCreationDTO);
-		SurgicalTool expectedprescription = new SurgicalTool(SAMPLE_SERIAL_NUMBER, SAMPLE_TYPE_CODE, SAMPLE_STATUS);
+		SurgicalTool assembledSurgicalTool = surgicalToolAssembler.assembleFromDTO(surgicalToolCreationDTO);
+		SurgicalTool expectedSurgicalTool = new SurgicalTool(SAMPLE_SERIAL_NUMBER, SAMPLE_TYPE_CODE, SAMPLE_STATUS);
 		
-		assertReflectionEquals(expectedprescription, assembledPrescription);
+		assertReflectionEquals(expectedSurgicalTool, assembledSurgicalTool);
 	}
 }
