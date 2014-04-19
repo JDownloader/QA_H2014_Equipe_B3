@@ -6,14 +6,16 @@ import javax.persistence.*;
 
 import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
-import ca.ulaval.glo4002.domain.surgicaltool.*;
+import ca.ulaval.glo4002.domain.surgicaltool.SurgicalTool;
+import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolRequiresSerialNumberException;
 
-@SuppressWarnings("unused") //Suppresses warning for private attributes used for Hibernate persistence
+@SuppressWarnings("unused")
+// Suppresses warning for private attributes used for Hibernate persistence
 @Entity
 public class Intervention {
 
-	private static final InterventionType[] forbiddenInterventionTypesForAnonymousSurgicalTools = {
-			InterventionType.EYE, InterventionType.HEART, InterventionType.MARROW };
+	private static final InterventionType[] forbiddenInterventionTypesForAnonymousSurgicalTools = { InterventionType.EYE, InterventionType.HEART,
+			InterventionType.MARROW };
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,9 +34,8 @@ public class Intervention {
 	protected Intervention() {
 		// Required for Hibernate.
 	}
-	
-	public Intervention(String description, Surgeon surgeon, Date date, String room, 
-						InterventionType type, InterventionStatus status, Patient patient) {
+
+	public Intervention(String description, Surgeon surgeon, Date date, String room, InterventionType type, InterventionStatus status, Patient patient) {
 		this.description = description;
 		this.surgeon = surgeon;
 		this.date = date;
@@ -47,17 +48,17 @@ public class Intervention {
 	public Integer getId() {
 		return this.id;
 	}
-	
+
 	public void addSurgicalTool(SurgicalTool surgicalTool) {
 		checkAnonymousSurgicalToolIsAuthorized(surgicalTool);
 		surgicalTools.add(surgicalTool);
 	}
-	
+
 	public void changeSurgicalToolSerialNumber(SurgicalTool surgicalTool, String newSerialNumber) {
 		surgicalTool.setSerialNumber(newSerialNumber);
 		checkAnonymousSurgicalToolIsAuthorized(surgicalTool);
 	}
-	
+
 	private void checkAnonymousSurgicalToolIsAuthorized(SurgicalTool surgicalTool) {
 		if (surgicalTool.isAnonymous() && Arrays.asList(forbiddenInterventionTypesForAnonymousSurgicalTools).contains(type)) {
 			throw new SurgicalToolRequiresSerialNumberException("Erreur - requiert numéro de série.");
@@ -67,5 +68,5 @@ public class Intervention {
 	public boolean hasSurgicalTool(SurgicalTool surgicalTool) {
 		return surgicalTools.contains(surgicalTool);
 	}
-	
+
 }

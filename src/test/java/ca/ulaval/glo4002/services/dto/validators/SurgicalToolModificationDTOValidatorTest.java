@@ -1,20 +1,18 @@
 package ca.ulaval.glo4002.services.dto.validators;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolStatus;
 import ca.ulaval.glo4002.services.dto.SurgicalToolModificationDTO;
-import ca.ulaval.glo4002.services.dto.validators.DTOValidationException;
-import ca.ulaval.glo4002.services.dto.validators.SurgicalToolModificationDTOValidator;
 
 public class SurgicalToolModificationDTOValidatorTest {
 
 	private static final SurgicalToolStatus SAMPLE_STATUS_PARAMETER = SurgicalToolStatus.UNUSED;
 	private static final String SAMPLE_SERIAL_NUMBER_PARAMETER = "23562543-3635345";
-	
+
 	private SurgicalToolModificationDTO surgicalToolModificationDTO = new SurgicalToolModificationDTO();
 	private SurgicalToolModificationDTOValidator surgicalToolModificationDTOValidator = new SurgicalToolModificationDTOValidator();
 
@@ -32,7 +30,7 @@ public class SurgicalToolModificationDTOValidatorTest {
 			fail("The validator should not have thrown an exception");
 		}
 	}
-	
+
 	@Test
 	public void allowsUnspecifiedSerialNumber() {
 		surgicalToolModificationDTO.newSerialNumber = null;
@@ -43,7 +41,7 @@ public class SurgicalToolModificationDTOValidatorTest {
 			fail("The validator should not have thrown an exception");
 		}
 	}
-	
+
 	@Test(expected = DTOValidationException.class)
 	public void disallowsEmptySerialNumber() {
 		surgicalToolModificationDTO.newSerialNumber = "";

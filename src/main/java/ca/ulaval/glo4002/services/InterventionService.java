@@ -1,23 +1,17 @@
 package ca.ulaval.glo4002.services;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 
 import ca.ulaval.glo4002.domain.intervention.*;
 import ca.ulaval.glo4002.domain.patient.PatientNotFoundException;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
 import ca.ulaval.glo4002.domain.surgicaltool.*;
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
-import ca.ulaval.glo4002.persistence.HibernateInterventionRepository;
-import ca.ulaval.glo4002.persistence.HibernatePatientRepository;
-import ca.ulaval.glo4002.persistence.HibernateSurgicalToolRepository;
+import ca.ulaval.glo4002.persistence.*;
 import ca.ulaval.glo4002.services.assemblers.InterventionAssembler;
-import ca.ulaval.glo4002.services.dto.SurgicalToolCreationDTO;
-import ca.ulaval.glo4002.services.dto.SurgicalToolModificationDTO;
-import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
-import ca.ulaval.glo4002.services.dto.validators.DTOValidationException;
-import ca.ulaval.glo4002.services.dto.validators.InterventionCreationDTOValidator;
-import ca.ulaval.glo4002.services.dto.validators.SurgicalToolCreationDTOValidator;
-import ca.ulaval.glo4002.services.dto.validators.SurgicalToolModificationDTOValidator;
+import ca.ulaval.glo4002.services.dto.*;
+import ca.ulaval.glo4002.services.dto.validators.*;
 
 public class InterventionService {
 	public static final String ERROR_INT001 = "INT001";
@@ -32,7 +26,7 @@ public class InterventionService {
 	private InterventionRepository interventionRepository;
 	private PatientRepository patientRepository;
 	private SurgicalToolRepository surgicalToolRepository;
-	
+
 	public InterventionService() {
 		this.entityManager = new EntityManagerProvider().getEntityManager();
 		this.entityTransaction = entityManager.getTransaction();
@@ -41,7 +35,7 @@ public class InterventionService {
 		this.patientRepository = new HibernatePatientRepository();
 		this.surgicalToolRepository = new HibernateSurgicalToolRepository();
 	}
-	
+
 	public InterventionService(InterventionRepository interventionRepository, PatientRepository patientRepository,
 			SurgicalToolRepository surgicalToolRepository, EntityManager entityManager) {
 		this.interventionRepository = interventionRepository;
@@ -51,13 +45,14 @@ public class InterventionService {
 		this.entityTransaction = entityManager.getTransaction();
 	}
 
-	public Integer createIntervention(InterventionCreationDTO interventionCreationDTO, InterventionCreationDTOValidator interventionCreationDTOValidator, InterventionAssembler interventionAssembler) throws ServiceRequestException {
+	public Integer createIntervention(InterventionCreationDTO interventionCreationDTO, InterventionCreationDTOValidator interventionCreationDTOValidator,
+			InterventionAssembler interventionAssembler) throws ServiceRequestException {
 		try {
 			interventionCreationDTOValidator.validate(interventionCreationDTO);
 			entityTransaction.begin();
 
 			Intervention intervention = doCreateIntervention(interventionCreationDTO, interventionAssembler);
-			
+
 			entityTransaction.commit();
 			return intervention.getId();
 		} catch (DTOValidationException e) {
@@ -70,21 +65,21 @@ public class InterventionService {
 			}
 		}
 	}
-	
+
 	public Intervention doCreateIntervention(InterventionCreationDTO interventionCreationDTO, InterventionAssembler interventionAssembler) {
 		Intervention intervention = interventionAssembler.assembleFromDTO(interventionCreationDTO, patientRepository);
 		interventionRepository.persist(intervention);
 		return intervention;
 	}
 
-
-	public Integer createSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO, SurgicalToolCreationDTOValidator surgicalToolCreationDTOValidator, SurgicalToolFactory surgicalToolAssembler) throws ServiceRequestException {
+	public Integer createSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO, SurgicalToolCreationDTOValidator surgicalToolCreationDTOValidator,
+			SurgicalToolFactory surgicalToolAssembler) throws ServiceRequestException {
 		try {
 			surgicalToolCreationDTOValidator.validate(surgicalToolCreationDTO);
 			entityTransaction.begin();
-			
-			SurgicalTool newSurgicalTool = doCreateSurgicalTool(surgicalToolCreationDTO, surgicalToolAssembler);	
-			
+
+			SurgicalTool newSurgicalTool = doCreateSurgicalTool(surgicalToolCreationDTO, surgicalToolAssembler);
+
 			entityTransaction.commit();
 			return newSurgicalTool.getId();
 		} catch (DTOValidationException | InterventionNotFoundException e) {
@@ -100,7 +95,8 @@ public class InterventionService {
 		}
 	}
 
-	private SurgicalTool doCreateSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO, SurgicalToolFactory surgicalToolAssembler) throws ServiceRequestException {
+	private SurgicalTool doCreateSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO, SurgicalToolFactory surgicalToolAssembler)
+			throws ServiceRequestException {
 		SurgicalTool surgicalTool = surgicalToolAssembler.createFromDTO(surgicalToolCreationDTO);
 		surgicalToolRepository.persist(surgicalTool);
 		Intervention intervention = interventionRepository.getById(surgicalToolCreationDTO.interventionNumber);
@@ -109,13 +105,14 @@ public class InterventionService {
 		return surgicalTool;
 	}
 
-	public void modifySurgicalTool(SurgicalToolModificationDTO surgicalToolModificationDTO, SurgicalToolModificationDTOValidator surgicalToolModificationDTOValidator) throws ServiceRequestException {
+	public void modifySurgicalTool(SurgicalToolModificationDTO surgicalToolModificationDTO,
+			SurgicalToolModificationDTOValidator surgicalToolModificationDTOValidator) throws ServiceRequestException {
 		try {
 			surgicalToolModificationDTOValidator.validate(surgicalToolModificationDTO);
 			entityTransaction.begin();
 
 			doModifySurgicalTool(surgicalToolModificationDTO);
-			
+
 			entityTransaction.commit();
 		} catch (DTOValidationException | SurgicalToolNotFoundException e) {
 			throw new ServiceRequestException(ERROR_INT010, e.getMessage());

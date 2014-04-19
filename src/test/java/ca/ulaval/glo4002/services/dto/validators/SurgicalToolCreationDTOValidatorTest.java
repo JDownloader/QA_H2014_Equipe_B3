@@ -14,40 +14,40 @@ public class SurgicalToolCreationDTOValidatorTest {
 	private static final SurgicalToolStatus SAMPLE_STATUS_PARAMETER = SurgicalToolStatus.UNUSED;
 	private static final String SAMPLE_SERIAL_NUMBER_PARAMETER = "23562543-3635345";
 
-	private SurgicalToolCreationDTO SurgicalToolCreationDTO = new SurgicalToolCreationDTO();
-	private SurgicalToolCreationDTOValidator SurgicalToolCreationDTOValidator = new SurgicalToolCreationDTOValidator();
+	private SurgicalToolCreationDTO surgicalToolCreationDTO = new SurgicalToolCreationDTO();
+	private SurgicalToolCreationDTOValidator surgicalToolCreationDTOValidator = new SurgicalToolCreationDTOValidator();
 
 	@Before
 	public void init() throws Exception {
-		SurgicalToolCreationDTO.typeCode = SAMPLE_TYPECODE_PARAMETER;
-		SurgicalToolCreationDTO.status = SAMPLE_STATUS_PARAMETER;
-		SurgicalToolCreationDTO.serialNumber = SAMPLE_SERIAL_NUMBER_PARAMETER;
+		surgicalToolCreationDTO.typeCode = SAMPLE_TYPECODE_PARAMETER;
+		surgicalToolCreationDTO.status = SAMPLE_STATUS_PARAMETER;
+		surgicalToolCreationDTO.serialNumber = SAMPLE_SERIAL_NUMBER_PARAMETER;
 	}
 
 	@Test
 	public void validatingCompleteRequestDoesNotThrowAnException() {
 		try {
-			SurgicalToolCreationDTOValidator.validate(SurgicalToolCreationDTO);
+			surgicalToolCreationDTOValidator.validate(surgicalToolCreationDTO);
 		} catch (Exception e) {
 			fail("The validator should not have thrown an exception");
 		}
 	}
-	
+
 	@Test
 	public void allowsRequestWithNoSerialNumber() {
-		SurgicalToolCreationDTO.serialNumber = null;
+		surgicalToolCreationDTO.serialNumber = null;
 
 		try {
-			SurgicalToolCreationDTOValidator.validate(SurgicalToolCreationDTO);
+			surgicalToolCreationDTOValidator.validate(surgicalToolCreationDTO);
 		} catch (Exception e) {
 			fail("The validator should not have thrown an exception");
 		}
 	}
-	
+
 	@Test(expected = DTOValidationException.class)
 	public void disallowsEmptyTypeCode() {
-		SurgicalToolCreationDTO.typeCode = null;
+		surgicalToolCreationDTO.typeCode = null;
 
-		SurgicalToolCreationDTOValidator.validate(SurgicalToolCreationDTO);
+		surgicalToolCreationDTOValidator.validate(surgicalToolCreationDTO);
 	}
 }

@@ -12,7 +12,7 @@ public enum InterventionStatus implements Serializable {
 	private InterventionStatus(String value) {
 		this.value = value;
 	}
-	
+
 	@JsonValue
 	public String getValue() {
 		return value;
@@ -25,7 +25,7 @@ public enum InterventionStatus implements Serializable {
 				return interventionStatus;
 			}
 		}
-		
+
 		throw new IllegalArgumentException(String.format("'%s' n'est pas un statut d'intervention valide.", statusName));
 	}
 }

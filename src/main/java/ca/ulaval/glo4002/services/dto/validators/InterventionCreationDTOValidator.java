@@ -5,7 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
 
 public class InterventionCreationDTOValidator {
-	
+
 	public void validate(InterventionCreationDTO interventionCreationDTO) {
 		if (StringUtils.isBlank(interventionCreationDTO.description)) {
 			throw new DTOValidationException("Le paramètre 'description' est requis.");

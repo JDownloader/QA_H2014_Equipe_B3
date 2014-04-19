@@ -21,12 +21,12 @@ public class InterventionCreationDTOValidatorTest {
 	private static final InterventionType SAMPLE_TYPE_PARAMETER = InterventionType.HEART;
 	private static final InterventionStatus SAMPLE_STATUS_PARAMETER = InterventionStatus.PLANNED;
 	private static final Integer SAMPLE_PATIENT_NUMBER_PARAMETER = 3;
-	
+
 	private InterventionCreationDTO interventionCreationDTO = new InterventionCreationDTO();
 	private InterventionCreationDTOValidator interventionCreationDTOValidator = new InterventionCreationDTOValidator();
-	
+
 	@Before
-	public void init() throws ParseException{
+	public void init() throws ParseException {
 		interventionCreationDTO.description = SAMPLE_DESCRIPTION_PARAMETER;
 		interventionCreationDTO.surgeon = SAMPLE_SURGEON_PARAMETER;
 		interventionCreationDTO.date = DateParser.parseDate(SAMPLE_DATE_PARAMETER);
@@ -35,7 +35,7 @@ public class InterventionCreationDTOValidatorTest {
 		interventionCreationDTO.status = SAMPLE_STATUS_PARAMETER;
 		interventionCreationDTO.patientNumber = SAMPLE_PATIENT_NUMBER_PARAMETER;
 	}
-	
+
 	@Test
 	public void validatingCompleteRequestDoesNotThrowAnException() {
 		try {
@@ -44,42 +44,42 @@ public class InterventionCreationDTOValidatorTest {
 			fail("The validator should not have thrown an exception");
 		}
 	}
-	
+
 	@Test
 	public void allowsUnspecifiedStatus() {
 		interventionCreationDTO.status = null;
-		
+
 		try {
 			interventionCreationDTOValidator.validate(interventionCreationDTO);
 		} catch (Exception e) {
 			fail("The validator should not have thrown an exception");
 		}
 	}
-	
+
 	@Test(expected = DTOValidationException.class)
 	public void disallowsUnspecifiedSurgeon() {
 		interventionCreationDTO.surgeon = null;
 		interventionCreationDTOValidator.validate(interventionCreationDTO);
 	}
-	
+
 	@Test(expected = DTOValidationException.class)
 	public void disallowsUnspecifiedDate() {
 		interventionCreationDTO.date = null;
 		interventionCreationDTOValidator.validate(interventionCreationDTO);
 	}
-	
+
 	@Test(expected = DTOValidationException.class)
 	public void disallowsUnspecifiedRoom() {
 		interventionCreationDTO.room = null;
 		interventionCreationDTOValidator.validate(interventionCreationDTO);
 	}
-	
+
 	@Test(expected = DTOValidationException.class)
 	public void disallowsUnspecifiedType() {
 		interventionCreationDTO.type = null;
 		interventionCreationDTOValidator.validate(interventionCreationDTO);
 	}
-	
+
 	@Test(expected = DTOValidationException.class)
 	public void disallowsUnspecifiedPatientNumber() {
 		interventionCreationDTO.patientNumber = null;

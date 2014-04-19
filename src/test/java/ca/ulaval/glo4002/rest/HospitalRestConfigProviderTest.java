@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-
 public class HospitalRestConfigProviderTest {
 	private static final int INT_PREF_DEFAULT_VALUE = 123;
 	private static final int INT_PREF_VALUE = 321;
@@ -35,7 +34,7 @@ public class HospitalRestConfigProviderTest {
 	public void getIntCallsPreferences() {
 		Mockito.doReturn(INT_PREF_VALUE).when(prefsMock).getInt(KEY_PREF_STRING, INT_PREF_DEFAULT_VALUE);
 		configProvider.getInt(KEY_PREF_STRING, INT_PREF_DEFAULT_VALUE);
-		Mockito.verify(prefsMock,Mockito.times(1)).getInt(KEY_PREF_STRING, INT_PREF_DEFAULT_VALUE);
+		Mockito.verify(prefsMock, Mockito.times(1)).getInt(KEY_PREF_STRING, INT_PREF_DEFAULT_VALUE);
 	}
 
 	@Test
@@ -49,6 +48,6 @@ public class HospitalRestConfigProviderTest {
 	public void getStringCallsPreferences() {
 		Mockito.doReturn(STRING_PREF_VALUE).when(prefsMock).get(KEY_PREF_STRING, STRING_PREF_DEFAULT_VALUE);
 		configProvider.getString(KEY_PREF_STRING, STRING_PREF_DEFAULT_VALUE);
-		Mockito.verify(prefsMock,Mockito.times(1)).get(KEY_PREF_STRING, STRING_PREF_DEFAULT_VALUE);
+		Mockito.verify(prefsMock, Mockito.times(1)).get(KEY_PREF_STRING, STRING_PREF_DEFAULT_VALUE);
 	}
 }

@@ -32,7 +32,8 @@ public class PatientResourceTest {
 	@Test
 	public void verifyPrescriptionCreationCallsServiceMethodsCorrectly() throws Exception {
 		createPrescription();
-		verify(patientServiceMock).createPrescription(eq(prescriptionCreationDTOMock), any(PrescriptionCreationDTOValidator.class), any(PrescriptionAssembler.class));
+		verify(patientServiceMock).createPrescription(eq(prescriptionCreationDTOMock), any(PrescriptionCreationDTOValidator.class),
+				any(PrescriptionAssembler.class));
 	}
 
 	@Test
@@ -43,11 +44,12 @@ public class PatientResourceTest {
 
 	@Test
 	public void verifyPrescriptionCreationReturnsBadRequestResponseOnServiceRequestException() throws Exception {
-		doThrow(new ServiceRequestException()).when(patientServiceMock).createPrescription(eq(prescriptionCreationDTOMock), any(PrescriptionCreationDTOValidator.class), any(PrescriptionAssembler.class));
+		doThrow(new ServiceRequestException()).when(patientServiceMock).createPrescription(eq(prescriptionCreationDTOMock),
+				any(PrescriptionCreationDTOValidator.class), any(PrescriptionAssembler.class));
 		Response receivedResponse = createPrescription();
 		assertEquals(Status.BAD_REQUEST.getStatusCode(), receivedResponse.getStatus());
 	}
-	
+
 	private Response createPrescription() throws Exception {
 		return patientResource.createPrescription(prescriptionCreationDTOMock);
 	}

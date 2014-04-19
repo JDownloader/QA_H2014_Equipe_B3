@@ -15,16 +15,16 @@ public class StaffMember implements Serializable {
 	public String getLicenseNumber() {
 		return this.licenseNumber;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return licenseNumber.hashCode();
 	};
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof StaffMember) {
-			return licenseNumber.equals(((StaffMember)obj).licenseNumber);
+			return licenseNumber.equals(((StaffMember) obj).licenseNumber);
 		}
 		return false;
 	};

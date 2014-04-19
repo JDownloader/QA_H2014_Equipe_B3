@@ -8,11 +8,11 @@ public class HospitalRestConfigProvider {
 	private static final String XML_CONFIG_FILE_NAME = "HospitalRestConfig.xml";
 	private static final String XML_CONFIG_FILE_NODE = "HospitalRestConfigProvider";
 	private Preferences prefs;
-	
+
 	private static class HospitalRestConfigProviderHolder {
-        private static final HospitalRestConfigProvider instance = new HospitalRestConfigProvider(Preferences.userRoot().node(XML_CONFIG_FILE_NODE));
-    }
-	
+		private static final HospitalRestConfigProvider INSTANCE = new HospitalRestConfigProvider(Preferences.userRoot().node(XML_CONFIG_FILE_NODE));
+	}
+
 	protected HospitalRestConfigProvider(Preferences prefs) {
 		this.prefs = prefs;
 		try {
@@ -24,7 +24,7 @@ public class HospitalRestConfigProvider {
 	}
 
 	public static HospitalRestConfigProvider getInstance() {
-		return HospitalRestConfigProviderHolder.instance;
+		return HospitalRestConfigProviderHolder.INSTANCE;
 	}
 
 	public int getInt(String key, int def) {
