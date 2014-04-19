@@ -21,7 +21,7 @@ public class HibernateSurgicalToolRepository extends HibernateRepository impleme
 		try {
 			entityManager.persist(surgicalTool);
 		} catch (PersistenceException e) {
-			throw new SurgicalToolExistsException("Erreur - Numéro de série déjà utilisé", e);
+			throw new SurgicalToolExistsException(String.format("Un instrument avec le numéro de série '%s' existe déjà.", surgicalTool.getSerialNumber()), e);
 		}
 	}
 

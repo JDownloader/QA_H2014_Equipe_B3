@@ -5,7 +5,7 @@ import java.io.Serializable;
 import com.fasterxml.jackson.annotation.*;
 
 public enum SurgicalToolStatus implements Serializable {
-	PATIENT_USED("Utilise_Patient"), CONTAMINATED("Souille"), UNUSED("Inutilise");
+	PATIENT_USED("UTILISE_PATIENT"), CONTAMINATED("SOUILLE"), UNUSED("INUTILISE");
 	
 	private String value;
 
@@ -21,7 +21,7 @@ public enum SurgicalToolStatus implements Serializable {
 	@JsonCreator
 	public static SurgicalToolStatus fromString(String statusName) {
 		for (SurgicalToolStatus surgicalToolStatus : SurgicalToolStatus.values()) {
-			if (statusName.compareToIgnoreCase(surgicalToolStatus.getValue()) == 0) {
+			if (statusName.compareTo(surgicalToolStatus.getValue()) == 0) {
 				return surgicalToolStatus;
 			}
 		}

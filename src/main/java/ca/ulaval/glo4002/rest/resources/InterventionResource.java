@@ -9,11 +9,11 @@ import javax.ws.rs.core.Response.Status;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolFactory;
 import ca.ulaval.glo4002.exceptions.RequestParseException;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParser;
 import ca.ulaval.glo4002.rest.utils.BadRequestJsonResponseBuilder;
-import ca.ulaval.glo4002.services.assemblers.SurgicalToolAssembler;
 import ca.ulaval.glo4002.services.dto.BadResponseDTO;
 import ca.ulaval.glo4002.services.dto.SurgicalToolCreationDTO;
 import ca.ulaval.glo4002.services.dto.SurgicalToolModificationDTO;
@@ -76,7 +76,7 @@ public class InterventionResource {
 		try {
 			surgicalToolCreationDTO.interventionNumber = interventionNumber;
 			
-			int surgicalToolId = interventionService.createSurgicalTool(surgicalToolCreationDTO, new SurgicalToolCreationDTOValidator(), new SurgicalToolAssembler());
+			int surgicalToolId = interventionService.createSurgicalTool(surgicalToolCreationDTO, new SurgicalToolCreationDTOValidator(), new SurgicalToolFactory());
 			
 			String newResourceLocation = String.format("/%s/%s", surgicalToolCreationDTO.typeCode, surgicalToolId);
 			return Response.status(Status.CREATED).location(new URI(newResourceLocation)).build();

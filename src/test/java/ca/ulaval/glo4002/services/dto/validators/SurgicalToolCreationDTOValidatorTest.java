@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.rest.dto.validators;
+package ca.ulaval.glo4002.services.dto.validators;
 
 import static org.junit.Assert.*;
 
@@ -7,7 +7,6 @@ import org.junit.Test;
 
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolStatus;
 import ca.ulaval.glo4002.services.dto.SurgicalToolCreationDTO;
-import ca.ulaval.glo4002.services.dto.validators.*;
 
 public class SurgicalToolCreationDTOValidatorTest {
 
@@ -15,13 +14,11 @@ public class SurgicalToolCreationDTOValidatorTest {
 	private static final SurgicalToolStatus SAMPLE_STATUS_PARAMETER = SurgicalToolStatus.UNUSED;
 	private static final String SAMPLE_SERIAL_NUMBER_PARAMETER = "23562543-3635345";
 
-	SurgicalToolCreationDTO SurgicalToolCreationDTO = new SurgicalToolCreationDTO();
-	SurgicalToolCreationDTOValidator SurgicalToolCreationDTOValidator;
+	private SurgicalToolCreationDTO SurgicalToolCreationDTO = new SurgicalToolCreationDTO();
+	private SurgicalToolCreationDTOValidator SurgicalToolCreationDTOValidator = new SurgicalToolCreationDTOValidator();
 
 	@Before
 	public void init() throws Exception {
-		SurgicalToolCreationDTOValidator = new SurgicalToolCreationDTOValidator();
-
 		SurgicalToolCreationDTO.typeCode = SAMPLE_TYPECODE_PARAMETER;
 		SurgicalToolCreationDTO.status = SAMPLE_STATUS_PARAMETER;
 		SurgicalToolCreationDTO.serialNumber = SAMPLE_SERIAL_NUMBER_PARAMETER;

@@ -5,16 +5,16 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class SurgicalToolStatusTest {
-	private static final String INVALID_STATUS = "Inutilwse";
-	private static final String SAMPLE_STATUS = "Inutilise";
+	private static final String INVALID_STATUS = "INUTILESE";
+	private static final String SAMPLE_STATUS = "INUTILISE";
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void throwsIllegalArgumentExceptionOnInvalidStatus() {
+	public void throwsIllegalArgumentExceptionOnInvalidStatusString() {
 		SurgicalToolStatus.fromString(INVALID_STATUS);
 	}
 	
 	@Test
-	public void returnsCorrectSurgicalToolFromValidStatus() {
+	public void returnsCorrectSurgicalToolStatusFromValidStatusString() {
 		SurgicalToolStatus status = SurgicalToolStatus.fromString(SAMPLE_STATUS);
 		assertEquals(SurgicalToolStatus.UNUSED, status);
 	}

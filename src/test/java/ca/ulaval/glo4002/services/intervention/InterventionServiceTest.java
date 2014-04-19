@@ -18,7 +18,6 @@ import ca.ulaval.glo4002.domain.intervention.*;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
 import ca.ulaval.glo4002.domain.surgicaltool.*;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
-import ca.ulaval.glo4002.services.assemblers.SurgicalToolAssembler;
 import ca.ulaval.glo4002.services.dto.SurgicalToolCreationDTO;
 import ca.ulaval.glo4002.services.dto.SurgicalToolModificationDTO;
 import ca.ulaval.glo4002.services.dto.validators.DTOValidationException;
@@ -42,7 +41,7 @@ public class InterventionServiceTest {
 	private SurgicalToolModificationDTO surgicalToolModificationDTO = new SurgicalToolModificationDTO();
 	private SurgicalToolCreationDTOValidator surgicalToolCreationDTOValidatorMock;
 	private SurgicalToolModificationDTOValidator surgicalToolModificationDTOValidatorMock;
-	private SurgicalToolAssembler surgicalToolAssemblerMock;
+	private SurgicalToolFactory surgicalToolAssemblerMock;
 
 	@Before
 	public void init() {
@@ -61,14 +60,14 @@ public class InterventionServiceTest {
 		entityTransactionMock = mock(EntityTransaction.class);
 		surgicalToolCreationDTOValidatorMock = mock(SurgicalToolCreationDTOValidator.class);
 		surgicalToolModificationDTOValidatorMock = mock(SurgicalToolModificationDTOValidator.class);
-		surgicalToolAssemblerMock = mock(SurgicalToolAssembler.class);
+		surgicalToolAssemblerMock = mock(SurgicalToolFactory.class);
 	}
 
 	private void stubMethods() {
 		when(interventionRepositoryMock.getById(anyInt())).thenReturn(interventionMock);
 		when(surgicalToolRepositoryMock.getBySerialNumberOrId(anyString())).thenReturn(surgicalToolMock);
 		when(entityManagerMock.getTransaction()).thenReturn(entityTransactionMock);
-		when(surgicalToolAssemblerMock.assembleFromDTO(surgicalToolCreationDTO)).thenReturn(surgicalToolMock);
+		when(surgicalToolAssemblerMock.createFromDTO(surgicalToolCreationDTO)).thenReturn(surgicalToolMock);
 	}
 	
 	@Test

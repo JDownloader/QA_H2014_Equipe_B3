@@ -13,7 +13,6 @@ import ca.ulaval.glo4002.persistence.HibernateSurgicalToolRepository;
 import ca.ulaval.glo4002.persistence.intervention.HibernateInterventionRepository;
 import ca.ulaval.glo4002.persistence.patient.HibernatePatientRepository;
 import ca.ulaval.glo4002.rest.requestparsers.intervention.CreateInterventionRequestParser;
-import ca.ulaval.glo4002.services.assemblers.SurgicalToolAssembler;
 import ca.ulaval.glo4002.services.dto.SurgicalToolCreationDTO;
 import ca.ulaval.glo4002.services.dto.SurgicalToolModificationDTO;
 import ca.ulaval.glo4002.services.dto.validators.DTOValidationException;
@@ -92,7 +91,7 @@ public class InterventionService {
 	}
 	//TODO: Refactor NewMarie END
 
-	public int createSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO, SurgicalToolCreationDTOValidator surgicalToolCreationDTOValidator, SurgicalToolAssembler surgicalToolAssembler) throws ServiceRequestException {
+	public int createSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO, SurgicalToolCreationDTOValidator surgicalToolCreationDTOValidator, SurgicalToolFactory surgicalToolAssembler) throws ServiceRequestException {
 		try {
 			surgicalToolCreationDTOValidator.validate(surgicalToolCreationDTO);
 			entityTransaction.begin();
@@ -114,8 +113,8 @@ public class InterventionService {
 		}
 	}
 
-	private SurgicalTool doCreateSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO, SurgicalToolAssembler surgicalToolAssembler) throws ServiceRequestException {
-		SurgicalTool surgicalTool = surgicalToolAssembler.assembleFromDTO(surgicalToolCreationDTO);
+	private SurgicalTool doCreateSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO, SurgicalToolFactory surgicalToolAssembler) throws ServiceRequestException {
+		SurgicalTool surgicalTool = surgicalToolAssembler.createFromDTO(surgicalToolCreationDTO);
 		surgicalToolRepository.persist(surgicalTool);
 		Intervention intervention = interventionRepository.getById(surgicalToolCreationDTO.interventionNumber);
 		intervention.addSurgicalTool(surgicalTool);
