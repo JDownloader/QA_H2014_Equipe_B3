@@ -1,7 +1,5 @@
 package ca.ulaval.glo4002.uats.steps;
 
-import static com.jayway.restassured.RestAssured.given;
-
 import java.text.ParseException;
 
 import javax.ws.rs.core.Response.Status;
@@ -14,6 +12,7 @@ import org.json.JSONObject;
 
 import ca.ulaval.glo4002.uats.runners.JettyTestRunner;
 import ca.ulaval.glo4002.uats.steps.contexts.ThreadLocalContext;
+import static com.jayway.restassured.RestAssured.*;
 
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
@@ -70,6 +69,7 @@ public class InterventionSteps {
 	
 	@Given("une intervention avec un statut ou un type invalide")
 	public void createInterventionWithInvalidStatus(){
+		interventionJson.remove(STATUS_PARAMETER);
 		interventionJson.put(STATUS_PARAMETER, INVALID_STATUS_VALUE);
 	}
 	
@@ -80,7 +80,6 @@ public class InterventionSteps {
 	
 	@When("j'ajoute cette intervention au dossier du patient")
 	public void addIntervention() {
-		
 		response = given().port(JettyTestRunner.JETTY_TEST_PORT)
 				.body(interventionJson.toString())
 				.contentType(ContentType.JSON)
