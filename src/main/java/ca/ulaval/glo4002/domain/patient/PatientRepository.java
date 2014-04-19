@@ -2,9 +2,9 @@ package ca.ulaval.glo4002.domain.patient;
 
 public interface PatientRepository {
 
-	void create(Patient patient) throws PatientExistsException;
+	public void persist(Patient patient);
 
-	void update(Patient patient);
+	public void update(Patient patient);
 
-	Patient getById(Integer id) throws PatientNotFoundException;
+	public Patient getById(Integer id);
 }

@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.rest.dto.validators;
+package ca.ulaval.glo4002.services.dto.validators;
 
 import static org.junit.Assert.*;
 
@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import ca.ulaval.glo4002.domain.drug.Din;
 import ca.ulaval.glo4002.services.dto.PrescriptionCreationDTO;
-import ca.ulaval.glo4002.services.dto.validators.*;
 import ca.ulaval.glo4002.utils.DateParser;
 
 public class PrescriptionCreationDTOValidatorTest {
@@ -21,17 +20,11 @@ public class PrescriptionCreationDTOValidatorTest {
 	private static final int SAMPLE_PATIENT_NUMBER_PARAMETER = 3;
 	private static final int MIN_RENEWALS_PARAMETER = 0;
 
-	PrescriptionCreationDTO prescriptionCreationDTO = new PrescriptionCreationDTO();
-	PrescriptionCreationDTOValidator prescriptionCreationDTOValidator;
+	private PrescriptionCreationDTO prescriptionCreationDTO = new PrescriptionCreationDTO();
+	private PrescriptionCreationDTOValidator prescriptionCreationDTOValidator = new PrescriptionCreationDTOValidator();
 	
 	@Before
 	public void init() throws ParseException {
-		prescriptionCreationDTOValidator = new PrescriptionCreationDTOValidator();
-		
-		setupDTO();
-	}
-
-	private void setupDTO() throws ParseException {
 		prescriptionCreationDTO.staffMember = SAMPLE_STAFF_MEMBER_PARAMETER;
 		prescriptionCreationDTO.date = DateParser.parseDate(SAMPLE_DATE_PARAMETER);
 		prescriptionCreationDTO.renewals = SAMPLE_RENEWALS_PARAMETER;

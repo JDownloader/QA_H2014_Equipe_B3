@@ -64,9 +64,9 @@ public class PrescriptionAssemblerTest {
 		prescriptionCreationDTO.din = null;
 		
 		Prescription assembledPrescription = prescriptionAssembler.assembleFromDTO(prescriptionCreationDTO, drugRepositoryMock);
-		Prescription expectedprescription = new Prescription(SAMPLE_DRUG_NAME_PARAMETER, SAMPLE_RENEWALS_PARAMETER, 
+		Prescription expectedPrescription = new Prescription(SAMPLE_DRUG_NAME_PARAMETER, SAMPLE_RENEWALS_PARAMETER, 
 				DateParser.parseDate(SAMPLE_DATE_PARAMETER), new StaffMember(SAMPLE_STAFF_MEMBER_PARAMETER));
 		
-		assertReflectionEquals(expectedprescription, assembledPrescription);
+		assertReflectionEquals(expectedPrescription, assembledPrescription);
 	}
 }

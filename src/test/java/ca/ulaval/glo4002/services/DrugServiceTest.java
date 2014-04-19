@@ -57,14 +57,14 @@ public class DrugServiceTest {
 	}
 
 	@Test
-	public void verifySearchDrugCallsCorrectRepositoryMethods() throws Exception {
+	public void verifyDrugSearchCallsCorrectRepositoryMethods() throws Exception {
 		drugService.searchDrug(drugSearchDTO, drugSearchDToValidatorMock);
 
 		verify(drugRepositoryMock).search(SAMPLE_DRUG_NAME);
 	}
 
 	@Test
-	public void verifyAddPrescriptionBeginsAndCommitsTransaction() throws Exception {
+	public void verifyDrugSearchBeginsAndCommitsTransaction() throws Exception {
 		drugService.searchDrug(drugSearchDTO, drugSearchDToValidatorMock);
 		InOrder inOrder = inOrder(entityTransactionMock);
 
@@ -73,7 +73,7 @@ public class DrugServiceTest {
 	}
 	
 	@Test
-	public void verifyAddPrescriptionRollsbackOnException() throws Exception {
+	public void verifyDrugSearchRollsbackOnException() throws Exception {
 		when(entityTransactionMock.isActive()).thenReturn(true);
 		when(drugRepositoryMock.search(anyString())).thenThrow(new EntityNotFoundException());
 
@@ -86,7 +86,7 @@ public class DrugServiceTest {
 	}
 	
 	@Test
-	public void verifyAddPrescriptionDoesNotRollbackOnSuccessfulCommit() throws Exception {
+	public void verifyDrugSearchDoesNotRollbackOnSuccessfulCommit() throws Exception {
 		when(entityTransactionMock.isActive()).thenReturn(false);
 
 		drugService.searchDrug(drugSearchDTO, drugSearchDToValidatorMock);

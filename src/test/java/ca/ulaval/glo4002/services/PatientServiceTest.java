@@ -1,5 +1,6 @@
 package ca.ulaval.glo4002.services;
 
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
@@ -22,6 +23,7 @@ import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.services.PatientService;
 import ca.ulaval.glo4002.services.assemblers.PrescriptionAssembler;
 import ca.ulaval.glo4002.services.dto.PrescriptionCreationDTO;
+import ca.ulaval.glo4002.services.dto.validators.DTOValidationException;
 import ca.ulaval.glo4002.services.dto.validators.PrescriptionCreationDTOValidator;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -65,8 +67,8 @@ public class PatientServiceTest {
 	}
 
 	@Test
-	public void verifyAddPrescriptionCallsCorrectRepositoryMethods() throws Exception {
-		patientService.createPrescription(prescriptionCreationDTO, prescriptionCreationDTOValidatorMock, prescriptionAssemblerMock);
+	public void verifyPrescriptionCreationCallsCorrectRepositoryMethods() throws Exception {
+		createPrescription();
 		
 		verify(prescriptionRepositoryMock).persist(any(Prescription.class));
 		verify(patientRepositoryMock).getById(anyInt());
@@ -74,15 +76,15 @@ public class PatientServiceTest {
 	}
 	
 	@Test
-	public void verifyAddPrescriptionCallsCorrectDomainMethods() throws Exception {
+	public void verifyPrescriptionCreationCallsCorrectDomainMethods() throws Exception {
 		when(prescriptionAssemblerMock.assembleFromDTO(prescriptionCreationDTO, drugRepositoryMock)).thenReturn(prescriptionMock);
-		patientService.createPrescription(prescriptionCreationDTO, prescriptionCreationDTOValidatorMock, prescriptionAssemblerMock);
+		createPrescription();
 		verify(patientMock).addPrescription(prescriptionMock);
 	}
 
 	@Test
-	public void verifyAddPrescriptionBeginsAndCommitsTransaction() throws Exception {
-		patientService.createPrescription(prescriptionCreationDTO, prescriptionCreationDTOValidatorMock, prescriptionAssemblerMock);
+	public void verifyPrescriptionCreationBeginsAndCommitsTransaction() throws Exception {
+		createPrescription();
 		InOrder inOrder = inOrder(entityTransactionMock);
 
 		inOrder.verify(entityTransactionMock).begin();
@@ -90,12 +92,12 @@ public class PatientServiceTest {
 	}
 	
 	@Test
-	public void verifyAddPrescriptionRollsbackOnException() throws Exception {
+	public void verifyPrescriptionCreationRollsbackOnException() throws Exception {
 		when(entityTransactionMock.isActive()).thenReturn(true);
 		when(patientRepositoryMock.getById(anyInt())).thenThrow(new PatientNotFoundException());
 
 		try {
-			patientService.createPrescription(prescriptionCreationDTO, prescriptionCreationDTOValidatorMock, prescriptionAssemblerMock);
+			createPrescription();
 		} catch(ServiceRequestException e) {
 			verify(entityTransactionMock).rollback();
 			return;
@@ -103,12 +105,49 @@ public class PatientServiceTest {
 	}
 	
 	@Test
-	public void verifyAddPrescriptionDoesNotRollbackOnSuccessfulCommit() throws Exception {
+	public void verifyPrescriptionCreationDoesNotRollbackOnSuccessfulCommit() throws Exception {
 		when(entityTransactionMock.isActive()).thenReturn(false);
 
-		patientService.createPrescription(prescriptionCreationDTO, prescriptionCreationDTOValidatorMock, prescriptionAssemblerMock);
+		createPrescription();
 		
 		verify(entityTransactionMock).commit();
 		verify(entityTransactionMock, never()).rollback();
+	}
+	
+	@Test
+	public void verifyPrescriptionCreationThrowsServiceExceptionOnDTOValidationException() {
+		doThrow(new DTOValidationException()).when(prescriptionCreationDTOValidatorMock).validate(any(PrescriptionCreationDTO.class));
+		try {
+			createPrescription();
+			fail("An exception was expected.");
+		} catch(ServiceRequestException e) {
+			assertEquals(PatientService.ERROR_PRES001, e.getInternalCode());
+		}
+	}
+	
+	@Test
+	public void verifyPrescriptionCreationThrowsServiceExceptionOnPatientNotFoundException() {
+		when(patientRepositoryMock.getById(anyInt())).thenThrow(new PatientNotFoundException());
+		try {
+			createPrescription();
+			fail("An exception was expected.");
+		} catch(ServiceRequestException e) {
+			assertEquals(PatientService.ERROR_PRES001, e.getInternalCode());
+		}
+	}
+	
+	@Test
+	public void verifyPrescriptionCreationThrowsServiceExceptionOnDrugNotNotFoundException() {
+		when(prescriptionAssemblerMock.assembleFromDTO(prescriptionCreationDTO, drugRepositoryMock)).thenThrow(new DrugNotFoundException());
+		try {
+			createPrescription();
+			fail("An exception was expected.");
+		} catch(ServiceRequestException e) {
+			assertEquals(PatientService.ERROR_PRES001, e.getInternalCode());
+		}
+	}
+	
+	private void createPrescription() {
+		patientService.createPrescription(prescriptionCreationDTO, prescriptionCreationDTOValidatorMock, prescriptionAssemblerMock);
 	}
 }

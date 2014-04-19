@@ -2,14 +2,11 @@ package ca.ulaval.glo4002.domain.drug;
 
 import java.util.List;
 
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
-
 public interface DrugRepository {
 
-	void create(Drug drug) throws EntityExistsException;
+	public void persist(Drug drug);
 
-	Drug getByDin(Din din) throws EntityNotFoundException;
+	public Drug getByDin(Din din);
 
-	List<Drug> search(String name);
+	public List<Drug> search(String name);
 }

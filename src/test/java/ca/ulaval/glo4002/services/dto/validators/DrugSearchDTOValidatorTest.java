@@ -1,25 +1,18 @@
-package ca.ulaval.glo4002.rest.dto.validators;
+package ca.ulaval.glo4002.services.dto.validators;
 
 import static org.junit.Assert.*;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import ca.ulaval.glo4002.services.dto.DrugSearchDTO;
-import ca.ulaval.glo4002.services.dto.validators.*;
 
 public class DrugSearchDTOValidatorTest {
 	private static final String SAMPLE_FOUR_LETTER_PARAMETER = "abcd";
 	private static final String SAMPLE_THREE_LETTER_PARAMETER = "abc";
 	private static final String SAMPLE_TWO_LETTER_PARAMETER = "ab ";
 
-	DrugSearchDTO drugSearchDTO = new DrugSearchDTO();
-	DrugSearchDTOValidator drugSearchDTOValidator;
-	
-	@Before
-	public void init() {
-		drugSearchDTOValidator = new DrugSearchDTOValidator();
-	}
+	private DrugSearchDTO drugSearchDTO = new DrugSearchDTO();
+	private DrugSearchDTOValidator drugSearchDTOValidator = new DrugSearchDTOValidator();
 
 	@Test
 	public void allowsFourLetterDrugName() {
