@@ -17,11 +17,6 @@ public final class Din implements Serializable {
 	public String getDin() {
 		return din;
 	}
-	
-	@SuppressWarnings("unused") //TODO: Check if really required
-	private String setDin() {
-		return din;
-	}
 
 	@Override
 	public String toString() {

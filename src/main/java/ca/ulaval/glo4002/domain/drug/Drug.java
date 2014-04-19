@@ -11,10 +11,15 @@ public class Drug {
 	private Din din;
 	@JsonProperty("nom")
 	private String name;
+	@JsonProperty("description")
 	private String description;
 
 	protected Drug() {
 		// Required for Hibernate.
+	}
+	
+	public Din getDin() {
+		return din;
 	}
 	
 	public Drug(Din din, String name, String description) {
@@ -22,17 +27,4 @@ public class Drug {
 		this.name = name;
 		this.description = description;
 	}
-	
-	public Din getDin() {
-		return this.din;
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public String getDescription() {
-		return this.description;
-	}
-
 }

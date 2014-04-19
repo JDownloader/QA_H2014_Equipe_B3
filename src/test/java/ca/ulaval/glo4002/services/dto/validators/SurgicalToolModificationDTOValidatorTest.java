@@ -51,15 +51,11 @@ public class SurgicalToolModificationDTOValidatorTest {
 		surgicalToolModificationDTOValidator.validate(surgicalToolModificationDTO);
 	}
 
-	@Test
-	public void allowsUnspecifiedStatus() {
+	@Test(expected = DTOValidationException.class)
+	public void disallowsUnspecifiedStatus() {
 		surgicalToolModificationDTO.newStatus = null;
 
-		try {
-			surgicalToolModificationDTOValidator.validate(surgicalToolModificationDTO);
-		} catch (Exception e) {
-			fail("The validator should not have thrown an exception");
-		}
+		surgicalToolModificationDTOValidator.validate(surgicalToolModificationDTO);
 	}
 
 	@Test(expected = DTOValidationException.class)
