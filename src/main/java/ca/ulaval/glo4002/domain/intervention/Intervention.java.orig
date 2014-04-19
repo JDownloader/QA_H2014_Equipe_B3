@@ -8,8 +8,9 @@ import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
 import ca.ulaval.glo4002.domain.surgicaltool.*;
 
+<<<<<<< HEAD
 @SuppressWarnings("unused") //Suppresses warning for private attributes used for Hibernate persistence
-@Entity
+@Entity(name = "INTERVENTION")
 public class Intervention {
 
 	private static final InterventionType[] forbiddenInterventionTypesForAnonymousSurgicalTools = {
@@ -18,6 +19,15 @@ public class Intervention {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+
+=======
+@Entity
+public class Intervention {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+>>>>>>> RéusinageUS2
 	private String description;
 	private Surgeon surgeon;
 	private Date date;
@@ -26,12 +36,28 @@ public class Intervention {
 	private InterventionStatus status;
 	@ManyToOne()
 	private Patient patient;
+<<<<<<< HEAD
+
+=======
+>>>>>>> RéusinageUS2
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<SurgicalTool> surgicalTools = new ArrayList<SurgicalTool>();
 
 	protected Intervention() {
 		// Required for Hibernate.
 	}
+<<<<<<< HEAD
+
+	//TODO: Refactor NewMarie BEGIN
+	public Intervention(InterventionBuilder builder) {
+		this.description = builder.description;
+		this.surgeon = builder.surgeon;
+		this.date = builder.date;
+		this.room = builder.room;
+		this.type = builder.type;
+		this.patient = builder.patient;
+		this.status = builder.status;
+=======
 	
 	public Intervention(String description, Surgeon surgeon, Date date, String room, 
 						InterventionType type, InterventionStatus status, Patient patient) {
@@ -42,7 +68,9 @@ public class Intervention {
 		this.type = type;
 		this.status = status;
 		this.patient = patient;
+>>>>>>> RéusinageUS2
 	}
+	//TODO: Refactor NewMarie END
 
 	public int getId() {
 		return this.id;

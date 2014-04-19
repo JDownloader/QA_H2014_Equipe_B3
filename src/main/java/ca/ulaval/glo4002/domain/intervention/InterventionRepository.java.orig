@@ -1,0 +1,18 @@
+package ca.ulaval.glo4002.domain.intervention;
+
+<<<<<<< HEAD
+import javax.persistence.EntityExistsException;
+
+=======
+>>>>>>> RéusinageUS2
+public interface InterventionRepository {
+	public void persist(Intervention intervention);
+
+	public void update(Intervention intervention);
+
+<<<<<<< HEAD
+	Intervention getById(Integer id) throws InterventionNotFoundException;
+=======
+	public Intervention getById(int id);
+>>>>>>> RéusinageUS2
+}

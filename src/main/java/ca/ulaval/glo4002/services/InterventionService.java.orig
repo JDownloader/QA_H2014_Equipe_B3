@@ -1,14 +1,14 @@
-package ca.ulaval.glo4002.services.intervention;
+package ca.ulaval.glo4002.services;
 
 import javax.persistence.*;
 
 import ca.ulaval.glo4002.domain.intervention.*;
-import ca.ulaval.glo4002.domain.patient.Patient;
+import ca.ulaval.glo4002.domain.patient.PatientNotFoundException;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
-import ca.ulaval.glo4002.domain.staff.Surgeon;
 import ca.ulaval.glo4002.domain.surgicaltool.*;
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
+<<<<<<< HEAD:src/main/java/ca/ulaval/glo4002/services/intervention/InterventionService.java
 import ca.ulaval.glo4002.persistence.HibernateSurgicalToolRepository;
 import ca.ulaval.glo4002.persistence.intervention.HibernateInterventionRepository;
 import ca.ulaval.glo4002.persistence.patient.HibernatePatientRepository;
@@ -36,10 +36,42 @@ public class InterventionService {
 		this.entityManager = new EntityManagerProvider().getEntityManager();
 		this.entityTransaction = entityManager.getTransaction();
 
+=======
+import ca.ulaval.glo4002.persistence.HibernateInterventionRepository;
+import ca.ulaval.glo4002.persistence.HibernatePatientRepository;
+import ca.ulaval.glo4002.persistence.surgicaltool.HibernateSurgicalToolRepository;
+import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.*;
+import ca.ulaval.glo4002.services.assemblers.InterventionAssembler;
+import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
+import ca.ulaval.glo4002.services.dto.validators.DTOValidationException;
+import ca.ulaval.glo4002.services.dto.validators.InterventionCreationDTOValidator;
+
+public class InterventionService {
+	public static final String ERROR_INT001 = "INT001";
+	public static final String ERROR_INT002 = "INT002";
+	private static final String ERROR_SERVICE_REQUEST_EXCEPTION_INT010 = "INT010";
+	private static final String ERROR_SERVICE_REQUEST_EXCEPTION_INT011 = "INT011";
+	private static final String ERROR_SERVICE_REQUEST_EXCEPTION_INT012 = "INT012";
+
+	private static final InterventionType[] forbiddenInterventionTypesForAnonymousSurgicalTools = { InterventionType.EYE, InterventionType.HEART,
+			InterventionType.MARROW };
+	
+	private EntityManager entityManager;
+	private EntityTransaction entityTransaction;
+	private InterventionRepository interventionRepository;
+	private PatientRepository patientRepository;
+	private SurgicalToolRepository surgicalToolRepository;
+	
+	public InterventionService() {
+		this.entityManager = new EntityManagerProvider().getEntityManager();
+		this.entityTransaction = entityManager.getTransaction();
+		
+>>>>>>> RéusinageUS2:src/main/java/ca/ulaval/glo4002/services/InterventionService.java
 		this.interventionRepository = new HibernateInterventionRepository();
 		this.patientRepository = new HibernatePatientRepository();
 		this.surgicalToolRepository = new HibernateSurgicalToolRepository();
 	}
+<<<<<<< HEAD:src/main/java/ca/ulaval/glo4002/services/intervention/InterventionService.java
 
 	public InterventionService(InterventionRepository interventionRepository, PatientRepository patientRepository,
 			SurgicalToolRepository surgicalToolRepository, EntityManager entityManager) {
@@ -53,18 +85,38 @@ public class InterventionService {
 	//TODO: Refactor NewMarie BEGIN
 	public int createIntervention(CreateInterventionRequestParser requestParser) throws ServiceRequestException,
 			Exception {
+=======
+	
+	public InterventionService(InterventionRepository interventionRepository, PatientRepository patientRepository, SurgicalToolRepository surgicalToolRepository, EntityManager entityManager) {
+		this.entityManager = entityManager;
+		this.entityTransaction = entityManager.getTransaction();
+		
+		this.interventionRepository = interventionRepository;
+		this.patientRepository = patientRepository;
+		this.surgicalToolRepository = surgicalToolRepository;
+	}
+
+	public int createIntervention(InterventionCreationDTO interventionCreationDTO, InterventionCreationDTOValidator interventionCreationDTOValidator, InterventionAssembler interventionAssembler) {
+>>>>>>> RéusinageUS2:src/main/java/ca/ulaval/glo4002/services/InterventionService.java
 		try {
+			interventionCreationDTOValidator.validate(interventionCreationDTO);
 			entityTransaction.begin();
-			Intervention newIntervention = doCreateIntervention(requestParser);
+
+			Intervention intervention = doCreateIntervention(interventionCreationDTO, interventionAssembler);
+			
 			entityTransaction.commit();
-			return newIntervention.getId();
-		} catch (Exception e) {
+			return intervention.getId();
+		} catch (DTOValidationException e) {
+			throw new ServiceRequestException(ERROR_INT001, e.getMessage());
+		} catch (PatientNotFoundException e) {
+			throw new ServiceRequestException(ERROR_INT002, e.getMessage());
+		} finally {
 			if (entityTransaction.isActive()) {
 				entityTransaction.rollback();
 			}
-			throw e;
 		}
 	}
+<<<<<<< HEAD:src/main/java/ca/ulaval/glo4002/services/intervention/InterventionService.java
 
 	protected Intervention doCreateIntervention(CreateInterventionRequestParser requestParser)
 			throws ServiceRequestException {
@@ -92,6 +144,16 @@ public class InterventionService {
 	//TODO: Refactor NewMarie END
 
 	public int createSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO, SurgicalToolCreationDTOValidator surgicalToolCreationDTOValidator, SurgicalToolFactory surgicalToolAssembler) throws ServiceRequestException {
+=======
+	
+	public Intervention doCreateIntervention(InterventionCreationDTO interventionCreationDTO, InterventionAssembler interventionAssembler) {
+		Intervention intervention = interventionAssembler.assembleFromDTO(interventionCreationDTO, patientRepository);
+		interventionRepository.persist(intervention);
+		return intervention;
+	}
+
+	public int createSurgicalTool(CreateSurgicalToolRequestParser requestParser) throws ServiceRequestException, Exception {
+>>>>>>> RéusinageUS2:src/main/java/ca/ulaval/glo4002/services/InterventionService.java
 		try {
 			surgicalToolCreationDTOValidator.validate(surgicalToolCreationDTO);
 			entityTransaction.begin();

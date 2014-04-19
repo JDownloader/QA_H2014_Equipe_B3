@@ -2,29 +2,29 @@ package ca.ulaval.glo4002.domain.intervention;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum InterventionType implements Serializable {
-	OEIL("Oeil"), COEUR("Coeur"), MOELLE("Moelle"), ONCOLOGIQUE("Oncologique"), AUTRE("Autre");
+	EYE("OEIL"), HEART("COEUR"), MARROW("MOELLE"), ONCOLOGIC("ONCOLOGIQUE"), OTHER("AUTRE");
 	private String value;
 
 	private InterventionType(String value) {
 		this.value = value;
 	}
 
-	@Override
-	public String toString() {
-		return super.toString();
-	}
-
+	@JsonValue
 	public String getValue() {
 		return value;
 	}
 
+	@JsonCreator
 	public static InterventionType fromString(String type) {
 		for (InterventionType interventionType : InterventionType.values()) {
-			if (type.compareToIgnoreCase(interventionType.getValue()) == 0) {
+			if (type.compareTo(interventionType.getValue()) == 0) {
 				return interventionType;
 			}
 		}
-		throw new IllegalArgumentException(String.format("'%s' is not a valid value for enumeration InterventionStatus.", type));
+		throw new IllegalArgumentException(String.format("'%s' n'est pas un type d'intervention valide.", type));
 	}
 }

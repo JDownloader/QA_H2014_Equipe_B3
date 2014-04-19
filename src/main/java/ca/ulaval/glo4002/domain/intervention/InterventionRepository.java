@@ -1,11 +1,9 @@
 package ca.ulaval.glo4002.domain.intervention;
 
-import javax.persistence.EntityExistsException;
-
 public interface InterventionRepository {
-	void create(Intervention intervention) throws EntityExistsException;
+	public void persist(Intervention intervention);
 
-	void update(Intervention intervention);
+	public void update(Intervention intervention);
 
-	Intervention getById(Integer id) throws InterventionNotFoundException;
+	public Intervention getById(Integer id);
 }
