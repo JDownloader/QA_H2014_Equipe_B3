@@ -35,7 +35,7 @@ public class DrugSearchDTOValidatorTest {
 			fail("The validator should not have thrown an exception");
 		}
 	}
-	
+
 	@Test(expected = DTOValidationException.class)
 	public void disallowsTwoLetterDrugName() throws Exception {
 		drugSearchDTO.name = SAMPLE_TWO_LETTER_PARAMETER;
@@ -44,7 +44,7 @@ public class DrugSearchDTOValidatorTest {
 	}
 
 	@Test(expected = DTOValidationException.class)
-	public void disallowsEmptyDrugName(){
+	public void disallowsEmptyDrugName() {
 		drugSearchDTO.name = "";
 
 		drugSearchDTOValidator.validate(drugSearchDTO);

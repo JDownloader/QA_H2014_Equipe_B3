@@ -4,9 +4,9 @@ import java.util.List;
 
 public interface DrugRepository {
 
-	public void persist(Drug drug);
+	void persist(Drug drug);
 
-	public Drug getByDin(Din din);
+	Drug getByDin(Din din);
 
-	public List<Drug> search(String name);
+	List<Drug> search(String name);
 }
