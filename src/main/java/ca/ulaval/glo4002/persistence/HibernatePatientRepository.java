@@ -21,7 +21,7 @@ public class HibernatePatientRepository extends HibernateRepository implements P
 		try {
 			entityManager.persist(patient);
 		} catch (EntityExistsException e) {
-			throw new PatientExistsException("Ce patient existe déjà.", e);
+			throw new PatientExistsException(String.format("Un patient avec l'id '%s' existe déjà.", patient.getId()), e);
 		}
 	}
 

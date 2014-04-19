@@ -23,6 +23,10 @@ public class Patient {
 	public Patient(int id) {
 		this.id = id;
 	}
+	
+	public int getId() {
+		return id;
+	}
 
 	public void addPrescription(Prescription prescription) {
 		prescriptions.add(prescription);

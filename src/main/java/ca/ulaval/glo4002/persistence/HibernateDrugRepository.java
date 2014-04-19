@@ -8,6 +8,9 @@ import ca.ulaval.glo4002.domain.drug.*;
 
 public class HibernateDrugRepository extends HibernateRepository implements DrugRepository {
 
+	public static final String SELECT_DRUG_BY_KEYWORDS_QUERY = "SELECT d FROM DRUG d WHERE UPPER(d.name) LIKE :keywords OR UPPER(d.description) LIKE :keywords";
+	public static final String KEYWORDS_PARAMETER = "keywords";
+	
 	public HibernateDrugRepository() {
 		super();
 	}
@@ -35,10 +38,8 @@ public class HibernateDrugRepository extends HibernateRepository implements Drug
 	public List<Drug> search(String keywords) {
 		String keywordsWithWildcards = String.format("%%%s%%", keywords.replace(' ', '%'));
 
-		final String DRUG_SEARCH_QUERY = "SELECT d FROM DRUG d WHERE UPPER(d.name) LIKE :keywords OR UPPER(d.description) LIKE :keywords";
-
-		TypedQuery<Drug> query = entityManager.createQuery(DRUG_SEARCH_QUERY, Drug.class)
-				.setParameter("keywords", keywordsWithWildcards.toUpperCase());
+		TypedQuery<Drug> query = entityManager.createQuery(SELECT_DRUG_BY_KEYWORDS_QUERY, Drug.class)
+				.setParameter(KEYWORDS_PARAMETER, keywordsWithWildcards.toUpperCase());
 
 		return query.getResultList();
 	}
