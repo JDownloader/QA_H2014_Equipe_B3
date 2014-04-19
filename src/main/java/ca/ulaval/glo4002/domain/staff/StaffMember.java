@@ -2,17 +2,17 @@ package ca.ulaval.glo4002.domain.staff;
 
 import java.io.Serializable;
 
-public class StaffMember implements Serializable { //TODO: Make final
+public class StaffMember implements Serializable {
 
 	private static final long serialVersionUID = -7716343327245896940L;
 
-	private Integer licenseNumber; //TODO: Change to String
+	private String licenseNumber;
 
-	public StaffMember(Integer licenseNumber) {
+	public StaffMember(String licenseNumber) {
 		this.licenseNumber = licenseNumber;
 	}
 
-	public Integer getLicenseNumber() {
+	public String getLicenseNumber() {
 		return this.licenseNumber;
 	}
 	

@@ -14,7 +14,7 @@ import ca.ulaval.glo4002.utils.DateParser;
 
 public class InterventionFactoryTest {
 	private static final String SAMPLE_DESCRIPTION_PARAMETER = "description";
-	private static final Surgeon SAMPLE_SURGEON_PARAMETER = new Surgeon(1);
+	private static final Surgeon SAMPLE_SURGEON_PARAMETER = new Surgeon("1");
 	private static final String SAMPLE_DATE_PARAMETER = "2001-07-04T12:08:56";
 	private static final String SAMPLE_ROOM_PARAMETER = "room";
 	private static final InterventionType SAMPLE_TYPE_PARAMETER = InterventionType.HEART;

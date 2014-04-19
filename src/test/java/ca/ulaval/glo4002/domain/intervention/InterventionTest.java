@@ -20,7 +20,7 @@ public class InterventionTest {
 	private static final String SAMPLE_ROOM = "room";
 	private static final InterventionStatus SAMPLE_STATUS = InterventionStatus.IN_PROGRESS;
 	private static final InterventionType SAMPLE_TYPE = InterventionType.MARROW;
-	private static final Surgeon SAMPLE_SURGEON = new Surgeon(3);
+	private static final Surgeon SAMPLE_SURGEON = new Surgeon("3");
 	private static final String SAMPLE_SERIAL_NUMBER = "serialnumber";
 	private static final Patient SAMPLE_PATIENT = new Patient(3);
 

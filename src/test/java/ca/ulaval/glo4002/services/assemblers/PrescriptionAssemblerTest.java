@@ -19,7 +19,7 @@ public class PrescriptionAssemblerTest {
 	private static final String SAMPLE_DATE_PARAMETER = "2001-07-04T12:08:56";
 	private static final int SAMPLE_RENEWALS_PARAMETER = 2;
 	private static final String SAMPLE_DRUG_NAME_PARAMETER = "drug_name";
-	private static final int SAMPLE_STAFF_MEMBER_PARAMETER = 3;
+	private static final String SAMPLE_STAFF_MEMBER_PARAMETER = "3";
 	private static final Din SAMPLE_DIN_PARAMETER = new Din("098423");
 	
 	PrescriptionAssembler prescriptionAssembler = new PrescriptionAssembler();
@@ -40,18 +40,17 @@ public class PrescriptionAssemblerTest {
 		prescriptionCreationDTO.date = DateParser.parseDate(SAMPLE_DATE_PARAMETER);
 		prescriptionCreationDTO.renewals = SAMPLE_RENEWALS_PARAMETER;
 		prescriptionCreationDTO.drugName = SAMPLE_DRUG_NAME_PARAMETER;
+		prescriptionCreationDTO.din = SAMPLE_DIN_PARAMETER;
 	}
 	
 	@Test
 	public void callsCorrectRepositoryMethod() {
 		prescriptionAssembler.assembleFromDTO(prescriptionCreationDTO, drugRepositoryMock);
-		verify(drugRepositoryMock.getByDin(any(Din.class)));
+		verify(drugRepositoryMock).getByDin(any(Din.class));
 	}
 	
 	@Test
 	public void assemblesPrescriptionWithDinCorrectly() throws ParseException {
-		prescriptionCreationDTO.din = SAMPLE_DIN_PARAMETER;
-		
 		Prescription assembledPrescription = prescriptionAssembler.assembleFromDTO(prescriptionCreationDTO, drugRepositoryMock);
 		Prescription expectedprescription = new Prescription(drugMock, SAMPLE_RENEWALS_PARAMETER, 
 				DateParser.parseDate(SAMPLE_DATE_PARAMETER), new StaffMember(SAMPLE_STAFF_MEMBER_PARAMETER));

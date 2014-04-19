@@ -11,7 +11,7 @@ public class PrescriptionCreationDTO {
 	@JsonProperty("nom")
 	public String drugName;
 	@JsonProperty("intervenant")
-	public Integer staffMember; //TODO: Change to string; Impacts StaffMember -> Surgeon -> Intervention;
+	public String staffMember;
 	@JsonProperty("renouvellements")
 	public Integer renewals;
 	public Date date;
