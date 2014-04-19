@@ -5,30 +5,26 @@ import java.util.Arrays;
 import javax.persistence.*;
 
 import ca.ulaval.glo4002.domain.intervention.*;
-import ca.ulaval.glo4002.domain.patient.PatientDoesNotExist;
+import ca.ulaval.glo4002.domain.patient.PatientNotFoundException;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
 import ca.ulaval.glo4002.domain.surgicaltool.*;
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
 import ca.ulaval.glo4002.exceptions.ServiceRequestException;
-import ca.ulaval.glo4002.persistence.intervention.HibernateInterventionRepository;
-import ca.ulaval.glo4002.persistence.patient.HibernatePatientRepository;
+import ca.ulaval.glo4002.persistence.HibernateInterventionRepository;
+import ca.ulaval.glo4002.persistence.HibernatePatientRepository;
 import ca.ulaval.glo4002.persistence.surgicaltool.HibernateSurgicalToolRepository;
 import ca.ulaval.glo4002.rest.requestparsers.surgicaltool.*;
 import ca.ulaval.glo4002.services.assemblers.InterventionAssembler;
 import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
+import ca.ulaval.glo4002.services.dto.validators.DTOValidationException;
 import ca.ulaval.glo4002.services.dto.validators.InterventionCreationDTOValidator;
-import ca.ulaval.glo4002.services.dto.validators.InvalidDTOAttribute;
-import ca.ulaval.glo4002.services.intervention.InterventionServiceBuilder;
 
 public class InterventionService {
+	public static final String ERROR_INT001 = "INT001";
+	public static final String ERROR_INT002 = "INT002";
 	private static final String ERROR_SERVICE_REQUEST_EXCEPTION_INT010 = "INT010";
 	private static final String ERROR_SERVICE_REQUEST_EXCEPTION_INT011 = "INT011";
 	private static final String ERROR_SERVICE_REQUEST_EXCEPTION_INT012 = "INT012";
-	
-	private String PATIENT_DOES_NOT_EXIST_CODE = "INT002";
-	private String PATIENT_DOES_NOT_EXIST_MESSAGE = "Erreur - Patient inexistant";
-	private String INVALID_ARGUMENT_CODE = "INT001";
-	private String INVALID_ARGUMENT_MESSAGE = "Erreur - informations manquantes ou invalides";
 
 	private static final InterventionType[] forbiddenInterventionTypesForAnonymousSurgicalTools = { InterventionType.EYE, InterventionType.HEART,
 			InterventionType.MARROW };
@@ -38,8 +34,6 @@ public class InterventionService {
 	private InterventionRepository interventionRepository;
 	private PatientRepository patientRepository;
 	private SurgicalToolRepository surgicalToolRepository;
-	private InterventionAssembler interventionAssembler;
-	private InterventionCreationDTOValidator interventionCreationValidator;
 	
 	public InterventionService() {
 		this.entityManager = new EntityManagerProvider().getEntityManager();
@@ -48,60 +42,41 @@ public class InterventionService {
 		this.interventionRepository = new HibernateInterventionRepository();
 		this.patientRepository = new HibernatePatientRepository();
 		this.surgicalToolRepository = new HibernateSurgicalToolRepository();
-
-		this.interventionAssembler = new InterventionAssembler();
-		this.interventionCreationValidator = new InterventionCreationDTOValidator();
 	}
 	
-	//Should only be used for testing
-	public InterventionService(InterventionRepository interventionRepository, PatientRepository patientRepository, SurgicalToolRepository surgicalToolRepository, InterventionAssembler interventionAssembler, EntityManager entityManager, InterventionCreationDTOValidator interventionCreationValidator) {
+	public InterventionService(InterventionRepository interventionRepository, PatientRepository patientRepository, SurgicalToolRepository surgicalToolRepository, EntityManager entityManager) {
 		this.entityManager = entityManager;
 		this.entityTransaction = entityManager.getTransaction();
 		
 		this.interventionRepository = interventionRepository;
 		this.patientRepository = patientRepository;
 		this.surgicalToolRepository = surgicalToolRepository;
-
-		this.interventionAssembler = interventionAssembler;
-		this.interventionCreationValidator = interventionCreationValidator;
-	}
-	
-	public InterventionService(InterventionServiceBuilder builder) {
-		this.entityTransaction = builder.entityTransaction;
-		this.interventionRepository = builder.interventionRepository;
-		this.surgicalToolRepository = builder.surgicalToolRepository;
-		this.patientRepository = builder.patientRepository;
 	}
 
-	//TODO : class has too many roles. It validates the DTO it receives, applies the business logic and handles exceptions.
-	//This could be divided in 3 classes.
-	public int createIntervention(InterventionCreationDTO dto) {
-		validateInterventionCreationDTO(dto);
-		return addIntervention(dto).getId();
-	}
-	
-	private void validateInterventionCreationDTO(InterventionCreationDTO dto) {
+	public int createIntervention(InterventionCreationDTO interventionCreationDTO, InterventionCreationDTOValidator interventionCreationDTOValidator, InterventionAssembler interventionAssembler) {
 		try {
-			interventionCreationValidator.validate(dto);
-		} catch (InvalidDTOAttribute e) {
-			throw new ServiceRequestException(INVALID_ARGUMENT_CODE, INVALID_ARGUMENT_MESSAGE);
-		}
-	}
-	
-	private Intervention addIntervention(InterventionCreationDTO dto) {
-		try {
+			interventionCreationDTOValidator.validate(interventionCreationDTO);
 			entityTransaction.begin();
-			Intervention intervention = interventionAssembler.assembleInterventionFromDTO(dto, patientRepository);
-			interventionRepository.create(intervention);
+
+			Intervention intervention = doCreateIntervention(interventionCreationDTO, interventionAssembler);
+			
 			entityTransaction.commit();
-			return intervention;
-		} catch (PatientDoesNotExist e) {
-			throw new ServiceRequestException(PATIENT_DOES_NOT_EXIST_CODE, PATIENT_DOES_NOT_EXIST_MESSAGE);
+			return intervention.getId();
+		} catch (DTOValidationException e) {
+			throw new ServiceRequestException(ERROR_INT001, e.getMessage());
+		} catch (PatientNotFoundException e) {
+			throw new ServiceRequestException(ERROR_INT002, e.getMessage());
 		} finally {
 			if (entityTransaction.isActive()) {
 				entityTransaction.rollback();
 			}
 		}
+	}
+	
+	public Intervention doCreateIntervention(InterventionCreationDTO interventionCreationDTO, InterventionAssembler interventionAssembler) {
+		Intervention intervention = interventionAssembler.assembleFromDTO(interventionCreationDTO, patientRepository);
+		interventionRepository.persist(intervention);
+		return intervention;
 	}
 
 	public int createSurgicalTool(CreateSurgicalToolRequestParser requestParser) throws ServiceRequestException, Exception {

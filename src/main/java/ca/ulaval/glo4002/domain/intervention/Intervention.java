@@ -14,21 +14,15 @@ public class Intervention {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@Column
 	private String description;
-	@Column
 	private Surgeon surgeon;
-	@Column
 	private Date date;
-	@Column
 	private String room;
-	@Column
 	private InterventionType type;
-	@Column
 	private InterventionStatus status;
 	@ManyToOne()
 	private Patient patient;
-	@ElementCollection()
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<SurgicalTool> surgicalTools = new ArrayList<SurgicalTool>();
 
 	protected Intervention() {
@@ -44,17 +38,6 @@ public class Intervention {
 		this.type = type;
 		this.status = status;
 		this.patient = patient;
-	}
-	
-	//TODO : remove when nobody depends on this
-	public Intervention(InterventionBuilder builder) {
-		this.description = builder.description;
-		this.surgeon = builder.surgeon;
-		this.date = builder.date;
-		this.room = builder.room;
-		this.type = builder.type;
-		this.patient = builder.patient;
-		this.status = builder.status;
 	}
 
 	public int getId() {

@@ -5,30 +5,18 @@ import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
 public class InterventionCreationDTOValidator {
 	
 	public void validate(InterventionCreationDTO interventionCreationDTO) {
-			if(interventionCreationDTO.getDescription() == null){
-				throw new InvalidDTOAttribute();
-			}
-			else if(interventionCreationDTO.getDate() == null) {
-				throw new InvalidDTOAttribute();
-			}
-			else if(interventionCreationDTO.getPatientNumber() == null){
-				throw new InvalidDTOAttribute();
-			}
-			else if(interventionCreationDTO.getRoom() == null) {
-				throw new InvalidDTOAttribute();
-			}
-			else if(interventionCreationDTO.getSurgeonNumber() == null){
-				throw new InvalidDTOAttribute();
-			}
-			else if(interventionCreationDTO.getType() == null){
-				throw new InvalidDTOAttribute();
-			}
-			//TODO : following cases belong to domain logic?
-			else if(interventionCreationDTO.getPatientNumber() < 0){
-				throw new InvalidDTOAttribute();
-			}
-			else if(interventionCreationDTO.getSurgeonNumber() < 0){
-				throw new InvalidDTOAttribute();
-			}
+		if (interventionCreationDTO.description == null) {
+			throw new DTOValidationException("Le paramètre 'description' est requis.");
+		} else if (interventionCreationDTO.date == null) {
+			throw new DTOValidationException("Le paramètre 'date' est requis.");
+		} else if (interventionCreationDTO.patientNumber == null) {
+			throw new DTOValidationException("Le paramètre 'patient' est requis.");
+		} else if (interventionCreationDTO.room == null) {
+			throw new DTOValidationException("Le paramètre 'salle' est requis.");
+		} else if (interventionCreationDTO.surgeon == null) {
+			throw new DTOValidationException("Le paramètre 'chirurgien' est requis.");
+		} else if (interventionCreationDTO.type == null) {
+			throw new DTOValidationException("Le paramètre 'type' est requis.");
 		}
+	}
 }

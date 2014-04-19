@@ -9,9 +9,9 @@ public class PatientRepositoryFiller {
 
 	public void fill(EntityManager entityManager, PatientRepository patientRepository) {
 		entityManager.getTransaction().begin();
-		patientRepository.create(new Patient(0));
-		patientRepository.create(new Patient(1));
-		patientRepository.create(new Patient(2));
+		patientRepository.persist(new Patient(0));
+		patientRepository.persist(new Patient(1));
+		patientRepository.persist(new Patient(2));
 		entityManager.getTransaction().commit();
 	}
 }

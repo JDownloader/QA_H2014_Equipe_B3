@@ -119,5 +119,10 @@
 			<artifactId>jbehave-core</artifactId>
 			<version>3.9.1</version>
 		</dependency>
+		<dependency>
+			<groupId>org.unitils</groupId>
+			<artifactId>unitils-core</artifactId>
+			<version>3.3</version>
+		</dependency>
 	</dependencies>
 </project>

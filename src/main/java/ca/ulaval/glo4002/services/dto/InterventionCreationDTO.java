@@ -3,51 +3,24 @@ package ca.ulaval.glo4002.services.dto;
 import java.util.Date;
 
 import ca.ulaval.glo4002.domain.intervention.InterventionStatus;
+import ca.ulaval.glo4002.domain.intervention.InterventionType;
+import ca.ulaval.glo4002.domain.staff.Surgeon;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class InterventionCreationDTO {
 	
-	private String description;
+	public String description;
 	@JsonProperty("chirurgien")
-	private Integer surgeonNumber;
-	private Date date;
+	public Surgeon surgeon;
+	public Date date;
 	@JsonProperty("salle")
-	private String room;
-	private String type;
-	//TODO : see if you can move this away from here
+	public String room;
+	public InterventionType type;
 	@JsonProperty("statut")
-	private String status = InterventionStatus.PLANNED.getValue();
+	public InterventionStatus status = InterventionStatus.PLANNED;
 	@JsonProperty("patient")
-	private Integer patientNumber;
-	
-	public String getDescription(){
-		return description;
-	}
-	
-	public Integer getSurgeonNumber(){
-		return surgeonNumber;
-	}
-	
-	public Date getDate(){
-		return date;
-	}
-	
-	public String getRoom(){
-		return room;
-	}
-	
-	public String getType(){
-		return type;
-	}
-	
-	public String getStatus(){
-		return status;
-	}
-	
-	public Integer getPatientNumber(){
-		return patientNumber;
-	}
+	public Integer patientNumber;
 }
 
 

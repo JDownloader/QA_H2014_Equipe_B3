@@ -13,15 +13,11 @@ public class InterventionAssembler {
 		this.interventionFactory = new InterventionFactory();
 	}
 	
-	public Intervention assembleInterventionFromDTO(InterventionCreationDTO dto, PatientRepository patientRepository) {
-		Intervention intervention;
+	public Intervention assembleFromDTO(InterventionCreationDTO interventionCreationDto, PatientRepository patientRepository) {
 		
-		Patient patient;
-		patient = patientRepository.getById(dto.getPatientNumber());
-
-		intervention = interventionFactory.createIntervention(dto, patient);
+		Patient patient = patientRepository.getById(interventionCreationDto.patientNumber);
 		
-		return intervention;
+		return interventionFactory.createFromDTO(interventionCreationDto, patient);
 	}
 	
 }

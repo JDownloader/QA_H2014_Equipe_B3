@@ -1,98 +1,89 @@
 package ca.ulaval.glo4002.services.dto.validators;
 
+import static org.junit.Assert.*;
+
 import java.text.ParseException;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import ca.ulaval.glo4002.domain.intervention.InterventionStatus;
+import ca.ulaval.glo4002.domain.intervention.InterventionType;
+import ca.ulaval.glo4002.domain.staff.Surgeon;
 import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
 import ca.ulaval.glo4002.utils.DateParser;
 
 public class InterventionCreationDTOValidatorTest {
-	private InterventionCreationDTOValidator interventionCreationDTOValidator = new InterventionCreationDTOValidator();
-	private InvalidDTOAttribute interventionValidationException = new InvalidDTOAttribute();
+	private static final String SAMPLE_DESCRIPTION_PARAMETER = "description";
+	private static final Surgeon SAMPLE_SURGEON_PARAMETER = new Surgeon(1);
+	private static final String SAMPLE_DATE_PARAMETER = "2001-07-04T12:08:56";
+	private static final String SAMPLE_ROOM_PARAMETER = "room";
+	private static final InterventionType SAMPLE_TYPE_PARAMETER = InterventionType.HEART;
+	private static final InterventionStatus SAMPLE_STATUS_PARAMETER = InterventionStatus.PLANNED;
+	private static final Integer SAMPLE_PATIENT_NUMBER_PARAMETER = 3;
 	
-	private InterventionCreationDTO interventionCreationDTOMock;
-	private static final Integer INVALID_PATIENT_NUMBER = -1;
-	private static final String VALID_DESCRIPTION = "description";
-	private static final String VALID_DATE = "2001-07-04T12:08:56";
-	private static final Integer VALID_PATIENT_NUMBER = 1;
-	private static final String VALID_ROOM = "blocB";
-	private static final Integer VALID_SURGEON_NUMBER = 1;
-	private static final String VALID_TYPE = "OEIL"; 
+	private InterventionCreationDTO interventionCreationDTO = new InterventionCreationDTO();
+	private InterventionCreationDTOValidator interventionCreationDTOValidator = new InterventionCreationDTOValidator();
 	
 	@Before
-	public void createDTO() throws ParseException{
-		interventionCreationDTOMock = mock(InterventionCreationDTO.class);
-		when(interventionCreationDTOMock.getDescription()).thenReturn(VALID_DESCRIPTION);
-		when(interventionCreationDTOMock.getDate()).thenReturn(DateParser.parseDate(VALID_DATE));
-		when(interventionCreationDTOMock.getPatientNumber()).thenReturn(VALID_PATIENT_NUMBER);
-		when(interventionCreationDTOMock.getRoom()).thenReturn(VALID_ROOM);
-		when(interventionCreationDTOMock.getSurgeonNumber()).thenReturn(VALID_SURGEON_NUMBER);
-		when(interventionCreationDTOMock.getType()).thenReturn(VALID_TYPE);
+	public void init() throws ParseException{
+		interventionCreationDTO.description = SAMPLE_DESCRIPTION_PARAMETER;
+		interventionCreationDTO.surgeon = SAMPLE_SURGEON_PARAMETER;
+		interventionCreationDTO.date = DateParser.parseDate(SAMPLE_DATE_PARAMETER);
+		interventionCreationDTO.room = SAMPLE_ROOM_PARAMETER;
+		interventionCreationDTO.type = SAMPLE_TYPE_PARAMETER;
+		interventionCreationDTO.status = SAMPLE_STATUS_PARAMETER;
+		interventionCreationDTO.patientNumber = SAMPLE_PATIENT_NUMBER_PARAMETER;
 	}
 	
-	@Test(expected=InvalidDTOAttribute.class)
-	public void validateDTOReturnsBadRequestResponseWhenDescriptionIsNull() {
-		when(interventionCreationDTOMock.getDescription()).thenReturn(null);
-		interventionCreationDTOMock.getDescription();
-		interventionCreationDTOValidator.validate(interventionCreationDTOMock);
-		assertEquals(InvalidDTOAttribute.class, interventionValidationException.getClass());
+	@Test
+	public void validatingCompleteRequestDoesNotThrowAnException() {
+		try {
+			interventionCreationDTOValidator.validate(interventionCreationDTO);
+		} catch (Exception e) {
+			fail("The validator should not have thrown an exception");
+		}
 	}
 	
-	@Test(expected=InvalidDTOAttribute.class)
-	public void validateDTOReturnsBadRequestResponseWhenDateIsNull() {
-		when(interventionCreationDTOMock.getDate()).thenReturn(null);
-		interventionCreationDTOMock.getDate();
-		interventionCreationDTOValidator.validate(interventionCreationDTOMock);
-		assertEquals(InvalidDTOAttribute.class, interventionValidationException.getCause().getClass());
-		assertEquals("Parameter 'date' is required", interventionValidationException.getMessage());
+	@Test
+	public void allowsUnspecifiedStatus() {
+		interventionCreationDTO.status = null;
+		
+		try {
+			interventionCreationDTOValidator.validate(interventionCreationDTO);
+		} catch (Exception e) {
+			fail("The validator should not have thrown an exception");
+		}
 	}
 	
-	@Test(expected=InvalidDTOAttribute.class)
-	public void validateDTOReturnsBadRequestResponseWhenPatientNumberIsNull() {
-		when(interventionCreationDTOMock.getPatientNumber()).thenReturn(null);
-		interventionCreationDTOMock.getPatientNumber();
-		interventionCreationDTOValidator.validate(interventionCreationDTOMock);
-		assertEquals(InvalidDTOAttribute.class, interventionValidationException.getCause().getClass());
-		assertEquals("Parameter 'patient' is required", interventionValidationException.getMessage());
+	@Test(expected = DTOValidationException.class)
+	public void disallowsUnspecifiedSurgeon() {
+		interventionCreationDTO.surgeon = null;
+		interventionCreationDTOValidator.validate(interventionCreationDTO);
 	}
 	
-	@Test(expected=InvalidDTOAttribute.class)
-	public void validateDTOReturnsBadRequestResponseWhenRoomIsNull() {
-		when(interventionCreationDTOMock.getRoom()).thenReturn(null);
-		interventionCreationDTOMock.getRoom();
-		interventionCreationDTOValidator.validate(interventionCreationDTOMock);
-		assertEquals(InvalidDTOAttribute.class, interventionValidationException.getCause().getClass());
-		assertEquals("Parameter 'salle' is required", interventionValidationException.getMessage());
+	@Test(expected = DTOValidationException.class)
+	public void disallowsUnspecifiedDate() {
+		interventionCreationDTO.date = null;
+		interventionCreationDTOValidator.validate(interventionCreationDTO);
 	}
 	
-	@Test(expected=InvalidDTOAttribute.class)
-	public void vaidateDTOReturnsBadRequestResponseWhenSurgeonNumberIsNull() {
-		when(interventionCreationDTOMock.getSurgeonNumber()).thenReturn(null);
-		interventionCreationDTOMock.getSurgeonNumber();
-		interventionCreationDTOValidator.validate(interventionCreationDTOMock);
-		assertEquals(InvalidDTOAttribute.class, interventionValidationException.getCause().getClass());
-		assertEquals("Parameter 'chirurgien' is required", interventionValidationException.getMessage());
+	@Test(expected = DTOValidationException.class)
+	public void disallowsUnspecifiedRoom() {
+		interventionCreationDTO.room = null;
+		interventionCreationDTOValidator.validate(interventionCreationDTO);
 	}
 	
-	@Test(expected=InvalidDTOAttribute.class)
-	public void validateDTOReturnsBadRequestWhenTypeIsNull() {
-		when(interventionCreationDTOMock.getType()).thenReturn(null);
-		interventionCreationDTOMock.getType();
-		interventionCreationDTOValidator.validate(interventionCreationDTOMock);
-		assertEquals(InvalidDTOAttribute.class, interventionValidationException.getCause().getClass());
-		assertEquals("Parameter 'type' is required", interventionValidationException.getMessage());
+	@Test(expected = DTOValidationException.class)
+	public void disallowsUnspecifiedType() {
+		interventionCreationDTO.type = null;
+		interventionCreationDTOValidator.validate(interventionCreationDTO);
 	}
 	
-	@Test(expected=InvalidDTOAttribute.class)
-	public void validateDTOReturnsBadRequestResponseWhenPatientNumberIsNegative() {
-		when(interventionCreationDTOMock.getPatientNumber()).thenReturn(INVALID_PATIENT_NUMBER);
-		interventionCreationDTOMock.getPatientNumber();
-		interventionCreationDTOValidator.validate(interventionCreationDTOMock);
-		assertEquals(InvalidDTOAttribute.class, interventionValidationException.getCause().getClass());
-		assertEquals("Parameter 'patient' must be greater than 0", interventionValidationException.getMessage());
+	@Test(expected = DTOValidationException.class)
+	public void disallowsUnspecifiedPatientNumber() {
+		interventionCreationDTO.patientNumber = null;
+		interventionCreationDTOValidator.validate(interventionCreationDTO);
 	}
+
 }

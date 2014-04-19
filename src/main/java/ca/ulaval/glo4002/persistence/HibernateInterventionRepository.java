@@ -1,11 +1,10 @@
-package ca.ulaval.glo4002.persistence.intervention;
+package ca.ulaval.glo4002.persistence;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
 
 import ca.ulaval.glo4002.domain.intervention.Intervention;
+import ca.ulaval.glo4002.domain.intervention.InterventionNotFoundException;
 import ca.ulaval.glo4002.domain.intervention.InterventionRepository;
-import ca.ulaval.glo4002.persistence.HibernateRepository;
 
 public class HibernateInterventionRepository extends HibernateRepository implements InterventionRepository {
 
@@ -17,18 +16,18 @@ public class HibernateInterventionRepository extends HibernateRepository impleme
 		super(entityManager);
 	}
 
-	public void create(Intervention entity) {
-		entityManager.persist(entity);
+	public void persist(Intervention intervention) {
+		entityManager.persist(intervention);
 	}
 
 	public void update(Intervention intervention) {
 		entityManager.merge(intervention);
 	}
 
-	public Intervention getById(int id) throws EntityNotFoundException {
+	public Intervention getById(int id) {
 		Intervention intervention = entityManager.find(Intervention.class, id);
 		if (intervention == null) {
-			throw new EntityNotFoundException(String.format("Cannot find Intervention with id '%s'.", id));
+			throw new InterventionNotFoundException(String.format("Cannot find Intervention with id '%s'.", id));
 		}
 		return intervention;
 	}

@@ -4,42 +4,18 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-
 public class InterventionTypeTest {
-	private InterventionType type;
+	private static final String INVALID_TYPE = "COWUR";
+	private static final String SAMPLE_TYPE = "COEUR";
 	
-	@Test (expected=IllegalArgumentException.class)
-	public void doNotBuildInvalidType() {
-		type = InterventionType.fromString("");
+	@Test(expected = IllegalArgumentException.class)
+	public void throwsIllegalArgumentExceptionOnInvalidStatusString() {
+		InterventionType.fromString(INVALID_TYPE);
 	}
 	
 	@Test
-	public void buildEyeType() {
-		type = InterventionType.fromString( InterventionType.EYE.getValue() );
-		assertEquals(type, InterventionType.EYE);
-	}
-	
-	@Test
-	public void buildHeartType() {
-		type = InterventionType.fromString( InterventionType.HEART.getValue() );
-		assertEquals(type, InterventionType.HEART);
-	}
-	
-	@Test
-	public void buildMarrowType() {
-		type = InterventionType.fromString( InterventionType.MARROW.getValue() );
-		assertEquals(type, InterventionType.MARROW);
-	}
-	
-	@Test
-	public void buildOncologicType() {
-		type = InterventionType.fromString( InterventionType.ONCOLOGIC.getValue() );
-		assertEquals(type, InterventionType.ONCOLOGIC);
-	}
-	
-	@Test
-	public void buildOtherType() {
-		type = InterventionType.fromString( InterventionType.OTHER.getValue() );
-		assertEquals(type, InterventionType.OTHER);
+	public void returnsCorrectSurgicalToolFromValidStatus() {
+		InterventionType type = InterventionType.fromString(SAMPLE_TYPE);
+		assertEquals(InterventionType.HEART, type);
 	}
 }
