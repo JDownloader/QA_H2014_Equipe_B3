@@ -1,13 +1,13 @@
 package ca.ulaval.glo4002.domain.surgicaltool;
 
 public interface SurgicalToolRepository {
-	void persist(SurgicalTool surgicalTool) throws SurgicalToolExistsException;
+	public void persist(SurgicalTool surgicalTool) throws SurgicalToolExistsException;
 
-	void update(SurgicalTool surgicalTool);
+	public void update(SurgicalTool surgicalTool);
 
-	SurgicalTool getById(Integer id);
+	public SurgicalTool getById(Integer id);
 
-	SurgicalTool getBySerialNumber(String serialNumber);
+	public SurgicalTool getBySerialNumber(String serialNumber);
 
-	SurgicalTool getBySerialNumberOrId(String serialNumberOrId);
+	public SurgicalTool getBySerialNumberOrId(String serialNumberOrId);
 }
