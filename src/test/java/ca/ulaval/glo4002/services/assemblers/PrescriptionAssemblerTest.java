@@ -17,7 +17,7 @@ import ca.ulaval.glo4002.utils.DateParser;
 
 public class PrescriptionAssemblerTest {
 	private static final String SAMPLE_DATE_PARAMETER = "2001-07-04T12:08:56";
-	private static final int SAMPLE_RENEWALS_PARAMETER = 2;
+	private static final Integer SAMPLE_RENEWALS_PARAMETER = 2;
 	private static final String SAMPLE_DRUG_NAME_PARAMETER = "drug_name";
 	private static final String SAMPLE_STAFF_MEMBER_PARAMETER = "3";
 	private static final Din SAMPLE_DIN_PARAMETER = new Din("098423");

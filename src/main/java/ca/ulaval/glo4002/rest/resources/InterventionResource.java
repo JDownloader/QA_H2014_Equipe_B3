@@ -36,7 +36,7 @@ public class InterventionResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createIntervention(InterventionCreationDTO interventionCreationDTO) throws Exception {
 		try {
-			int interventionId = interventionService.createIntervention(interventionCreationDTO, new InterventionCreationDTOValidator(), new InterventionAssembler());
+			Integer interventionId = interventionService.createIntervention(interventionCreationDTO, new InterventionCreationDTOValidator(), new InterventionAssembler());
 			
 			String newResourceLocation = String.format("/interventions/%d", interventionId);
 			return Response.status(Status.CREATED).location(new URI(newResourceLocation)).build();
@@ -49,11 +49,11 @@ public class InterventionResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO, 
-			@PathParam("interventionNumber") int interventionNumber) throws Exception {
+			@PathParam("interventionNumber") Integer interventionNumber) throws Exception {
 		try {
 			surgicalToolCreationDTO.interventionNumber = interventionNumber;
 			
-			int surgicalToolId = interventionService.createSurgicalTool(surgicalToolCreationDTO, new SurgicalToolCreationDTOValidator(), new SurgicalToolFactory());
+			Integer surgicalToolId = interventionService.createSurgicalTool(surgicalToolCreationDTO, new SurgicalToolCreationDTOValidator(), new SurgicalToolFactory());
 			
 			String newResourceLocation = String.format("/%s/%s", surgicalToolCreationDTO.typeCode, surgicalToolId);
 			return Response.status(Status.CREATED).location(new URI(newResourceLocation)).build();
@@ -67,7 +67,7 @@ public class InterventionResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response modifySurgicalTool(SurgicalToolModificationDTO surgicalToolModificationDTO,
-			@PathParam("interventionNumber") int interventionNumber,
+			@PathParam("interventionNumber") Integer interventionNumber,
 			@PathParam("surgicalToolTypeCode") String surgicalToolTypeCode,
 			@PathParam("surgicalToolSerialNumberOrId") String surgicalToolSerialNumberOrId) throws Exception {
 

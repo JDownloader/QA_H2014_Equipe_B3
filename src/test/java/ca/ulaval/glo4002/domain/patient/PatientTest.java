@@ -10,7 +10,7 @@ import ca.ulaval.glo4002.domain.prescription.Prescription;
 
 public class PatientTest {
 
-	private static final int SAMPLE_PATIENT_ID = 3;
+	private static final Integer SAMPLE_PATIENT_ID = 3;
 	private Patient patient;
 
 	@Before

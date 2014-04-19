@@ -25,7 +25,7 @@ public class PatientResource {
 	}
 
 	@PathParam("patient_number")
-	private int patientNumber;
+	private Integer patientNumber;
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)

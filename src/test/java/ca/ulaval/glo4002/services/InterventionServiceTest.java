@@ -158,10 +158,10 @@ public class InterventionServiceTest {
 	
 	@Test
 	public void verifySurgicalToolReturnsCorrectValue() throws Exception {
-		final int SAMPLE_ID = 2;
+		final Integer SAMPLE_ID = 2;
 		when(surgicalToolMock.getId()).thenReturn(SAMPLE_ID);
 		
-		int interventionId = createSurgicalTool();
+		Integer interventionId = createSurgicalTool();
 		
 		assertEquals(SAMPLE_ID, interventionId);
 	}
@@ -346,7 +346,7 @@ public class InterventionServiceTest {
 		interventionService.createIntervention(interventionCreationDTO, interventionCreationDTOValidatorMock, interventionAssemblerMock);
 	}
 	
-	private int createSurgicalTool() {
+	private Integer createSurgicalTool() {
 		return interventionService.createSurgicalTool(surgicalToolCreationDTO, surgicalToolCreationDTOValidatorMock, surgicalToolFactoryMock);
 	}
 	

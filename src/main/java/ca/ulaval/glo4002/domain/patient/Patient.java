@@ -11,7 +11,7 @@ import ca.ulaval.glo4002.domain.prescription.Prescription;
 public class Patient {
 
 	@Id
-	private int id;
+	private Integer id;
 
 	@ElementCollection()
 	private List<Prescription> prescriptions = new ArrayList<Prescription>();
@@ -24,7 +24,7 @@ public class Patient {
 		this.id = id;
 	}
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 

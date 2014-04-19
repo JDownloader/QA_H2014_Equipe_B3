@@ -12,7 +12,7 @@ public class SurgicalTool {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 
 	private String serialNumber;
 	private String typeCode;
@@ -28,7 +28,7 @@ public class SurgicalTool {
 		this.status = status;
 	}
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 	

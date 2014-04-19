@@ -83,7 +83,7 @@ public class PrescriptionSteps {
 
 	@When("j'ajoute cette prescription au dossier du patient")
 	public void addPrescription() {
-		int patientId = (int) ThreadLocalContext.getObject(PatientSteps.PATIENT_ID_KEY);
+		Integer patientId = (Integer) ThreadLocalContext.getObject(PatientSteps.PATIENT_ID_KEY);
 		
 		response = given().port(JettyTestRunner.JETTY_TEST_PORT)
 				.body(prescriptionJson.toString())

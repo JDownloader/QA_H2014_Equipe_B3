@@ -13,12 +13,12 @@ public class Prescription {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 
 	@ManyToOne()
 	private Drug drug;
 	private String drugName;
-	private int allowedNumberOfRenewal;
+	private Integer allowedNumberOfRenewal;
 	private Date date;
 	private StaffMember staffMember;
 
@@ -26,14 +26,14 @@ public class Prescription {
 		// Required for Hibernate
 	}
 
-	public Prescription(Drug drug, int allowedNumberOfRenewal, Date date, StaffMember staffMember) {
+	public Prescription(Drug drug, Integer allowedNumberOfRenewal, Date date, StaffMember staffMember) {
 		this.drug = drug;
 		this.staffMember = staffMember;
 		this.allowedNumberOfRenewal = allowedNumberOfRenewal;
 		this.date = date;
 	}
 	
-	public Prescription(String drugName, int allowedNumberOfRenewal, Date date, StaffMember staffMember) {
+	public Prescription(String drugName, Integer allowedNumberOfRenewal, Date date, StaffMember staffMember) {
 		this.drugName = drugName;
 		this.staffMember = staffMember;
 		this.allowedNumberOfRenewal = allowedNumberOfRenewal;

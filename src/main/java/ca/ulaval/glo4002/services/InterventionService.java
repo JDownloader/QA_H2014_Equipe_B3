@@ -51,7 +51,7 @@ public class InterventionService {
 		this.entityTransaction = entityManager.getTransaction();
 	}
 
-	public int createIntervention(InterventionCreationDTO interventionCreationDTO, InterventionCreationDTOValidator interventionCreationDTOValidator, InterventionAssembler interventionAssembler) throws ServiceRequestException {
+	public Integer createIntervention(InterventionCreationDTO interventionCreationDTO, InterventionCreationDTOValidator interventionCreationDTOValidator, InterventionAssembler interventionAssembler) throws ServiceRequestException {
 		try {
 			interventionCreationDTOValidator.validate(interventionCreationDTO);
 			entityTransaction.begin();
@@ -78,7 +78,7 @@ public class InterventionService {
 	}
 
 
-	public int createSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO, SurgicalToolCreationDTOValidator surgicalToolCreationDTOValidator, SurgicalToolFactory surgicalToolAssembler) throws ServiceRequestException {
+	public Integer createSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO, SurgicalToolCreationDTOValidator surgicalToolCreationDTOValidator, SurgicalToolFactory surgicalToolAssembler) throws ServiceRequestException {
 		try {
 			surgicalToolCreationDTOValidator.validate(surgicalToolCreationDTO);
 			entityTransaction.begin();

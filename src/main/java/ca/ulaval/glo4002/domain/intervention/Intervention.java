@@ -17,7 +17,7 @@ public class Intervention {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	private String description;
 	private Surgeon surgeon;
 	private Date date;
@@ -44,7 +44,7 @@ public class Intervention {
 		this.patient = patient;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 	
