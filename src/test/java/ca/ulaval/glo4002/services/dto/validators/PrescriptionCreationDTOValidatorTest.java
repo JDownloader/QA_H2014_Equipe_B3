@@ -3,16 +3,16 @@ package ca.ulaval.glo4002.services.dto.validators;
 import static org.junit.Assert.*;
 
 import java.text.ParseException;
+import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import ca.ulaval.glo4002.domain.drug.Din;
 import ca.ulaval.glo4002.services.dto.PrescriptionCreationDTO;
-import ca.ulaval.glo4002.utils.DateParser;
 
 public class PrescriptionCreationDTOValidatorTest {
-	private static final String SAMPLE_DATE_PARAMETER = "2001-07-04T12:08:56";
+	private static final Date SAMPLE_DATE_PARAMETER = new Date(3);
 	private static final Integer SAMPLE_RENEWALS_PARAMETER = 2;
 	private static final String SAMPLE_DRUG_NAME_PARAMETER = "drug_name";
 	private static final String SAMPLE_STAFF_MEMBER_PARAMETER = "3";
@@ -26,7 +26,7 @@ public class PrescriptionCreationDTOValidatorTest {
 	@Before
 	public void init() throws ParseException {
 		prescriptionCreationDTO.staffMember = SAMPLE_STAFF_MEMBER_PARAMETER;
-		prescriptionCreationDTO.date = DateParser.parseDate(SAMPLE_DATE_PARAMETER);
+		prescriptionCreationDTO.date = SAMPLE_DATE_PARAMETER;
 		prescriptionCreationDTO.renewals = SAMPLE_RENEWALS_PARAMETER;
 		prescriptionCreationDTO.patientNumber = SAMPLE_PATIENT_NUMBER_PARAMETER;
 		prescriptionCreationDTO.din = SAMPLE_DIN_PARAMETER;
