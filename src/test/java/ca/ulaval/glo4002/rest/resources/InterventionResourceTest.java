@@ -45,58 +45,70 @@ public class InterventionResourceTest {
 
 	@Test
 	public void verifyInterventionCreationCallsServiceMethodsCorrectly() throws Exception {
-		interventionResource.createIntervention(interventionCreationDTOMock);
+		createIntervention();
 		verify(interventionServiceMock).createIntervention(eq(interventionCreationDTOMock), any(InterventionCreationDTOValidator.class), any(InterventionAssembler.class));
 	}
 	
 	@Test()
 	public void verifyInterventionCreationReturnsCreatedResponse() throws Exception{
-		Response response = interventionResource.createIntervention(interventionCreationDTOMock);
+		Response response = createIntervention();
 		assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
 	}
-	
+
 	@Test()
 	public void verifyInterventionCreationReturnsBadRequestResponseOnServiceRequestException() throws Exception{
 		when(interventionServiceMock.createIntervention(eq(interventionCreationDTOMock), any(InterventionCreationDTOValidator.class), any(InterventionAssembler.class))).thenThrow(new ServiceRequestException());
-		Response response = interventionResource.createIntervention(interventionCreationDTOMock);
+		Response response = createIntervention();
 		assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
 	}
 	
 	@Test
 	public void verifySurgicalToolCreationCallsServiceMethodsCorrectly() throws Exception {
-		interventionResource.createSurgicalTool(surgicalToolCreationDTOMock, SAMPLE_INTERVENTION_NUMBER_PARAMETER);
+		createSurgicalTool();
 		verify(interventionServiceMock).createSurgicalTool(eq(surgicalToolCreationDTOMock), any(SurgicalToolCreationDTOValidator.class), any(SurgicalToolFactory.class));
 	}
 
 	@Test
 	public void verifySurgicalToolCreationReturnsCreatedResponse() throws Exception {
-		Response response = interventionResource.createSurgicalTool(surgicalToolCreationDTOMock, SAMPLE_INTERVENTION_NUMBER_PARAMETER);
+		Response response = createSurgicalTool();
 		assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void verifySurgicalToolCreationReturnsBadRequestResponseOnServiceRequestException() throws Exception {
 		doThrow(new ServiceRequestException()).when(interventionServiceMock).createSurgicalTool(eq(surgicalToolCreationDTOMock), any(SurgicalToolCreationDTOValidator.class), any(SurgicalToolFactory.class));
-		Response receivedResponse = interventionResource.createSurgicalTool(surgicalToolCreationDTOMock, SAMPLE_INTERVENTION_NUMBER_PARAMETER);
+		Response receivedResponse = createSurgicalTool();
 		assertEquals(Status.BAD_REQUEST.getStatusCode(), receivedResponse.getStatus());
 	}
 	
 	@Test
 	public void verifySurgicalToolModificationCallsServiceMethodsCorrectly() throws Exception {
-		interventionResource.modifySurgicalTool(surgicalToolModificationDTOMock, SAMPLE_INTERVENTION_NUMBER_PARAMETER, SAMPLE_TYPECODE_PARAMETER, SAMPLE_SERIAL_NUMBER_PARAMETER);
+		modifySurgicalTool();
 		verify(interventionServiceMock).modifySurgicalTool(eq(surgicalToolModificationDTOMock), any(SurgicalToolModificationDTOValidator.class));
 	}
 
 	@Test
 	public void verifySurgicalToolModificationReturnsOkResponse() throws Exception {
-		Response response = interventionResource.modifySurgicalTool(surgicalToolModificationDTOMock, SAMPLE_INTERVENTION_NUMBER_PARAMETER, SAMPLE_TYPECODE_PARAMETER, SAMPLE_SERIAL_NUMBER_PARAMETER);
+		Response response = modifySurgicalTool();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void verifySurgicalToolModificationReturnsBadRequestResponseOnServiceRequestException() throws Exception {
 		doThrow(new ServiceRequestException()).when(interventionServiceMock).modifySurgicalTool(eq(surgicalToolModificationDTOMock), any(SurgicalToolModificationDTOValidator.class));
-		Response receivedResponse = interventionResource.modifySurgicalTool(surgicalToolModificationDTOMock, SAMPLE_INTERVENTION_NUMBER_PARAMETER, SAMPLE_TYPECODE_PARAMETER, SAMPLE_SERIAL_NUMBER_PARAMETER);
+		Response receivedResponse = modifySurgicalTool();
 		assertEquals(Status.BAD_REQUEST.getStatusCode(), receivedResponse.getStatus());
+	}
+	
+	private Response createIntervention() throws Exception {
+		return interventionResource.createIntervention(interventionCreationDTOMock);
+	}
+	
+	private Response createSurgicalTool() throws Exception {
+		return interventionResource.createSurgicalTool(surgicalToolCreationDTOMock, SAMPLE_INTERVENTION_NUMBER_PARAMETER);
+	}
+	
+	private Response modifySurgicalTool() throws Exception {
+		return interventionResource.modifySurgicalTool(surgicalToolModificationDTOMock, SAMPLE_INTERVENTION_NUMBER_PARAMETER, SAMPLE_TYPECODE_PARAMETER, SAMPLE_SERIAL_NUMBER_PARAMETER);
 	}
 }

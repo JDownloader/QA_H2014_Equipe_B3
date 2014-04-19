@@ -13,7 +13,7 @@ import ca.ulaval.glo4002.services.ServiceRequestException;
 import ca.ulaval.glo4002.services.assemblers.InterventionAssembler;
 import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
 import ca.ulaval.glo4002.services.dto.validators.InterventionCreationDTOValidator;
-import ca.ulaval.glo4002.services.dto.BadResponseDTO;
+import ca.ulaval.glo4002.services.dto.BadRequestDTO;
 import ca.ulaval.glo4002.services.dto.SurgicalToolCreationDTO;
 import ca.ulaval.glo4002.services.dto.SurgicalToolModificationDTO;
 import ca.ulaval.glo4002.services.dto.validators.SurgicalToolCreationDTOValidator;
@@ -41,7 +41,7 @@ public class InterventionResource {
 			String newResourceLocation = String.format("/interventions/%d", interventionId);
 			return Response.status(Status.CREATED).location(new URI(newResourceLocation)).build();
 		} catch (ServiceRequestException e) {
-			return Response.status(Status.BAD_REQUEST).entity(new BadResponseDTO(e.getInternalCode(), e.getMessage())).build();
+			return Response.status(Status.BAD_REQUEST).entity(new BadRequestDTO(e.getInternalCode(), e.getMessage())).build();
 		}
 	}
 	@POST
@@ -58,7 +58,7 @@ public class InterventionResource {
 			String newResourceLocation = String.format("/%s/%s", surgicalToolCreationDTO.typeCode, surgicalToolId);
 			return Response.status(Status.CREATED).location(new URI(newResourceLocation)).build();
 		} catch (ServiceRequestException e) {
-			return Response.status(Status.BAD_REQUEST).entity(new BadResponseDTO(e.getInternalCode(), e.getMessage())).build();
+			return Response.status(Status.BAD_REQUEST).entity(new BadRequestDTO(e.getInternalCode(), e.getMessage())).build();
 		}
 	}
 
@@ -80,7 +80,7 @@ public class InterventionResource {
 			
 			return Response.status(Status.OK).build();
 		} catch (ServiceRequestException e) {
-			return Response.status(Status.BAD_REQUEST).entity(new BadResponseDTO(e.getInternalCode(), e.getMessage())).build();
+			return Response.status(Status.BAD_REQUEST).entity(new BadRequestDTO(e.getInternalCode(), e.getMessage())).build();
 		}
 	}
 }

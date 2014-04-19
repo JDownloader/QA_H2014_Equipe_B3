@@ -7,7 +7,7 @@ import javax.ws.rs.core.Response.Status;
 import ca.ulaval.glo4002.services.PatientService;
 import ca.ulaval.glo4002.services.ServiceRequestException;
 import ca.ulaval.glo4002.services.assemblers.PrescriptionAssembler;
-import ca.ulaval.glo4002.services.dto.BadResponseDTO;
+import ca.ulaval.glo4002.services.dto.BadRequestDTO;
 import ca.ulaval.glo4002.services.dto.PrescriptionCreationDTO;
 import ca.ulaval.glo4002.services.dto.validators.PrescriptionCreationDTOValidator;
 
@@ -30,13 +30,13 @@ public class PatientResource {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response post(PrescriptionCreationDTO prescriptionCreationDTO) throws Exception {
+	public Response createPrescription(PrescriptionCreationDTO prescriptionCreationDTO) throws Exception {
 		try {
 			prescriptionCreationDTO.patientNumber = patientNumber;
 			patientService.createPrescription(prescriptionCreationDTO, new PrescriptionCreationDTOValidator(), new PrescriptionAssembler());
 			return Response.status(Status.CREATED).build();
 		} catch (ServiceRequestException e) {
-			return Response.status(Status.BAD_REQUEST).entity(new BadResponseDTO(e.getInternalCode(), e.getMessage())).build();
+			return Response.status(Status.BAD_REQUEST).entity(new BadRequestDTO(e.getInternalCode(), e.getMessage())).build();
 		}
 	}
 }
