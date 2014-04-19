@@ -9,44 +9,28 @@ public class SurgicalToolTest {
 	private SurgicalTool surgicalTool;
 
 	private static final String SAMPLE_SERIAL_NUMBER = "2321984423QTY";
-	private static final String SAMPLE_SERIAL_NUMBER_2 = "64651RF";
 	private static final String SAMPLE_TYPE_CODE = "1FT566";
-	private static final SurgicalToolStatus SAMPLE_STATUS = SurgicalToolStatus.INUTILISE;
-	private static final SurgicalToolStatus SAMPLE_STATUS_2 = SurgicalToolStatus.SOUILLE;
+	private static final SurgicalToolStatus SAMPLE_STATUS = SurgicalToolStatus.UNUSED;
 
 	@Before
 	public void init() {
-		SurgicalToolBuilder surgicalToolBuilder = new SurgicalToolBuilder()
-			.serialNumber(SAMPLE_SERIAL_NUMBER)
-			.typeCode(SAMPLE_TYPE_CODE)
-			.status(SAMPLE_STATUS);
-		surgicalTool = surgicalToolBuilder.build();
+		surgicalTool = new SurgicalTool(SAMPLE_SERIAL_NUMBER, SAMPLE_TYPE_CODE, SAMPLE_STATUS);
 	}
 
 	@Test
-	public void returnsSerialNumberCorrectly() {
-		assertEquals(SAMPLE_SERIAL_NUMBER, surgicalTool.getSerialNumber());
+	public void nullSerialNumberReportsAsAnonymous() {
+		surgicalTool.setSerialNumber(null);
+		assertTrue(SAMPLE_SERIAL_NUMBER, surgicalTool.isAnonymous());
 	}
 
 	@Test
-	public void setsSerialNumberCorrectly() {
-		surgicalTool.setSerialNumber(SAMPLE_SERIAL_NUMBER_2);
-		assertEquals(SAMPLE_SERIAL_NUMBER_2, surgicalTool.getSerialNumber());
+	public void emptySerialNumberReportsAsAnonymous() {
+		surgicalTool.setSerialNumber("");
+		assertTrue(SAMPLE_SERIAL_NUMBER, surgicalTool.isAnonymous());
 	}
-
+	
 	@Test
-	public void returnsTypeCodeCorrectly() {
-		assertEquals(SAMPLE_TYPE_CODE, surgicalTool.getTypeCode());
-	}
-
-	@Test
-	public void returnsStatusCorrectly() {
-		assertEquals(SAMPLE_STATUS, surgicalTool.getStatus());
-	}
-
-	@Test
-	public void setsStatusCorrectly() {
-		surgicalTool.setStatus(SAMPLE_STATUS_2);
-		assertEquals(SAMPLE_STATUS_2, surgicalTool.getStatus());
+	public void nonEmptySerialNumberReportsAsNonAnonymous() {
+		assertFalse(SAMPLE_SERIAL_NUMBER, surgicalTool.isAnonymous());
 	}
 }
