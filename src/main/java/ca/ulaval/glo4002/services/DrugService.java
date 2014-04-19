@@ -8,7 +8,6 @@ import javax.persistence.EntityTransaction;
 import ca.ulaval.glo4002.domain.drug.Drug;
 import ca.ulaval.glo4002.domain.drug.DrugRepository;
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
-import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.persistence.HibernateDrugRepository;
 import ca.ulaval.glo4002.services.dto.DrugSearchDTO;
 import ca.ulaval.glo4002.services.dto.validators.DrugSearchDTOValidator;

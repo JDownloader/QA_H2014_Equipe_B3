@@ -10,8 +10,8 @@ import javax.ws.rs.core.Response.Status;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.services.PatientService;
+import ca.ulaval.glo4002.services.ServiceRequestException;
 import ca.ulaval.glo4002.services.assemblers.PrescriptionAssembler;
 import ca.ulaval.glo4002.services.dto.PrescriptionCreationDTO;
 import ca.ulaval.glo4002.services.dto.validators.PrescriptionCreationDTOValidator;

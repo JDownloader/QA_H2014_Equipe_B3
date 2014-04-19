@@ -4,8 +4,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
 
-import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.services.PatientService;
+import ca.ulaval.glo4002.services.ServiceRequestException;
 import ca.ulaval.glo4002.services.assemblers.PrescriptionAssembler;
 import ca.ulaval.glo4002.services.dto.BadResponseDTO;
 import ca.ulaval.glo4002.services.dto.PrescriptionCreationDTO;

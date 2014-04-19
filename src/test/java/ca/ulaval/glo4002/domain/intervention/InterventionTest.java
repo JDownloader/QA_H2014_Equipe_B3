@@ -18,39 +18,20 @@ public class InterventionTest {
 	private static final Date SAMPLE_DATE = new Date();
 	private static final String SAMPLE_DESCRIPTION = "description";
 	private static final String SAMPLE_ROOM = "room";
-	private static final InterventionStatus SAMPLE_STATUS = InterventionStatus.EN_COURS;
-	private static final InterventionType SAMPLE_TYPE = InterventionType.MOELLE;
+	private static final InterventionStatus SAMPLE_STATUS = InterventionStatus.IN_PROGRESS;
+	private static final InterventionType SAMPLE_TYPE = InterventionType.MARROW;
+	private static final Surgeon SAMPLE_SURGEON = new Surgeon(3);
 	private static final String SAMPLE_SERIAL_NUMBER = "serialnumber";
+	private static final Patient SAMPLE_PATIENT = new Patient(3);
 
-	private Patient patientMock;
-	private Surgeon surgeonMock;
-
-	private InterventionBuilder interventionBuilder;
 	private Intervention intervention;
 	SurgicalTool surgicalToolMock;
 
 	@Before
 	public void init() {
-		patientMock = mock(Patient.class);
-		surgeonMock = mock(Surgeon.class);
 		surgicalToolMock = mock(SurgicalTool.class);
-
-		buildInterventionMock();
+		intervention = new Intervention(SAMPLE_DESCRIPTION, SAMPLE_SURGEON, SAMPLE_DATE, SAMPLE_ROOM, SAMPLE_TYPE, SAMPLE_STATUS, SAMPLE_PATIENT);
 	}
-
-	//TODO: Refactor NewMarie BEGIN
-	private void buildInterventionMock() {
-		interventionBuilder = new InterventionBuilder()
-			.date(SAMPLE_DATE)
-			.description(SAMPLE_DESCRIPTION)
-			.patient(patientMock)
-			.status(SAMPLE_STATUS)
-			.room(SAMPLE_ROOM)
-			.surgeon(surgeonMock)
-			.type(SAMPLE_TYPE);
-		intervention = interventionBuilder.build();
-	}
-	//TODO: Refactor NewMarie END
 
 	@Test
 	public void addsNonAnonymousSurgicalToolCorrectly() {

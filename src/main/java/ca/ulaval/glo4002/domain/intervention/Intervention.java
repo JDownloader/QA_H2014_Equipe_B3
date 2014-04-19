@@ -13,7 +13,7 @@ import ca.ulaval.glo4002.domain.surgicaltool.*;
 public class Intervention {
 
 	private static final InterventionType[] forbiddenInterventionTypesForAnonymousSurgicalTools = {
-			InterventionType.OEIL, InterventionType.COEUR, InterventionType.MOELLE };
+			InterventionType.EYE, InterventionType.HEART, InterventionType.MARROW };
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

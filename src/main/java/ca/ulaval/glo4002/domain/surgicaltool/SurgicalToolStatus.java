@@ -2,7 +2,8 @@ package ca.ulaval.glo4002.domain.surgicaltool;
 
 import java.io.Serializable;
 
-import com.fasterxml.jackson.annotation.*;
+import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonValue;
 
 public enum SurgicalToolStatus implements Serializable {
 	PATIENT_USED("UTILISE_PATIENT"), CONTAMINATED("SOUILLE"), UNUSED("INUTILISE");

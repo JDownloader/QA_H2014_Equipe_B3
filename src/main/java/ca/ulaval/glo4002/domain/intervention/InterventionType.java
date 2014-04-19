@@ -2,8 +2,8 @@ package ca.ulaval.glo4002.domain.intervention;
 
 import java.io.Serializable;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonValue;
 
 public enum InterventionType implements Serializable {
 	EYE("OEIL"), HEART("COEUR"), MARROW("MOELLE"), ONCOLOGIC("ONCOLOGIQUE"), OTHER("AUTRE");

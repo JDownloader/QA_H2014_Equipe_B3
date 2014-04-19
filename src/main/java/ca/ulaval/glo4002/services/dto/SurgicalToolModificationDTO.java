@@ -1,9 +1,8 @@
 package ca.ulaval.glo4002.services.dto;
 
-import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolStatus;
+import org.codehaus.jackson.annotate.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolStatus;
 
 public class SurgicalToolModificationDTO {
 	@JsonProperty("statut")

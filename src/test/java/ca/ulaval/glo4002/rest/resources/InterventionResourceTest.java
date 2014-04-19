@@ -12,12 +12,15 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolFactory;
-import ca.ulaval.glo4002.exceptions.ServiceRequestException;
+import ca.ulaval.glo4002.services.InterventionService;
+import ca.ulaval.glo4002.services.ServiceRequestException;
+import ca.ulaval.glo4002.services.assemblers.InterventionAssembler;
+import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
 import ca.ulaval.glo4002.services.dto.SurgicalToolCreationDTO;
 import ca.ulaval.glo4002.services.dto.SurgicalToolModificationDTO;
+import ca.ulaval.glo4002.services.dto.validators.InterventionCreationDTOValidator;
 import ca.ulaval.glo4002.services.dto.validators.SurgicalToolCreationDTOValidator;
 import ca.ulaval.glo4002.services.dto.validators.SurgicalToolModificationDTOValidator;
-import ca.ulaval.glo4002.services.intervention.InterventionService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class InterventionResourceTest {
@@ -26,6 +29,7 @@ public class InterventionResourceTest {
 	private static final String SAMPLE_TYPECODE_PARAMETER = "IT72353";
 	
 	private InterventionService interventionServiceMock;
+	private InterventionCreationDTO interventionCreationDTOMock;
 	private SurgicalToolCreationDTO surgicalToolCreationDTOMock;
 	private SurgicalToolModificationDTO surgicalToolModificationDTOMock;
 	private InterventionResource interventionResource;
@@ -33,11 +37,31 @@ public class InterventionResourceTest {
 	@Before
 	public void init() throws Exception {
 		interventionServiceMock = mock(InterventionService.class);
+		interventionCreationDTOMock = mock(InterventionCreationDTO.class);
 		surgicalToolCreationDTOMock = mock(SurgicalToolCreationDTO.class);
 		surgicalToolModificationDTOMock = mock(SurgicalToolModificationDTO.class);
 		interventionResource = new InterventionResource(interventionServiceMock);
 	}
 
+	@Test
+	public void verifyInterventionCreationCallsServiceMethodsCorrectly() throws Exception {
+		interventionResource.createIntervention(interventionCreationDTOMock);
+		verify(interventionServiceMock).createIntervention(eq(interventionCreationDTOMock), any(InterventionCreationDTOValidator.class), any(InterventionAssembler.class));
+	}
+	
+	@Test()
+	public void verifyInterventionCreationReturnsCreatedResponse() throws Exception{
+		Response response = interventionResource.createIntervention(interventionCreationDTOMock);
+		assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
+	}
+	
+	@Test()
+	public void verifyInterventionCreationReturnsBadRequestResponseOnServiceRequestException() throws Exception{
+		when(interventionServiceMock.createIntervention(eq(interventionCreationDTOMock), any(InterventionCreationDTOValidator.class), any(InterventionAssembler.class))).thenThrow(new ServiceRequestException());
+		Response response = interventionResource.createIntervention(interventionCreationDTOMock);
+		assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+	}
+	
 	@Test
 	public void verifySurgicalToolCreationCallsServiceMethodsCorrectly() throws Exception {
 		interventionResource.createSurgicalTool(surgicalToolCreationDTOMock, SAMPLE_INTERVENTION_NUMBER_PARAMETER);

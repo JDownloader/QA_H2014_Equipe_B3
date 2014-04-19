@@ -4,7 +4,6 @@ import javax.persistence.*;
 
 import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.patient.PatientNotFoundException;
-import ca.ulaval.glo4002.domain.patient.PatientNotFoundException;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
 
 public class HibernatePatientRepository extends HibernateRepository implements PatientRepository {
@@ -18,11 +17,7 @@ public class HibernatePatientRepository extends HibernateRepository implements P
 	}
 
 	public void persist(Patient patient) {
-		try {
-			entityManager.persist(patient);
-		} catch (EntityExistsException e) {
-			throw new PatientExistsException(String.format("Un patient avec l'id '%s' existe déjà.", patient.getId()), e);
-		}
+		entityManager.persist(patient);
 	}
 
 	public void update(Patient patient) {

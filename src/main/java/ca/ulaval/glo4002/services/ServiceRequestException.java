@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.exceptions;
+package ca.ulaval.glo4002.services;
 
 public class ServiceRequestException extends RuntimeException {
 

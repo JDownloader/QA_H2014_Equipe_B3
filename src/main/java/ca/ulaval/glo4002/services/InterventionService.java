@@ -7,14 +7,15 @@ import ca.ulaval.glo4002.domain.patient.PatientNotFoundException;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
 import ca.ulaval.glo4002.domain.surgicaltool.*;
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
-import ca.ulaval.glo4002.exceptions.ServiceRequestException;
-import ca.ulaval.glo4002.services.dto.SurgicalToolCreationDTO;
+import ca.ulaval.glo4002.persistence.HibernateInterventionRepository;
+import ca.ulaval.glo4002.persistence.HibernatePatientRepository;
+import ca.ulaval.glo4002.persistence.HibernateSurgicalToolRepository;
 import ca.ulaval.glo4002.services.assemblers.InterventionAssembler;
+import ca.ulaval.glo4002.services.dto.SurgicalToolCreationDTO;
+import ca.ulaval.glo4002.services.dto.SurgicalToolModificationDTO;
 import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
 import ca.ulaval.glo4002.services.dto.validators.DTOValidationException;
 import ca.ulaval.glo4002.services.dto.validators.InterventionCreationDTOValidator;
-import ca.ulaval.glo4002.services.dto.SurgicalToolModificationDTO;
-import ca.ulaval.glo4002.services.dto.validators.DTOValidationException;
 import ca.ulaval.glo4002.services.dto.validators.SurgicalToolCreationDTOValidator;
 import ca.ulaval.glo4002.services.dto.validators.SurgicalToolModificationDTOValidator;
 
@@ -40,8 +41,17 @@ public class InterventionService {
 		this.patientRepository = new HibernatePatientRepository();
 		this.surgicalToolRepository = new HibernateSurgicalToolRepository();
 	}
+	
+	public InterventionService(InterventionRepository interventionRepository, PatientRepository patientRepository,
+			SurgicalToolRepository surgicalToolRepository, EntityManager entityManager) {
+		this.interventionRepository = interventionRepository;
+		this.patientRepository = patientRepository;
+		this.surgicalToolRepository = surgicalToolRepository;
+		this.entityManager = entityManager;
+		this.entityTransaction = entityManager.getTransaction();
+	}
 
-	public int createIntervention(CreateInterventionRequestParser requestParser) throws ServiceRequestException {
+	public int createIntervention(InterventionCreationDTO interventionCreationDTO, InterventionCreationDTOValidator interventionCreationDTOValidator, InterventionAssembler interventionAssembler) throws ServiceRequestException {
 		try {
 			interventionCreationDTOValidator.validate(interventionCreationDTO);
 			entityTransaction.begin();

@@ -9,7 +9,6 @@ import ca.ulaval.glo4002.domain.patient.PatientNotFoundException;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
 import ca.ulaval.glo4002.domain.prescription.*;
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
-import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.persistence.HibernateDrugRepository;
 import ca.ulaval.glo4002.persistence.HibernatePatientRepository;
 import ca.ulaval.glo4002.persistence.HibernatePrescriptionRepository;

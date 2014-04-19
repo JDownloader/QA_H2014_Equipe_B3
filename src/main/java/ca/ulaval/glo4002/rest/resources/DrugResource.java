@@ -7,8 +7,8 @@ import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
 
 import ca.ulaval.glo4002.domain.drug.Drug;
-import ca.ulaval.glo4002.exceptions.ServiceRequestException;
 import ca.ulaval.glo4002.services.DrugService;
+import ca.ulaval.glo4002.services.ServiceRequestException;
 import ca.ulaval.glo4002.services.dto.BadResponseDTO;
 import ca.ulaval.glo4002.services.dto.DrugSearchDTO;
 import ca.ulaval.glo4002.services.dto.validators.DrugSearchDTOValidator;

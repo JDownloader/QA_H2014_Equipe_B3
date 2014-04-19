@@ -8,8 +8,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolFactory;
-import ca.ulaval.glo4002.exceptions.ServiceRequestException;
-import ca.ulaval.glo4002.persistence.HibernatePatientRepository;
+import ca.ulaval.glo4002.services.InterventionService;
+import ca.ulaval.glo4002.services.ServiceRequestException;
+import ca.ulaval.glo4002.services.assemblers.InterventionAssembler;
 import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
 import ca.ulaval.glo4002.services.dto.validators.InterventionCreationDTOValidator;
 import ca.ulaval.glo4002.services.dto.BadResponseDTO;
@@ -17,7 +18,6 @@ import ca.ulaval.glo4002.services.dto.SurgicalToolCreationDTO;
 import ca.ulaval.glo4002.services.dto.SurgicalToolModificationDTO;
 import ca.ulaval.glo4002.services.dto.validators.SurgicalToolCreationDTOValidator;
 import ca.ulaval.glo4002.services.dto.validators.SurgicalToolModificationDTOValidator;
-import ca.ulaval.glo4002.services.intervention.InterventionService;
 
 @Path("interventions/")
 public class InterventionResource {
@@ -42,6 +42,7 @@ public class InterventionResource {
 			return Response.status(Status.CREATED).location(new URI(newResourceLocation)).build();
 		} catch (ServiceRequestException e) {
 			return Response.status(Status.BAD_REQUEST).entity(new BadResponseDTO(e.getInternalCode(), e.getMessage())).build();
+		}
 	}
 	@POST
 	@Path("{interventionNumber: [0-9]+}/instruments/")

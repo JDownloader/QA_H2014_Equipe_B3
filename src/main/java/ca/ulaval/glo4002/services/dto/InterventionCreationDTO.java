@@ -2,11 +2,11 @@ package ca.ulaval.glo4002.services.dto;
 
 import java.util.Date;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import ca.ulaval.glo4002.domain.intervention.InterventionStatus;
 import ca.ulaval.glo4002.domain.intervention.InterventionType;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class InterventionCreationDTO {
 	
