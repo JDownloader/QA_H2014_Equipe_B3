@@ -59,6 +59,8 @@ public class InterventionService {
 			throw new ServiceRequestException(ERROR_INT001, e.getMessage());
 		} catch (PatientNotFoundException e) {
 			throw new ServiceRequestException(ERROR_INT002, e.getMessage());
+		} catch (IllegalArgumentException e) {
+			throw new ServiceRequestException(ERROR_INT001, e.getMessage());
 		} finally {
 			if (entityTransaction.isActive()) {
 				entityTransaction.rollback();

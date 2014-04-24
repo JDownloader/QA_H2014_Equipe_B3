@@ -16,8 +16,8 @@ public class InterventionFactoryTest {
 	private static final Surgeon SAMPLE_SURGEON_PARAMETER = new Surgeon("1");
 	private static final Date SAMPLE_DATE_PARAMETER = new Date(3);
 	private static final String SAMPLE_ROOM_PARAMETER = "room";
-	private static final InterventionType SAMPLE_TYPE_PARAMETER = InterventionType.HEART;
-	private static final InterventionStatus SAMPLE_STATUS_PARAMETER = InterventionStatus.PLANNED;
+	private static final String SAMPLE_TYPE_PARAMETER = InterventionType.HEART.getValue();
+	private static final String SAMPLE_STATUS_PARAMETER = InterventionStatus.PLANNED.getValue();
 	private static final Patient SAMPLE_PATIENT = new Patient(3);
 	
 	InterventionFactory interventionFactory = new InterventionFactory();
@@ -38,8 +38,8 @@ public class InterventionFactoryTest {
 		Intervention createdIntervention = interventionFactory.createFromDTO(interventionCreationDTO, SAMPLE_PATIENT);
 		Intervention expectedIntervention = new Intervention(SAMPLE_DESCRIPTION_PARAMETER,
 				SAMPLE_SURGEON_PARAMETER, SAMPLE_DATE_PARAMETER,
-				SAMPLE_ROOM_PARAMETER, SAMPLE_TYPE_PARAMETER,
-				SAMPLE_STATUS_PARAMETER, SAMPLE_PATIENT);
+				SAMPLE_ROOM_PARAMETER, InterventionType.fromString(SAMPLE_TYPE_PARAMETER),
+				InterventionStatus.fromString(SAMPLE_STATUS_PARAMETER), SAMPLE_PATIENT);
 		
 		assertReflectionEquals(expectedIntervention, createdIntervention);
 	}

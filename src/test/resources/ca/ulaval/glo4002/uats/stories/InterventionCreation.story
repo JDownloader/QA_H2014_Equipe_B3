@@ -19,3 +19,9 @@ Given une intervention avec un patient inexistant
 When j'ajoute cette intervention au dossier du patient
 Then une erreur est retournée
 And cette erreur a le code "INT002"
+
+Scenario: Créer une intervention avec un statut invalide
+Given une intervention avec un statut invalide
+When j'ajoute cette intervention au dossier du patient
+Then une erreur est retournée
+And cette erreur a le code "INT001"

@@ -5,7 +5,6 @@ import java.util.Date;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import ca.ulaval.glo4002.domain.intervention.InterventionStatus;
-import ca.ulaval.glo4002.domain.intervention.InterventionType;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
 
 public class InterventionCreationDTO {
@@ -16,9 +15,9 @@ public class InterventionCreationDTO {
 	public Date date;
 	@JsonProperty("salle")
 	public String room;
-	public InterventionType type;
+	public String type;
 	@JsonProperty("statut")
-	public InterventionStatus status = InterventionStatus.PLANNED;
+	public String status = InterventionStatus.PLANNED.getValue();
 	@JsonProperty("patient")
 	public Integer patientNumber;
 }

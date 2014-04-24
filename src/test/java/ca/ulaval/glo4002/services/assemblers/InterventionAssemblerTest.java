@@ -23,8 +23,8 @@ public class InterventionAssemblerTest {
 	private static final Surgeon SAMPLE_SURGEON_PARAMETER = new Surgeon("1");
 	private static final Date SAMPLE_DATE_PARAMETER = new Date(3);
 	private static final String SAMPLE_ROOM_PARAMETER = "room";
-	private static final InterventionType SAMPLE_TYPE_PARAMETER = InterventionType.HEART;
-	private static final InterventionStatus SAMPLE_STATUS_PARAMETER = InterventionStatus.PLANNED;
+	private static final String SAMPLE_TYPE_PARAMETER = InterventionType.HEART.getValue();
+	private static final String SAMPLE_STATUS_PARAMETER = InterventionStatus.PLANNED.getValue();
 	
 	InterventionAssembler interventionAssembler = new InterventionAssembler();
 	InterventionCreationDTO interventionCreationDTO = new InterventionCreationDTO();
@@ -53,8 +53,8 @@ public class InterventionAssemblerTest {
 		Intervention createdIntervention = interventionAssembler.assembleFromDTO(interventionCreationDTO, patientRepositoryMock);
 		Intervention expectedIntervention = new Intervention(SAMPLE_DESCRIPTION_PARAMETER,
 				SAMPLE_SURGEON_PARAMETER, SAMPLE_DATE_PARAMETER,
-				SAMPLE_ROOM_PARAMETER, SAMPLE_TYPE_PARAMETER,
-				SAMPLE_STATUS_PARAMETER, patientMock);
+				SAMPLE_ROOM_PARAMETER, InterventionType.fromString(SAMPLE_TYPE_PARAMETER),
+				InterventionStatus.fromString(SAMPLE_STATUS_PARAMETER), patientMock);
 		
 		assertReflectionEquals(expectedIntervention, createdIntervention);
 	}
