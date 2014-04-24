@@ -1,6 +1,7 @@
 package ca.ulaval.glo4002.rest.resources;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -33,11 +34,15 @@ public class InterventionResource {
 			Integer interventionId = interventionService.createIntervention(interventionCreationDTO, new InterventionCreationDTOValidator(),
 					new InterventionAssembler());
 
-			String newResourceLocation = String.format("/interventions/%d", interventionId);
-			return Response.status(Status.CREATED).location(new URI(newResourceLocation)).build();
+			URI resourceLocationURI = getInterventionResourceLocationURI(interventionId);
+			return Response.status(Status.CREATED).location(resourceLocationURI).build();
 		} catch (ServiceRequestException e) {
 			return Response.status(Status.BAD_REQUEST).entity(new BadRequestDTO(e.getInternalCode(), e.getMessage())).build();
 		}
+	}
+	
+	private URI getInterventionResourceLocationURI(Integer interventionId) throws URISyntaxException {
+		return new URI(String.format("/interventions/%d", interventionId));
 	}
 
 	@POST
@@ -52,11 +57,15 @@ public class InterventionResource {
 			Integer surgicalToolId = interventionService.createSurgicalTool(surgicalToolCreationDTO, new SurgicalToolCreationDTOValidator(),
 					new SurgicalToolAssembler());
 
-			String newResourceLocation = String.format("/%s/%s", surgicalToolCreationDTO.typeCode, surgicalToolId);
-			return Response.status(Status.CREATED).location(new URI(newResourceLocation)).build();
+			URI resourceLocationURI = getSurgicalToolResourceLocationURI(surgicalToolId, surgicalToolCreationDTO.typeCode);
+			return Response.status(Status.CREATED).location(resourceLocationURI).build();
 		} catch (ServiceRequestException e) {
 			return Response.status(Status.BAD_REQUEST).entity(new BadRequestDTO(e.getInternalCode(), e.getMessage())).build();
 		}
+	}
+	
+	private URI getSurgicalToolResourceLocationURI(Integer surgicalToolId, String typeCode) throws URISyntaxException {
+		return new URI(String.format("/%s/%s", typeCode, surgicalToolId));
 	}
 
 	@PUT
