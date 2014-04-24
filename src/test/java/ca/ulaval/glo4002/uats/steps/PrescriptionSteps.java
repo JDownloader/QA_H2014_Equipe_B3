@@ -31,6 +31,7 @@ public class PrescriptionSteps {
 	private static final int STAFF_MEMBER_VALUE = 3;
 	private static final String ROSALIAC_UV_RICHE_DIN = "02330857";
 	private static final String NON_EXISTING_DIN_VALUE = "025555";
+	private static final String WHITE_SPACE = " ";
 
 	private Response response = null;
 	JSONObject prescriptionJson;
@@ -49,14 +50,19 @@ public class PrescriptionSteps {
 		prescriptionJson.put(STAFF_MEMBER_PARAMETER, STAFF_MEMBER_VALUE);
 	}
 
-	@Given("une prescription valide avec des données manquantes")
-	public void createValidPrescriptionWithMissingValues() {
+	@Given("une prescription avec des données manquantes")
+	public void createPrescriptionWithMissingValues() {
 		prescriptionJson.remove(RENEWALS_PARAMETER);
 	}
 	
 	@Given("une prescription avec des données invalides")
-	public void createValidPrescriptionWithInvalidValues() {
+	public void createPrescriptionWithInvalidValues() {
 		prescriptionJson.put(RENEWALS_PARAMETER, INVALID_RENEWALS_VALUE);
+	}
+	
+	@Given("une prescription avec un champ obligatoire qui ne contient que des espaces")
+	public void createPrescriptionWithWhiteSpaceField() {
+		prescriptionJson.put(STAFF_MEMBER_PARAMETER, WHITE_SPACE);
 	}
 	
 	@Given("une prescription valide avec DIN")
@@ -76,7 +82,7 @@ public class PrescriptionSteps {
 		prescriptionJson.put(DRUG_NAME_PARAMETER, DRUG_NAME_VALUE);
 	}
 	
-	@Given("une prescription valide avec DIN et un nom de médicament")
+	@Given("une prescription avec DIN et un nom de médicament")
 	public void createValidPrescriptionWithDinAndDrugName() {
 		prescriptionJson.put(DRUG_NAME_PARAMETER, DRUG_NAME_VALUE);
 	}
