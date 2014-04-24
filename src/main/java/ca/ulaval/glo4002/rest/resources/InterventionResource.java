@@ -6,10 +6,10 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
 
-import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolFactory;
 import ca.ulaval.glo4002.services.InterventionService;
 import ca.ulaval.glo4002.services.ServiceRequestException;
 import ca.ulaval.glo4002.services.assemblers.InterventionAssembler;
+import ca.ulaval.glo4002.services.assemblers.SurgicalToolAssembler;
 import ca.ulaval.glo4002.services.dto.*;
 import ca.ulaval.glo4002.services.dto.validators.*;
 
@@ -50,7 +50,7 @@ public class InterventionResource {
 			surgicalToolCreationDTO.interventionNumber = interventionNumber;
 
 			Integer surgicalToolId = interventionService.createSurgicalTool(surgicalToolCreationDTO, new SurgicalToolCreationDTOValidator(),
-					new SurgicalToolFactory());
+					new SurgicalToolAssembler());
 
 			String newResourceLocation = String.format("/%s/%s", surgicalToolCreationDTO.typeCode, surgicalToolId);
 			return Response.status(Status.CREATED).location(new URI(newResourceLocation)).build();

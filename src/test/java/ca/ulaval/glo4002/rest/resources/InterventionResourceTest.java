@@ -12,10 +12,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolFactory;
 import ca.ulaval.glo4002.services.InterventionService;
 import ca.ulaval.glo4002.services.ServiceRequestException;
 import ca.ulaval.glo4002.services.assemblers.InterventionAssembler;
+import ca.ulaval.glo4002.services.assemblers.SurgicalToolAssembler;
 import ca.ulaval.glo4002.services.dto.*;
 import ca.ulaval.glo4002.services.dto.validators.*;
 
@@ -66,7 +66,7 @@ public class InterventionResourceTest {
 	public void verifySurgicalToolCreationCallsServiceMethodsCorrectly() throws Exception {
 		createSurgicalTool();
 		verify(interventionServiceMock).createSurgicalTool(eq(surgicalToolCreationDTOMock), any(SurgicalToolCreationDTOValidator.class),
-				any(SurgicalToolFactory.class));
+				any(SurgicalToolAssembler.class));
 	}
 
 	@Test
@@ -78,7 +78,7 @@ public class InterventionResourceTest {
 	@Test
 	public void verifySurgicalToolCreationReturnsBadRequestResponseOnServiceRequestException() throws Exception {
 		doThrow(new ServiceRequestException()).when(interventionServiceMock).createSurgicalTool(eq(surgicalToolCreationDTOMock),
-				any(SurgicalToolCreationDTOValidator.class), any(SurgicalToolFactory.class));
+				any(SurgicalToolCreationDTOValidator.class), any(SurgicalToolAssembler.class));
 		Response receivedResponse = createSurgicalTool();
 		assertEquals(Status.BAD_REQUEST.getStatusCode(), receivedResponse.getStatus());
 	}

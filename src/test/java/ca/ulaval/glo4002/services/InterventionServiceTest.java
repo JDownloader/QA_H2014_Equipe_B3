@@ -18,6 +18,7 @@ import ca.ulaval.glo4002.domain.patient.PatientNotFoundException;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
 import ca.ulaval.glo4002.domain.surgicaltool.*;
 import ca.ulaval.glo4002.services.assemblers.InterventionAssembler;
+import ca.ulaval.glo4002.services.assemblers.SurgicalToolAssembler;
 import ca.ulaval.glo4002.services.dto.*;
 import ca.ulaval.glo4002.services.dto.validators.*;
 
@@ -40,7 +41,7 @@ public class InterventionServiceTest {
 	private SurgicalToolCreationDTOValidator surgicalToolCreationDTOValidatorMock;
 	private SurgicalToolModificationDTOValidator surgicalToolModificationDTOValidatorMock;
 	private InterventionCreationDTOValidator interventionCreationDTOValidatorMock;
-	private SurgicalToolFactory surgicalToolFactoryMock;
+	private SurgicalToolAssembler surgicalToolFactoryMock;
 	private InterventionAssembler interventionAssemblerMock;
 
 	@Before
@@ -61,7 +62,7 @@ public class InterventionServiceTest {
 		surgicalToolCreationDTOValidatorMock = mock(SurgicalToolCreationDTOValidator.class);
 		surgicalToolModificationDTOValidatorMock = mock(SurgicalToolModificationDTOValidator.class);
 		interventionCreationDTOValidatorMock = mock(InterventionCreationDTOValidator.class);
-		surgicalToolFactoryMock = mock(SurgicalToolFactory.class);
+		surgicalToolFactoryMock = mock(SurgicalToolAssembler.class);
 		interventionAssemblerMock = mock(InterventionAssembler.class);
 	}
 

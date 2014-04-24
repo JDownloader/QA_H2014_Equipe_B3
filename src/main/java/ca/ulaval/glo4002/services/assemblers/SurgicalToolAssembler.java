@@ -1,8 +1,9 @@
-package ca.ulaval.glo4002.domain.surgicaltool;
+package ca.ulaval.glo4002.services.assemblers;
 
+import ca.ulaval.glo4002.domain.surgicaltool.SurgicalTool;
 import ca.ulaval.glo4002.services.dto.SurgicalToolCreationDTO;
 
-public class SurgicalToolFactory {
+public class SurgicalToolAssembler {
 
 	public SurgicalTool createFromDTO(SurgicalToolCreationDTO surgicalToolCreationDTO) {
 		

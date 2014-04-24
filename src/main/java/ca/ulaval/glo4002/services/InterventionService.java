@@ -10,6 +10,7 @@ import ca.ulaval.glo4002.domain.surgicaltool.*;
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
 import ca.ulaval.glo4002.persistence.*;
 import ca.ulaval.glo4002.services.assemblers.InterventionAssembler;
+import ca.ulaval.glo4002.services.assemblers.SurgicalToolAssembler;
 import ca.ulaval.glo4002.services.dto.*;
 import ca.ulaval.glo4002.services.dto.validators.*;
 
@@ -73,7 +74,7 @@ public class InterventionService {
 	}
 
 	public Integer createSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO, SurgicalToolCreationDTOValidator surgicalToolCreationDTOValidator,
-			SurgicalToolFactory surgicalToolAssembler) throws ServiceRequestException {
+			SurgicalToolAssembler surgicalToolAssembler) throws ServiceRequestException {
 		try {
 			surgicalToolCreationDTOValidator.validate(surgicalToolCreationDTO);
 			entityTransaction.begin();
@@ -95,7 +96,7 @@ public class InterventionService {
 		}
 	}
 
-	private SurgicalTool doCreateSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO, SurgicalToolFactory surgicalToolAssembler)
+	private SurgicalTool doCreateSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO, SurgicalToolAssembler surgicalToolAssembler)
 			throws ServiceRequestException {
 		SurgicalTool surgicalTool = surgicalToolAssembler.createFromDTO(surgicalToolCreationDTO);
 		surgicalToolRepository.persist(surgicalTool);
