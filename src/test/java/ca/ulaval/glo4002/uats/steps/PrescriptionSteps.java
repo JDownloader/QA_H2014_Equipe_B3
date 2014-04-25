@@ -80,7 +80,7 @@ public class PrescriptionSteps {
 	public void createValidPrescriptionWithDinAndDrugName() {
 		prescriptionJson.put(DRUG_NAME_PARAMETER, DRUG_NAME_VALUE);
 	}
-
+	
 	@When("j'ajoute cette prescription au dossier du patient")
 	public void addPrescription() {
 		Integer patientId = (Integer) ThreadLocalContext.getObject(PatientSteps.PATIENT_ID_KEY);

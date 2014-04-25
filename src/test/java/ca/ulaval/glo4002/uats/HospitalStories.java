@@ -40,7 +40,7 @@ public class HospitalStories extends JUnitStories {
 
 	@Override
 	public InjectableStepsFactory stepsFactory() {
-		return new InstanceStepsFactory(configuration(), new PrescriptionSteps(), new PatientSteps(), new DrugSteps(), new HttpResponseSteps(), new JettyTestRunner());
+		return new InstanceStepsFactory(configuration(), new JettyTestRunner(), new PrescriptionSteps(), new PatientSteps(), new DrugSteps(), new HttpResponseSteps(), new InterventionSteps());
 	}
 
 	@Override

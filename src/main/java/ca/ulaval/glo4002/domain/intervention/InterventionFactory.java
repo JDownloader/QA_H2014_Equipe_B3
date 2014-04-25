@@ -7,7 +7,7 @@ public class InterventionFactory {
 	public Intervention createFromDTO(InterventionCreationDTO interventionCreationDto, Patient patient) {
 		return new Intervention(interventionCreationDto.description,
 				interventionCreationDto.surgeon, interventionCreationDto.date,
-				interventionCreationDto.room, interventionCreationDto.type,
-				interventionCreationDto.status, patient);
+				interventionCreationDto.room, InterventionType.fromString(interventionCreationDto.type),
+				InterventionStatus.fromString(interventionCreationDto.status), patient);
 	}
 }
