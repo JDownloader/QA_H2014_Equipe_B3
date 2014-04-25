@@ -20,6 +20,11 @@ public class StaffMember implements Serializable {
 	public int hashCode() {
 		return licenseNumber.hashCode();
 	};
+	
+	@Override
+	public String toString() {
+		return licenseNumber.toString();
+	};
 
 	@Override
 	public boolean equals(Object obj) {

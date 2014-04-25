@@ -17,6 +17,8 @@ public class InterventionCreationDTOValidator {
 			throw new DTOValidationException("Le paramètre 'salle' est requis.");
 		} else if (interventionCreationDTO.surgeon == null) {
 			throw new DTOValidationException("Le paramètre 'chirurgien' est requis.");
+		} else if (StringUtils.isBlank(interventionCreationDTO.surgeon.toString())) {
+			throw new DTOValidationException("Le paramètre 'chirurgien' ne peut être vide.");
 		} else if (interventionCreationDTO.type == null) {
 			throw new DTOValidationException("Le paramètre 'type' est requis.");
 		}
