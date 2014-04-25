@@ -84,7 +84,7 @@ public class InterventionSteps {
 	public void addIntervention() {
 		response = given().port(JettyTestRunner.JETTY_TEST_PORT)
 				.body(interventionJson.toString())
-				.contentType(ContentType.JSON)
+				.contentType("application/json; charset=UTF-8")
 				.when()
 				.post("interventions/");
 
