@@ -8,7 +8,7 @@ import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
 
 import ca.ulaval.glo4002.services.InterventionService;
-import ca.ulaval.glo4002.services.ServiceRequestException;
+import ca.ulaval.glo4002.services.ServiceException;
 import ca.ulaval.glo4002.services.assemblers.InterventionAssembler;
 import ca.ulaval.glo4002.services.assemblers.SurgicalToolAssembler;
 import ca.ulaval.glo4002.services.dto.*;
@@ -36,7 +36,7 @@ public class InterventionResource {
 
 			URI resourceLocationURI = getInterventionResourceLocationURI(interventionId);
 			return Response.status(Status.CREATED).location(resourceLocationURI).build();
-		} catch (ServiceRequestException e) {
+		} catch (ServiceException e) {
 			return Response.status(Status.BAD_REQUEST).entity(new BadRequestDTO(e.getInternalCode(), e.getMessage())).build();
 		}
 	}
@@ -57,15 +57,15 @@ public class InterventionResource {
 			Integer surgicalToolId = interventionService.createSurgicalTool(surgicalToolCreationDTO, new SurgicalToolCreationDTOValidator(),
 					new SurgicalToolAssembler());
 
-			URI resourceLocationURI = getSurgicalToolResourceLocationURI(surgicalToolId, surgicalToolCreationDTO.typeCode);
+			URI resourceLocationURI = getSurgicalToolResourceLocationURI(interventionNumber, surgicalToolId, surgicalToolCreationDTO.typeCode);
 			return Response.status(Status.CREATED).location(resourceLocationURI).build();
-		} catch (ServiceRequestException e) {
+		} catch (ServiceException e) {
 			return Response.status(Status.BAD_REQUEST).entity(new BadRequestDTO(e.getInternalCode(), e.getMessage())).build();
 		}
 	}
 	
-	private URI getSurgicalToolResourceLocationURI(Integer surgicalToolId, String typeCode) throws URISyntaxException {
-		return new URI(String.format("/%s/%s", typeCode, surgicalToolId));
+	private URI getSurgicalToolResourceLocationURI(Integer interventionNumber, Integer surgicalToolId, String typeCode) throws URISyntaxException {
+		return new URI(String.format("/interventions/%d/instruments/%s/%s", interventionNumber, typeCode, surgicalToolId));
 	}
 
 	@PUT
@@ -84,7 +84,7 @@ public class InterventionResource {
 			interventionService.modifySurgicalTool(surgicalToolModificationDTO, new SurgicalToolModificationDTOValidator());
 
 			return Response.status(Status.OK).build();
-		} catch (ServiceRequestException e) {
+		} catch (ServiceException e) {
 			return Response.status(Status.BAD_REQUEST).entity(new BadRequestDTO(e.getInternalCode(), e.getMessage())).build();
 		}
 	}

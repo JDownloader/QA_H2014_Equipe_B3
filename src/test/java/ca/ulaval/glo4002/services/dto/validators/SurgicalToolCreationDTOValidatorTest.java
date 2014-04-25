@@ -20,7 +20,7 @@ public class SurgicalToolCreationDTOValidatorTest {
 	@Before
 	public void init() throws Exception {
 		surgicalToolCreationDTO.typeCode = SAMPLE_TYPECODE_PARAMETER;
-		surgicalToolCreationDTO.status = SAMPLE_STATUS_PARAMETER;
+		surgicalToolCreationDTO.status = SAMPLE_STATUS_PARAMETER.getValue();
 		surgicalToolCreationDTO.serialNumber = SAMPLE_SERIAL_NUMBER_PARAMETER;
 	}
 

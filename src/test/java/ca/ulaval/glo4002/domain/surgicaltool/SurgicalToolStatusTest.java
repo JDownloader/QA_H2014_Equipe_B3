@@ -8,7 +8,7 @@ public class SurgicalToolStatusTest {
 	private static final String INVALID_STATUS = "INUTILESE";
 	private static final String SAMPLE_STATUS = "INUTILISE";
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = InvalidSurgicalToolStatusException.class)
 	public void throwsIllegalArgumentExceptionOnInvalidStatusString() {
 		SurgicalToolStatus.fromString(INVALID_STATUS);
 	}

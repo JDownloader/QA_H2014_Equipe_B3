@@ -48,6 +48,7 @@ public class InterventionServiceTest {
 	public void init() {
 		createMocks();
 		stubMethods();
+		setupDTOs();
 		interventionService = new InterventionService(interventionRepositoryMock, patientRepositoryMock, surgicalToolRepositoryMock, entityManagerMock);
 	}
 
@@ -73,6 +74,10 @@ public class InterventionServiceTest {
 		when(interventionAssemblerMock.assembleFromDTO(interventionCreationDTO, patientRepositoryMock)).thenReturn(interventionMock);
 		when(surgicalToolFactoryMock.createFromDTO(surgicalToolCreationDTO)).thenReturn(surgicalToolMock);
 	}
+	
+	private void setupDTOs() {
+		surgicalToolModificationDTO.newStatus = SurgicalToolStatus.UNUSED.getValue();
+	}
 
 	@Test
 	public void verifyInterventionCreationCallsCorrectRepositoryMethods() throws Exception {
@@ -96,7 +101,7 @@ public class InterventionServiceTest {
 
 		try {
 			createIntervention();
-		} catch (ServiceRequestException e) {
+		} catch (ServiceException e) {
 			verify(entityTransactionMock).rollback();
 			return;
 		}
@@ -118,7 +123,7 @@ public class InterventionServiceTest {
 		try {
 			createIntervention();
 			fail("An exception was expected.");
-		} catch (ServiceRequestException e) {
+		} catch (ServiceException e) {
 			assertEquals(InterventionService.ERROR_INT001, e.getInternalCode());
 		}
 	}
@@ -129,7 +134,7 @@ public class InterventionServiceTest {
 		try {
 			createIntervention();
 			fail("An exception was expected.");
-		} catch (ServiceRequestException e) {
+		} catch (ServiceException e) {
 			assertEquals(InterventionService.ERROR_INT002, e.getInternalCode());
 		}
 	}
@@ -175,7 +180,7 @@ public class InterventionServiceTest {
 
 		try {
 			createSurgicalTool();
-		} catch (ServiceRequestException e) {
+		} catch (ServiceException e) {
 			verify(entityTransactionMock).rollback();
 			return;
 		}
@@ -200,7 +205,7 @@ public class InterventionServiceTest {
 		try {
 			createSurgicalTool();
 			fail("An exception was expected.");
-		} catch (ServiceRequestException e) {
+		} catch (ServiceException e) {
 			assertEquals(InterventionService.ERROR_INT010, e.getInternalCode());
 		}
 	}
@@ -211,7 +216,7 @@ public class InterventionServiceTest {
 		try {
 			createSurgicalTool();
 			fail("An exception was expected.");
-		} catch (ServiceRequestException e) {
+		} catch (ServiceException e) {
 			assertEquals(InterventionService.ERROR_INT010, e.getInternalCode());
 		}
 	}
@@ -222,7 +227,7 @@ public class InterventionServiceTest {
 		try {
 			createSurgicalTool();
 			fail("An exception was expected.");
-		} catch (ServiceRequestException e) {
+		} catch (ServiceException e) {
 			assertEquals(InterventionService.ERROR_INT011, e.getInternalCode());
 		}
 
@@ -234,7 +239,7 @@ public class InterventionServiceTest {
 		try {
 			createSurgicalTool();
 			fail("An exception was expected.");
-		} catch (ServiceRequestException e) {
+		} catch (ServiceException e) {
 			assertEquals(InterventionService.ERROR_INT012, e.getInternalCode());
 		}
 	}
@@ -245,18 +250,15 @@ public class InterventionServiceTest {
 
 		verify(surgicalToolRepositoryMock).getBySerialNumberOrId(anyString());
 		verify(interventionRepositoryMock).getById(anyInt());
-		verify(surgicalToolRepositoryMock).update(surgicalToolMock);
+		verify(surgicalToolRepositoryMock).persist(surgicalToolMock);
 	}
 
 	@Test
 	public void verifySurgicalToolModificationCallsCorrectDomainMethods() throws Exception {
-		final String SAMPLE_SERIAL_NUMBER_PARAMETER = "2985023D";
-		surgicalToolModificationDTO.newSerialNumber = SAMPLE_SERIAL_NUMBER_PARAMETER;
-
 		modifySurgicalTool();
 
 		verify(surgicalToolMock).setStatus(any(SurgicalToolStatus.class));
-		verify(interventionMock).changeSurgicalToolSerialNumber(surgicalToolMock, SAMPLE_SERIAL_NUMBER_PARAMETER);
+		verify(interventionMock).changeSurgicalToolSerialNumber(eq(surgicalToolMock), anyString());
 	}
 
 	@Test
@@ -271,11 +273,11 @@ public class InterventionServiceTest {
 	@Test
 	public void verifySurgicalToolModificationRollsbackOnException() throws Exception {
 		when(entityTransactionMock.isActive()).thenReturn(true);
-		when(patientRepositoryMock.getById(anyInt())).thenThrow(new SurgicalToolNotFoundException());
+		when(surgicalToolRepositoryMock.getBySerialNumberOrId(anyString())).thenThrow(new SurgicalToolNotFoundException());
 
 		try {
 			modifySurgicalTool();
-		} catch (ServiceRequestException e) {
+		} catch (ServiceException e) {
 			verify(entityTransactionMock).rollback();
 			return;
 		}
@@ -297,7 +299,7 @@ public class InterventionServiceTest {
 		try {
 			modifySurgicalTool();
 			fail("An exception was expected.");
-		} catch (ServiceRequestException e) {
+		} catch (ServiceException e) {
 			assertEquals(InterventionService.ERROR_INT010, e.getInternalCode());
 		}
 	}
@@ -308,18 +310,18 @@ public class InterventionServiceTest {
 		try {
 			modifySurgicalTool();
 			fail("An exception was expected.");
-		} catch (ServiceRequestException e) {
+		} catch (ServiceException e) {
 			assertEquals(InterventionService.ERROR_INT010, e.getInternalCode());
 		}
 	}
 
 	@Test
 	public void verifySurgicalToolModificationThrowsServiceExceptionOnSurgicalToolExistsException() throws Exception {
-		doThrow(new SurgicalToolExistsException()).when(surgicalToolRepositoryMock).update(eq(surgicalToolMock));
+		doThrow(new SurgicalToolExistsException()).when(surgicalToolRepositoryMock).persist(eq(surgicalToolMock));
 		try {
 			modifySurgicalTool();
 			fail("An exception was expected.");
-		} catch (ServiceRequestException e) {
+		} catch (ServiceException e) {
 			assertEquals(InterventionService.ERROR_INT011, e.getInternalCode());
 		}
 	}
@@ -330,7 +332,7 @@ public class InterventionServiceTest {
 		try {
 			modifySurgicalTool();
 			fail("An exception was expected.");
-		} catch (ServiceRequestException e) {
+		} catch (ServiceException e) {
 			assertEquals(InterventionService.ERROR_INT012, e.getInternalCode());
 		}
 	}

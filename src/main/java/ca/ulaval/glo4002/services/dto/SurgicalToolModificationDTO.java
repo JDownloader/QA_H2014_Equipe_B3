@@ -2,13 +2,13 @@ package ca.ulaval.glo4002.services.dto;
 
 import org.codehaus.jackson.annotate.*;
 
-import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolStatus;
-
 public class SurgicalToolModificationDTO {
 	@JsonProperty("statut")
-	public SurgicalToolStatus newStatus;
+	public String newStatus;
 	@JsonProperty("noserie")
 	public String newSerialNumber;
+	@JsonProperty("typecode")
+	public String newTypeCode;
 	@JsonIgnore
 	public Integer interventionNumber;
 	@JsonIgnore

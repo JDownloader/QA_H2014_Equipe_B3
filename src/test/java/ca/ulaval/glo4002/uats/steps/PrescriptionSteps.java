@@ -14,7 +14,6 @@ import ca.ulaval.glo4002.uats.runners.JettyTestRunner;
 import ca.ulaval.glo4002.uats.steps.contexts.ThreadLocalContext;
 import static com.jayway.restassured.RestAssured.*;
 
-import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
 
 public class PrescriptionSteps {
@@ -93,7 +92,7 @@ public class PrescriptionSteps {
 		
 		response = given().port(JettyTestRunner.JETTY_TEST_PORT)
 				.body(prescriptionJson.toString())
-				.contentType(ContentType.JSON)
+				.contentType("application/json; charset=UTF-8")
 				.when()
 				.post(String.format("patient/%d/prescriptions/", patientId));
 		

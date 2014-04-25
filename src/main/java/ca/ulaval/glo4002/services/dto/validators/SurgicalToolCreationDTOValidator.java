@@ -11,8 +11,6 @@ public class SurgicalToolCreationDTOValidator {
 			throw new DTOValidationException("Le paramètre 'typecode' est requis.");
 		} else if (surgicalToolCreationDTO.status == null) {
 			throw new DTOValidationException("Le paramètre 'statut' est requis.");
-		} else if (surgicalToolCreationDTO.status == null) {
-			throw new DTOValidationException("Le paramètre 'statut' est requis.");
 		} else if (surgicalToolCreationDTO.serialNumber != null && StringUtils.isBlank(surgicalToolCreationDTO.serialNumber)) {
 			throw new DTOValidationException("Le paramètre 'noserie' ne peut être vide.");
 		} 

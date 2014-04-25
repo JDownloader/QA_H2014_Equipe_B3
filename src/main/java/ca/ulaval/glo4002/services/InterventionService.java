@@ -47,7 +47,7 @@ public class InterventionService {
 	}
 
 	public Integer createIntervention(InterventionCreationDTO interventionCreationDTO, InterventionCreationDTOValidator interventionCreationDTOValidator,
-			InterventionAssembler interventionAssembler) throws ServiceRequestException {
+			InterventionAssembler interventionAssembler) {
 		try {
 			interventionCreationDTOValidator.validate(interventionCreationDTO);
 			entityTransaction.begin();
@@ -57,9 +57,9 @@ public class InterventionService {
 			entityTransaction.commit();
 			return intervention.getId();
 		} catch (DTOValidationException e) {
-			throw new ServiceRequestException(ERROR_INT001, e.getMessage());
+			throw new ServiceException(ERROR_INT001, e.getMessage());
 		} catch (PatientNotFoundException e) {
-			throw new ServiceRequestException(ERROR_INT002, e.getMessage());
+			throw new ServiceException(ERROR_INT002, e.getMessage());
 		} finally {
 			if (entityTransaction.isActive()) {
 				entityTransaction.rollback();
@@ -74,7 +74,7 @@ public class InterventionService {
 	}
 
 	public Integer createSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO, SurgicalToolCreationDTOValidator surgicalToolCreationDTOValidator,
-			SurgicalToolAssembler surgicalToolAssembler) throws ServiceRequestException {
+			SurgicalToolAssembler surgicalToolAssembler) {
 		try {
 			surgicalToolCreationDTOValidator.validate(surgicalToolCreationDTO);
 			entityTransaction.begin();
@@ -83,12 +83,12 @@ public class InterventionService {
 
 			entityTransaction.commit();
 			return newSurgicalTool.getId();
-		} catch (DTOValidationException | InterventionNotFoundException e) {
-			throw new ServiceRequestException(ERROR_INT010, e.getMessage());
+		} catch (DTOValidationException | InterventionNotFoundException | InvalidSurgicalToolStatusException e) {
+			throw new ServiceException(ERROR_INT010, e.getMessage());
 		} catch (SurgicalToolExistsException e) {
-			throw new ServiceRequestException(ERROR_INT011, e.getMessage());
+			throw new ServiceException(ERROR_INT011, e.getMessage());
 		} catch (SurgicalToolRequiresSerialNumberException e) {
-			throw new ServiceRequestException(ERROR_INT012, e.getMessage());
+			throw new ServiceException(ERROR_INT012, e.getMessage());
 		} finally {
 			if (entityTransaction.isActive()) {
 				entityTransaction.rollback();
@@ -96,8 +96,7 @@ public class InterventionService {
 		}
 	}
 
-	private SurgicalTool doCreateSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO, SurgicalToolAssembler surgicalToolAssembler)
-			throws ServiceRequestException {
+	private SurgicalTool doCreateSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO, SurgicalToolAssembler surgicalToolAssembler) {
 		SurgicalTool surgicalTool = surgicalToolAssembler.createFromDTO(surgicalToolCreationDTO);
 		surgicalToolRepository.persist(surgicalTool);
 		Intervention intervention = interventionRepository.getById(surgicalToolCreationDTO.interventionNumber);
@@ -107,7 +106,7 @@ public class InterventionService {
 	}
 
 	public void modifySurgicalTool(SurgicalToolModificationDTO surgicalToolModificationDTO,
-			SurgicalToolModificationDTOValidator surgicalToolModificationDTOValidator) throws ServiceRequestException {
+			SurgicalToolModificationDTOValidator surgicalToolModificationDTOValidator) {
 		try {
 			surgicalToolModificationDTOValidator.validate(surgicalToolModificationDTO);
 			entityTransaction.begin();
@@ -115,12 +114,12 @@ public class InterventionService {
 			doModifySurgicalTool(surgicalToolModificationDTO);
 
 			entityTransaction.commit();
-		} catch (DTOValidationException | SurgicalToolNotFoundException e) {
-			throw new ServiceRequestException(ERROR_INT010, e.getMessage());
+		} catch (DTOValidationException | SurgicalToolNotFoundException | InvalidSurgicalToolStatusException e) {
+			throw new ServiceException(ERROR_INT010, e.getMessage());
 		} catch (SurgicalToolExistsException e) {
-			throw new ServiceRequestException(ERROR_INT011, e.getMessage());
+			throw new ServiceException(ERROR_INT011, e.getMessage());
 		} catch (SurgicalToolRequiresSerialNumberException e) {
-			throw new ServiceRequestException(ERROR_INT012, e.getMessage());
+			throw new ServiceException(ERROR_INT012, e.getMessage());
 		} finally {
 			if (entityTransaction.isActive()) {
 				entityTransaction.rollback();
@@ -128,11 +127,11 @@ public class InterventionService {
 		}
 	}
 
-	private void doModifySurgicalTool(SurgicalToolModificationDTO surgicalToolModificationDTO) throws ServiceRequestException {
+	private void doModifySurgicalTool(SurgicalToolModificationDTO surgicalToolModificationDTO) {
 		SurgicalTool surgicalTool = surgicalToolRepository.getBySerialNumberOrId(surgicalToolModificationDTO.serialNumberOrId);
 		Intervention intervention = interventionRepository.getById(surgicalToolModificationDTO.interventionNumber);
-		surgicalTool.setStatus(surgicalToolModificationDTO.newStatus);
+		surgicalTool.setStatus(SurgicalToolStatus.fromString(surgicalToolModificationDTO.newStatus));
 		intervention.changeSurgicalToolSerialNumber(surgicalTool, surgicalToolModificationDTO.newSerialNumber);
-		surgicalToolRepository.update(surgicalTool);
+		surgicalToolRepository.persist(surgicalTool);
 	}
 }

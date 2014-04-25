@@ -20,13 +20,10 @@ public class HibernateSurgicalToolRepository extends HibernateRepository impleme
 	public void persist(SurgicalTool surgicalTool) {
 		try {
 			entityManager.persist(surgicalTool);
+			entityManager.flush();
 		} catch (PersistenceException e) {
 			throw new SurgicalToolExistsException(String.format("Un instrument avec le numéro de série '%s' existe déjà.", surgicalTool.getSerialNumber()), e);
 		}
-	}
-
-	public void update(SurgicalTool surgicalTool) {
-		entityManager.merge(surgicalTool);
 	}
 
 	public SurgicalTool getBySerialNumberOrId(String serialNumberOrId) {

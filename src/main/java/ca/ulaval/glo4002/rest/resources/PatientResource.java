@@ -5,7 +5,7 @@ import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
 
 import ca.ulaval.glo4002.services.PatientService;
-import ca.ulaval.glo4002.services.ServiceRequestException;
+import ca.ulaval.glo4002.services.ServiceException;
 import ca.ulaval.glo4002.services.assemblers.PrescriptionAssembler;
 import ca.ulaval.glo4002.services.dto.BadRequestDTO;
 import ca.ulaval.glo4002.services.dto.PrescriptionCreationDTO;
@@ -35,7 +35,7 @@ public class PatientResource {
 			prescriptionCreationDTO.patientNumber = patientNumber;
 			patientService.createPrescription(prescriptionCreationDTO, new PrescriptionCreationDTOValidator(), new PrescriptionAssembler());
 			return Response.status(Status.CREATED).build();
-		} catch (ServiceRequestException e) {
+		} catch (ServiceException e) {
 			return Response.status(Status.BAD_REQUEST).entity(new BadRequestDTO(e.getInternalCode(), e.getMessage())).build();
 		}
 	}

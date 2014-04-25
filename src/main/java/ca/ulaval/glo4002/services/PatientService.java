@@ -42,7 +42,7 @@ public class PatientService {
 	}
 
 	public void createPrescription(PrescriptionCreationDTO prescriptionCreationDTO, PrescriptionCreationDTOValidator prescriptionCreationDTOValidator,
-			PrescriptionAssembler prescriptionAssembler) throws ServiceRequestException {
+			PrescriptionAssembler prescriptionAssembler) {
 		try {
 			prescriptionCreationDTOValidator.validate(prescriptionCreationDTO);
 			entityTransaction.begin();
@@ -51,7 +51,7 @@ public class PatientService {
 
 			entityTransaction.commit();
 		} catch (DTOValidationException | PatientNotFoundException | DrugNotFoundException e) {
-			throw new ServiceRequestException(ERROR_PRES001, e.getMessage());
+			throw new ServiceException(ERROR_PRES001, e.getMessage());
 		} finally {
 			if (entityTransaction.isActive()) {
 				entityTransaction.rollback();

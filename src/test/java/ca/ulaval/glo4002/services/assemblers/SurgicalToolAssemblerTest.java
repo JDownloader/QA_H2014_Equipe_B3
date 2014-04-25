@@ -23,7 +23,7 @@ public class SurgicalToolAssemblerTest {
 	public void init() {
 		surgicalToolCreationDTO.interventionNumber = SAMPLE_INTERVENTION_NUMBER;
 		surgicalToolCreationDTO.serialNumber = SAMPLE_SERIAL_NUMBER;
-		surgicalToolCreationDTO.status = SAMPLE_STATUS;
+		surgicalToolCreationDTO.status = SAMPLE_STATUS.getValue();
 		surgicalToolCreationDTO.typeCode = SAMPLE_TYPE_CODE;
 	}
 

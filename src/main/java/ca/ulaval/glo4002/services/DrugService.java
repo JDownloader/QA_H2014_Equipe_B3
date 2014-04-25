@@ -31,7 +31,7 @@ public class DrugService {
 		this.entityTransaction = entityManager.getTransaction();		
 	}
 
-	public List<Drug> searchDrug(DrugSearchDTO drugSearchDTO, DrugSearchDTOValidator drugSearchDTOValidator) throws ServiceRequestException {
+	public List<Drug> searchDrug(DrugSearchDTO drugSearchDTO, DrugSearchDTOValidator drugSearchDTOValidator) {
 		try {
 			drugSearchDTOValidator.validate(drugSearchDTO);
 			entityTransaction.begin();
@@ -39,7 +39,7 @@ public class DrugService {
 			entityTransaction.commit();
 			return drugResults;
 		} catch (Exception e) {
-			throw new ServiceRequestException(ERROR_DIN001, e.getMessage());
+			throw new ServiceException(ERROR_DIN001, e.getMessage());
 		} finally {
 			if (entityTransaction.isActive()) {
 				entityTransaction.rollback();
