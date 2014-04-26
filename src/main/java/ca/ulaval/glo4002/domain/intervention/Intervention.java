@@ -23,10 +23,13 @@ public class Intervention {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String description;
+	@Enumerated(EnumType.STRING)
 	private Surgeon surgeon;
 	private Date date;
 	private String room;
+	@Enumerated(EnumType.STRING)
 	private InterventionType type;
+	@Enumerated(EnumType.STRING)
 	private InterventionStatus status;
 	@ManyToOne()
 	private Patient patient;

@@ -18,6 +18,7 @@ public class SurgicalTool extends Observable {
 
 	private String serialNumber;
 	private String typeCode;
+	@Enumerated(EnumType.STRING)
 	private SurgicalToolStatus status;
 
 	protected SurgicalTool() {
