@@ -51,6 +51,7 @@ public class Intervention {
 		return this.id;
 	}
 	
+	@PostLoad
 	public void linkObservers()
 	{
 		for (SurgicalTool surgicalTool : surgicalTools) {

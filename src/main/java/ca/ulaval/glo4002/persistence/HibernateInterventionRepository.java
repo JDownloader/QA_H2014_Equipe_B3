@@ -38,7 +38,6 @@ public class HibernateInterventionRepository extends HibernateRepository impleme
 		if (intervention == null) {
 			throw new InterventionNotFoundException(String.format("Impossible de trouver l'intervention avec id '%s'.", id));
 		}
-		intervention.linkObservers();
 		return intervention;
 	}
 }
