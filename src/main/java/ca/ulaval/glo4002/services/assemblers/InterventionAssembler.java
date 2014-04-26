@@ -1,6 +1,8 @@
 package ca.ulaval.glo4002.services.assemblers;
 
 import ca.ulaval.glo4002.domain.intervention.Intervention;
+import ca.ulaval.glo4002.domain.intervention.InterventionStatus;
+import ca.ulaval.glo4002.domain.intervention.InterventionType;
 import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
 import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
@@ -13,8 +15,8 @@ public class InterventionAssembler {
 		
 		return new Intervention(interventionCreationDto.description,
 				interventionCreationDto.surgeon, interventionCreationDto.date,
-				interventionCreationDto.room, interventionCreationDto.type,
-				interventionCreationDto.status, patient);
+				interventionCreationDto.room, InterventionType.fromString(interventionCreationDto.type),
+				InterventionStatus.fromString(interventionCreationDto.status), patient);
 	}
 	
 }

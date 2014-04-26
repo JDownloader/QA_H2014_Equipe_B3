@@ -8,7 +8,7 @@ public class InterventionTypeTest {
 	private static final String INVALID_TYPE = "COWUR";
 	private static final String SAMPLE_TYPE = "COEUR";
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = InterventionTypeParseException.class)
 	public void throwsIllegalArgumentExceptionOnInvalidStatusString() {
 		InterventionType.fromString(INVALID_TYPE);
 	}

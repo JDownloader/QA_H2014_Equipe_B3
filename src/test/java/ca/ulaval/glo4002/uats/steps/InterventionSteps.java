@@ -16,7 +16,6 @@ import ca.ulaval.glo4002.uats.runners.JettyTestRunner;
 import ca.ulaval.glo4002.uats.steps.contexts.ThreadLocalContext;
 import static com.jayway.restassured.RestAssured.*;
 
-import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
 
 public class InterventionSteps {

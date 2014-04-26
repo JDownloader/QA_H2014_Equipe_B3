@@ -25,6 +25,6 @@ public enum InterventionType implements Serializable {
 				return interventionType;
 			}
 		}
-		throw new IllegalArgumentException(String.format("'%s' n'est pas un type d'intervention valide.", type));
+		throw new InterventionTypeParseException(String.format("'%s' n'est pas un type d'intervention valide.", type));
 	}
 }

@@ -52,12 +52,10 @@ public class InterventionService {
 
 			entityTransaction.commit();
 			return intervention.getId();
-		} catch (DTOValidationException e) {
+		} catch (DTOValidationException | InterventionTypeParseException | InterventionStatusParseException e) {
 			throw new ServiceException(ERROR_INT001, e.getMessage());
 		} catch (PatientNotFoundException e) {
 			throw new ServiceException(ERROR_INT002, e.getMessage());
-		} catch (IllegalArgumentException e) {
-			throw new ServiceRequestException(ERROR_INT001, e.getMessage());
 		} finally {
 			if (entityTransaction.isActive()) {
 				entityTransaction.rollback();
@@ -81,7 +79,7 @@ public class InterventionService {
 
 			entityTransaction.commit();
 			return newSurgicalTool.getId();
-		} catch (DTOValidationException | InterventionNotFoundException | InvalidSurgicalToolStatusException e) {
+		} catch (DTOValidationException | InterventionNotFoundException | SurgicalToolStatusParseException e) {
 			throw new ServiceException(ERROR_INT010, e.getMessage());
 		} catch (SurgicalToolExistsException e) {
 			throw new ServiceException(ERROR_INT011, e.getMessage());
@@ -111,7 +109,7 @@ public class InterventionService {
 			doModifySurgicalTool(surgicalToolModificationDTO);
 
 			entityTransaction.commit();
-		} catch (DTOValidationException | InterventionNotFoundException | SurgicalToolNotFoundException | InvalidSurgicalToolStatusException e) {
+		} catch (DTOValidationException | InterventionNotFoundException | SurgicalToolNotFoundException | SurgicalToolStatusParseException e) {
 			throw new ServiceException(ERROR_INT010, e.getMessage());
 		} catch (SurgicalToolExistsException e) {
 			throw new ServiceException(ERROR_INT011, e.getMessage());

@@ -26,6 +26,6 @@ public enum InterventionStatus implements Serializable {
 			}
 		}
 
-		throw new IllegalArgumentException(String.format("'%s' n'est pas un statut d'intervention valide.", statusName));
+		throw new InterventionStatusParseException(String.format("'%s' n'est pas un statut d'intervention valide.", statusName));
 	}
 }

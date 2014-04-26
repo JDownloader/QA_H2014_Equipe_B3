@@ -8,7 +8,7 @@ public class InterventionStatusTest {
 	private static final String INVALID_STATUS = "EN_CWURS";
 	private static final String SAMPLE_STATUS = "EN_COURS";
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = InterventionStatusParseException.class)
 	public void throwsIllegalArgumentExceptionOnInvalidStatusString() {
 		InterventionStatus.fromString(INVALID_STATUS);
 	}
