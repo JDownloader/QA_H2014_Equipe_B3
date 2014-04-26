@@ -49,7 +49,7 @@ public class PrescriptionTest {
 	}
 	
 	@Test
-	public void returnsFalseWhenDrugIsNull() {
+	public void returnsFalseWhenVerifyingInteractionOfPrescriptionWithDrugName() {
 		when(drugMock.isDrugInteractive(eq(anotherDrugMock))).thenReturn(true);
 		assertFalse(prescriptionWithDrugName.isPrescriptionInteractive(anotherPrescriptionWithDrug));
 	}
