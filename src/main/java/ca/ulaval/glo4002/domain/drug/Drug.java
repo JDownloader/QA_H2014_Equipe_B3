@@ -1,7 +1,7 @@
 package ca.ulaval.glo4002.domain.drug;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -17,7 +17,9 @@ public class Drug {
 	@JsonProperty("description")
 	private String description;
 	@ElementCollection
-	private List<Din> interactiveDins = new ArrayList<Din>();
+	private Set<Integer> test = new HashSet<Integer>();
+	@Transient
+	private Set<Din> interactiveDins;
 
 	protected Drug() {
 		// Required for Hibernate.
@@ -33,7 +35,7 @@ public class Drug {
 		this.description = description;
 	}
 	
-	public void setInteractiveDinList(List<Din> interactiveDins) {
+	public void setInteractiveDinList(Set<Din> interactiveDins) {
 		this.interactiveDins = interactiveDins;
 	}
 	

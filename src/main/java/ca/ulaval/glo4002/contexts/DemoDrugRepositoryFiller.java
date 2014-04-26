@@ -25,7 +25,11 @@ public class DemoDrugRepositoryFiller {
 
 	public void fillDrugs(Reader reader) throws IOException {
 		entityManager.getTransaction().begin();
-		loadDrugsFromStream(reader);
+		//loadDrugsFromStream(reader);
+		Drug drug1 = new Drug(new Din("dd"), "foin", "fsjn");
+		Drug drug2 = new Drug(new Din("sdfd"), "fdd", "fsjn");
+		drugRepository.persist(drug1);
+		drugRepository.persist(drug2);
 		entityManager.getTransaction().commit();
 	}
 

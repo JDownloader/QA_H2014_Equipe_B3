@@ -3,8 +3,8 @@ package ca.ulaval.glo4002.contexts;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 
@@ -38,19 +38,24 @@ public class DemoDrugInteractionsFiller {
 		
 		while ((nextLine = bufferedReader.readLine()) != null) {
 			parseDrugInteraction(nextLine, ++lineNumber);
+			if (lineNumber == 2) {
+				return;
+			}
 		}
 		
 		bufferedReader.close();
 	}
 	
 	private void parseDrugInteraction(final String line, int lineNumber) {
+		Din sourceDin;
+		Drug drug;
+		Set<Din> interactiveDins;
 		try {
-			Din sourceDin = getSourceDinFromLine(line);
-			List<Din> interactiveDins = getInteractiveDinsFromLine(line);
+			sourceDin = getSourceDinFromLine(line);
+			interactiveDins = getInteractiveDinsFromLine(line);
 			
-			Drug drug = drugRepository.getByDin(sourceDin);
+			drug = drugRepository.getByDin(sourceDin);
 			drug.setInteractiveDinList(interactiveDins);
-			
 			drugRepository.persist(drug);
 		} catch (Exception e) {
 			throw new BadFileFormatException(String.format("Could not parse line %d due to bad data format.", lineNumber));
@@ -62,10 +67,10 @@ public class DemoDrugInteractionsFiller {
 		return new Din(din);
 	}
 	
-	private List<Din> getInteractiveDinsFromLine(final String line) {
-		List<Din> interactiveDinList = new ArrayList<Din>();
+	private Set<Din> getInteractiveDinsFromLine(final String line) {
+		Set<Din> interactiveDinList = new HashSet<Din>();
 		
-		String interactiveDinsCSV = line.substring(line.indexOf(DRUG_INTERACTION_SEPARATOR));
+		String interactiveDinsCSV = line.substring(line.indexOf(DRUG_INTERACTION_SEPARATOR) + DRUG_INTERACTION_SEPARATOR.length());
 		String[] interactiveDins = interactiveDinsCSV.split(DRUG_SEPARATOR);
 		
 		for (String interactiveDin : interactiveDins) {

@@ -24,15 +24,11 @@ public class DemoRepositoryFiller  {
 	DrugRepository drugRepository;
 
 	public DemoRepositoryFiller() {
-		createDefaultRepositories();
-		
 		this.drugFilePath = DEFAULT_DRUG_FILE_PATH;
 		this.drugInteractionsPath = DEFAULT_DRUG_INTERACTIONS_FILE_PATH;
 	}
 	
 	public DemoRepositoryFiller(String drugFilePath, String drugInteractionsPath) {
-		createDefaultRepositories();
-		
 		this.drugFilePath = drugFilePath;
 		this.drugInteractionsPath = drugInteractionsPath;
 	}
@@ -45,6 +41,7 @@ public class DemoRepositoryFiller  {
 	public void fillRepositories() throws IOException {
 		EntityManagerFactory entityManagerFactory = EntityManagerFactoryProvider.getFactory();
 		entityManager = entityManagerFactory.createEntityManager();
+		createDefaultRepositories();
 		
 		fillDrugRepository();
 		fillDrugInteractions();
