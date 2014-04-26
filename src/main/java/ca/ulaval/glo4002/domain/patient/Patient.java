@@ -29,7 +29,16 @@ public class Patient {
 	}
 
 	public void addPrescription(Prescription prescription) {
+		checkPrescriptionInteractions(prescription);
 		prescriptions.add(prescription);
+	}
+	
+	private void checkPrescriptionInteractions(Prescription newPrescription) {
+		for (Prescription prescription : prescriptions) {
+			if (prescription.isPrescriptionInteractive(newPrescription)) {
+				throw new DrugInteractionException("Interaction détectée");
+			}
+		}
 	}
 
 	public boolean hasPrescription(Prescription prescription) {
