@@ -1,5 +1,8 @@
 package ca.ulaval.glo4002.domain.drug;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.*;
 
 import org.codehaus.jackson.annotate.*;
@@ -13,6 +16,8 @@ public class Drug {
 	private String name;
 	@JsonProperty("description")
 	private String description;
+	@ElementCollection
+	private Set<Din> interactiveDins = new HashSet<Din>();
 
 	protected Drug() {
 		// Required for Hibernate.
@@ -26,5 +31,16 @@ public class Drug {
 		this.din = din;
 		this.name = name;
 		this.description = description;
+	}
+	
+	public void setInteractiveDinList(Set<Din> interactiveDins) {
+		this.interactiveDins = interactiveDins;
+	}
+	
+	public boolean isDrugInteractive(Drug drug) {
+		if (drug != null) {
+			return this.interactiveDins.contains(drug.din) || drug.interactiveDins.contains(this.din);
+		}
+		return false;
 	}
 }

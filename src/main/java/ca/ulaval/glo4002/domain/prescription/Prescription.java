@@ -39,4 +39,11 @@ public class Prescription {
 		this.allowedNumberOfRenewal = allowedNumberOfRenewal;
 		this.date = date;
 	}
+	
+	public boolean isPrescriptionInteractive(Prescription prescription) {
+		if (drug != null) {
+			return drug.isDrugInteractive(prescription.drug);
+		}
+		return false;
+	}
 }

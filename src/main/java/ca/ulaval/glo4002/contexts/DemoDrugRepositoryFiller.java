@@ -14,25 +14,35 @@ public class DemoDrugRepositoryFiller {
 	private static final int DRUG_IDENTIFICATION_NUMBER_COLUMN = 3;
 	private static final int BRAND_NAME_COLUMN = 4;
 	private static final int DESCRIPTOR_COLUMN = 5;
+	
+	private EntityManager entityManager;
+	private DrugRepository drugRepository;
+	
+	public DemoDrugRepositoryFiller(EntityManager entityManager, DrugRepository drugRepository) {
+		this.entityManager = entityManager;
+		this.drugRepository = drugRepository;
+	}
 
-	public void fill(EntityManager entityManager, DrugRepository drugRepository, Reader reader) throws IOException, BadFileFormatException {
+	public void fillDrugs(Reader reader) throws IOException {
 		entityManager.getTransaction().begin();
-		loadDrugFile(drugRepository, reader);
+		loadDrugsFromStream(reader);
 		entityManager.getTransaction().commit();
 	}
 
-	public void loadDrugFile(DrugRepository drugRepository, Reader reader) throws IOException, BadFileFormatException {
+	public void loadDrugsFromStream(Reader reader) throws IOException {
 		CSVReader csvReader = new CSVReader(reader, DRUG_FILE_VALUE_SEPARATOR);
 		String[] nextLine;
 		int lineNumber = 0;
+		
 		while ((nextLine = csvReader.readNext()) != null) {
 			Drug drug = parseDrug(nextLine, ++lineNumber);
 			drugRepository.persist(drug);
 		}
+		
 		csvReader.close();
 	}
 
-	private Drug parseDrug(final String[] line, int lineNumber) throws BadFileFormatException {
+	private Drug parseDrug(final String[] line, int lineNumber) {
 		try {
 			Din din = new Din(line[DRUG_IDENTIFICATION_NUMBER_COLUMN]);
 			return new Drug(din, line[BRAND_NAME_COLUMN], line[DESCRIPTOR_COLUMN]);
