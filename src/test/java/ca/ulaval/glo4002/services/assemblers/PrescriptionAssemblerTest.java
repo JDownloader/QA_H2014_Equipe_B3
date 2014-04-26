@@ -5,6 +5,8 @@ import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.mockito.Mockito.*;
 import static org.unitils.reflectionassert.ReflectionAssert.*;
@@ -15,6 +17,7 @@ import ca.ulaval.glo4002.domain.prescription.Prescription;
 import ca.ulaval.glo4002.domain.staff.StaffMember;
 import ca.ulaval.glo4002.services.dto.PrescriptionCreationDTO;
 
+@RunWith(MockitoJUnitRunner.class)
 public class PrescriptionAssemblerTest {
 	private static final Date SAMPLE_DATE_PARAMETER = new Date(3);
 	private static final Integer SAMPLE_RENEWALS_PARAMETER = 2;

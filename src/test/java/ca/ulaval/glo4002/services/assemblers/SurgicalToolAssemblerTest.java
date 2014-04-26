@@ -4,12 +4,15 @@ import static org.unitils.reflectionassert.ReflectionAssert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalTool;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolStatus;
 import ca.ulaval.glo4002.services.assemblers.SurgicalToolAssembler;
 import ca.ulaval.glo4002.services.dto.SurgicalToolCreationDTO;
 
+@RunWith(MockitoJUnitRunner.class)
 public class SurgicalToolAssemblerTest {
 	private static final Integer SAMPLE_INTERVENTION_NUMBER = 3;
 	private static final String SAMPLE_SERIAL_NUMBER = "2321984423QTY";

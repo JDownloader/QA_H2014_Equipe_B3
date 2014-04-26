@@ -9,6 +9,8 @@ import javax.ws.rs.core.Response.Status;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import ca.ulaval.glo4002.services.PatientService;
 import ca.ulaval.glo4002.services.ServiceException;
@@ -16,6 +18,7 @@ import ca.ulaval.glo4002.services.assemblers.PrescriptionAssembler;
 import ca.ulaval.glo4002.services.dto.PrescriptionCreationDTO;
 import ca.ulaval.glo4002.services.dto.validators.PrescriptionCreationDTOValidator;
 
+@RunWith(MockitoJUnitRunner.class)
 public class PatientResourceTest {
 
 	private PatientService patientServiceMock;

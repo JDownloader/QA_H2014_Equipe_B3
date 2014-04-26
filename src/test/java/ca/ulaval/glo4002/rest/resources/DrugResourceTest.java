@@ -9,12 +9,15 @@ import javax.ws.rs.core.Response.Status;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import ca.ulaval.glo4002.services.DrugService;
 import ca.ulaval.glo4002.services.ServiceException;
 import ca.ulaval.glo4002.services.dto.DrugSearchDTO;
 import ca.ulaval.glo4002.services.dto.validators.DrugSearchDTOValidator;
 
+@RunWith(MockitoJUnitRunner.class)
 public class DrugResourceTest {
 	private static final String SAMPLE_DRUG_NAME = "ROSAVIL";
 	

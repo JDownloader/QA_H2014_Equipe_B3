@@ -3,7 +3,10 @@ package ca.ulaval.glo4002.domain.intervention;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class InterventionStatusTest {
 	private static final String INVALID_STATUS = "EN_CWURS";
 	private static final String SAMPLE_STATUS = "EN_COURS";

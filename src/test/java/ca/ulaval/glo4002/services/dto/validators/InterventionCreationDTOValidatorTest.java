@@ -6,12 +6,15 @@ import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import ca.ulaval.glo4002.domain.intervention.InterventionStatus;
 import ca.ulaval.glo4002.domain.intervention.InterventionType;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
 import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
 
+@RunWith(MockitoJUnitRunner.class)
 public class InterventionCreationDTOValidatorTest {
 	private static final String SAMPLE_DESCRIPTION_PARAMETER = "description";
 	private static final Surgeon SAMPLE_SURGEON_PARAMETER = new Surgeon("1");

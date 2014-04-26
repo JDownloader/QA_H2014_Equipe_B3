@@ -3,9 +3,12 @@ package ca.ulaval.glo4002.services.dto.validators;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import ca.ulaval.glo4002.services.dto.DrugSearchDTO;
 
+@RunWith(MockitoJUnitRunner.class)
 public class DrugSearchDTOValidatorTest {
 	private static final String SAMPLE_FOUR_LETTER_PARAMETER = "abcd";
 	private static final String SAMPLE_THREE_LETTER_PARAMETER = "abc";

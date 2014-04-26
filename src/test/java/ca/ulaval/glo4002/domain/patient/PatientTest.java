@@ -5,9 +5,12 @@ import static org.mockito.Mockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import ca.ulaval.glo4002.domain.prescription.Prescription;
 
+@RunWith(MockitoJUnitRunner.class)
 public class PatientTest {
 
 	private static final Integer SAMPLE_PATIENT_ID = 3;

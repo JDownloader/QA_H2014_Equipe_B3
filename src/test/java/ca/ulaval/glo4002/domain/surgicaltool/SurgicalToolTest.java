@@ -7,9 +7,12 @@ import java.util.Observable;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import ca.ulaval.glo4002.domain.intervention.Intervention;
 
+@RunWith(MockitoJUnitRunner.class)
 public class SurgicalToolTest {
 	private static final String SAMPLE_SERIAL_NUMBER = "2321984423QTY";
 	private static final String ANOTHER_SAMPLE_SERIAL_NUMBER = "4321984423QTY";

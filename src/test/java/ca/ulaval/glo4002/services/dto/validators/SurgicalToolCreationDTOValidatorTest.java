@@ -4,10 +4,13 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolStatus;
 import ca.ulaval.glo4002.services.dto.SurgicalToolCreationDTO;
 
+@RunWith(MockitoJUnitRunner.class)
 public class SurgicalToolCreationDTOValidatorTest {
 
 	private static final String SAMPLE_TYPECODE_PARAMETER = "IT72353";

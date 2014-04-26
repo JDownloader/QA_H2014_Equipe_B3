@@ -3,7 +3,10 @@ package ca.ulaval.glo4002.domain.surgicaltool;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class SurgicalToolStatusTest {
 	private static final String INVALID_STATUS = "INUTILESE";
 	private static final String SAMPLE_STATUS = "INUTILISE";
