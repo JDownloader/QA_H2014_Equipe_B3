@@ -55,7 +55,7 @@ public class SurgicalToolTest {
 	}
 	
 	@Test
-	public void comparesToSerialNumberReturnsTrueWhenComparingWithDifferentSerialNumber() {
+	public void comparesToSerialNumberReturnsFalseWhenComparingWithDifferentSerialNumber() {
 		assertFalse(surgicalTool.compareToSerialNumber(ANOTHER_SAMPLE_SERIAL_NUMBER));
 	}
 }
