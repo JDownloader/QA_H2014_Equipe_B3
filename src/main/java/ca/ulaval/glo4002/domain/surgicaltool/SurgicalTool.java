@@ -1,5 +1,7 @@
 package ca.ulaval.glo4002.domain.surgicaltool;
 
+import java.util.Observable;
+
 import javax.persistence.*;
 
 import org.apache.commons.lang3.StringUtils;
@@ -7,8 +9,8 @@ import org.apache.commons.lang3.StringUtils;
 @SuppressWarnings("unused") //Suppresses warning for private attributes used for Hibernate persistence
 
 @Entity(name = "SURGICAL_TOOL")
-@Table(name = "SURGICAL_TOOL", uniqueConstraints = { @UniqueConstraint(columnNames = { "serialNumber" }) })
-public class SurgicalTool {
+@Table(name = "SURGICAL_TOOL", uniqueConstraints = { @UniqueConstraint(name = "UQ_SERIALNUMBER", columnNames = { "serialNumber" }) })
+public class SurgicalTool extends Observable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,14 +33,6 @@ public class SurgicalTool {
 	public Integer getId() {
 		return id;
 	}
-	
-	public String getSerialNumber() {
-		return serialNumber;
-	}
-	
-	public void setSerialNumber(String serialNumber) {
-		this.serialNumber = serialNumber;
-	}
 
 	public boolean isAnonymous() {
 		return StringUtils.isBlank(serialNumber);
@@ -46,5 +40,22 @@ public class SurgicalTool {
 	
 	public void setStatus(SurgicalToolStatus status) {
 		this.status = status;
+	}
+	
+	public boolean compareToSerialNumber(String serialNumber) {
+		if (this.serialNumber != null && this.serialNumber.compareToIgnoreCase(serialNumber) == 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean compareToId(String id) {
+		return this.id.toString().compareToIgnoreCase(id) == 0;
+	}
+	
+	public void changeSerialNumber(String serialNumber) {
+		this.serialNumber = serialNumber;
+		setChanged();
+		notifyObservers();
 	}
 }

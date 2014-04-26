@@ -95,7 +95,7 @@ public class PatientServiceTest {
 
 		try {
 			createPrescription();
-		} catch (ServiceRequestException e) {
+		} catch (ServiceException e) {
 			verify(entityTransactionMock).rollback();
 			return;
 		}
@@ -117,7 +117,7 @@ public class PatientServiceTest {
 		try {
 			createPrescription();
 			fail("An exception was expected.");
-		} catch (ServiceRequestException e) {
+		} catch (ServiceException e) {
 			assertEquals(PatientService.ERROR_PRES001, e.getInternalCode());
 		}
 	}
@@ -128,7 +128,7 @@ public class PatientServiceTest {
 		try {
 			createPrescription();
 			fail("An exception was expected.");
-		} catch (ServiceRequestException e) {
+		} catch (ServiceException e) {
 			assertEquals(PatientService.ERROR_PRES001, e.getInternalCode());
 		}
 	}
@@ -139,7 +139,7 @@ public class PatientServiceTest {
 		try {
 			createPrescription();
 			fail("An exception was expected.");
-		} catch (ServiceRequestException e) {
+		} catch (ServiceException e) {
 			assertEquals(PatientService.ERROR_PRES001, e.getInternalCode());
 		}
 	}

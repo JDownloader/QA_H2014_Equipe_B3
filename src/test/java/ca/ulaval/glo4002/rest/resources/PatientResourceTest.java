@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ca.ulaval.glo4002.services.PatientService;
-import ca.ulaval.glo4002.services.ServiceRequestException;
+import ca.ulaval.glo4002.services.ServiceException;
 import ca.ulaval.glo4002.services.assemblers.PrescriptionAssembler;
 import ca.ulaval.glo4002.services.dto.PrescriptionCreationDTO;
 import ca.ulaval.glo4002.services.dto.validators.PrescriptionCreationDTOValidator;
@@ -44,7 +44,7 @@ public class PatientResourceTest {
 
 	@Test
 	public void verifyPrescriptionCreationReturnsBadRequestResponseOnServiceRequestException() throws Exception {
-		doThrow(new ServiceRequestException()).when(patientServiceMock).createPrescription(eq(prescriptionCreationDTOMock),
+		doThrow(new ServiceException()).when(patientServiceMock).createPrescription(eq(prescriptionCreationDTOMock),
 				any(PrescriptionCreationDTOValidator.class), any(PrescriptionAssembler.class));
 		Response receivedResponse = createPrescription();
 		assertEquals(Status.BAD_REQUEST.getStatusCode(), receivedResponse.getStatus());

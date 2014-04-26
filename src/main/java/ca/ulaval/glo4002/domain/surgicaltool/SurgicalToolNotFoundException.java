@@ -10,8 +10,4 @@ public class SurgicalToolNotFoundException extends RuntimeException {
 	public SurgicalToolNotFoundException(String message) {
 		super(message);
 	}
-	
-	public SurgicalToolNotFoundException(String message, RuntimeException e) {
-		super(message, e);
-	}
 }

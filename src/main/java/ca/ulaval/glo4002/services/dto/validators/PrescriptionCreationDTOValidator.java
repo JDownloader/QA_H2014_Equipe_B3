@@ -12,7 +12,7 @@ public class PrescriptionCreationDTOValidator {
 			throw new DTOValidationException("Le paramètre 'renouvellements' doit être égal ou supérieur à 0.");
 		} else if (prescriptionCreationDTO.date == null) {
 			throw new DTOValidationException("Le paramètre 'date' est requis.");
-		} else if (prescriptionCreationDTO.staffMember == null) {
+		} else if (StringUtils.isBlank(prescriptionCreationDTO.staffMember)) {
 			throw new DTOValidationException("Le paramètre 'intervenant' est requis.");
 		} 
 		validateDinAndName(prescriptionCreationDTO);

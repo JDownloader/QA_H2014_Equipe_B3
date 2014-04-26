@@ -12,13 +12,14 @@ public class SurgicalToolModificationDTOValidatorTest {
 
 	private static final SurgicalToolStatus SAMPLE_STATUS_PARAMETER = SurgicalToolStatus.UNUSED;
 	private static final String SAMPLE_SERIAL_NUMBER_PARAMETER = "23562543-3635345";
-
+	private static final String SAMPLE_TYPE_CODE = "IT443";
+	
 	private SurgicalToolModificationDTO surgicalToolModificationDTO = new SurgicalToolModificationDTO();
 	private SurgicalToolModificationDTOValidator surgicalToolModificationDTOValidator = new SurgicalToolModificationDTOValidator();
 
 	@Before
 	public void init() throws Exception {
-		surgicalToolModificationDTO.newStatus = SAMPLE_STATUS_PARAMETER;
+		surgicalToolModificationDTO.newStatus = SAMPLE_STATUS_PARAMETER.getValue();
 		surgicalToolModificationDTO.newSerialNumber = SAMPLE_SERIAL_NUMBER_PARAMETER;
 	}
 
@@ -60,6 +61,13 @@ public class SurgicalToolModificationDTOValidatorTest {
 	public void disallowsStatusAndSerialNumberBothUnspecified() {
 		surgicalToolModificationDTO.newStatus = null;
 		surgicalToolModificationDTO.newSerialNumber = null;
+
+		surgicalToolModificationDTOValidator.validate(surgicalToolModificationDTO);
+	}
+	
+	@Test(expected = DTOValidationException.class)
+	public void disallowsSpecifiedTypeCode() {
+		surgicalToolModificationDTO.newTypeCode = SAMPLE_TYPE_CODE;
 
 		surgicalToolModificationDTOValidator.validate(surgicalToolModificationDTO);
 	}

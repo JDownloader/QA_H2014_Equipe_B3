@@ -20,6 +20,7 @@ public class InterventionCreationDTOValidatorTest {
 	private static final String SAMPLE_TYPE_PARAMETER = InterventionType.HEART.getValue();
 	private static final String SAMPLE_STATUS_PARAMETER = InterventionStatus.PLANNED.getValue();
 	private static final Integer SAMPLE_PATIENT_NUMBER_PARAMETER = 3;
+	private static final String WHITE_SPACE = " ";
 
 	private InterventionCreationDTO interventionCreationDTO = new InterventionCreationDTO();
 	private InterventionCreationDTOValidator interventionCreationDTOValidator = new InterventionCreationDTOValidator();
@@ -56,8 +57,26 @@ public class InterventionCreationDTOValidatorTest {
 	}
 
 	@Test(expected = DTOValidationException.class)
+	public void disallowsUnspecifiedDescription() {
+		interventionCreationDTO.description = null;
+		interventionCreationDTOValidator.validate(interventionCreationDTO);
+	}
+	
+	@Test(expected = DTOValidationException.class)
+	public void disallowsEmptyDescription() {
+		interventionCreationDTO.description = WHITE_SPACE;
+		interventionCreationDTOValidator.validate(interventionCreationDTO);
+	}
+	
+	@Test(expected = DTOValidationException.class)
 	public void disallowsUnspecifiedSurgeon() {
 		interventionCreationDTO.surgeon = null;
+		interventionCreationDTOValidator.validate(interventionCreationDTO);
+	}
+	
+	@Test(expected = DTOValidationException.class)
+	public void disallowsEmptySurgeon() {
+		interventionCreationDTO.surgeon = new Surgeon(WHITE_SPACE);
 		interventionCreationDTOValidator.validate(interventionCreationDTO);
 	}
 
@@ -70,6 +89,12 @@ public class InterventionCreationDTOValidatorTest {
 	@Test(expected = DTOValidationException.class)
 	public void disallowsUnspecifiedRoom() {
 		interventionCreationDTO.room = null;
+		interventionCreationDTOValidator.validate(interventionCreationDTO);
+	}
+	
+	@Test(expected = DTOValidationException.class)
+	public void disallowsEmptyRoom() {
+		interventionCreationDTO.room = WHITE_SPACE;
 		interventionCreationDTOValidator.validate(interventionCreationDTO);
 	}
 

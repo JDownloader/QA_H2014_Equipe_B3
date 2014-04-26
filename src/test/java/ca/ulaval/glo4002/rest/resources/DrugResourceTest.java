@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ca.ulaval.glo4002.services.DrugService;
-import ca.ulaval.glo4002.services.ServiceRequestException;
+import ca.ulaval.glo4002.services.ServiceException;
 import ca.ulaval.glo4002.services.dto.DrugSearchDTO;
 import ca.ulaval.glo4002.services.dto.validators.DrugSearchDTOValidator;
 
@@ -41,7 +41,7 @@ public class DrugResourceTest {
 
 	@Test
 	public void verifyDrugSearchReturnsBadRequestResponseOnServiceRequestException() throws Exception {
-		doThrow(new ServiceRequestException()).when(drugServiceMock).searchDrug(any(DrugSearchDTO.class), any(DrugSearchDTOValidator.class));
+		doThrow(new ServiceException()).when(drugServiceMock).searchDrug(any(DrugSearchDTO.class), any(DrugSearchDTOValidator.class));
 		Response receivedResponse = drugResource.get(SAMPLE_DRUG_NAME);
 		assertEquals(Status.BAD_REQUEST.getStatusCode(), receivedResponse.getStatus());
 	}

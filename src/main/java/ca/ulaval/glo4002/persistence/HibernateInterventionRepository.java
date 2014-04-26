@@ -1,10 +1,12 @@
 package ca.ulaval.glo4002.persistence;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
+
+import org.hibernate.exception.ConstraintViolationException;
 
 import ca.ulaval.glo4002.domain.intervention.*;
-import ca.ulaval.glo4002.domain.intervention.InterventionNotFoundException;
-import ca.ulaval.glo4002.domain.intervention.InterventionRepository;
+import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolExistsException;
 
 public class HibernateInterventionRepository extends HibernateRepository implements InterventionRepository {
 
@@ -17,11 +19,18 @@ public class HibernateInterventionRepository extends HibernateRepository impleme
 	}
 
 	public void persist(Intervention intervention) {
-		entityManager.persist(intervention);
-	}
-
-	public void update(Intervention intervention) {
-		entityManager.merge(intervention);
+		try {
+    		entityManager.persist(intervention);
+    		entityManager.flush();
+		} catch (PersistenceException e) {
+			if (e.getCause() instanceof ConstraintViolationException) {
+				String contraintName = ((ConstraintViolationException) e.getCause()).getConstraintName();
+				if (contraintName.contains("UQ_SERIALNUMBER")) {
+					throw new SurgicalToolExistsException("Un instrument avec le numéro de série spécifié existe déjà.", e);
+				}
+			}
+			throw e;
+		}
 	}
 
 	public Intervention getById(Integer id) {

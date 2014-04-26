@@ -20,7 +20,7 @@ public class SurgicalToolCreationDTOValidatorTest {
 	@Before
 	public void init() throws Exception {
 		surgicalToolCreationDTO.typeCode = SAMPLE_TYPECODE_PARAMETER;
-		surgicalToolCreationDTO.status = SAMPLE_STATUS_PARAMETER;
+		surgicalToolCreationDTO.status = SAMPLE_STATUS_PARAMETER.getValue();
 		surgicalToolCreationDTO.serialNumber = SAMPLE_SERIAL_NUMBER_PARAMETER;
 	}
 
@@ -45,8 +45,29 @@ public class SurgicalToolCreationDTOValidatorTest {
 	}
 
 	@Test(expected = DTOValidationException.class)
-	public void disallowsEmptyTypeCode() {
+	public void disallowsUnspecifiedStatus() {
+		surgicalToolCreationDTO.status = null;
+
+		surgicalToolCreationDTOValidator.validate(surgicalToolCreationDTO);
+	}
+	
+	@Test(expected = DTOValidationException.class)
+	public void disallowsUnspecifiedTypeCode() {
 		surgicalToolCreationDTO.typeCode = null;
+
+		surgicalToolCreationDTOValidator.validate(surgicalToolCreationDTO);
+	}
+	
+	@Test(expected = DTOValidationException.class)
+	public void disallowsEmptyTypeCode() {
+		surgicalToolCreationDTO.typeCode = "";
+
+		surgicalToolCreationDTOValidator.validate(surgicalToolCreationDTO);
+	}
+	
+	@Test(expected = DTOValidationException.class)
+	public void disallowsEmptySerialNumber() {
+		surgicalToolCreationDTO.serialNumber = "";
 
 		surgicalToolCreationDTOValidator.validate(surgicalToolCreationDTO);
 	}

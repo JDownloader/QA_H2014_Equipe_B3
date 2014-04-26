@@ -75,7 +75,7 @@ public class DrugServiceTest {
 
 		try {
 			drugService.searchDrug(drugSearchDTO, drugSearchDToValidatorMock);
-		} catch (ServiceRequestException e) {
+		} catch (ServiceException e) {
 			verify(entityTransactionMock).rollback();
 			return;
 		}

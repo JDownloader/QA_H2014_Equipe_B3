@@ -9,6 +9,7 @@ import java.util.Arrays;
 
 import org.jbehave.core.annotations.*;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import ca.ulaval.glo4002.uats.runners.JettyTestRunner;
 import ca.ulaval.glo4002.uats.steps.contexts.ThreadLocalContext;
@@ -17,9 +18,12 @@ import com.jayway.restassured.response.Response;
 
 public class DrugSteps {
 	private static final String DIN_PARAMETER = "din";
+	private static final String BRAND_NAME_PARAMETER = "nom";
+	private static final String DESCRIPTION_PARAMETER = "description";
 
 	private static final String KEYWORD_WITH_TWO_CHARACTERS = "AB";
 	private static final String DRUG_NAME_KEYWORD = "ROSALIAC";
+	private static final String MIXED_CASE_DRUG_NAME_KEYWORD = "rOsAlIaC";
 	private static final String NON_EXISTING_DRUG_NAME_KEYWORD = "AHSDSS";
 	private static final String DESCRIPTION_KEYWORD = "0.8MG/HOUR";
 	private static final String NON_EXISTING_DESCRIPTION_KEYWORD = "OIJFS";
@@ -51,6 +55,13 @@ public class DrugSteps {
 	@When("je cherche des médicaments avec un mot-clé qui se retrouve dans quelques noms de médicaments")
 	public void searchUsingDrugNameKeyword() {
 		drugName = DRUG_NAME_KEYWORD;
+		doHttpGet();
+		expectedDins = new ArrayList<String>(Arrays.asList(ROSALIAC_UV_RICHE_DIN, ROSALIAC_UV_LEGERE_DIN));
+	}
+	
+	@When("je cherche des médicaments avec un mot-clé d'une casse variée qui se retrouve dans quelques noms de médicaments")
+	public void searchUsingMixedCaseDrugNameKeyword() {
+		drugName = MIXED_CASE_DRUG_NAME_KEYWORD;
 		doHttpGet();
 		expectedDins = new ArrayList<String>(Arrays.asList(ROSALIAC_UV_RICHE_DIN, ROSALIAC_UV_LEGERE_DIN));
 	}
@@ -93,12 +104,23 @@ public class DrugSteps {
 		JSONArray actualDrugList = new JSONArray(bodyString);
 
 		assertEquals(expectedDins.size(), actualDrugList.length());
+		checkActualDrugListEqualsExpectedDrugList(actualDrugList);
+	}
 
+	private void checkActualDrugListEqualsExpectedDrugList(JSONArray actualDrugList) {
 		for (int i = 0; i < expectedDins.size(); i++) {
 			String expectedDin = expectedDins.get(i);
 			String actualDin = actualDrugList.getJSONObject(i).getString(DIN_PARAMETER);
+			
+			checkDrugHasRequiredFields(actualDrugList.getJSONObject(i));
 			assertEquals(expectedDin, actualDin);
 		}
+	}
+	
+	private void checkDrugHasRequiredFields(JSONObject drugObject) {
+		assertTrue(drugObject.has(DIN_PARAMETER));
+		assertTrue(drugObject.has(BRAND_NAME_PARAMETER));
+		assertTrue(drugObject.has(DESCRIPTION_PARAMETER));
 	}
 
 	@Then("la liste de médicaments retournée est vide")
