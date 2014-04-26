@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 
 import ca.ulaval.glo4002.domain.drug.Din;
 import ca.ulaval.glo4002.domain.drug.Drug;
+import ca.ulaval.glo4002.domain.drug.DrugNotFoundException;
 import ca.ulaval.glo4002.domain.drug.DrugRepository;
 
 public class DemoDrugInteractionsFiller {
@@ -38,25 +39,21 @@ public class DemoDrugInteractionsFiller {
 		
 		while ((nextLine = bufferedReader.readLine()) != null) {
 			parseDrugInteraction(nextLine, ++lineNumber);
-			if (lineNumber == 2) {
-				return;
-			}
 		}
 		
 		bufferedReader.close();
 	}
 	
 	private void parseDrugInteraction(final String line, int lineNumber) {
-		Din sourceDin;
-		Drug drug;
-		Set<Din> interactiveDins;
 		try {
-			sourceDin = getSourceDinFromLine(line);
-			interactiveDins = getInteractiveDinsFromLine(line);
+			Din sourceDin = getSourceDinFromLine(line);
+			Set<Din> interactiveDins = getInteractiveDinsFromLine(line);
 			
-			drug = drugRepository.getByDin(sourceDin);
+			Drug drug = drugRepository.getByDin(sourceDin);
 			drug.setInteractiveDinList(interactiveDins);
 			drugRepository.persist(drug);
+		} catch (DrugNotFoundException e) {
+			throw new BadFileFormatException(String.format("Interactive at line %d could not be found in the repository.", lineNumber));
 		} catch (Exception e) {
 			throw new BadFileFormatException(String.format("Could not parse line %d due to bad data format.", lineNumber));
 		}
@@ -74,7 +71,7 @@ public class DemoDrugInteractionsFiller {
 		String[] interactiveDins = interactiveDinsCSV.split(DRUG_SEPARATOR);
 		
 		for (String interactiveDin : interactiveDins) {
-			interactiveDinList.add(new Din(interactiveDin));
+			interactiveDinList.add(new Din(interactiveDin.trim()));
 		}
 		
 		return interactiveDinList;

@@ -17,9 +17,7 @@ public class Drug {
 	@JsonProperty("description")
 	private String description;
 	@ElementCollection
-	private Set<Integer> test = new HashSet<Integer>();
-	@Transient
-	private Set<Din> interactiveDins;
+	private Set<Din> interactiveDins = new HashSet<Din>();
 
 	protected Drug() {
 		// Required for Hibernate.
@@ -40,20 +38,9 @@ public class Drug {
 	}
 	
 	public boolean isDrugInteractive(Drug drug) {
-		return isDrugForwardInteractive(drug) && isDrugBackwardInteractive(drug);
-	}
-	
-	private boolean isDrugForwardInteractive(Drug drug) {
-		return interactiveDins.contains(drug);
-	}
-	
-	private boolean isDrugBackwardInteractive(Drug drug) {
-		for (Din interactiveDin : interactiveDins) {
-			if (interactiveDin == drug.getDin()) {
-				return true;
-			}
+		if (drug != null) {
+			return this.interactiveDins.contains(drug.din) || drug.interactiveDins.contains(this.din);
 		}
-		
 		return false;
 	}
 }

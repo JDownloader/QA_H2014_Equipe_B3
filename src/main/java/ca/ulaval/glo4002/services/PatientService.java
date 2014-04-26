@@ -17,7 +17,8 @@ import ca.ulaval.glo4002.services.dto.validators.PrescriptionCreationDTOValidato
 
 public class PatientService {
 	public static final String ERROR_PRES001 = "PRES001";
-
+	public static final String ERROR_PRES002 = "PRES002";
+	
 	private PatientRepository patientRepository;
 	private PrescriptionRepository prescriptionRepository;
 	private DrugRepository drugRepository;
@@ -52,6 +53,8 @@ public class PatientService {
 			entityTransaction.commit();
 		} catch (DTOValidationException | PatientNotFoundException | DrugNotFoundException e) {
 			throw new ServiceException(ERROR_PRES001, e.getMessage());
+		} catch (DrugInteractionException e) {
+			throw new ServiceException(ERROR_PRES002, e.getMessage());
 		} finally {
 			if (entityTransaction.isActive()) {
 				entityTransaction.rollback();

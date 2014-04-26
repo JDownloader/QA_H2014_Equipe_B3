@@ -41,6 +41,9 @@ public class Prescription {
 	}
 	
 	public boolean isPrescriptionInteractive(Prescription prescription) {
-		return drug.isDrugInteractive(prescription.drug);
+		if (drug != null) {
+			return drug.isDrugInteractive(prescription.drug);
+		}
+		return false;
 	}
 }

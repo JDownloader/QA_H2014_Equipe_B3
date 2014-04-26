@@ -29,7 +29,10 @@ public class PrescriptionSteps {
 	private static final String DRUG_NAME_VALUE = "drug_name";
 	private static final int STAFF_MEMBER_VALUE = 3;
 	private static final String ROSALIAC_UV_RICHE_DIN = "02330857";
-	private static final String NON_EXISTING_DIN_VALUE = "025555";
+	private static final String STANHEXIDINE_DIN = "01938983";
+	private static final String STANHEXIDINE_NAME = "STANHEXIDINE";
+	private static final String NATURALYTE_H201_DIN = "02330024";
+	private static final String NON_EXISTING_DIN = "025555";
 	private static final String WHITE_SPACE = " ";
 
 	private Response response = null;
@@ -72,7 +75,7 @@ public class PrescriptionSteps {
 	
 	@Given("que ce DIN n'existe pas")
 	public void setPrescriptionWithNonExistingDin() {
-		prescriptionJson.put(DIN_PARAMETER, NON_EXISTING_DIN_VALUE);
+		prescriptionJson.put(DIN_PARAMETER, NON_EXISTING_DIN);
 	}
 	
 	@Given("une prescription valide avec nom de médicament")
@@ -85,7 +88,32 @@ public class PrescriptionSteps {
 	public void createValidPrescriptionWithDinAndDrugName() {
 		prescriptionJson.put(DRUG_NAME_PARAMETER, DRUG_NAME_VALUE);
 	}
-
+	
+	@Given("une prescription associée à ce patient")
+	public void linkPrescriptionToPatient() {
+		addPrescription();
+	}
+	
+	@When("j'ajoute une prescription pour laquelle il y a une interaction")
+	public void addPrescriptionWithInteraction() {
+		prescriptionJson.put(DIN_PARAMETER, STANHEXIDINE_DIN);
+		addPrescription();
+	}
+	
+	@When("j'ajoute une prescription pour laquelle il n'y a pas d'interaction")
+	public void addPrescriptionWithNoInteraction() {
+		prescriptionJson.put(DIN_PARAMETER, NATURALYTE_H201_DIN);
+		addPrescription();
+	}
+	
+	@When("j'ajoute une prescription avec nom de médicament pour laquelle il y a une interaction")
+	public void addPrescriptionWithInteractiveDrugName() {
+		prescriptionJson.remove(DIN_PARAMETER);
+		prescriptionJson.put(DRUG_NAME_PARAMETER, STANHEXIDINE_NAME);
+		
+		addPrescription();
+	}
+	
 	@When("j'ajoute cette prescription au dossier du patient")
 	public void addPrescription() {
 		Integer patientId = (Integer) ThreadLocalContext.getObject(PatientSteps.PATIENT_ID_KEY);
