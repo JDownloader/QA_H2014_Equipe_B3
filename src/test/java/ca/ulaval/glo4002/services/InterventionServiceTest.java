@@ -29,7 +29,6 @@ public class InterventionServiceTest {
 
 	private InterventionRepository interventionRepositoryMock;
 	private PatientRepository patientRepositoryMock;
-	private SurgicalToolRepository surgicalToolRepositoryMock;
 	private EntityManager entityManagerMock;
 	private EntityTransaction entityTransactionMock;
 
@@ -49,14 +48,13 @@ public class InterventionServiceTest {
 		createMocks();
 		stubMethods();
 		setupDTOs();
-		interventionService = new InterventionService(interventionRepositoryMock, patientRepositoryMock, surgicalToolRepositoryMock, entityManagerMock);
+		interventionService = new InterventionService(interventionRepositoryMock, patientRepositoryMock, entityManagerMock);
 	}
 
 	private void createMocks() {
 		interventionMock = mock(Intervention.class);
 		surgicalToolMock = mock(SurgicalTool.class);
 		interventionRepositoryMock = mock(InterventionRepository.class);
-		surgicalToolRepositoryMock = mock(SurgicalToolRepository.class);
 		patientRepositoryMock = mock(PatientRepository.class);
 		entityManagerMock = mock(EntityManager.class);
 		entityTransactionMock = mock(EntityTransaction.class);
@@ -70,7 +68,7 @@ public class InterventionServiceTest {
 	private void stubMethods() {
 		when(entityManagerMock.getTransaction()).thenReturn(entityTransactionMock);
 		when(interventionRepositoryMock.getById(anyInt())).thenReturn(interventionMock);
-		when(surgicalToolRepositoryMock.getBySerialNumberOrId(anyString())).thenReturn(surgicalToolMock);
+		when(interventionMock.getSurgicalToolBySerialNumberOrId(anyString())).thenReturn(surgicalToolMock);
 		when(interventionAssemblerMock.assembleFromDTO(interventionCreationDTO, patientRepositoryMock)).thenReturn(interventionMock);
 		when(surgicalToolFactoryMock.createFromDTO(surgicalToolCreationDTO)).thenReturn(surgicalToolMock);
 	}
@@ -143,9 +141,8 @@ public class InterventionServiceTest {
 	public void verifySurgicalToolCreationCallsCorrectRepositoryMethods() throws Exception {
 		createSurgicalTool();
 
-		verify(surgicalToolRepositoryMock).persist(any(SurgicalTool.class));
 		verify(interventionRepositoryMock).getById(anyInt());
-		verify(interventionRepositoryMock).update(interventionMock);
+		verify(interventionRepositoryMock).persist(interventionMock);
 	}
 
 	@Test
@@ -223,7 +220,7 @@ public class InterventionServiceTest {
 
 	@Test
 	public void verifySurgicalToolCreationThrowsServiceExceptionOnSurgicalToolExistsException() throws Exception {
-		doThrow(new SurgicalToolExistsException()).when(surgicalToolRepositoryMock).persist(eq(surgicalToolMock));
+		doThrow(new SurgicalToolExistsException()).when(interventionRepositoryMock).persist(eq(interventionMock));
 		try {
 			createSurgicalTool();
 			fail("An exception was expected.");
@@ -248,17 +245,17 @@ public class InterventionServiceTest {
 	public void verifySurgicalToolModificationCallsCorrectRepositoryMethods() throws Exception {
 		modifySurgicalTool();
 
-		verify(surgicalToolRepositoryMock).getBySerialNumberOrId(anyString());
 		verify(interventionRepositoryMock).getById(anyInt());
-		verify(surgicalToolRepositoryMock).persist(surgicalToolMock);
+		verify(interventionRepositoryMock).persist(interventionMock);
 	}
 
 	@Test
 	public void verifySurgicalToolModificationCallsCorrectDomainMethods() throws Exception {
 		modifySurgicalTool();
 
+		verify(interventionMock).getSurgicalToolBySerialNumberOrId(anyString());
 		verify(surgicalToolMock).setStatus(any(SurgicalToolStatus.class));
-		verify(interventionMock).changeSurgicalToolSerialNumber(eq(surgicalToolMock), anyString());
+		verify(surgicalToolMock).changeSerialNumber(anyString());
 	}
 
 	@Test
@@ -273,7 +270,7 @@ public class InterventionServiceTest {
 	@Test
 	public void verifySurgicalToolModificationRollsbackOnException() throws Exception {
 		when(entityTransactionMock.isActive()).thenReturn(true);
-		when(surgicalToolRepositoryMock.getBySerialNumberOrId(anyString())).thenThrow(new SurgicalToolNotFoundException());
+		when(interventionMock.getSurgicalToolBySerialNumberOrId(anyString())).thenThrow(new SurgicalToolNotFoundException());
 
 		try {
 			modifySurgicalTool();
@@ -306,7 +303,7 @@ public class InterventionServiceTest {
 
 	@Test
 	public void verifySurgicalToolModificationThrowsServiceExceptionOnSurgicalToolNotFoundException() throws Exception {
-		when(surgicalToolRepositoryMock.getBySerialNumberOrId(anyString())).thenThrow(new SurgicalToolNotFoundException());
+		when(interventionMock.getSurgicalToolBySerialNumberOrId(anyString())).thenThrow(new SurgicalToolNotFoundException());
 		try {
 			modifySurgicalTool();
 			fail("An exception was expected.");
@@ -317,7 +314,7 @@ public class InterventionServiceTest {
 
 	@Test
 	public void verifySurgicalToolModificationThrowsServiceExceptionOnSurgicalToolExistsException() throws Exception {
-		doThrow(new SurgicalToolExistsException()).when(surgicalToolRepositoryMock).persist(eq(surgicalToolMock));
+		doThrow(new SurgicalToolExistsException()).when(interventionRepositoryMock).persist(eq(interventionMock));
 		try {
 			modifySurgicalTool();
 			fail("An exception was expected.");
@@ -328,7 +325,7 @@ public class InterventionServiceTest {
 
 	@Test
 	public void verifySurgicalToolModificationThrowsServiceExceptionOnSurgicalToolRequiresSerialNumberException() throws Exception {
-		doThrow(new SurgicalToolRequiresSerialNumberException()).when(interventionMock).changeSurgicalToolSerialNumber(eq(surgicalToolMock), anyString());
+		doThrow(new SurgicalToolRequiresSerialNumberException()).when(surgicalToolMock).changeSerialNumber(anyString());
 		try {
 			modifySurgicalTool();
 			fail("An exception was expected.");

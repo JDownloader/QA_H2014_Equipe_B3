@@ -26,7 +26,6 @@ public class InterventionService {
 
 	private InterventionRepository interventionRepository;
 	private PatientRepository patientRepository;
-	private SurgicalToolRepository surgicalToolRepository;
 
 	public InterventionService() {
 		this.entityManager = new EntityManagerProvider().getEntityManager();
@@ -34,14 +33,11 @@ public class InterventionService {
 
 		this.interventionRepository = new HibernateInterventionRepository();
 		this.patientRepository = new HibernatePatientRepository();
-		this.surgicalToolRepository = new HibernateSurgicalToolRepository();
 	}
 
-	public InterventionService(InterventionRepository interventionRepository, PatientRepository patientRepository,
-			SurgicalToolRepository surgicalToolRepository, EntityManager entityManager) {
+	public InterventionService(InterventionRepository interventionRepository, PatientRepository patientRepository, EntityManager entityManager) {
 		this.interventionRepository = interventionRepository;
 		this.patientRepository = patientRepository;
-		this.surgicalToolRepository = surgicalToolRepository;
 		this.entityManager = entityManager;
 		this.entityTransaction = entityManager.getTransaction();
 	}
@@ -98,10 +94,9 @@ public class InterventionService {
 
 	private SurgicalTool doCreateSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO, SurgicalToolAssembler surgicalToolAssembler) {
 		SurgicalTool surgicalTool = surgicalToolAssembler.createFromDTO(surgicalToolCreationDTO);
-		surgicalToolRepository.persist(surgicalTool);
 		Intervention intervention = interventionRepository.getById(surgicalToolCreationDTO.interventionNumber);
 		intervention.addSurgicalTool(surgicalTool);
-		interventionRepository.update(intervention);
+		interventionRepository.persist(intervention);
 		return surgicalTool;
 	}
 
@@ -114,7 +109,7 @@ public class InterventionService {
 			doModifySurgicalTool(surgicalToolModificationDTO);
 
 			entityTransaction.commit();
-		} catch (DTOValidationException | SurgicalToolNotFoundException | InvalidSurgicalToolStatusException e) {
+		} catch (DTOValidationException | InterventionNotFoundException | SurgicalToolNotFoundException | InvalidSurgicalToolStatusException e) {
 			throw new ServiceException(ERROR_INT010, e.getMessage());
 		} catch (SurgicalToolExistsException e) {
 			throw new ServiceException(ERROR_INT011, e.getMessage());
@@ -128,10 +123,10 @@ public class InterventionService {
 	}
 
 	private void doModifySurgicalTool(SurgicalToolModificationDTO surgicalToolModificationDTO) {
-		SurgicalTool surgicalTool = surgicalToolRepository.getBySerialNumberOrId(surgicalToolModificationDTO.serialNumberOrId);
 		Intervention intervention = interventionRepository.getById(surgicalToolModificationDTO.interventionNumber);
+		SurgicalTool surgicalTool = intervention.getSurgicalToolBySerialNumberOrId(surgicalToolModificationDTO.serialNumberOrId);
 		surgicalTool.setStatus(SurgicalToolStatus.fromString(surgicalToolModificationDTO.newStatus));
-		intervention.changeSurgicalToolSerialNumber(surgicalTool, surgicalToolModificationDTO.newSerialNumber);
-		surgicalToolRepository.persist(surgicalTool);
+		surgicalTool.changeSerialNumber(surgicalToolModificationDTO.newSerialNumber);
+		interventionRepository.persist(intervention);
 	}
 }

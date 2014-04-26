@@ -1,5 +1,6 @@
 package ca.ulaval.glo4002.domain.intervention;
 
+import java.lang.reflect.Method;
 import java.util.*;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import javax.persistence.*;
 import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalTool;
+import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolNotFoundException;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolRequiresSerialNumberException;
 
 @SuppressWarnings("unused")
@@ -48,25 +50,52 @@ public class Intervention {
 	public Integer getId() {
 		return this.id;
 	}
+	
+	public void linkObservers()
+	{
+		for (SurgicalTool surgicalTool : surgicalTools) {
+			surgicalTool.deleteObservers();
+			addObserverToSurgicalTool(surgicalTool);
+		}
+	}
+	
+	public SurgicalTool getSurgicalToolBySerialNumberOrId(String serialNumberOrId) {
+		for (SurgicalTool surgicalTool : surgicalTools) {
+			if (surgicalTool.compareToSerialNumber(serialNumberOrId) || surgicalTool.compareToId(serialNumberOrId)) {
+				return surgicalTool;
+			}
+		}
+
+		throw new SurgicalToolNotFoundException(String.format("Impossible de trouver l'instrument avec numéro de série ou no unique '%s' dans l'intervention '%s'.",
+				serialNumberOrId, this.id));
+	}
 
 	public void addSurgicalTool(SurgicalTool surgicalTool) {
 		checkAnonymousSurgicalToolIsAuthorized(surgicalTool);
+		addObserverToSurgicalTool(surgicalTool);
 		surgicalTools.add(surgicalTool);
 	}
 
-	public void changeSurgicalToolSerialNumber(SurgicalTool surgicalTool, String newSerialNumber) {
-		surgicalTool.setSerialNumber(newSerialNumber);
-		checkAnonymousSurgicalToolIsAuthorized(surgicalTool);
+	public boolean containsSurgicalTool(SurgicalTool surgicalTool) {
+		return surgicalTools.contains(surgicalTool);
 	}
+	
+	public class SurgicalToolObserver implements Observer {
 
+		@Override
+		public void update(Observable observable, Object arg) {
+			checkAnonymousSurgicalToolIsAuthorized((SurgicalTool)observable);
+		}
+        
+    }
+	
 	private void checkAnonymousSurgicalToolIsAuthorized(SurgicalTool surgicalTool) {
 		if (surgicalTool.isAnonymous() && Arrays.asList(forbiddenInterventionTypesForAnonymousSurgicalTools).contains(type)) {
 			throw new SurgicalToolRequiresSerialNumberException("Erreur - requiert numéro de série.");
 		}
 	}
-
-	public boolean hasSurgicalTool(SurgicalTool surgicalTool) {
-		return surgicalTools.contains(surgicalTool);
+	
+	private void addObserverToSurgicalTool(SurgicalTool surgicalTool) {
+		surgicalTool.addObserver(new SurgicalToolObserver());
 	}
-
 }
