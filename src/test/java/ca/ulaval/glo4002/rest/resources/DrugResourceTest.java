@@ -43,7 +43,7 @@ public class DrugResourceTest {
 	}
 
 	@Test
-	public void verifyDrugSearchReturnsBadRequestResponseOnServiceRequestException() throws Exception {
+	public void verifyDrugSearchReturnsBadRequestResponseOnServiceException() throws Exception {
 		doThrow(new ServiceException()).when(drugServiceMock).searchDrug(any(DrugSearchDTO.class), any(DrugSearchDTOValidator.class));
 		Response receivedResponse = drugResource.get(SAMPLE_DRUG_NAME);
 		assertEquals(Status.BAD_REQUEST.getStatusCode(), receivedResponse.getStatus());

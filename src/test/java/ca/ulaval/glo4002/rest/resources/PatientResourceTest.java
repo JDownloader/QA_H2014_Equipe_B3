@@ -46,7 +46,7 @@ public class PatientResourceTest {
 	}
 
 	@Test
-	public void verifyPrescriptionCreationReturnsBadRequestResponseOnServiceRequestException() throws Exception {
+	public void verifyPrescriptionCreationReturnsBadRequestResponseOnServiceException() throws Exception {
 		doThrow(new ServiceException()).when(patientServiceMock).createPrescription(eq(prescriptionCreationDTOMock),
 				any(PrescriptionCreationDTOValidator.class), any(PrescriptionAssembler.class));
 		Response receivedResponse = createPrescription();

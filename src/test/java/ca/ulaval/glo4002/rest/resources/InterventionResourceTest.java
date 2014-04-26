@@ -54,7 +54,7 @@ public class InterventionResourceTest {
 	}
 
 	@Test()
-	public void verifyInterventionCreationReturnsBadRequestResponseOnServiceRequestException() throws Exception {
+	public void verifyInterventionCreationReturnsBadRequestResponseOnServiceException() throws Exception {
 		when(
 				interventionServiceMock.createIntervention(eq(interventionCreationDTOMock), any(InterventionCreationDTOValidator.class),
 						any(InterventionAssembler.class))).thenThrow(new ServiceException());
@@ -76,7 +76,7 @@ public class InterventionResourceTest {
 	}
 
 	@Test
-	public void verifySurgicalToolCreationReturnsBadRequestResponseOnServiceRequestException() throws Exception {
+	public void verifySurgicalToolCreationReturnsBadRequestResponseOnServiceException() throws Exception {
 		doThrow(new ServiceException()).when(interventionServiceMock).createSurgicalTool(eq(surgicalToolCreationDTOMock),
 				any(SurgicalToolCreationDTOValidator.class), any(SurgicalToolAssembler.class));
 		Response receivedResponse = createSurgicalTool();
@@ -96,7 +96,7 @@ public class InterventionResourceTest {
 	}
 
 	@Test
-	public void verifySurgicalToolModificationReturnsBadRequestResponseOnServiceRequestException() throws Exception {
+	public void verifySurgicalToolModificationReturnsBadRequestResponseOnServiceException() throws Exception {
 		doThrow(new ServiceException()).when(interventionServiceMock).modifySurgicalTool(eq(surgicalToolModificationDTOMock),
 				any(SurgicalToolModificationDTOValidator.class));
 		Response receivedResponse = modifySurgicalTool();
