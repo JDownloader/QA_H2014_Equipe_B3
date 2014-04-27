@@ -12,7 +12,7 @@ import com.jayway.restassured.response.Response;
 
 public class HttpResponseSteps {
 	Response response;
-	public static final String RESPONSE_OBJECT_KEY = "response";
+	public static final String RESPONSE_OBJECT_KEY = "response_key";
 	
 	@Then("une erreur est retournée")
 	public void returnsAnError() {

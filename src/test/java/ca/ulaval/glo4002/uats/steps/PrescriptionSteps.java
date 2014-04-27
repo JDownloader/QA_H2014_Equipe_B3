@@ -42,33 +42,29 @@ public class PrescriptionSteps {
 	public void init() throws ParseException {
 		response = null;
 		prescriptionJson = new JSONObject();
-		createDefaultPrescription();
-	}
-	
-	private void createDefaultPrescription() {
-		prescriptionJson.put(DATE_PARAMETER, DATE_VALUE);
-		prescriptionJson.put(RENEWALS_PARAMETER, RENEWALS_VALUE);
-		prescriptionJson.put(DIN_PARAMETER, ROSALIAC_UV_RICHE_DIN);
-		prescriptionJson.put(STAFF_MEMBER_PARAMETER, STAFF_MEMBER_VALUE);
 	}
 
 	@Given("une prescription avec des données manquantes")
 	public void createPrescriptionWithMissingValues() {
+		createDefaultPrescriptionJsonObject();
 		prescriptionJson.remove(RENEWALS_PARAMETER);
 	}
 	
 	@Given("une prescription avec des données invalides")
 	public void createPrescriptionWithInvalidValues() {
+		createDefaultPrescriptionJsonObject();
 		prescriptionJson.put(RENEWALS_PARAMETER, INVALID_RENEWALS_VALUE);
 	}
 	
 	@Given("une prescription avec un champ obligatoire qui ne contient que des espaces")
 	public void createPrescriptionWithWhiteSpaceField() {
+		createDefaultPrescriptionJsonObject();
 		prescriptionJson.put(STAFF_MEMBER_PARAMETER, WHITE_SPACE);
 	}
 	
 	@Given("une prescription valide avec DIN")
 	public void createValidPrescriptionWithDin() {
+		createDefaultPrescriptionJsonObject();
 		prescriptionJson.remove(DRUG_NAME_PARAMETER);
 		prescriptionJson.put(DIN_PARAMETER, ROSALIAC_UV_RICHE_DIN);
 	}
@@ -80,12 +76,14 @@ public class PrescriptionSteps {
 	
 	@Given("une prescription valide avec nom de médicament")
 	public void createValidPrescriptionWithDrugName() {
+		createDefaultPrescriptionJsonObject();
 		prescriptionJson.remove(DIN_PARAMETER);
 		prescriptionJson.put(DRUG_NAME_PARAMETER, DRUG_NAME_VALUE);
 	}
 	
 	@Given("une prescription avec DIN et un nom de médicament")
 	public void createValidPrescriptionWithDinAndDrugName() {
+		createDefaultPrescriptionJsonObject();
 		prescriptionJson.put(DRUG_NAME_PARAMETER, DRUG_NAME_VALUE);
 	}
 	
@@ -131,5 +129,12 @@ public class PrescriptionSteps {
 	public void prescriptionIsSaved() {
 		response.then().
 			statusCode(Status.CREATED.getStatusCode());
+	}
+	
+	private void createDefaultPrescriptionJsonObject() {
+		prescriptionJson.put(DATE_PARAMETER, DATE_VALUE);
+		prescriptionJson.put(RENEWALS_PARAMETER, RENEWALS_VALUE);
+		prescriptionJson.put(DIN_PARAMETER, ROSALIAC_UV_RICHE_DIN);
+		prescriptionJson.put(STAFF_MEMBER_PARAMETER, STAFF_MEMBER_VALUE);
 	}
 }

@@ -3,6 +3,11 @@ As a personne responsable de la planification
 I want to créer les interventions à venir
 In order to être prêt (avoir tout le matériel) pour l'intervention
 
+rScenario: Créer une intervention avec des informations valides
+Given une intervention avec des informations valide
+When j'ajoute cette intervention au dossier du patient
+Then cette intervention est conservée
+
 Scenario: Créer une intervention avec des informations manquantes
 Given une intervention avec des informations manquantes
 When j'ajoute cette intervention au dossier du patient
