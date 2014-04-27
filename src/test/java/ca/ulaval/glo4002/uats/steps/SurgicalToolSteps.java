@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jbehave.core.annotations.BeforeScenario;
 import org.jbehave.core.annotations.Composite;
 import org.jbehave.core.annotations.Given;
@@ -21,6 +22,7 @@ import ca.ulaval.glo4002.uats.steps.contexts.ThreadLocalContext;
 import com.jayway.restassured.response.Response;
 
 public class SurgicalToolSteps {
+	private static final String LOCATION_HEADER_NAME = "location";
 	public static final String SURGICAL_TOOL_ID_KEY = "instrument_id_key";
 	public static final String SURGICAL_TOOL_TYPECODE_KEY = "instrument_typecode_key";
 	
@@ -139,16 +141,21 @@ public class SurgicalToolSteps {
 				.when()
 				.post(String.format("interventions/%d/instruments/", interventionId));
 		
-		int surgicalToolId = parseSurgicalToolIdFromLocationURIString(response.getHeader("location"));
+		Integer surgicalToolId = tryParseSurgicalToolIdFromLocationURIString(response.getHeader(LOCATION_HEADER_NAME));
 		ThreadLocalContext.putObject(SURGICAL_TOOL_ID_KEY, surgicalToolId);
 		ThreadLocalContext.putObject(SURGICAL_TOOL_TYPECODE_KEY, surgicalToolCreationJson.getString(TYPECODE_PARAMETER));
 		ThreadLocalContext.putObject(HttpResponseSteps.RESPONSE_OBJECT_KEY, response);
 	}
 	
-	private int parseSurgicalToolIdFromLocationURIString(String locationURI) {
-		Pattern pattern = Pattern.compile("/interventions/\\d+/instruments/\\S+/(\\d)+");
-		Matcher matcher = pattern.matcher(locationURI);
-		return Integer.parseInt(matcher.group(1));
+	private Integer tryParseSurgicalToolIdFromLocationURIString(String locationURI) {
+		if (!StringUtils.isBlank(locationURI)) {
+    		Pattern pattern = Pattern.compile("/interventions/\\d+/instruments/\\S+/(\\d)+");
+    		Matcher matcher = pattern.matcher(locationURI);
+    		if (matcher.find()) {
+    			return Integer.parseInt(matcher.group(1));
+    		}
+		}
+		return null;
 	}
 	
 	private void modifyInstrument() {
@@ -160,7 +167,7 @@ public class SurgicalToolSteps {
 				.body(surgicalToolModificationJson.toString())
 				.contentType("application/json; charset=UTF-8")
 				.when()
-				.post(String.format("interventions/%d/instruments/%d/%s/%d", interventionId, surgicalToolTypeCode, surgicalToolId));
+				.post(String.format("%S/interventions/%d/instruments/%d/%S/%d", interventionId, surgicalToolTypeCode, surgicalToolId));
 		
 		ThreadLocalContext.putObject(HttpResponseSteps.RESPONSE_OBJECT_KEY, response);
 	}

@@ -6,7 +6,9 @@ import java.util.regex.Pattern;
 
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jbehave.core.annotations.BeforeScenario;
+import org.jbehave.core.annotations.Composite;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
@@ -21,6 +23,7 @@ import static com.jayway.restassured.RestAssured.*;
 import com.jayway.restassured.response.Response;
 
 public class InterventionSteps {
+	private static final String LOCATION_HEADER_NAME = "location";
 	public static final String INTERVENTION_ID_KEY = "intervention_id_key";
 	
 	private static final String DESCRIPTION_PARAMETER = "description";
@@ -38,7 +41,6 @@ public class InterventionSteps {
 	private static final String TYPE_VALUE = InterventionType.OTHER.getValue();
 	private static final String STATUS_VALUE = InterventionStatus.IN_PROGRESS.getValue();
 	private static final String INVALID_STATUS_VALUE = "invalide";
-	private static final String INVALID_PATIENT_VALUE = "500";
 
 
 	private Response response;
@@ -68,9 +70,10 @@ public class InterventionSteps {
 	}
 
 	@Given("une intervention avec un patient inexistant")
+	@Composite(steps = {
+			"Given un patient inexistant"})
 	public void createInterventionWithNonExistingPatient() {
 		createDefaultInterventionJsonObject();
-		interventionJson.put(PATIENT_PARAMETER, INVALID_PATIENT_VALUE);
 	}
 	
 	@Given("une intervention avec un statut invalide")
@@ -80,28 +83,43 @@ public class InterventionSteps {
 	}
 	
 	@Given("Given une intervention interdisant les instruments anonymes")
-	public void createInterventioRequiringANonymousInstruments() {
+	public void createInterventioRequiringAnonymousInstruments() {
 		createDefaultInterventionJsonObject();
 		interventionJson.put(TYPE_PARAMETER, InterventionType.EYE.getValue());
 	}
-
-	@When("j'ajoute cette intervention au dossier du patient")
+	
+	@When("j'ajoute cette intervention au dossier d'un patient")
+	@Composite(steps = {
+			"Given un patient existant",
+			"When j'ajoute cette intervention au dossier de ce patient"})
+	public void addInterventionToExistingPatient() {
+		//Nothing left do to here after composite steps have been run
+	}
+	
+	@When("j'ajoute cette intervention au dossier de ce patient")
 	public void addIntervention() {
+		interventionJson.put(PATIENT_PARAMETER, ThreadLocalContext.getObject(PatientSteps.PATIENT_ID_KEY));
+		
 		response = given().port(JettyTestRunner.JETTY_TEST_PORT) //TODO: Make method shared
 				.body(interventionJson.toString())
 				.contentType("application/json; charset=UTF-8")
 				.when()
 				.post("interventions/");
-
-		int interventionId = parseInterventionIdFromLocationURIString(response.getHeader("location"));
+		
+		Integer interventionId = tryParseInterventionIdFromLocationURIString(response.getHeader(LOCATION_HEADER_NAME));
 		ThreadLocalContext.putObject(InterventionSteps.INTERVENTION_ID_KEY, interventionId);
 		ThreadLocalContext.putObject(HttpResponseSteps.RESPONSE_OBJECT_KEY, response);
 	}
 	
-	private int parseInterventionIdFromLocationURIString(String locationURI) {
-		Pattern pattern = Pattern.compile("/interventions/(\\d)+");
-		Matcher matcher = pattern.matcher(locationURI);
-		return Integer.parseInt(matcher.group(1));
+	private Integer tryParseInterventionIdFromLocationURIString(String locationURI) {
+		if (!StringUtils.isBlank(locationURI)) {
+			Pattern pattern = Pattern.compile("\\S+/interventions/(\\d)+");
+			Matcher matcher = pattern.matcher(locationURI);
+			if (matcher.find()) {
+				return Integer.parseInt(matcher.group(1));
+			}
+		}
+		return null;
 	}
 
 	@Then("cette intervention est conservée")
@@ -116,6 +134,5 @@ public class InterventionSteps {
 		interventionJson.put(ROOM_PARAMETER, ROOM_VALUE);
 		interventionJson.put(TYPE_PARAMETER, TYPE_VALUE);
 		interventionJson.put(STATUS_PARAMETER, STATUS_VALUE);
-		interventionJson.put(PATIENT_PARAMETER, ThreadLocalContext.getObject(PatientSteps.PATIENT_ID_KEY));
 	}
 }

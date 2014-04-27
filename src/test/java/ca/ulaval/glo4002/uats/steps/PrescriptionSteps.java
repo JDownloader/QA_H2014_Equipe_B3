@@ -89,23 +89,28 @@ public class PrescriptionSteps {
 	
 	@Given("une prescription associée à ce patient")
 	public void linkPrescriptionToPatient() {
+		createDefaultPrescriptionJsonObject();
 		addPrescription();
 	}
 	
 	@When("j'ajoute une prescription pour laquelle il y a une interaction")
 	public void addPrescriptionWithInteraction() {
+		createDefaultPrescriptionJsonObject();
 		prescriptionJson.put(DIN_PARAMETER, STANHEXIDINE_DIN);
 		addPrescription();
 	}
 	
 	@When("j'ajoute une prescription pour laquelle il n'y a pas d'interaction")
 	public void addPrescriptionWithNoInteraction() {
+		createDefaultPrescriptionJsonObject();
 		prescriptionJson.put(DIN_PARAMETER, NATURALYTE_H201_DIN);
 		addPrescription();
 	}
 	
 	@When("j'ajoute une prescription avec nom de médicament pour laquelle il y a une interaction")
 	public void addPrescriptionWithInteractiveDrugName() {
+		createDefaultPrescriptionJsonObject();
+		
 		prescriptionJson.remove(DIN_PARAMETER);
 		prescriptionJson.put(DRUG_NAME_PARAMETER, STANHEXIDINE_NAME);
 		
