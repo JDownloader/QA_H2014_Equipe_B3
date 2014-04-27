@@ -22,6 +22,7 @@ import ca.ulaval.glo4002.uats.steps.contexts.ThreadLocalContext;
 import com.jayway.restassured.response.Response;
 
 public class SurgicalToolSteps {
+	private static final int FIRST_GENERATED_SERIALNUMBER = 0;
 	private static final String LOCATION_HEADER_NAME = "location";
 	public static final String SURGICAL_TOOL_ID_KEY = "instrument_id_key";
 	public static final String SURGICAL_TOOL_TYPECODE_KEY = "instrument_typecode_key";
@@ -30,11 +31,11 @@ public class SurgicalToolSteps {
 	private static final String STATUS_PARAMETER = "statut";
 	private static final String SERIAL_NUMBER_PARAMETER = "noserie";
 	
-	private static final String TYPECODE_VALUE = "description";
+	private static final String TYPECODE_VALUE = "IT33434";
 	private static final String STATUS_VALUE = "UTILISE_PATIENT";
 	private static final String NEW_STATUS_VALUE = "SOUILLE";
-	private static final String SERIAL_NUMBER_VALUE = "23562543-3635345";
-	private static final String NEW_SERIAL_NUMBER_VALUE = "23562543-3635346";
+
+	private Integer serialNumberIndexCounter = 0;
 	
 	private Response response;
 	JSONObject surgicalToolCreationJson;
@@ -44,11 +45,18 @@ public class SurgicalToolSteps {
 	public void init() throws ParseException {
 		response = null;
 		surgicalToolCreationJson = new JSONObject();
+		surgicalToolModificationJson = new JSONObject();
 	}
 	
 	@Given("un instrument avec des informations valides")
 	public void createValidSurgicalTool() {
 		createDefaultSurgicalToolCreationJsonObject();
+	}
+	
+	@Given("un instrument anonyme avec des informations valides")
+	public void createValidAnonymousSurgicalTool() {
+		createDefaultSurgicalToolCreationJsonObject();
+		surgicalToolCreationJson.remove(SERIAL_NUMBER_PARAMETER);
 	}
 	
 	@Given("un instrument avec des informations manquantes")
@@ -59,39 +67,30 @@ public class SurgicalToolSteps {
 	
 	@Given("un instrument avec un numéro de série déjà utilisé")
 	public void createSurgicalToolWithDuplicateSerialNumber() {
-		//Here we assume previous stories have been successfully run
 		createDefaultSurgicalToolCreationJsonObject();
-	}
-	
-	@Given("un instrument dans une intervention")
-	@Composite(steps = {
-            "Given un instrument avec des informations valides", 
-            "When j'ajoute cet instrument à une intervention" }) 
-	public void createInstrumentInIntervention() {
-		//Nothing left do to here after composite steps have been run
-	}
-	
-	@Given("un instrument dans une intervention interdisant les instruments anonymes")
-	@Composite(steps = {
-            "Given un instrument avec des informations valides", 
-            "When j'ajoute cet instrument à une intervention interdisant les instruments anonymes" }) 
-	public void createInstrumentInInterventionProhibitingAnonymousSirgucalTools() {
-		//Nothing left do to here after composite steps have been run
+		surgicalToolCreationJson.put(SERIAL_NUMBER_PARAMETER, generateSerialNumberFromIndex(FIRST_GENERATED_SERIALNUMBER));
 	}
 	
 	@When("j'ajoute cet instrument à une intervention")
-	@Composite(steps = { "Given un patient existant", 
+	@Composite(steps = {
             "Given une intervention avec des informations valide", 
-            "When j'ajoute cette intervention au dossier du patient" }) 
-	public void addInstrumentToIntervention() {
-		addInstrument();
+            "When j'ajoute cette intervention au dossier d'un patient",
+            "When j'ajoute cet instrument à cette intervention"}) 
+	public void addInstrumentToAnIntervention() {
+		//Nothing left do to here after composite steps have been run
+	}
+
+	@When("j'ajoute cet instrument à une intervention interdisant les instruments anonymes")
+	@Composite(steps = {
+            "Given une intervention interdisant les instruments anonymes", 
+            "When j'ajoute cette intervention au dossier d'un patient",
+	 		"When j'ajoute cet instrument à cette intervention"}) 
+	public void addInstrumentToInterventionProhibitingAnonymousSirgucalTools() {
+		//Nothing left do to here after composite steps have been run
 	}
 	
-	@When("j'ajoute cet instrument à une intervention interdisant les instruments anonymes")
-	@Composite(steps = { "Given un patient existant", 
-            "Given une intervention interdisant les instruments anonymes", 
-            "When j'ajoute cette intervention au dossier du patient" }) 
-	public void addInstrumentToInterventionProhibitingAnonymousSirgucalTools() {
+	@When("j'ajoute cet instrument à cette intervention")
+	public void addInstrumentToIntervention() {
 		addInstrument();
 	}
 	
@@ -108,10 +107,10 @@ public class SurgicalToolSteps {
 		modifyInstrument();
 	}
 	
-	@When("je modifie le le numéro de série de cet instrument par un numéro de série existant ")
+	@When("je modifie le le numéro de série de cet instrument par un numéro de série existant")
 	public void modifyInstrumentToDuplicateSerialNumber() {
 		createDefaultSurgicalToolModificationJsonObject();
-		surgicalToolModificationJson.put(SERIAL_NUMBER_PARAMETER, SERIAL_NUMBER_VALUE);
+		surgicalToolModificationJson.put(SERIAL_NUMBER_PARAMETER, generateSerialNumberFromIndex(FIRST_GENERATED_SERIALNUMBER));
 		modifyInstrument();
 	}
 	
@@ -149,7 +148,7 @@ public class SurgicalToolSteps {
 	
 	private Integer tryParseSurgicalToolIdFromLocationURIString(String locationURI) {
 		if (!StringUtils.isBlank(locationURI)) {
-    		Pattern pattern = Pattern.compile("/interventions/\\d+/instruments/\\S+/(\\d)+");
+    		Pattern pattern = Pattern.compile("\\S+/interventions/\\d+/instruments/\\S+/(\\d+)");
     		Matcher matcher = pattern.matcher(locationURI);
     		if (matcher.find()) {
     			return Integer.parseInt(matcher.group(1));
@@ -167,7 +166,7 @@ public class SurgicalToolSteps {
 				.body(surgicalToolModificationJson.toString())
 				.contentType("application/json; charset=UTF-8")
 				.when()
-				.post(String.format("%S/interventions/%d/instruments/%d/%S/%d", interventionId, surgicalToolTypeCode, surgicalToolId));
+				.put(String.format("/interventions/%d/instruments/%s/%d", interventionId, surgicalToolTypeCode, surgicalToolId));
 		
 		ThreadLocalContext.putObject(HttpResponseSteps.RESPONSE_OBJECT_KEY, response);
 	}
@@ -175,12 +174,15 @@ public class SurgicalToolSteps {
 	private void createDefaultSurgicalToolCreationJsonObject() {
 		surgicalToolCreationJson.put(TYPECODE_PARAMETER, TYPECODE_VALUE);
 		surgicalToolCreationJson.put(STATUS_PARAMETER, STATUS_VALUE);
-		surgicalToolCreationJson.put(SERIAL_NUMBER_PARAMETER, SERIAL_NUMBER_VALUE);
+		surgicalToolCreationJson.put(SERIAL_NUMBER_PARAMETER, generateSerialNumberFromIndex(serialNumberIndexCounter++));
 	}
 	
-	private void createDefaultSurgicalToolModificationJsonObject()
-	{
+	private void createDefaultSurgicalToolModificationJsonObject() {
 		surgicalToolModificationJson.put(STATUS_PARAMETER, NEW_STATUS_VALUE);
-		surgicalToolModificationJson.put(SERIAL_NUMBER_PARAMETER, NEW_SERIAL_NUMBER_VALUE);
+		surgicalToolModificationJson.put(SERIAL_NUMBER_PARAMETER, generateSerialNumberFromIndex(serialNumberIndexCounter++));
+	}
+	
+	private String generateSerialNumberFromIndex(Integer serialNumberIndexCounter) {
+		return serialNumberIndexCounter.toString();
 	}
  }

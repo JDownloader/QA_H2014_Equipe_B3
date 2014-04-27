@@ -82,7 +82,7 @@ public class InterventionSteps {
 		interventionJson.put(STATUS_PARAMETER, INVALID_STATUS_VALUE);
 	}
 	
-	@Given("Given une intervention interdisant les instruments anonymes")
+	@Given("une intervention interdisant les instruments anonymes")
 	public void createInterventioRequiringAnonymousInstruments() {
 		createDefaultInterventionJsonObject();
 		interventionJson.put(TYPE_PARAMETER, InterventionType.EYE.getValue());
@@ -113,7 +113,7 @@ public class InterventionSteps {
 	
 	private Integer tryParseInterventionIdFromLocationURIString(String locationURI) {
 		if (!StringUtils.isBlank(locationURI)) {
-			Pattern pattern = Pattern.compile("\\S+/interventions/(\\d)+");
+			Pattern pattern = Pattern.compile("\\S+/interventions/(\\d+)");
 			Matcher matcher = pattern.matcher(locationURI);
 			if (matcher.find()) {
 				return Integer.parseInt(matcher.group(1));
