@@ -7,7 +7,7 @@ import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
 
 import ca.ulaval.glo4002.domain.drug.Drug;
-import ca.ulaval.glo4002.rest.utils.ResponseBuilder;
+import ca.ulaval.glo4002.rest.utils.ResponseAssembler;
 import ca.ulaval.glo4002.services.DrugService;
 import ca.ulaval.glo4002.services.dto.DrugSearchDTO;
 import ca.ulaval.glo4002.services.dto.validators.DTOValidationException;
@@ -34,10 +34,12 @@ public class DrugResource {
 	public Response get(@QueryParam("nom") String name) throws Exception {
 		try {
 			DrugSearchDTO drugSearchDTO = new DrugSearchDTO(name);
+			
 			List<Drug> drugResults = drugService.searchDrug(drugSearchDTO, new DrugSearchDTOValidator());
+			
 			return Response.status(Status.OK).type(MediaType.APPLICATION_JSON).entity(drugResults).build();
 		} catch (DTOValidationException e) {
-			return ResponseBuilder.buildResponse(Status.BAD_REQUEST, ERROR_DIN001, e.getMessage());
+			return ResponseAssembler.assembleErrorResponse(Status.BAD_REQUEST, ERROR_DIN001, e.getMessage());
 		}
 	}
 }

@@ -15,7 +15,7 @@ import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolExistsException;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolNotFoundException;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolRequiresSerialNumberException;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolStatusParseException;
-import ca.ulaval.glo4002.rest.utils.ResponseBuilder;
+import ca.ulaval.glo4002.rest.utils.ResponseAssembler;
 import ca.ulaval.glo4002.services.InterventionService;
 import ca.ulaval.glo4002.services.assemblers.InterventionAssembler;
 import ca.ulaval.glo4002.services.assemblers.SurgicalToolAssembler;
@@ -51,9 +51,9 @@ public class InterventionResource {
 			URI resourceLocationURI = getInterventionResourceLocationURI(interventionId);
 			return Response.status(Status.CREATED).location(resourceLocationURI).build();
 		} catch (DTOValidationException | InterventionTypeParseException | InterventionStatusParseException e) {
-			return ResponseBuilder.buildResponse(Status.BAD_REQUEST, ERROR_INT001, e.getMessage());
+			return ResponseAssembler.assembleErrorResponse(Status.BAD_REQUEST, ERROR_INT001, e.getMessage());
 		} catch (PatientNotFoundException e) {
-			return ResponseBuilder.buildResponse(Status.BAD_REQUEST, ERROR_INT002, e.getMessage());
+			return ResponseAssembler.assembleErrorResponse(Status.BAD_REQUEST, ERROR_INT002, e.getMessage());
 		}
 	}
 	
@@ -76,11 +76,11 @@ public class InterventionResource {
 			URI resourceLocationURI = getSurgicalToolResourceLocationURI(interventionNumber, surgicalToolId, surgicalToolCreationDTO.typeCode);
 			return Response.status(Status.CREATED).location(resourceLocationURI).build();
 		} catch (DTOValidationException | InterventionNotFoundException | SurgicalToolStatusParseException e) {
-			return ResponseBuilder.buildResponse(Status.BAD_REQUEST, ERROR_INT010, e.getMessage());
+			return ResponseAssembler.assembleErrorResponse(Status.BAD_REQUEST, ERROR_INT010, e.getMessage());
 		} catch (SurgicalToolExistsException e) {
-			return ResponseBuilder.buildResponse(Status.BAD_REQUEST, ERROR_INT011, e.getMessage());
+			return ResponseAssembler.assembleErrorResponse(Status.BAD_REQUEST, ERROR_INT011, e.getMessage());
 		} catch (SurgicalToolRequiresSerialNumberException e) {
-			return ResponseBuilder.buildResponse(Status.BAD_REQUEST, ERROR_INT012, e.getMessage());
+			return ResponseAssembler.assembleErrorResponse(Status.BAD_REQUEST, ERROR_INT012, e.getMessage());
 		}
 	}
 	
@@ -105,11 +105,11 @@ public class InterventionResource {
 
 			return Response.status(Status.OK).build();
 		} catch (DTOValidationException | InterventionNotFoundException | SurgicalToolNotFoundException | SurgicalToolStatusParseException e) {
-			return ResponseBuilder.buildResponse(Status.BAD_REQUEST, ERROR_INT010, e.getMessage());
+			return ResponseAssembler.assembleErrorResponse(Status.BAD_REQUEST, ERROR_INT010, e.getMessage());
 		} catch (SurgicalToolExistsException e) {
-			return ResponseBuilder.buildResponse(Status.BAD_REQUEST, ERROR_INT011, e.getMessage());
+			return ResponseAssembler.assembleErrorResponse(Status.BAD_REQUEST, ERROR_INT011, e.getMessage());
 		} catch (SurgicalToolRequiresSerialNumberException e) {
-			return ResponseBuilder.buildResponse(Status.BAD_REQUEST, ERROR_INT012, e.getMessage());
+			return ResponseAssembler.assembleErrorResponse(Status.BAD_REQUEST, ERROR_INT012, e.getMessage());
 		}
 	}
 }
