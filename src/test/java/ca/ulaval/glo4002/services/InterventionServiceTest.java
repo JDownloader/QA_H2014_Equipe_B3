@@ -128,7 +128,7 @@ public class InterventionServiceTest {
 	}
 
 	@Test
-	public void verifySurgicalToolReturnsCorrectValue() {
+	public void verifySurgicalToolCreationReturnsCorrectValue() {
 		final Integer SAMPLE_ID = 2;
 		when(surgicalToolMock.getId()).thenReturn(SAMPLE_ID);
 

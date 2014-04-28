@@ -158,7 +158,7 @@ public class SurgicalToolSteps {
 
 	private void saveSurgicalToolCreationResponseContext() {
 		try {
-			Integer surgicalToolId = HttpLocationParser.parseSurgicalToolIdFromHeader(response);
+			Integer surgicalToolId = HttpLocationParser.parseSurgicalToolIdFromResponse(response);
 			ThreadLocalContext.putObject(LAST_SURGICAL_TOOL_ID_KEY, surgicalToolId);
 		} catch (IllegalArgumentException e) {
 			//Surgical tool ID does not need to be saved into context if it is invalid.

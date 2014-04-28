@@ -12,12 +12,12 @@ public class HttpLocationParser {
 	private static final String SURGICAL_TOOL_LOCATION_REGEX = "\\S+/interventions/\\d+/instruments/\\S+/(\\d+)";
 	private static final String LOCATION_HEADER_NAME = "location";
 
-	public static Integer parseInterventionIdFromHeader(Response response) {
+	public static Integer parseInterventionIdFromResponse(Response response) {
 		String group = getSingleGroupFromRegexPattern(response.getHeader(LOCATION_HEADER_NAME), INTERVENTION_LOCATION_REGEX, INTERVENTION_ID_GROUP_INDEX);
 		return Integer.parseInt(group);
 	}
 
-	public static Integer parseSurgicalToolIdFromHeader(Response response) {
+	public static Integer parseSurgicalToolIdFromResponse(Response response) {
 		String group = getSingleGroupFromRegexPattern(response.getHeader(LOCATION_HEADER_NAME), SURGICAL_TOOL_LOCATION_REGEX, SURGICAL_TOOL_ID_GROUP_INDEX);
 		return Integer.parseInt(group);
 	}
