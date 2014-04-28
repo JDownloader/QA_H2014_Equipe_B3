@@ -3,7 +3,6 @@ package ca.ulaval.glo4002.services;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-import ca.ulaval.glo4002.domain.drug.DrugNotFoundException;
 import ca.ulaval.glo4002.domain.drug.DrugRepository;
 import ca.ulaval.glo4002.domain.patient.*;
 import ca.ulaval.glo4002.domain.prescription.Prescription;
@@ -12,13 +11,10 @@ import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
 import ca.ulaval.glo4002.persistence.*;
 import ca.ulaval.glo4002.services.assemblers.PrescriptionAssembler;
 import ca.ulaval.glo4002.services.dto.PrescriptionCreationDTO;
-import ca.ulaval.glo4002.services.dto.validators.DTOValidationException;
 import ca.ulaval.glo4002.services.dto.validators.PrescriptionCreationDTOValidator;
 
 public class PatientService {
-	public static final String ERROR_PRES001 = "PRES001";
-	public static final String ERROR_PRES002 = "PRES002";
-	
+
 	private PatientRepository patientRepository;
 	private PrescriptionRepository prescriptionRepository;
 	private DrugRepository drugRepository;
@@ -51,14 +47,11 @@ public class PatientService {
 			doCreatePrescription(prescriptionCreationDTO, prescriptionAssembler);
 
 			entityTransaction.commit();
-		} catch (DTOValidationException | PatientNotFoundException | DrugNotFoundException e) {
-			throw new ServiceException(ERROR_PRES001, e.getMessage());
-		} catch (DrugInteractionException e) {
-			throw new ServiceException(ERROR_PRES002, e.getMessage());
-		} finally {
+		} catch (Exception e) {
 			if (entityTransaction.isActive()) {
 				entityTransaction.rollback();
 			}
+			throw e;
 		}
 	}
 

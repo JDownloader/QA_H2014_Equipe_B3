@@ -12,22 +12,14 @@ public class HttpLocationParser {
 	private static final String SURGICAL_TOOL_LOCATION_REGEX = "\\S+/interventions/\\d+/instruments/\\S+/(\\d+)";
 	private static final String LOCATION_HEADER_NAME = "location";
 
-	public static Integer tryParseInterventionIdFromHeader(Response response) {
-		try {
-			String group = getSingleGroupFromRegexPattern(response.getHeader(LOCATION_HEADER_NAME), INTERVENTION_LOCATION_REGEX, INTERVENTION_ID_GROUP_INDEX);
-			return Integer.parseInt(group);
-		} catch (IllegalArgumentException e) {
-			return null;
-		}
+	public static Integer parseInterventionIdFromHeader(Response response) {
+		String group = getSingleGroupFromRegexPattern(response.getHeader(LOCATION_HEADER_NAME), INTERVENTION_LOCATION_REGEX, INTERVENTION_ID_GROUP_INDEX);
+		return Integer.parseInt(group);
 	}
 
-	public static Integer tryParseSurgicalToolIdFromHeader(Response response) {
-		try {
-			String group = getSingleGroupFromRegexPattern(response.getHeader(LOCATION_HEADER_NAME), SURGICAL_TOOL_LOCATION_REGEX, SURGICAL_TOOL_ID_GROUP_INDEX);
-			return Integer.parseInt(group);
-		} catch (IllegalArgumentException e) {
-			return null;
-		}
+	public static Integer parseSurgicalToolIdFromHeader(Response response) {
+		String group = getSingleGroupFromRegexPattern(response.getHeader(LOCATION_HEADER_NAME), SURGICAL_TOOL_LOCATION_REGEX, SURGICAL_TOOL_ID_GROUP_INDEX);
+		return Integer.parseInt(group);
 	}
 
 	private static String getSingleGroupFromRegexPattern(String input, String regex, int groupIndex) {

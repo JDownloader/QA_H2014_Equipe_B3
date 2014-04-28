@@ -107,8 +107,12 @@ public class InterventionSteps {
 	}
 
 	private void saveInterventionCreationResponseContext() {
-		Integer interventionId = HttpLocationParser.tryParseInterventionIdFromHeader(response);
-		ThreadLocalContext.putObject(InterventionSteps.LAST_INTERVENTION_ID_KEY, interventionId);
+		try {
+			Integer interventionId = HttpLocationParser.parseInterventionIdFromHeader(response);
+			ThreadLocalContext.putObject(InterventionSteps.LAST_INTERVENTION_ID_KEY, interventionId);
+		} catch (IllegalArgumentException e) {
+			//Intervention ID does not need to be saved into context if it is invalid.
+		}
 		ThreadLocalContext.putObject(HttpResponseSteps.LAST_RESPONSE_OBJECT_KEY, response);
 	}
 

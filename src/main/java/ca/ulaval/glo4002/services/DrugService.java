@@ -13,7 +13,6 @@ import ca.ulaval.glo4002.services.dto.DrugSearchDTO;
 import ca.ulaval.glo4002.services.dto.validators.DrugSearchDTOValidator;
 
 public class DrugService {
-	public static final String ERROR_DIN001 = "DIN001";
 	
 	private DrugRepository drugRepository;
 	private EntityManager entityManager;
@@ -39,11 +38,10 @@ public class DrugService {
 			entityTransaction.commit();
 			return drugResults;
 		} catch (Exception e) {
-			throw new ServiceException(ERROR_DIN001, e.getMessage());
-		} finally {
 			if (entityTransaction.isActive()) {
 				entityTransaction.rollback();
 			}
+			throw e;
 		}
 	}
 }

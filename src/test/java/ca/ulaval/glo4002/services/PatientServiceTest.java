@@ -1,6 +1,5 @@
 package ca.ulaval.glo4002.services;
 
-import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
@@ -13,14 +12,12 @@ import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import ca.ulaval.glo4002.domain.drug.DrugNotFoundException;
 import ca.ulaval.glo4002.domain.drug.DrugRepository;
 import ca.ulaval.glo4002.domain.patient.*;
 import ca.ulaval.glo4002.domain.prescription.Prescription;
 import ca.ulaval.glo4002.domain.prescription.PrescriptionRepository;
 import ca.ulaval.glo4002.services.assemblers.PrescriptionAssembler;
 import ca.ulaval.glo4002.services.dto.PrescriptionCreationDTO;
-import ca.ulaval.glo4002.services.dto.validators.DTOValidationException;
 import ca.ulaval.glo4002.services.dto.validators.PrescriptionCreationDTOValidator;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -64,7 +61,7 @@ public class PatientServiceTest {
 	}
 
 	@Test
-	public void verifyPrescriptionCreationCallsCorrectRepositoryMethods() throws Exception {
+	public void verifyPrescriptionCreationCallsCorrectRepositoryMethods() {
 		createPrescription();
 
 		verify(prescriptionRepositoryMock).persist(any(Prescription.class));
@@ -73,14 +70,14 @@ public class PatientServiceTest {
 	}
 
 	@Test
-	public void verifyPrescriptionCreationCallsCorrectDomainMethods() throws Exception {
+	public void verifyPrescriptionCreationCallsCorrectDomainMethods() {
 		when(prescriptionAssemblerMock.assembleFromDTO(prescriptionCreationDTO, drugRepositoryMock)).thenReturn(prescriptionMock);
 		createPrescription();
 		verify(patientMock).addPrescription(prescriptionMock);
 	}
 
 	@Test
-	public void verifyPrescriptionCreationBeginsAndCommitsTransaction() throws Exception {
+	public void verifyPrescriptionCreationBeginsAndCommitsTransaction() {
 		createPrescription();
 		InOrder inOrder = inOrder(entityTransactionMock);
 
@@ -89,59 +86,26 @@ public class PatientServiceTest {
 	}
 
 	@Test
-	public void verifyPrescriptionCreationRollsbackOnException() throws Exception {
+	public void verifyPrescriptionCreationRollsbackOnException() {
 		when(entityTransactionMock.isActive()).thenReturn(true);
-		when(patientRepositoryMock.getById(anyInt())).thenThrow(new PatientNotFoundException());
+		when(patientRepositoryMock.getById(anyInt())).thenThrow(new RuntimeException());
 
 		try {
 			createPrescription();
-		} catch (ServiceException e) {
+		} catch (RuntimeException e) {
 			verify(entityTransactionMock).rollback();
 			return;
 		}
 	}
 
 	@Test
-	public void verifyPrescriptionCreationDoesNotRollbackOnSuccessfulCommit() throws Exception {
+	public void verifyPrescriptionCreationDoesNotRollbackOnSuccessfulCommit() {
 		when(entityTransactionMock.isActive()).thenReturn(false);
 
 		createPrescription();
 
 		verify(entityTransactionMock).commit();
 		verify(entityTransactionMock, never()).rollback();
-	}
-
-	@Test
-	public void verifyPrescriptionCreationThrowsServiceExceptionOnDTOValidationException() {
-		doThrow(new DTOValidationException()).when(prescriptionCreationDTOValidatorMock).validate(any(PrescriptionCreationDTO.class));
-		try {
-			createPrescription();
-			fail("An exception was expected.");
-		} catch (ServiceException e) {
-			assertEquals(PatientService.ERROR_PRES001, e.getInternalCode());
-		}
-	}
-
-	@Test
-	public void verifyPrescriptionCreationThrowsServiceExceptionOnPatientNotFoundException() {
-		when(patientRepositoryMock.getById(anyInt())).thenThrow(new PatientNotFoundException());
-		try {
-			createPrescription();
-			fail("An exception was expected.");
-		} catch (ServiceException e) {
-			assertEquals(PatientService.ERROR_PRES001, e.getInternalCode());
-		}
-	}
-
-	@Test
-	public void verifyPrescriptionCreationThrowsServiceExceptionOnDrugNotNotFoundException() {
-		when(prescriptionAssemblerMock.assembleFromDTO(prescriptionCreationDTO, drugRepositoryMock)).thenThrow(new DrugNotFoundException());
-		try {
-			createPrescription();
-			fail("An exception was expected.");
-		} catch (ServiceException e) {
-			assertEquals(PatientService.ERROR_PRES001, e.getInternalCode());
-		}
 	}
 
 	private void createPrescription() {

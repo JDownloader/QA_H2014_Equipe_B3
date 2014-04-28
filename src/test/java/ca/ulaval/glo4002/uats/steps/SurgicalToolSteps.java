@@ -162,8 +162,12 @@ public class SurgicalToolSteps {
 	}
 
 	private void saveSurgicalToolCreationResponseContext() {
-		Integer surgicalToolId = HttpLocationParser.tryParseSurgicalToolIdFromHeader(response);
-		ThreadLocalContext.putObject(LAST_SURGICAL_TOOL_ID_KEY, surgicalToolId);
+		try {
+			Integer surgicalToolId = HttpLocationParser.parseSurgicalToolIdFromHeader(response);
+			ThreadLocalContext.putObject(LAST_SURGICAL_TOOL_ID_KEY, surgicalToolId);
+		} catch (IllegalArgumentException e) {
+			//Surgical tool ID does not need to be saved into context if it is invalid.
+		}
 		ThreadLocalContext.putObject(LAST_SURGICAL_TOOL_TYPECODE_KEY, surgicalToolCreationJson.getString(TYPECODE_PARAMETER));
 		ThreadLocalContext.putObject(HttpResponseSteps.LAST_RESPONSE_OBJECT_KEY, response);
 	}

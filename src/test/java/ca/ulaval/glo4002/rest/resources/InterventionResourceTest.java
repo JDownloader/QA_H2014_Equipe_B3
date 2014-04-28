@@ -12,8 +12,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import ca.ulaval.glo4002.domain.intervention.InterventionNotFoundException;
+import ca.ulaval.glo4002.domain.patient.PatientNotFoundException;
+import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolExistsException;
+import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolRequiresSerialNumberException;
 import ca.ulaval.glo4002.services.InterventionService;
-import ca.ulaval.glo4002.services.ServiceException;
 import ca.ulaval.glo4002.services.assemblers.InterventionAssembler;
 import ca.ulaval.glo4002.services.assemblers.SurgicalToolAssembler;
 import ca.ulaval.glo4002.services.dto.*;
@@ -52,12 +55,19 @@ public class InterventionResourceTest {
 		Response response = createIntervention();
 		assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
 	}
+	
+	@Test
+	public void verifyInterventionCreationReturnsBadRequestResponseOnDTOValidationException() throws Exception {
+		doThrow(new DTOValidationException()).when(interventionServiceMock).createIntervention(eq(interventionCreationDTOMock), any(InterventionCreationDTOValidator.class),
+				any(InterventionAssembler.class));
+		Response response = createIntervention();
+		assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+	}
 
-	@Test()
-	public void verifyInterventionCreationReturnsBadRequestResponseOnServiceException() throws Exception {
-		when(
-				interventionServiceMock.createIntervention(eq(interventionCreationDTOMock), any(InterventionCreationDTOValidator.class),
-						any(InterventionAssembler.class))).thenThrow(new ServiceException());
+	@Test
+	public void verifyInterventionCreationReturnsBadRequestResponseOnPatientNotFoundException() throws Exception {
+		doThrow(new PatientNotFoundException()).when(interventionServiceMock).createIntervention(eq(interventionCreationDTOMock), any(InterventionCreationDTOValidator.class),
+				any(InterventionAssembler.class));
 		Response response = createIntervention();
 		assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
 	}
@@ -76,13 +86,38 @@ public class InterventionResourceTest {
 	}
 
 	@Test
-	public void verifySurgicalToolCreationReturnsBadRequestResponseOnServiceException() throws Exception {
-		doThrow(new ServiceException()).when(interventionServiceMock).createSurgicalTool(eq(surgicalToolCreationDTOMock),
+	public void verifySurgicalToolCreationReturnsBadRequestResponseOnDTOValidationException() throws Exception {
+		doThrow(new DTOValidationException()).when(interventionServiceMock).createSurgicalTool(eq(surgicalToolCreationDTOMock),
 				any(SurgicalToolCreationDTOValidator.class), any(SurgicalToolAssembler.class));
 		Response receivedResponse = createSurgicalTool();
 		assertEquals(Status.BAD_REQUEST.getStatusCode(), receivedResponse.getStatus());
 	}
 
+	@Test
+	public void verifySurgicalToolCreationReturnsBadRequestResponseOnInterventionNotFoundException() throws Exception {
+		doThrow(new InterventionNotFoundException()).when(interventionServiceMock).createSurgicalTool(eq(surgicalToolCreationDTOMock),
+				any(SurgicalToolCreationDTOValidator.class), any(SurgicalToolAssembler.class));
+		Response receivedResponse = createSurgicalTool();
+		assertEquals(Status.BAD_REQUEST.getStatusCode(), receivedResponse.getStatus());
+	}
+
+	@Test
+	public void verifySurgicalToolCreationReturnsBadRequestResponseOnSurgicalToolExistsException() throws Exception {
+		doThrow(new SurgicalToolExistsException()).when(interventionServiceMock).createSurgicalTool(eq(surgicalToolCreationDTOMock),
+				any(SurgicalToolCreationDTOValidator.class), any(SurgicalToolAssembler.class));
+		Response receivedResponse = createSurgicalTool();
+		assertEquals(Status.BAD_REQUEST.getStatusCode(), receivedResponse.getStatus());
+
+	}
+
+	@Test
+	public void verifySurgicalToolCreationReturnsBadRequestResponseOnSurgicalToolRequiresSerialNumberException() throws Exception {
+		doThrow(new SurgicalToolRequiresSerialNumberException()).when(interventionServiceMock).createSurgicalTool(eq(surgicalToolCreationDTOMock),
+				any(SurgicalToolCreationDTOValidator.class), any(SurgicalToolAssembler.class));
+		Response receivedResponse = createSurgicalTool();
+		assertEquals(Status.BAD_REQUEST.getStatusCode(), receivedResponse.getStatus());
+	}
+	
 	@Test
 	public void verifySurgicalToolModificationCallsServiceMethodsCorrectly() throws Exception {
 		modifySurgicalTool();
@@ -94,10 +129,34 @@ public class InterventionResourceTest {
 		Response response = modifySurgicalTool();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}
+	
+	@Test
+	public void verifySurgicalToolModificationReturnsBadRequestResponseOnDTOValidationException() throws Exception {
+		doThrow(new DTOValidationException()).when(interventionServiceMock).modifySurgicalTool(eq(surgicalToolModificationDTOMock),
+				any(SurgicalToolModificationDTOValidator.class));
+		Response receivedResponse = modifySurgicalTool();
+		assertEquals(Status.BAD_REQUEST.getStatusCode(), receivedResponse.getStatus());
+	}
 
 	@Test
-	public void verifySurgicalToolModificationReturnsBadRequestResponseOnServiceException() throws Exception {
-		doThrow(new ServiceException()).when(interventionServiceMock).modifySurgicalTool(eq(surgicalToolModificationDTOMock),
+	public void verifySurgicalToolModificationReturnsBadRequestResponseOnInterventionNotFoundException() throws Exception {
+		doThrow(new InterventionNotFoundException()).when(interventionServiceMock).modifySurgicalTool(eq(surgicalToolModificationDTOMock),
+				any(SurgicalToolModificationDTOValidator.class));
+		Response receivedResponse = modifySurgicalTool();
+		assertEquals(Status.BAD_REQUEST.getStatusCode(), receivedResponse.getStatus());
+	}
+
+	@Test
+	public void verifySurgicalToolModificationReturnsBadRequestResponseOnSurgicalToolExistsException() throws Exception {
+		doThrow(new SurgicalToolExistsException()).when(interventionServiceMock).modifySurgicalTool(eq(surgicalToolModificationDTOMock),
+				any(SurgicalToolModificationDTOValidator.class));
+		Response receivedResponse = modifySurgicalTool();
+		assertEquals(Status.BAD_REQUEST.getStatusCode(), receivedResponse.getStatus());
+	}
+
+	@Test
+	public void verifySurgicalToolModificationReturnsBadRequestResponseOnSurgicalToolRequiresSerialNumberException() throws Exception {
+		doThrow(new SurgicalToolRequiresSerialNumberException()).when(interventionServiceMock).modifySurgicalTool(eq(surgicalToolModificationDTOMock),
 				any(SurgicalToolModificationDTOValidator.class));
 		Response receivedResponse = modifySurgicalTool();
 		assertEquals(Status.BAD_REQUEST.getStatusCode(), receivedResponse.getStatus());
