@@ -97,12 +97,16 @@ public class InterventionSteps {
 	}
 	
 	@When("j'ajoute cette intervention au dossier de ce patient")
-	public void addIntervention() {
+	public void createIntervention() {
 		interventionJson.put(PATIENT_PARAMETER, ThreadLocalContext.getObject(PatientSteps.LAST_PATIENT_ID_KEY));
 		
 		response = HttpResponseSteps.getDefaultRequestSepcification(interventionJson)
 				.post("interventions/");
 		
+		saveInterventionCreationResponseContext();
+	}
+
+	private void saveInterventionCreationResponseContext() {
 		Integer interventionId = HttpLocationParser.tryParseInterventionIdFromHeader(response);
 		ThreadLocalContext.putObject(InterventionSteps.LAST_INTERVENTION_ID_KEY, interventionId);
 		ThreadLocalContext.putObject(HttpResponseSteps.LAST_RESPONSE_OBJECT_KEY, response);

@@ -34,14 +34,20 @@ public class DemoDrugInteractionsFiller {
 	
 	public void loadDrugInteractionsFromStream(Reader reader) throws IOException {
 		BufferedReader bufferedReader = new BufferedReader(reader);
+		try {
+			loadDrugInteractionsFromBufferedReader(bufferedReader);
+		} finally {
+			bufferedReader.close();
+		}
+	}
+
+	private void loadDrugInteractionsFromBufferedReader(BufferedReader bufferedReader) throws IOException {
 		String nextLine;
 		int lineNumber = 0;
 		
 		while ((nextLine = bufferedReader.readLine()) != null) {
 			parseDrugInteraction(nextLine, ++lineNumber);
 		}
-		
-		bufferedReader.close();
 	}
 	
 	private void parseDrugInteraction(final String line, int lineNumber) {

@@ -102,20 +102,20 @@ public class SurgicalToolSteps {
 	
 	@When("j'ajoute cet instrument à cette intervention")
 	public void addInstrumentToIntervention() {
-		addInstrument();
+		createSurgicalTool();
 	}
 	
 	@When("je modifie cet instrument avec des informations valides")
 	public void modifyInstrumentWithValidInformation() {
 		createDefaultSurgicalToolModificationJsonObject();
-		modifyInstrument();
+		modifySurgicalTool();
 	}
 	
 	@When("je modifie le code de cet instrument")
 	public void modifyInstrumentTypeCode() {
 		createDefaultSurgicalToolModificationJsonObject();
 		surgicalToolModificationJson.put(TYPECODE_PARAMETER, SAMPLE_TYPECODE);
-		modifyInstrument();
+		modifySurgicalTool();
 	}
 	
 	@When("j'utilise cet instrument")
@@ -125,21 +125,21 @@ public class SurgicalToolSteps {
 	public void modifyInstrumentStatus() {
 		createDefaultSurgicalToolModificationJsonObject();
 		surgicalToolModificationJson.put(STATUS_PARAMETER, ANOTHER_SAMPLE_STATUS);
-		modifyInstrument();
+		modifySurgicalTool();
 	}
 	
 	@When("je modifie le le numéro de série de cet instrument par un numéro de série existant")
 	public void modifyInstrumentToDuplicateSerialNumber() {
 		createDefaultSurgicalToolModificationJsonObject();
 		surgicalToolModificationJson.put(SERIAL_NUMBER_PARAMETER, generateSerialNumberFromIndex(FIRST_GENERATED_SERIALNUMBER_INDEX));
-		modifyInstrument();
+		modifySurgicalTool();
 	}
 	
 	@When("je rend l'instrument anonyme")
 	public void modifyInstrumentToAnonymous() {
 		createDefaultSurgicalToolModificationJsonObject();
 		surgicalToolModificationJson.remove(SERIAL_NUMBER_PARAMETER);
-		modifyInstrument();
+		modifySurgicalTool();
 	}
 	
 	@Then("cet instrument est conservé")
@@ -152,19 +152,23 @@ public class SurgicalToolSteps {
 		response.then().statusCode(Status.OK.getStatusCode());
 	}
 	
-	private void addInstrument() {
+	private void createSurgicalTool() {
 		Integer interventionId = (Integer) ThreadLocalContext.getObject(InterventionSteps.LAST_INTERVENTION_ID_KEY);
 		
 		response = HttpResponseSteps.getDefaultRequestSepcification(surgicalToolCreationJson)
 				.post(String.format("interventions/%d/instruments/", interventionId));
 		
+		saveSurgicalToolCreationResponseContext();
+	}
+
+	private void saveSurgicalToolCreationResponseContext() {
 		Integer surgicalToolId = HttpLocationParser.tryParseSurgicalToolIdFromHeader(response);
 		ThreadLocalContext.putObject(LAST_SURGICAL_TOOL_ID_KEY, surgicalToolId);
 		ThreadLocalContext.putObject(LAST_SURGICAL_TOOL_TYPECODE_KEY, surgicalToolCreationJson.getString(TYPECODE_PARAMETER));
 		ThreadLocalContext.putObject(HttpResponseSteps.LAST_RESPONSE_OBJECT_KEY, response);
 	}
 	
-	private void modifyInstrument() {
+	private void modifySurgicalTool() {
 		Integer interventionId = (Integer) ThreadLocalContext.getObject(InterventionSteps.LAST_INTERVENTION_ID_KEY);
 		String surgicalToolTypeCode = (String) ThreadLocalContext.getObject(LAST_SURGICAL_TOOL_TYPECODE_KEY);
 		Integer surgicalToolId = (Integer) ThreadLocalContext.getObject(LAST_SURGICAL_TOOL_ID_KEY);
