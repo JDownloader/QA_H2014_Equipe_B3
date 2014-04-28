@@ -13,8 +13,8 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import ca.ulaval.glo4002.services.DrugService;
-import ca.ulaval.glo4002.services.ServiceException;
 import ca.ulaval.glo4002.services.dto.DrugSearchDTO;
+import ca.ulaval.glo4002.services.dto.validators.DTOValidationException;
 import ca.ulaval.glo4002.services.dto.validators.DrugSearchDTOValidator;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -43,8 +43,8 @@ public class DrugResourceTest {
 	}
 
 	@Test
-	public void verifyDrugSearchReturnsBadRequestResponseOnServiceException() throws Exception {
-		doThrow(new ServiceException()).when(drugServiceMock).searchDrug(any(DrugSearchDTO.class), any(DrugSearchDTOValidator.class));
+	public void verifyDrugSearchReturnsBadRequestResponseOnDTOValidationException() throws Exception {
+		doThrow(new DTOValidationException()).when(drugServiceMock).searchDrug(any(DrugSearchDTO.class), any(DrugSearchDTOValidator.class));
 		Response receivedResponse = drugResource.get(SAMPLE_DRUG_NAME);
 		assertEquals(Status.BAD_REQUEST.getStatusCode(), receivedResponse.getStatus());
 	}

@@ -4,7 +4,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
 import ca.ulaval.glo4002.domain.intervention.*;
-import ca.ulaval.glo4002.domain.patient.PatientNotFoundException;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
 import ca.ulaval.glo4002.domain.surgicaltool.*;
 import ca.ulaval.glo4002.entitymanager.EntityManagerProvider;
@@ -15,11 +14,6 @@ import ca.ulaval.glo4002.services.dto.*;
 import ca.ulaval.glo4002.services.dto.validators.*;
 
 public class InterventionService {
-	public static final String ERROR_INT001 = "INT001";
-	public static final String ERROR_INT002 = "INT002";
-	public static final String ERROR_INT010 = "INT010";
-	public static final String ERROR_INT011 = "INT011";
-	public static final String ERROR_INT012 = "INT012";
 
 	private EntityManager entityManager;
 	private EntityTransaction entityTransaction;
@@ -52,14 +46,11 @@ public class InterventionService {
 
 			entityTransaction.commit();
 			return intervention.getId();
-		} catch (DTOValidationException | InterventionTypeParseException | InterventionStatusParseException e) {
-			throw new ServiceException(ERROR_INT001, e.getMessage());
-		} catch (PatientNotFoundException e) {
-			throw new ServiceException(ERROR_INT002, e.getMessage());
-		} finally {
+		} catch (Exception e) {
 			if (entityTransaction.isActive()) {
 				entityTransaction.rollback();
 			}
+			throw e;
 		}
 	}
 
@@ -79,16 +70,11 @@ public class InterventionService {
 
 			entityTransaction.commit();
 			return newSurgicalTool.getId();
-		} catch (DTOValidationException | InterventionNotFoundException | SurgicalToolStatusParseException e) {
-			throw new ServiceException(ERROR_INT010, e.getMessage());
-		} catch (SurgicalToolExistsException e) {
-			throw new ServiceException(ERROR_INT011, e.getMessage());
-		} catch (SurgicalToolRequiresSerialNumberException e) {
-			throw new ServiceException(ERROR_INT012, e.getMessage());
-		} finally {
+		} catch (Exception e) {
 			if (entityTransaction.isActive()) {
 				entityTransaction.rollback();
 			}
+			throw e;
 		}
 	}
 
@@ -109,16 +95,11 @@ public class InterventionService {
 			doModifySurgicalTool(surgicalToolModificationDTO);
 
 			entityTransaction.commit();
-		} catch (DTOValidationException | InterventionNotFoundException | SurgicalToolNotFoundException | SurgicalToolStatusParseException e) {
-			throw new ServiceException(ERROR_INT010, e.getMessage());
-		} catch (SurgicalToolExistsException e) {
-			throw new ServiceException(ERROR_INT011, e.getMessage());
-		} catch (SurgicalToolRequiresSerialNumberException e) {
-			throw new ServiceException(ERROR_INT012, e.getMessage());
-		} finally {
+		} catch (Exception e) {
 			if (entityTransaction.isActive()) {
 				entityTransaction.rollback();
 			}
+			throw e;
 		}
 	}
 

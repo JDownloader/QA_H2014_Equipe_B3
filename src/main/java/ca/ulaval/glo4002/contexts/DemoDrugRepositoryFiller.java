@@ -31,6 +31,14 @@ public class DemoDrugRepositoryFiller {
 
 	public void loadDrugsFromStream(Reader reader) throws IOException {
 		CSVReader csvReader = new CSVReader(reader, DRUG_FILE_VALUE_SEPARATOR);
+		try {
+			loadDrugsFromCSVReader(csvReader);
+		} finally {
+			csvReader.close();
+		}
+	}
+
+	private void loadDrugsFromCSVReader(CSVReader csvReader) throws IOException {
 		String[] nextLine;
 		int lineNumber = 0;
 		
@@ -38,8 +46,6 @@ public class DemoDrugRepositoryFiller {
 			Drug drug = parseDrug(nextLine, ++lineNumber);
 			drugRepository.persist(drug);
 		}
-		
-		csvReader.close();
 	}
 
 	private Drug parseDrug(final String[] line, int lineNumber) {

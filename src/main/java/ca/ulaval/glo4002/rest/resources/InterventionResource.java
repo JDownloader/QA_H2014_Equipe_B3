@@ -7,8 +7,16 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
 
+import ca.ulaval.glo4002.domain.intervention.InterventionNotFoundException;
+import ca.ulaval.glo4002.domain.intervention.InterventionStatusParseException;
+import ca.ulaval.glo4002.domain.intervention.InterventionTypeParseException;
+import ca.ulaval.glo4002.domain.patient.PatientNotFoundException;
+import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolExistsException;
+import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolNotFoundException;
+import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolRequiresSerialNumberException;
+import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolStatusParseException;
+import ca.ulaval.glo4002.rest.utils.ResponseBuilder;
 import ca.ulaval.glo4002.services.InterventionService;
-import ca.ulaval.glo4002.services.ServiceException;
 import ca.ulaval.glo4002.services.assemblers.InterventionAssembler;
 import ca.ulaval.glo4002.services.assemblers.SurgicalToolAssembler;
 import ca.ulaval.glo4002.services.dto.*;
@@ -16,6 +24,12 @@ import ca.ulaval.glo4002.services.dto.validators.*;
 
 @Path("interventions/")
 public class InterventionResource {
+	public static final String ERROR_INT001 = "INT001";
+	public static final String ERROR_INT002 = "INT002";
+	public static final String ERROR_INT010 = "INT010";
+	public static final String ERROR_INT011 = "INT011";
+	public static final String ERROR_INT012 = "INT012";
+	
 	private InterventionService interventionService;
 
 	public InterventionResource() {
@@ -36,8 +50,10 @@ public class InterventionResource {
 
 			URI resourceLocationURI = getInterventionResourceLocationURI(interventionId);
 			return Response.status(Status.CREATED).location(resourceLocationURI).build();
-		} catch (ServiceException e) {
-			return Response.status(Status.BAD_REQUEST).entity(new BadRequestDTO(e.getInternalCode(), e.getMessage())).build();
+		} catch (DTOValidationException | InterventionTypeParseException | InterventionStatusParseException e) {
+			return ResponseBuilder.buildResponse(Status.BAD_REQUEST, ERROR_INT001, e.getMessage());
+		} catch (PatientNotFoundException e) {
+			return ResponseBuilder.buildResponse(Status.BAD_REQUEST, ERROR_INT002, e.getMessage());
 		}
 	}
 	
@@ -59,8 +75,12 @@ public class InterventionResource {
 
 			URI resourceLocationURI = getSurgicalToolResourceLocationURI(interventionNumber, surgicalToolId, surgicalToolCreationDTO.typeCode);
 			return Response.status(Status.CREATED).location(resourceLocationURI).build();
-		} catch (ServiceException e) {
-			return Response.status(Status.BAD_REQUEST).entity(new BadRequestDTO(e.getInternalCode(), e.getMessage())).build();
+		} catch (DTOValidationException | InterventionNotFoundException | SurgicalToolStatusParseException e) {
+			return ResponseBuilder.buildResponse(Status.BAD_REQUEST, ERROR_INT010, e.getMessage());
+		} catch (SurgicalToolExistsException e) {
+			return ResponseBuilder.buildResponse(Status.BAD_REQUEST, ERROR_INT011, e.getMessage());
+		} catch (SurgicalToolRequiresSerialNumberException e) {
+			return ResponseBuilder.buildResponse(Status.BAD_REQUEST, ERROR_INT012, e.getMessage());
 		}
 	}
 	
@@ -84,8 +104,12 @@ public class InterventionResource {
 			interventionService.modifySurgicalTool(surgicalToolModificationDTO, new SurgicalToolModificationDTOValidator());
 
 			return Response.status(Status.OK).build();
-		} catch (ServiceException e) {
-			return Response.status(Status.BAD_REQUEST).entity(new BadRequestDTO(e.getInternalCode(), e.getMessage())).build();
+		} catch (DTOValidationException | InterventionNotFoundException | SurgicalToolNotFoundException | SurgicalToolStatusParseException e) {
+			return ResponseBuilder.buildResponse(Status.BAD_REQUEST, ERROR_INT010, e.getMessage());
+		} catch (SurgicalToolExistsException e) {
+			return ResponseBuilder.buildResponse(Status.BAD_REQUEST, ERROR_INT011, e.getMessage());
+		} catch (SurgicalToolRequiresSerialNumberException e) {
+			return ResponseBuilder.buildResponse(Status.BAD_REQUEST, ERROR_INT012, e.getMessage());
 		}
 	}
 }
