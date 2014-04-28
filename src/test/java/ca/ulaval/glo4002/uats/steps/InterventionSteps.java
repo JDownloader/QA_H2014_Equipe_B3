@@ -4,11 +4,7 @@ import java.text.ParseException;
 
 import javax.ws.rs.core.Response.Status;
 
-import org.jbehave.core.annotations.BeforeScenario;
-import org.jbehave.core.annotations.Composite;
-import org.jbehave.core.annotations.Given;
-import org.jbehave.core.annotations.Then;
-import org.jbehave.core.annotations.When;
+import org.jbehave.core.annotations.*;
 import org.json.JSONObject;
 
 import ca.ulaval.glo4002.domain.intervention.InterventionStatus;
@@ -65,7 +61,7 @@ public class InterventionSteps {
 
 	@Given("une intervention avec un patient inexistant")
 	@Composite(steps = {
-			"Given un patient inexistant"})
+			"Given un patient inexistant" })
 	public void createInterventionWithNonExistingPatient() {
 		createDefaultInterventionJsonObject();
 	}
@@ -91,7 +87,7 @@ public class InterventionSteps {
 	@When("j'ajoute cette intervention au dossier d'un patient")
 	@Composite(steps = {
 			"Given un patient existant",
-			"When j'ajoute cette intervention au dossier de ce patient"})
+			"When j'ajoute cette intervention au dossier de ce patient" })
 	public void addInterventionToExistingPatient() {
 		//Nothing left do to here after composite steps have been run
 	}

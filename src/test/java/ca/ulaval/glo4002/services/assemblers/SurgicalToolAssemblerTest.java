@@ -9,7 +9,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalTool;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolStatus;
-import ca.ulaval.glo4002.services.assemblers.SurgicalToolAssembler;
 import ca.ulaval.glo4002.services.dto.SurgicalToolCreationDTO;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -18,7 +17,7 @@ public class SurgicalToolAssemblerTest {
 	private static final String SAMPLE_SERIAL_NUMBER = "2321984423QTY";
 	private static final String SAMPLE_TYPE_CODE = "1FT566";
 	private static final SurgicalToolStatus SAMPLE_STATUS = SurgicalToolStatus.UNUSED;
-
+ 
 	SurgicalToolAssembler surgicalToolFactory = new SurgicalToolAssembler();
 	SurgicalToolCreationDTO surgicalToolCreationDTO = new SurgicalToolCreationDTO();
 

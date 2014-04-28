@@ -4,12 +4,7 @@ import java.text.ParseException;
 
 import javax.ws.rs.core.Response.Status;
 
-import org.jbehave.core.annotations.Aliases;
-import org.jbehave.core.annotations.BeforeScenario;
-import org.jbehave.core.annotations.Composite;
-import org.jbehave.core.annotations.Given;
-import org.jbehave.core.annotations.Then;
-import org.jbehave.core.annotations.When;
+import org.jbehave.core.annotations.*;
 import org.json.JSONObject;
 
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolStatus;
@@ -77,7 +72,7 @@ public class SurgicalToolSteps {
 	@Composite(steps = {
             "Given une intervention avec des informations valide", 
             "When j'ajoute cette intervention au dossier d'un patient",
-            "When j'ajoute cet instrument à cette intervention"}) 
+            "When j'ajoute cet instrument à cette intervention" }) 
 	public void addInstrumentToAnIntervention() {
 		//Nothing left do to here after composite steps have been run
 	}
@@ -86,7 +81,7 @@ public class SurgicalToolSteps {
 	@Composite(steps = {
             "Given une intervention autorisant les instruments anonymes", 
             "When j'ajoute cette intervention au dossier d'un patient",
-	 		"When j'ajoute cet instrument à cette intervention"}) 
+	 		"When j'ajoute cet instrument à cette intervention" }) 
 	public void addInstrumentToInterventionAuthorizingAnonymousSirgucalTools() {
 		//Nothing left do to here after composite steps have been run
 	}
@@ -95,7 +90,7 @@ public class SurgicalToolSteps {
 	@Composite(steps = {
             "Given une intervention interdisant les instruments anonymes", 
             "When j'ajoute cette intervention au dossier d'un patient",
-	 		"When j'ajoute cet instrument à cette intervention"}) 
+	 		"When j'ajoute cet instrument à cette intervention" }) 
 	public void addInstrumentToInterventionProhibitingAnonymousSirgucalTools() {
 		//Nothing left do to here after composite steps have been run
 	}
@@ -121,7 +116,7 @@ public class SurgicalToolSteps {
 	@When("j'utilise cet instrument")
 	@Aliases(values = {
 			"j'utilise cet instrument une autre fois",
-			"je modifie le statut de cet instrument"})
+			"je modifie le statut de cet instrument" })
 	public void modifyInstrumentStatus() {
 		createDefaultSurgicalToolModificationJsonObject();
 		surgicalToolModificationJson.put(STATUS_PARAMETER, ANOTHER_SAMPLE_STATUS);

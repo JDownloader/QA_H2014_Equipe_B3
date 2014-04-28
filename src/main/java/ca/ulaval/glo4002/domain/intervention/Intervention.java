@@ -1,22 +1,19 @@
 package ca.ulaval.glo4002.domain.intervention;
 
-import java.lang.reflect.Method;
 import java.util.*;
 
 import javax.persistence.*;
 
 import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
-import ca.ulaval.glo4002.domain.surgicaltool.SurgicalTool;
-import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolNotFoundException;
-import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolRequiresSerialNumberException;
+import ca.ulaval.glo4002.domain.surgicaltool.*;
 
 @SuppressWarnings("unused")
 // Suppresses warning for private attributes used for Hibernate persistence
 @Entity
 public class Intervention {
 
-	private static final InterventionType[] forbiddenInterventionTypesForAnonymousSurgicalTools = { InterventionType.EYE, InterventionType.HEART,
+	private static final InterventionType[] forbiddenInterventionTypesForAnonymousSurgicalTools = {InterventionType.EYE, InterventionType.HEART,
 			InterventionType.MARROW };
 
 	@Id
@@ -55,8 +52,7 @@ public class Intervention {
 	}
 	
 	@PostLoad
-	public void linkObservers()
-	{
+	public void linkObservers() {
 		for (SurgicalTool surgicalTool : surgicalTools) {
 			surgicalTool.deleteObservers();
 			addObserverToSurgicalTool(surgicalTool);
@@ -88,7 +84,7 @@ public class Intervention {
 
 		@Override
 		public void update(Observable observable, Object arg) {
-			checkAnonymousSurgicalToolIsAuthorized((SurgicalTool)observable);
+			checkAnonymousSurgicalToolIsAuthorized((SurgicalTool) observable);
 		}
         
     }

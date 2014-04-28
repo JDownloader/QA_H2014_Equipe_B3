@@ -58,16 +58,16 @@ public class InterventionResourceTest {
 	
 	@Test
 	public void verifyInterventionCreationReturnsBadRequestResponseOnDTOValidationException() throws Exception {
-		doThrow(new DTOValidationException()).when(interventionServiceMock).createIntervention(eq(interventionCreationDTOMock), any(InterventionCreationDTOValidator.class),
-				any(InterventionAssembler.class));
+		doThrow(new DTOValidationException()).when(interventionServiceMock).createIntervention(eq(interventionCreationDTOMock), 
+				any(InterventionCreationDTOValidator.class), any(InterventionAssembler.class));
 		Response response = createIntervention();
 		assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
 	}
 
 	@Test
 	public void verifyInterventionCreationReturnsBadRequestResponseOnPatientNotFoundException() throws Exception {
-		doThrow(new PatientNotFoundException()).when(interventionServiceMock).createIntervention(eq(interventionCreationDTOMock), any(InterventionCreationDTOValidator.class),
-				any(InterventionAssembler.class));
+		doThrow(new PatientNotFoundException()).when(interventionServiceMock).createIntervention(eq(interventionCreationDTOMock), 
+				any(InterventionCreationDTOValidator.class), any(InterventionAssembler.class));
 		Response response = createIntervention();
 		assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
 	}
