@@ -5,9 +5,9 @@ import javax.ws.rs.core.Response.Status;
 
 import ca.ulaval.glo4002.services.dto.BadRequestDTO;
 
-public class ResponseBuilder {
+public class ResponseAssembler {
 	
-	public static Response buildResponse(Status status, String internalCode, String message) {
+	public static Response assembleErrorResponse(Status status, String internalCode, String message) {
 		return Response.status(status).entity(new BadRequestDTO(internalCode, message)).build();
 	}
 	

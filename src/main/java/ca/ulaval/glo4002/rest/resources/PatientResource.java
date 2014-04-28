@@ -7,7 +7,7 @@ import javax.ws.rs.core.Response.Status;
 import ca.ulaval.glo4002.domain.drug.DrugNotFoundException;
 import ca.ulaval.glo4002.domain.patient.DrugInteractionException;
 import ca.ulaval.glo4002.domain.patient.PatientNotFoundException;
-import ca.ulaval.glo4002.rest.utils.ResponseBuilder;
+import ca.ulaval.glo4002.rest.utils.ResponseAssembler;
 import ca.ulaval.glo4002.services.PatientService;
 import ca.ulaval.glo4002.services.assemblers.PrescriptionAssembler;
 import ca.ulaval.glo4002.services.dto.PrescriptionCreationDTO;
@@ -41,9 +41,9 @@ public class PatientResource {
 			patientService.createPrescription(prescriptionCreationDTO, new PrescriptionCreationDTOValidator(), new PrescriptionAssembler());
 			return Response.status(Status.CREATED).build();
 		} catch (DTOValidationException | PatientNotFoundException | DrugNotFoundException e) {
-			return ResponseBuilder.buildResponse(Status.BAD_REQUEST, ERROR_PRES001, e.getMessage());
+			return ResponseAssembler.assembleErrorResponse(Status.BAD_REQUEST, ERROR_PRES001, e.getMessage());
 		} catch (DrugInteractionException e) {
-			return ResponseBuilder.buildResponse(Status.CONFLICT, ERROR_PRES002, e.getMessage());
+			return ResponseAssembler.assembleErrorResponse(Status.CONFLICT, ERROR_PRES002, e.getMessage());
 		}
 	}
 }
