@@ -34,7 +34,9 @@ public class DrugResource {
 	public Response get(@QueryParam("nom") String name) throws Exception {
 		try {
 			DrugSearchDTO drugSearchDTO = new DrugSearchDTO(name);
+			
 			List<Drug> drugResults = drugService.searchDrug(drugSearchDTO, new DrugSearchDTOValidator());
+			
 			return Response.status(Status.OK).type(MediaType.APPLICATION_JSON).entity(drugResults).build();
 		} catch (DTOValidationException e) {
 			return ResponseAssembler.assembleErrorResponse(Status.BAD_REQUEST, ERROR_DIN001, e.getMessage());
