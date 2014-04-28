@@ -95,7 +95,7 @@ public class DrugSteps {
 	private void doHttpGet() {
 		response = given().port(JettyTestRunner.JETTY_TEST_PORT).when().get(String.format("medicaments/dins/?nom=%s", drugName));
 
-		ThreadLocalContext.putObject(HttpResponseSteps.RESPONSE_OBJECT_KEY, response);
+		ThreadLocalContext.putObject(HttpResponseSteps.LAST_RESPONSE_OBJECT_KEY, response);
 	}
 
 	@Then("la liste de médicaments retournée contient ceux-ci")

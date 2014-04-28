@@ -8,6 +8,11 @@ Given un instrument avec des informations valides
 When j'ajoute cet instrument à une intervention
 Then cet instrument est conservé
 
+Scenario: Ajouter un instrument anonyme à une intervention
+Given un instrument anonyme avec des informations valides
+When j'ajoute cet instrument à une intervention autorisant les instruments anonymes
+Then cet instrument est conservé
+
 Scenario: Ajouter un instrument avec des informations manquantes
 Given un instrument avec des informations manquantes
 When j'ajoute cet instrument à une intervention
@@ -30,6 +35,19 @@ Scenario: Modifier un instrument
 Given un instrument avec des informations valides
 When j'ajoute cet instrument à une intervention
 And je modifie cet instrument avec des informations valides
+Then cet instrument est modifié
+
+Scenario: Modifier le statut d'un instrument
+Given un instrument avec des informations valides
+When j'ajoute cet instrument à une intervention
+And je modifie le statut de cet instrument
+Then cet instrument est modifié
+
+Scenario: Utiliser plusieurs fois un instrument
+Given un instrument non-utilisé
+When j'ajoute cet instrument à une intervention
+And j'utilise cet instrument
+And j'utilise cet instrument une autre fois
 Then cet instrument est modifié
 
 Scenario: Modifier le code d'un instrument
