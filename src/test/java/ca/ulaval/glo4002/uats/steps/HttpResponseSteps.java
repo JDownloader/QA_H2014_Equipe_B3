@@ -16,14 +16,17 @@ import com.jayway.restassured.specification.RequestSpecification;
 
 
 public class HttpResponseSteps {
-	Response response;
 	public static final String LAST_RESPONSE_OBJECT_KEY = "response_key";
+	
+	private static final int HTTP_500_ERROR_CODE = 500;
+	private static final int HTTP_400_ERROR_CODE = 400;
+	Response response;
 	
 	@Then("une erreur est retournée")
 	public void returnsAnError() {
 		response = (Response) ThreadLocalContext.getObject(LAST_RESPONSE_OBJECT_KEY);
 		
-		assertTrue(response.statusCode() >= 400 && response.statusCode() < 500);
+		assertTrue(response.statusCode() >= HTTP_400_ERROR_CODE && response.statusCode() < HTTP_500_ERROR_CODE);
 	}
 	
 	@Then("cette erreur a le code \"$errorCode\"")
