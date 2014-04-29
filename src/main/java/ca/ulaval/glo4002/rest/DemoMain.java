@@ -8,7 +8,7 @@ import ca.ulaval.glo4002.contexts.BadFileFormatException;
 import ca.ulaval.glo4002.contexts.DemoRepositoryFiller;
 
 public class DemoMain {
-	private static HospitalRestConfigProvider restConfig = HospitalRestConfigProvider.getInstance();
+	private static ConfigProvider restConfig = ConfigProvider.getInstance();
 	private static final int HTTP_SERVER_PORT = restConfig.getInt("SERVER_PORT", 8080);
 
 	public static void main(String[] args) throws Exception {
