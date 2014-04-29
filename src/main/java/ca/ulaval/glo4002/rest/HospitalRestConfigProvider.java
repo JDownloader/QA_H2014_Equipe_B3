@@ -17,12 +17,11 @@ public class HospitalRestConfigProvider {
 		this.prefs = prefs;
 		try {
 			InputStream is = new BufferedInputStream(new FileInputStream(XML_CONFIG_FILE_NAME));
-			prefs.importPreferences(is);
+			Preferences.importPreferences(is);
 		} catch (InvalidPreferencesFormatException e) {
 		} catch (IOException e) {
-			//Static class Preferences have its own error gestion.
-			//If an error is detected, it will always return 
-			//default parameters for get* functions
+			//Static class Preferences has its own exception handling.
+			//Therefore, in case of an error, getters will always return the specified default parameter.
 		}
 	}
 
