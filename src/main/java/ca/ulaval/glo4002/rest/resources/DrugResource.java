@@ -37,7 +37,7 @@ public class DrugResource {
 			
 			List<Drug> drugResults = drugService.searchDrug(drugSearchDTO, new DrugSearchDTOValidator());
 			
-			return Response.status(Status.OK).type(MediaType.APPLICATION_JSON).entity(drugResults).build();
+			return ResponseAssembler.assembleOkResponse(drugResults);
 		} catch (DTOValidationException e) {
 			return ResponseAssembler.assembleErrorResponse(Status.BAD_REQUEST, ERROR_DIN001, e.getMessage());
 		}
