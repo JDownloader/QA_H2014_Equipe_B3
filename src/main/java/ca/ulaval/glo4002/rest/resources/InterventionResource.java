@@ -49,7 +49,7 @@ public class InterventionResource {
 					new InterventionAssembler());
 
 			URI resourceLocationURI = getInterventionResourceLocationURI(interventionId);
-			return Response.status(Status.CREATED).location(resourceLocationURI).build();
+			return ResponseAssembler.assembleCreatedResponse(resourceLocationURI);
 		} catch (DTOValidationException | InterventionTypeParseException | InterventionStatusParseException e) {
 			return ResponseAssembler.assembleErrorResponse(Status.BAD_REQUEST, ERROR_INT001, e.getMessage());
 		} catch (PatientNotFoundException e) {
@@ -74,7 +74,7 @@ public class InterventionResource {
 					new SurgicalToolAssembler());
 
 			URI resourceLocationURI = getSurgicalToolResourceLocationURI(interventionNumber, surgicalToolId, surgicalToolCreationDTO.typeCode);
-			return Response.status(Status.CREATED).location(resourceLocationURI).build();
+			return ResponseAssembler.assembleCreatedResponse(resourceLocationURI);
 		} catch (DTOValidationException | InterventionNotFoundException | SurgicalToolStatusParseException e) {
 			return ResponseAssembler.assembleErrorResponse(Status.BAD_REQUEST, ERROR_INT010, e.getMessage());
 		} catch (SurgicalToolExistsException e) {
@@ -103,7 +103,7 @@ public class InterventionResource {
 
 			interventionService.modifySurgicalTool(surgicalToolModificationDTO, new SurgicalToolModificationDTOValidator());
 
-			return Response.status(Status.OK).build();
+			return ResponseAssembler.assembleOkResponse();
 		} catch (DTOValidationException | InterventionNotFoundException | SurgicalToolNotFoundException | SurgicalToolStatusParseException e) {
 			return ResponseAssembler.assembleErrorResponse(Status.BAD_REQUEST, ERROR_INT010, e.getMessage());
 		} catch (SurgicalToolExistsException e) {
