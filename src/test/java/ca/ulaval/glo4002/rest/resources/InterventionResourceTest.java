@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import ca.ulaval.glo4002.domain.intervention.InterventionFactory;
 import ca.ulaval.glo4002.domain.intervention.InterventionNotFoundException;
 import ca.ulaval.glo4002.domain.patient.PatientNotFoundException;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolExistsException;
@@ -47,7 +48,7 @@ public class InterventionResourceTest {
 	public void verifyInterventionCreationCallsServiceMethodsCorrectly() throws Exception {
 		createIntervention();
 		verify(interventionServiceMock).createIntervention(eq(interventionCreationDTOMock), any(InterventionCreationDTOValidator.class),
-				any(InterventionAssembler.class));
+				any(InterventionAssembler.class), any(InterventionFactory.class));
 	}
 
 	@Test()
@@ -59,7 +60,7 @@ public class InterventionResourceTest {
 	@Test
 	public void verifyInterventionCreationReturnsBadRequestResponseOnDTOValidationException() throws Exception {
 		doThrow(new DTOValidationException()).when(interventionServiceMock).createIntervention(eq(interventionCreationDTOMock), 
-				any(InterventionCreationDTOValidator.class), any(InterventionAssembler.class));
+				any(InterventionCreationDTOValidator.class), any(InterventionAssembler.class), any(InterventionFactory.class));
 		Response response = createIntervention();
 		assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
 	}
@@ -67,7 +68,7 @@ public class InterventionResourceTest {
 	@Test
 	public void verifyInterventionCreationReturnsBadRequestResponseOnPatientNotFoundException() throws Exception {
 		doThrow(new PatientNotFoundException()).when(interventionServiceMock).createIntervention(eq(interventionCreationDTOMock), 
-				any(InterventionCreationDTOValidator.class), any(InterventionAssembler.class));
+				any(InterventionCreationDTOValidator.class), any(InterventionAssembler.class), any(InterventionFactory.class));
 		Response response = createIntervention();
 		assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
 	}

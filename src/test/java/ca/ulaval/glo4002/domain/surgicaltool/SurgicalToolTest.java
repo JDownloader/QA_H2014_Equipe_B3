@@ -4,13 +4,12 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import java.util.Observable;
+import java.util.Observer;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import ca.ulaval.glo4002.domain.intervention.Intervention;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SurgicalToolTest {
@@ -20,12 +19,12 @@ public class SurgicalToolTest {
 	private static final SurgicalToolStatus SAMPLE_STATUS = SurgicalToolStatus.UNUSED;
 	
 	private SurgicalTool surgicalTool;
-	private Intervention.SurgicalToolObserver surgicalToolObserverMock;
+	private Observer observerMock;
 
 	@Before
 	public void init() {
 		surgicalTool = new SurgicalTool(SAMPLE_SERIAL_NUMBER, SAMPLE_TYPE_CODE, SAMPLE_STATUS);
-		surgicalToolObserverMock = mock(Intervention.SurgicalToolObserver.class);
+		observerMock = mock(Observer.class);
 	}
 
 	@Test
@@ -47,9 +46,9 @@ public class SurgicalToolTest {
 	
 	@Test
 	public void changeSerialNumberNotifiesObserver() {
-		surgicalTool.addObserver(surgicalToolObserverMock);
+		surgicalTool.addObserver(observerMock);
 		surgicalTool.changeSerialNumber(SAMPLE_SERIAL_NUMBER);
-		verify(surgicalToolObserverMock).update(any(Observable.class), any(Object.class));
+		verify(observerMock).update(any(Observable.class), any(Object.class));
 	}
 	
 	@Test

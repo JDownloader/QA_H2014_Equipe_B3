@@ -14,28 +14,26 @@ import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalTool;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolNotFoundException;
-import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolRequiresSerialNumberException;
 
 @RunWith(MockitoJUnitRunner.class)
-public class InterventionTest {
+public abstract class InterventionTest {
 
-	private static final Date SAMPLE_DATE = new Date();
-	private static final String SAMPLE_DESCRIPTION = "description";
-	private static final String SAMPLE_ROOM = "room";
-	private static final InterventionStatus SAMPLE_STATUS = InterventionStatus.IN_PROGRESS;
-	private static final InterventionType SAMPLE_TYPE = InterventionType.MARROW;
-	private static final Surgeon SAMPLE_SURGEON = new Surgeon("3");
-	private static final Patient SAMPLE_PATIENT = new Patient(3);
-	private static final String SAMPLE_SERIAL_NUMBER = "235423423";
-	private static final String SAMPLE_ID = "2";
+	protected static final Date SAMPLE_DATE = new Date();
+	protected static final String SAMPLE_DESCRIPTION = "description";
+	protected static final String SAMPLE_ROOM = "room";
+	protected static final InterventionStatus SAMPLE_STATUS = InterventionStatus.IN_PROGRESS;
+	protected static final InterventionType SAMPLE_TYPE = InterventionType.MARROW;
+	protected static final Surgeon SAMPLE_SURGEON = new Surgeon("3");
+	protected static final Patient SAMPLE_PATIENT = new Patient(3);
+	protected static final String SAMPLE_SERIAL_NUMBER = "235423423";
+	protected static final String SAMPLE_ID = "2";
 	
-	private Intervention intervention;
+	protected Intervention intervention;
 	SurgicalTool surgicalToolMock;
 
 	@Before
 	public void init() {
 		surgicalToolMock = mock(SurgicalTool.class);
-		intervention = new Intervention(SAMPLE_DESCRIPTION, SAMPLE_SURGEON, SAMPLE_DATE, SAMPLE_ROOM, SAMPLE_TYPE, SAMPLE_STATUS, SAMPLE_PATIENT);
 	}
 
 	@Test
@@ -44,30 +42,7 @@ public class InterventionTest {
 		intervention.addSurgicalTool(surgicalToolMock);
 		assertTrue(intervention.containsSurgicalTool(surgicalToolMock));
 	}
-	
-	@Test
-	public void addsSurgicalToolObserverCorrectly() {
-		intervention.addSurgicalTool(surgicalToolMock);
-		verify(surgicalToolMock, times(1)).addObserver(any(Intervention.SurgicalToolObserver.class));
-	}
-	
-	@Test(expected = SurgicalToolRequiresSerialNumberException.class)
-	public void disallowsAddingAnonymousSurgicalToolToAForbiddenInterventionType() {
-		when(surgicalToolMock.isAnonymous()).thenReturn(true);
-		intervention.addSurgicalTool(surgicalToolMock);
-	}
-	
-	@Test
-	public void linksObserversCorrectly() {
-		intervention.addSurgicalTool(surgicalToolMock);
-		intervention.addSurgicalTool(surgicalToolMock);
-		
-		intervention.linkObservers();
-		
-		verify(surgicalToolMock, times(2)).deleteObservers();
-		verify(surgicalToolMock, times(4)).addObserver(any(Intervention.SurgicalToolObserver.class));
-	}
-	
+
 	@Test(expected = SurgicalToolNotFoundException.class)
 	public void throwsExceptionWhenRetrievingUnexistingSurgicalToolSerialNumber() {
 		when(surgicalToolMock.compareToSerialNumber(SAMPLE_SERIAL_NUMBER)).thenReturn(false);
@@ -88,7 +63,7 @@ public class InterventionTest {
 	}
 	
 	@Test
-	public void returnsCorrectSurgicalToolWhenSearchBySerialNumber() {
+	public void returnsCorrectSurgicalToolWhenSearchedBySerialNumber() {
 		when(surgicalToolMock.compareToSerialNumber(SAMPLE_SERIAL_NUMBER)).thenReturn(true);
 		intervention.addSurgicalTool(surgicalToolMock);
 		

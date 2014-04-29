@@ -7,6 +7,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
 
+import ca.ulaval.glo4002.domain.intervention.InterventionFactory;
 import ca.ulaval.glo4002.domain.intervention.InterventionNotFoundException;
 import ca.ulaval.glo4002.domain.intervention.InterventionStatusParseException;
 import ca.ulaval.glo4002.domain.intervention.InterventionTypeParseException;
@@ -46,7 +47,7 @@ public class InterventionResource {
 	public Response createIntervention(InterventionCreationDTO interventionCreationDTO) throws Exception {
 		try {
 			Integer interventionId = interventionService.createIntervention(interventionCreationDTO, new InterventionCreationDTOValidator(),
-					new InterventionAssembler());
+					new InterventionAssembler(), new InterventionFactory());
 
 			URI resourceLocationURI = getInterventionResourceLocationURI(interventionId);
 			return Response.status(Status.CREATED).location(resourceLocationURI).build();
