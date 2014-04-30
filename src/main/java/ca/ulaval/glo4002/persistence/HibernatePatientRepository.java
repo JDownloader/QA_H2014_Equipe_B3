@@ -1,11 +1,9 @@
 package ca.ulaval.glo4002.persistence;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
 
-import ca.ulaval.glo4002.domain.patient.Patient;
-import ca.ulaval.glo4002.domain.patient.PatientNotFoundException;
-import ca.ulaval.glo4002.domain.patient.PatientRepository;
-
+import ca.ulaval.glo4002.domain.patient.*;
+ 
 public class HibernatePatientRepository extends HibernateRepository implements PatientRepository {
 
 	public HibernatePatientRepository() {

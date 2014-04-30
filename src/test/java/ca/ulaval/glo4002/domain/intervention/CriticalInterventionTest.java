@@ -1,5 +1,6 @@
 package ca.ulaval.glo4002.domain.intervention;
 
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.Before;
@@ -35,7 +36,7 @@ public class CriticalInterventionTest extends InterventionTest {
 		intervention.addSurgicalTool(surgicalToolMock);
 		intervention.addSurgicalTool(surgicalToolMock);
 		
-		((CriticalIntervention)intervention).linkObservers();
+		((CriticalIntervention) intervention).linkObservers();
 		
 		verify(surgicalToolMock, times(2)).deleteObservers();
 		verify(surgicalToolMock, times(4)).addObserver(any(CriticalIntervention.SurgicalToolObserver.class));

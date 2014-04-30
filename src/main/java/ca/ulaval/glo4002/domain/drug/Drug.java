@@ -5,7 +5,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
-import org.codehaus.jackson.annotate.*;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 @Entity(name = "DRUG")
 @Table(name = "DRUG", indexes = { @Index(name = "NAME_IDX", columnList = "NAME") })

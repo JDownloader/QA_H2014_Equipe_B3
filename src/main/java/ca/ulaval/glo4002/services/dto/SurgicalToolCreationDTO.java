@@ -1,6 +1,7 @@
 package ca.ulaval.glo4002.services.dto;
-
-import org.codehaus.jackson.annotate.*;
+ 
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 public class SurgicalToolCreationDTO {
 	@JsonProperty("typecode")

@@ -2,7 +2,8 @@ package ca.ulaval.glo4002.rest.filters;
 
 import java.io.IOException;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.servlet.*;
 
 import ca.ulaval.glo4002.entitymanager.EntityManagerFactoryProvider;

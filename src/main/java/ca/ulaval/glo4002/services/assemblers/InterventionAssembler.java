@@ -1,13 +1,10 @@
 package ca.ulaval.glo4002.services.assemblers;
 
-import ca.ulaval.glo4002.domain.intervention.Intervention;
-import ca.ulaval.glo4002.domain.intervention.InterventionFactory;
-import ca.ulaval.glo4002.domain.intervention.InterventionStatus;
-import ca.ulaval.glo4002.domain.intervention.InterventionType;
+import ca.ulaval.glo4002.domain.intervention.*;
 import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
 import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
-
+ 
 public class InterventionAssembler {
 
 	public Intervention assembleFromDTO(InterventionCreationDTO interventionCreationDto, InterventionFactory interventionFactory, PatientRepository patientRepository) {

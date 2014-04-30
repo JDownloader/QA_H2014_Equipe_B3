@@ -1,8 +1,6 @@
 package ca.ulaval.glo4002.domain.intervention;
 
-import java.util.Date;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
 import javax.persistence.Entity;
 import javax.persistence.PostLoad;

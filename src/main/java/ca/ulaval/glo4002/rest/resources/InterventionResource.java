@@ -7,15 +7,9 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
 
-import ca.ulaval.glo4002.domain.intervention.InterventionFactory;
-import ca.ulaval.glo4002.domain.intervention.InterventionNotFoundException;
-import ca.ulaval.glo4002.domain.intervention.InterventionStatusParseException;
-import ca.ulaval.glo4002.domain.intervention.InterventionTypeParseException;
+import ca.ulaval.glo4002.domain.intervention.*;
 import ca.ulaval.glo4002.domain.patient.PatientNotFoundException;
-import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolExistsException;
-import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolNotFoundException;
-import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolRequiresSerialNumberException;
-import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolStatusParseException;
+import ca.ulaval.glo4002.domain.surgicaltool.*;
 import ca.ulaval.glo4002.rest.utils.ResponseAssembler;
 import ca.ulaval.glo4002.services.InterventionService;
 import ca.ulaval.glo4002.services.assemblers.InterventionAssembler;

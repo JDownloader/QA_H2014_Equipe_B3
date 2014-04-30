@@ -1,6 +1,6 @@
 package ca.ulaval.glo4002.domain.intervention;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.Before;
@@ -18,7 +18,7 @@ public class NonCriticalInterventionTest extends InterventionTest {
 	}
 	
 	@Test
-	public void addsAddingAnonymousSurgicalToolCorrectly() {
+	public void addsAnonymousSurgicalToolCorrectly() {
 		when(surgicalToolMock.isAnonymous()).thenReturn(true);
 		intervention.addSurgicalTool(surgicalToolMock);
 		assertTrue(intervention.containsSurgicalTool(surgicalToolMock));

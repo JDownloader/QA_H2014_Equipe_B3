@@ -2,8 +2,7 @@ package ca.ulaval.glo4002.rest.utils;
 
 import java.net.URI;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
 
 import ca.ulaval.glo4002.services.dto.BadRequestDTO;
