@@ -18,7 +18,7 @@ public class NonCriticalInterventionTest extends InterventionTest {
 	}
 	
 	@Test
-	public void allowsAddingAnonymousSurgicalTool() {
+	public void addsAddingAnonymousSurgicalToolCorrectly() {
 		when(surgicalToolMock.isAnonymous()).thenReturn(true);
 		intervention.addSurgicalTool(surgicalToolMock);
 		assertTrue(intervention.containsSurgicalTool(surgicalToolMock));
