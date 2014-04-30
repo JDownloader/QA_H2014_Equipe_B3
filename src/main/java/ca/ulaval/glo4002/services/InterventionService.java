@@ -37,12 +37,12 @@ public class InterventionService {
 	}
 
 	public Integer createIntervention(InterventionCreationDTO interventionCreationDTO, InterventionCreationDTOValidator interventionCreationDTOValidator,
-			InterventionAssembler interventionAssembler) {
+			InterventionAssembler interventionAssembler, InterventionFactory interventionFactory) {
 		try {
 			interventionCreationDTOValidator.validate(interventionCreationDTO);
 			entityTransaction.begin();
 
-			Intervention intervention = doCreateIntervention(interventionCreationDTO, interventionAssembler);
+			Intervention intervention = doCreateIntervention(interventionCreationDTO, interventionAssembler, interventionFactory);
 
 			entityTransaction.commit();
 			return intervention.getId();
@@ -54,8 +54,8 @@ public class InterventionService {
 		}
 	}
 
-	public Intervention doCreateIntervention(InterventionCreationDTO interventionCreationDTO, InterventionAssembler interventionAssembler) {
-		Intervention intervention = interventionAssembler.assembleFromDTO(interventionCreationDTO, patientRepository);
+	public Intervention doCreateIntervention(InterventionCreationDTO interventionCreationDTO, InterventionAssembler interventionAssembler, InterventionFactory interventionFactory) {
+		Intervention intervention = interventionAssembler.assembleFromDTO(interventionCreationDTO, interventionFactory, patientRepository);
 		interventionRepository.persist(intervention);
 		return intervention;
 	}

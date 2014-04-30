@@ -40,6 +40,7 @@ public class InterventionServiceTest {
 	private InterventionCreationDTOValidator interventionCreationDTOValidatorMock;
 	private SurgicalToolAssembler surgicalToolFactoryMock;
 	private InterventionAssembler interventionAssemblerMock;
+	private InterventionFactory interventionFactoryMock;
 
 	@Before
 	public void init() {
@@ -61,13 +62,14 @@ public class InterventionServiceTest {
 		interventionCreationDTOValidatorMock = mock(InterventionCreationDTOValidator.class);
 		surgicalToolFactoryMock = mock(SurgicalToolAssembler.class);
 		interventionAssemblerMock = mock(InterventionAssembler.class);
+		interventionFactoryMock = mock(InterventionFactory.class);
 	}
 
 	private void stubMethods() {
 		when(entityManagerMock.getTransaction()).thenReturn(entityTransactionMock);
 		when(interventionRepositoryMock.getById(anyInt())).thenReturn(interventionMock);
 		when(interventionMock.getSurgicalToolBySerialNumberOrId(anyString())).thenReturn(surgicalToolMock);
-		when(interventionAssemblerMock.assembleFromDTO(interventionCreationDTO, patientRepositoryMock)).thenReturn(interventionMock);
+		when(interventionAssemblerMock.assembleFromDTO(interventionCreationDTO, interventionFactoryMock, patientRepositoryMock)).thenReturn(interventionMock);
 		when(surgicalToolFactoryMock.createFromDTO(surgicalToolCreationDTO)).thenReturn(surgicalToolMock);
 	}
 	
@@ -219,7 +221,7 @@ public class InterventionServiceTest {
 	}
 
 	private void createIntervention() {
-		interventionService.createIntervention(interventionCreationDTO, interventionCreationDTOValidatorMock, interventionAssemblerMock);
+		interventionService.createIntervention(interventionCreationDTO, interventionCreationDTOValidatorMock, interventionAssemblerMock, interventionFactoryMock);
 	}
 
 	private Integer createSurgicalTool() {

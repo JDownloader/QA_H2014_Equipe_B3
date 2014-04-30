@@ -26,19 +26,20 @@ public class InterventionAssemblerTest {
 	private static final String SAMPLE_TYPE_PARAMETER = InterventionType.HEART.getValue();
 	private static final String SAMPLE_STATUS_PARAMETER = InterventionStatus.PLANNED.getValue();
 	
-	InterventionAssembler interventionAssembler = new InterventionAssembler();
-	InterventionCreationDTO interventionCreationDTO = new InterventionCreationDTO();
-	PatientRepository patientRepositoryMock;
-	Patient patientMock;
+	private InterventionAssembler interventionAssembler = new InterventionAssembler();
+	private InterventionCreationDTO interventionCreationDTO = new InterventionCreationDTO();
+	private InterventionFactory interventionFactoryMock;
+	private Intervention interventionMock;
+	private PatientRepository patientRepositoryMock;
+	private Patient patientMock;
 	
 	@Before
 	public void init() {
 		setupDTO();
-		patientRepositoryMock = mock(PatientRepository.class);
-		patientMock = mock(Patient.class);
+		createMocks();
 		when(patientRepositoryMock.getById(anyInt())).thenReturn(patientMock);
 	}
-	
+
 	private void setupDTO() {
 		interventionCreationDTO.description = SAMPLE_DESCRIPTION_PARAMETER;
 		interventionCreationDTO.surgeon = SAMPLE_SURGEON_PARAMETER;
@@ -48,14 +49,22 @@ public class InterventionAssemblerTest {
 		interventionCreationDTO.status = SAMPLE_STATUS_PARAMETER;
 	}
 
+	private void createMocks() {
+		interventionFactoryMock = mock(InterventionFactory.class);
+		interventionMock = mock(Intervention.class);
+		patientRepositoryMock = mock(PatientRepository.class);
+		patientMock = mock(Patient.class);
+	}
+
 	@Test
 	public void createsInterventionCorrectly() throws ParseException {
-		Intervention createdIntervention = interventionAssembler.assembleFromDTO(interventionCreationDTO, patientRepositoryMock);
-		Intervention expectedIntervention = new Intervention(SAMPLE_DESCRIPTION_PARAMETER,
+		when(interventionFactoryMock.createIntervention(SAMPLE_DESCRIPTION_PARAMETER,
 				SAMPLE_SURGEON_PARAMETER, SAMPLE_DATE_PARAMETER,
 				SAMPLE_ROOM_PARAMETER, InterventionType.fromString(SAMPLE_TYPE_PARAMETER),
-				InterventionStatus.fromString(SAMPLE_STATUS_PARAMETER), patientMock);
+				InterventionStatus.fromString(SAMPLE_STATUS_PARAMETER), patientMock)).thenReturn(interventionMock);
 		
-		assertReflectionEquals(expectedIntervention, createdIntervention);
+		Intervention assembledIntervention = interventionAssembler.assembleFromDTO(interventionCreationDTO, interventionFactoryMock, patientRepositoryMock);
+		
+		assertReflectionEquals(interventionMock, assembledIntervention);
 	}
 }

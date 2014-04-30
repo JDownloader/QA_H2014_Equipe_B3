@@ -11,10 +11,7 @@ import ca.ulaval.glo4002.domain.surgicaltool.*;
 @SuppressWarnings("unused")
 // Suppresses warning for private attributes used for Hibernate persistence
 @Entity
-public class Intervention {
-
-	private static final InterventionType[] forbiddenInterventionTypesForAnonymousSurgicalTools = {InterventionType.EYE, InterventionType.HEART,
-			InterventionType.MARROW };
+public abstract class Intervention {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,13 +28,13 @@ public class Intervention {
 	@ManyToOne()
 	private Patient patient;
 	@OneToMany(cascade = CascadeType.ALL)
-	private List<SurgicalTool> surgicalTools = new ArrayList<SurgicalTool>();
+	protected List<SurgicalTool> surgicalTools = new ArrayList<SurgicalTool>();
 
 	protected Intervention() {
 		// Required for Hibernate.
 	}
 
-	public Intervention(String description, Surgeon surgeon, Date date, String room, InterventionType type, InterventionStatus status, Patient patient) {
+	protected Intervention(String description, Surgeon surgeon, Date date, String room, InterventionType type, InterventionStatus status, Patient patient) {
 		this.description = description;
 		this.surgeon = surgeon;
 		this.date = date;
@@ -51,14 +48,6 @@ public class Intervention {
 		return this.id;
 	}
 	
-	@PostLoad
-	public void linkObservers() {
-		for (SurgicalTool surgicalTool : surgicalTools) {
-			surgicalTool.deleteObservers();
-			addObserverToSurgicalTool(surgicalTool);
-		}
-	}
-	
 	public SurgicalTool getSurgicalToolBySerialNumberOrId(String serialNumberOrId) {
 		for (SurgicalTool surgicalTool : surgicalTools) {
 			if (surgicalTool.compareToSerialNumber(serialNumberOrId) || surgicalTool.compareToId(serialNumberOrId)) {
@@ -70,32 +59,10 @@ public class Intervention {
 				serialNumberOrId, this.id));
 	}
 
-	public void addSurgicalTool(SurgicalTool surgicalTool) {
-		checkAnonymousSurgicalToolIsAuthorized(surgicalTool);
-		addObserverToSurgicalTool(surgicalTool);
-		surgicalTools.add(surgicalTool);
-	}
+	public abstract void addSurgicalTool(SurgicalTool surgicalTool);
 
 	public boolean containsSurgicalTool(SurgicalTool surgicalTool) {
 		return surgicalTools.contains(surgicalTool);
 	}
-	
-	public class SurgicalToolObserver implements Observer {
 
-		@Override
-		public void update(Observable observable, Object arg) {
-			checkAnonymousSurgicalToolIsAuthorized((SurgicalTool) observable);
-		}
-        
-    }
-	
-	private void checkAnonymousSurgicalToolIsAuthorized(SurgicalTool surgicalTool) {
-		if (surgicalTool.isAnonymous() && Arrays.asList(forbiddenInterventionTypesForAnonymousSurgicalTools).contains(type)) {
-			throw new SurgicalToolRequiresSerialNumberException("Erreur - requiert numéro de série.");
-		}
-	}
-	
-	private void addObserverToSurgicalTool(SurgicalTool surgicalTool) {
-		surgicalTool.addObserver(new SurgicalToolObserver());
-	}
 }
