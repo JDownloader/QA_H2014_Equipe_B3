@@ -3,7 +3,8 @@ package ca.ulaval.glo4002.services;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import ca.ulaval.glo4002.domain.drug.DrugRepository;
 import ca.ulaval.glo4002.services.dto.DrugSearchDTO;
 import ca.ulaval.glo4002.services.dto.validators.DrugSearchDTOValidator;
-
+ 
 @RunWith(MockitoJUnitRunner.class)
 public class DrugServiceTest {
 

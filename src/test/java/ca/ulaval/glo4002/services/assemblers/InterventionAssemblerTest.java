@@ -1,6 +1,8 @@
 package ca.ulaval.glo4002.services.assemblers;
 
-import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
+import static org.unitils.reflectionassert.ReflectionAssert.*;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -10,13 +12,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.mockito.Mockito.*;
 import ca.ulaval.glo4002.domain.intervention.*;
 import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.patient.PatientRepository;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
 import ca.ulaval.glo4002.services.dto.InterventionCreationDTO;
-
+ 
 @RunWith(MockitoJUnitRunner.class)
 public class InterventionAssemblerTest {
 	private static final String SAMPLE_DESCRIPTION_PARAMETER = "description";

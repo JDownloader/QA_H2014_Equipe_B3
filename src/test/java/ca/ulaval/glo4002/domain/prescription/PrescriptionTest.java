@@ -1,12 +1,14 @@
 package ca.ulaval.glo4002.domain.prescription;
 
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
+
 import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 import ca.ulaval.glo4002.domain.drug.Drug;
 import ca.ulaval.glo4002.domain.staff.StaffMember;
 

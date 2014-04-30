@@ -1,7 +1,7 @@
 package ca.ulaval.glo4002.domain.intervention;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 import java.util.Date;
 
@@ -12,7 +12,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import ca.ulaval.glo4002.domain.patient.Patient;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
-
+ 
 @RunWith(MockitoJUnitRunner.class)
 public class InterventionFactoryTest {
 	

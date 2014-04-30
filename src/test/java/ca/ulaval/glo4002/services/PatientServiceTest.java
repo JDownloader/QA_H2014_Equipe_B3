@@ -13,13 +13,14 @@ import org.mockito.InOrder;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import ca.ulaval.glo4002.domain.drug.DrugRepository;
-import ca.ulaval.glo4002.domain.patient.*;
+import ca.ulaval.glo4002.domain.patient.Patient;
+import ca.ulaval.glo4002.domain.patient.PatientRepository;
 import ca.ulaval.glo4002.domain.prescription.Prescription;
 import ca.ulaval.glo4002.domain.prescription.PrescriptionRepository;
 import ca.ulaval.glo4002.services.assemblers.PrescriptionAssembler;
 import ca.ulaval.glo4002.services.dto.PrescriptionCreationDTO;
 import ca.ulaval.glo4002.services.dto.validators.PrescriptionCreationDTOValidator;
-
+ 
 @RunWith(MockitoJUnitRunner.class)
 public class PatientServiceTest {
 	private PatientService patientService;

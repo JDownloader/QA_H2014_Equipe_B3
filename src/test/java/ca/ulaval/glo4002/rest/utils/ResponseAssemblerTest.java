@@ -6,8 +6,7 @@ import static org.unitils.reflectionassert.ReflectionAssert.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
 
 import org.junit.Before;

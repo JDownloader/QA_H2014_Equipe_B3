@@ -1,7 +1,6 @@
 package ca.ulaval.glo4002.uats.steps;
 
-import static com.jayway.restassured.RestAssured.given;
-
+import static com.jayway.restassured.RestAssured.*;
 import static org.junit.Assert.*;
 
 import org.jbehave.core.annotations.Then;
@@ -13,7 +12,6 @@ import ca.ulaval.glo4002.uats.steps.contexts.ThreadLocalContext;
 
 import com.jayway.restassured.response.Response;
 import com.jayway.restassured.specification.RequestSpecification;
-
 
 public class HttpResponseSteps {
 	public static final String LAST_RESPONSE_OBJECT_KEY = "response_key";

@@ -1,6 +1,5 @@
 package ca.ulaval.glo4002.uats.steps.contexts;
-
-
+ 
 public class ThreadLocalContext {
     static final class ContextLocal extends ThreadLocal<ContextDataStore> {
         @Override

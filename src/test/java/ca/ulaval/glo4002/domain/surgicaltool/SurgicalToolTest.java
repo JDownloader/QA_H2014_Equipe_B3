@@ -1,6 +1,7 @@
 package ca.ulaval.glo4002.domain.surgicaltool;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 import java.util.Observable;
