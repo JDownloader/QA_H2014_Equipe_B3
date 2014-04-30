@@ -29,7 +29,7 @@ public abstract class InterventionTest {
 	protected static final String SAMPLE_ID = "2";
 	
 	protected Intervention intervention;
-	SurgicalTool surgicalToolMock;
+	protected SurgicalTool surgicalToolMock;
 
 	@Before
 	public void init() {
