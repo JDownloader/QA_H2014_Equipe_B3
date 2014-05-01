@@ -34,7 +34,9 @@ public class DrugService {
 		try {
 			drugSearchDTOValidator.validate(drugSearchDTO);
 			entityTransaction.begin();
+			
 			List<Drug> drugResults = drugRepository.search(drugSearchDTO.name);
+			
 			entityTransaction.commit();
 			return drugResults;
 		} catch (Exception e) {

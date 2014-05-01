@@ -33,11 +33,6 @@ public class DemoRepositoryFiller  {
 		this.drugInteractionsPath = drugInteractionsPath;
 	}
 	
-	private void createDefaultRepositories() {
-		drugRepository = new HibernateDrugRepository(entityManager);
-		patientRepository = new HibernatePatientRepository(entityManager);
-	}
-	
 	public void fillRepositories() throws IOException {
 		EntityManagerFactory entityManagerFactory = EntityManagerFactoryProvider.getFactory();
 		entityManager = entityManagerFactory.createEntityManager();
@@ -48,6 +43,11 @@ public class DemoRepositoryFiller  {
 		fillPatientRepository();
 		
 		entityManager.close();
+	}
+	
+	private void createDefaultRepositories() {
+		drugRepository = new HibernateDrugRepository(entityManager);
+		patientRepository = new HibernatePatientRepository(entityManager);
 	}
 
 	private void fillDrugRepository() throws IOException {

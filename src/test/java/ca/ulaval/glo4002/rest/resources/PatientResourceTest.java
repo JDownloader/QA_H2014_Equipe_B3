@@ -38,12 +38,12 @@ public class PatientResourceTest {
 	@Test
 	public void verifyPrescriptionCreationCallsServiceMethodsCorrectly() throws Exception {
 		createPrescription();
-		verify(patientServiceMock).createPrescription(eq(prescriptionCreationDTOMock), any(PrescriptionCreationDTOValidator.class),
+		verify(patientServiceMock, times(1)).createPrescription(eq(prescriptionCreationDTOMock), any(PrescriptionCreationDTOValidator.class),
 				any(PrescriptionAssembler.class));
 	}
 
 	@Test
-	public void verifyPrescriptionCreationReturnsCreatedResponse() throws Exception {
+	public void verifyPrescriptionCreationReturnsCreatedResponseOnSuccess() throws Exception {
 		Response response = createPrescription();
 		assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
 	}

@@ -15,6 +15,7 @@ import ca.ulaval.glo4002.services.dto.PrescriptionCreationDTO;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PrescriptionCreationDTOValidatorTest {
+	private static final String WHITE_SPACE = " ";
 	private static final Date SAMPLE_DATE_PARAMETER = new Date(3);
 	private static final Integer SAMPLE_RENEWALS_PARAMETER = 2;
 	private static final String SAMPLE_DRUG_NAME_PARAMETER = "drug_name";
@@ -36,7 +37,7 @@ public class PrescriptionCreationDTOValidatorTest {
 	}
 
 	@Test
-	public void validatingRequestWithDrugNameDoesNotThrowAnException() {
+	public void validRequestWithDrugNameIsCorrectlyValidated() {
 		prescriptionCreationDTO.din = null;
 		prescriptionCreationDTO.drugName = SAMPLE_DRUG_NAME_PARAMETER;
 
@@ -48,7 +49,7 @@ public class PrescriptionCreationDTOValidatorTest {
 	}
 
 	@Test
-	public void validatingRequestWithDinDoesNotThrowAnException() {
+	public void validRequestWithDinIsCorrectlyValidated() {
 		prescriptionCreationDTO.din = SAMPLE_DIN_PARAMETER;
 		prescriptionCreationDTO.drugName = null;
 
@@ -62,13 +63,13 @@ public class PrescriptionCreationDTOValidatorTest {
 	@Test(expected = DTOValidationException.class)
 	public void disallowsEmptyDrugName() {
 		prescriptionCreationDTO.din = null;
-		prescriptionCreationDTO.drugName = "";
+		prescriptionCreationDTO.drugName = WHITE_SPACE;
 
 		prescriptionCreationDTOValidator.validate(prescriptionCreationDTO);
 	}
 
 	@Test(expected = DTOValidationException.class)
-	public void disallowsUnspecifiedDrugAndDrugNameParameters() {
+	public void disallowsDrugAndDrugNameParametersBothNotSpecified() {
 		prescriptionCreationDTO.din = null;
 		prescriptionCreationDTO.drugName = null;
 

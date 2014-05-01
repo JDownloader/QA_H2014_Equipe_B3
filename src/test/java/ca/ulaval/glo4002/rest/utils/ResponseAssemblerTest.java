@@ -49,6 +49,13 @@ public class ResponseAssemblerTest {
 	
 	@Test
 	public void assemblesCreatedResponseCorrectly() {
+		Response expectedResponse = Response.status(Status.CREATED).build();
+		Response actualResponse = ResponseAssembler.assembleCreatedResponse();
+		assertReflectionEquals(expectedResponse, actualResponse);
+	}
+	
+	@Test
+	public void assemblesCreatedResponseWithLocationCorrectly() {
 		Response expectedResponse = Response.status(Status.CREATED).location(uri).build();
 		Response actualResponse = ResponseAssembler.assembleCreatedResponse(uri);
 		assertReflectionEquals(expectedResponse, actualResponse);

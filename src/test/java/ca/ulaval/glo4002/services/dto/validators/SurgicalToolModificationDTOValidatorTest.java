@@ -13,6 +13,7 @@ import ca.ulaval.glo4002.services.dto.SurgicalToolModificationDTO;
 @RunWith(MockitoJUnitRunner.class)
 public class SurgicalToolModificationDTOValidatorTest {
 
+	private static final String WHITE_SPACE = " ";
 	private static final SurgicalToolStatus SAMPLE_STATUS_PARAMETER = SurgicalToolStatus.UNUSED;
 	private static final String SAMPLE_SERIAL_NUMBER_PARAMETER = "23562543-3635345";
 	private static final String SAMPLE_TYPE_CODE = "IT443";
@@ -27,7 +28,7 @@ public class SurgicalToolModificationDTOValidatorTest {
 	}
 
 	@Test
-	public void validatingCompleteRequestDoesNotThrowAnException() {
+	public void validRequestIsCorrectlyValidated() {
 		try {
 			surgicalToolModificationDTOValidator.validate(surgicalToolModificationDTO);
 		} catch (Exception e) {
@@ -48,7 +49,7 @@ public class SurgicalToolModificationDTOValidatorTest {
 
 	@Test(expected = DTOValidationException.class)
 	public void disallowsEmptySerialNumber() {
-		surgicalToolModificationDTO.newSerialNumber = "";
+		surgicalToolModificationDTO.newSerialNumber = WHITE_SPACE;
 
 		surgicalToolModificationDTOValidator.validate(surgicalToolModificationDTO);
 	}
@@ -61,7 +62,7 @@ public class SurgicalToolModificationDTOValidatorTest {
 	}
 
 	@Test(expected = DTOValidationException.class)
-	public void disallowsStatusAndSerialNumberBothUnspecified() {
+	public void disallowsStatusAndSerialNumberBothNotSpecified() {
 		surgicalToolModificationDTO.newStatus = null;
 		surgicalToolModificationDTO.newSerialNumber = null;
 

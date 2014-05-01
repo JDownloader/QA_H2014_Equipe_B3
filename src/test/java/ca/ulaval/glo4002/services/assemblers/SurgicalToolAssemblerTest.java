@@ -31,7 +31,7 @@ public class SurgicalToolAssemblerTest {
 
 	@Test
 	public void assemblesSurgicalToolCorrectly() {
-		SurgicalTool createdSurgicalTool = surgicalToolFactory.createFromDTO(surgicalToolCreationDTO);
+		SurgicalTool createdSurgicalTool = surgicalToolFactory.assembleFromDTO(surgicalToolCreationDTO);
 		SurgicalTool expectedSurgicalTool = new SurgicalTool(SAMPLE_SERIAL_NUMBER, SAMPLE_TYPE_CODE, SAMPLE_STATUS);
 
 		assertReflectionEquals(expectedSurgicalTool, createdSurgicalTool);

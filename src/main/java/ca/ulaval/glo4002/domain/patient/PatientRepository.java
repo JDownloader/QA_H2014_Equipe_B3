@@ -4,7 +4,7 @@ public interface PatientRepository {
 
 	void persist(Patient patient);
 
-	void update(Patient patient);
+	void merge(Patient patient);
 
 	Patient getById(Integer id);
 }

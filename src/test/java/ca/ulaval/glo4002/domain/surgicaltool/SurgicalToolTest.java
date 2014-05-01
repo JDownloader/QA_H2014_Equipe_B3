@@ -46,19 +46,19 @@ public class SurgicalToolTest {
 	}
 	
 	@Test
-	public void changeSerialNumberNotifiesObserver() {
+	public void changingSerialNumberNotifiesObserver() {
 		surgicalTool.addObserver(observerMock);
 		surgicalTool.changeSerialNumber(SAMPLE_SERIAL_NUMBER);
 		verify(observerMock).update(any(Observable.class), any(Object.class));
 	}
 	
 	@Test
-	public void comparesToSerialNumberReturnsTrueWhenComparingWithSameSerialNumber() {
+	public void compareToSerialNumberReturnsTrueWhenComparingWithSameSerialNumber() {
 		assertTrue(surgicalTool.compareToSerialNumber(SAMPLE_SERIAL_NUMBER));
 	}
 	
 	@Test
-	public void comparesToSerialNumberReturnsFalseWhenComparingWithDifferentSerialNumber() {
+	public void compareToSerialNumberReturnsFalseWhenComparingWithDifferentSerialNumber() {
 		assertFalse(surgicalTool.compareToSerialNumber(ANOTHER_SAMPLE_SERIAL_NUMBER));
 	}
 }

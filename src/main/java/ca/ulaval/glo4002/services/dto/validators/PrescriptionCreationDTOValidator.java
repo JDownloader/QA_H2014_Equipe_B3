@@ -15,10 +15,10 @@ public class PrescriptionCreationDTOValidator {
 		} else if (StringUtils.isBlank(prescriptionCreationDTO.staffMember)) {
 			throw new DTOValidationException("Le paramètre 'intervenant' est requis.");
 		} 
-		validateDinAndName(prescriptionCreationDTO);
+		validateDinAndDrugName(prescriptionCreationDTO);
 	}
 	
-	private void validateDinAndName(PrescriptionCreationDTO prescriptionCreationDTO) {
+	private void validateDinAndDrugName(PrescriptionCreationDTO prescriptionCreationDTO) {
 		boolean hasDrugName = !StringUtils.isBlank(prescriptionCreationDTO.drugName);
 		boolean hasDin = prescriptionCreationDTO.din != null;
 

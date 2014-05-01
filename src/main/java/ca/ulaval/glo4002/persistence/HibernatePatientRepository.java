@@ -18,7 +18,7 @@ public class HibernatePatientRepository extends HibernateRepository implements P
 		entityManager.persist(patient);
 	}
 
-	public void update(Patient patient) {
+	public void merge(Patient patient) {
 		entityManager.merge(patient);
 	}
 

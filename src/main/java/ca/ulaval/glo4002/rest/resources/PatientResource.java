@@ -41,7 +41,7 @@ public class PatientResource {
 			
 			patientService.createPrescription(prescriptionCreationDTO, new PrescriptionCreationDTOValidator(), new PrescriptionAssembler());
 			
-			return Response.status(Status.CREATED).build();
+			return ResponseAssembler.assembleCreatedResponse(null);
 		} catch (DTOValidationException | PatientNotFoundException | DrugNotFoundException e) {
 			return ResponseAssembler.assembleErrorResponse(Status.BAD_REQUEST, ERROR_PRES001, e.getMessage());
 		} catch (DrugInteractionException e) {

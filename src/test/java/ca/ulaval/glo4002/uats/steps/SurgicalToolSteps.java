@@ -14,7 +14,7 @@ import ca.ulaval.glo4002.uats.steps.utils.HttpLocationParser;
 import com.jayway.restassured.response.Response;
 
 public class SurgicalToolSteps {
-	private static final int FIRST_GENERATED_SERIALNUMBER_INDEX = 0;
+	private static final int FIRST_GENERATED_SERIALNUMBER_COUNTER_VALUE = 0;
 	public static final String LAST_SURGICAL_TOOL_ID_KEY = "instrument_id_key";
 	public static final String LAST_SURGICAL_TOOL_TYPECODE_KEY = "instrument_typecode_key";
 	
@@ -65,7 +65,7 @@ public class SurgicalToolSteps {
 	@Given("un instrument avec un numéro de série déjà utilisé")
 	public void createSurgicalToolWithDuplicateSerialNumber() {
 		createDefaultSurgicalToolCreationJsonObject();
-		surgicalToolCreationJson.put(SERIAL_NUMBER_PARAMETER, generateSerialNumberFromIndex(FIRST_GENERATED_SERIALNUMBER_INDEX));
+		surgicalToolCreationJson.put(SERIAL_NUMBER_PARAMETER, generateSerialNumberFromCounter(FIRST_GENERATED_SERIALNUMBER_COUNTER_VALUE));
 	}
 	
 	@When("j'ajoute cet instrument à une intervention")
@@ -126,7 +126,7 @@ public class SurgicalToolSteps {
 	@When("je modifie le le numéro de série de cet instrument par un numéro de série existant")
 	public void modifyInstrumentToDuplicateSerialNumber() {
 		createDefaultSurgicalToolModificationJsonObject();
-		surgicalToolModificationJson.put(SERIAL_NUMBER_PARAMETER, generateSerialNumberFromIndex(FIRST_GENERATED_SERIALNUMBER_INDEX));
+		surgicalToolModificationJson.put(SERIAL_NUMBER_PARAMETER, generateSerialNumberFromCounter(FIRST_GENERATED_SERIALNUMBER_COUNTER_VALUE));
 		modifySurgicalTool();
 	}
 	
@@ -150,8 +150,8 @@ public class SurgicalToolSteps {
 	private void createSurgicalTool() {
 		Integer interventionId = (Integer) ThreadLocalContext.getObject(InterventionSteps.LAST_INTERVENTION_ID_KEY);
 		
-		response = HttpResponseSteps.getDefaultRequestSepcification(surgicalToolCreationJson)
-				.post(String.format("interventions/%d/instruments/", interventionId));
+		response = HttpResponseSteps.getDefaultRequestSpecification(surgicalToolCreationJson)
+				.when().post(String.format("interventions/%d/instruments/", interventionId));
 		
 		saveSurgicalToolCreationResponseContext();
 	}
@@ -172,8 +172,8 @@ public class SurgicalToolSteps {
 		String surgicalToolTypeCode = (String) ThreadLocalContext.getObject(LAST_SURGICAL_TOOL_TYPECODE_KEY);
 		Integer surgicalToolId = (Integer) ThreadLocalContext.getObject(LAST_SURGICAL_TOOL_ID_KEY);
 		
-		response = HttpResponseSteps.getDefaultRequestSepcification(surgicalToolModificationJson)
-				.put(String.format("/interventions/%d/instruments/%s/%d", interventionId, surgicalToolTypeCode, surgicalToolId));
+		response = HttpResponseSteps.getDefaultRequestSpecification(surgicalToolModificationJson)
+				.when().put(String.format("/interventions/%d/instruments/%s/%d", interventionId, surgicalToolTypeCode, surgicalToolId));
 		
 		ThreadLocalContext.putObject(HttpResponseSteps.LAST_RESPONSE_OBJECT_KEY, response);
 	}
@@ -181,15 +181,15 @@ public class SurgicalToolSteps {
 	private void createDefaultSurgicalToolCreationJsonObject() {
 		surgicalToolCreationJson.put(TYPECODE_PARAMETER, SAMPLE_TYPECODE);
 		surgicalToolCreationJson.put(STATUS_PARAMETER, SAMPLE_STATUS);
-		surgicalToolCreationJson.put(SERIAL_NUMBER_PARAMETER, generateSerialNumberFromIndex(serialNumberIndexCounter++));
+		surgicalToolCreationJson.put(SERIAL_NUMBER_PARAMETER, generateSerialNumberFromCounter(serialNumberIndexCounter++));
 	}
 	
 	private void createDefaultSurgicalToolModificationJsonObject() {
 		surgicalToolModificationJson.put(STATUS_PARAMETER, ANOTHER_SAMPLE_STATUS);
-		surgicalToolModificationJson.put(SERIAL_NUMBER_PARAMETER, generateSerialNumberFromIndex(serialNumberIndexCounter++));
+		surgicalToolModificationJson.put(SERIAL_NUMBER_PARAMETER, generateSerialNumberFromCounter(serialNumberIndexCounter++));
 	}
 	
-	private String generateSerialNumberFromIndex(Integer serialNumberIndexCounter) {
-		return serialNumberIndexCounter.toString();
+	private String generateSerialNumberFromCounter(Integer serialNumberGeneratorCounter) {
+		return serialNumberGeneratorCounter.toString();
 	}
  }

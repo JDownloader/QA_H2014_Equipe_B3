@@ -47,12 +47,12 @@ public class InterventionResourceTest {
 	@Test
 	public void verifyInterventionCreationCallsServiceMethodsCorrectly() throws Exception {
 		createIntervention();
-		verify(interventionServiceMock).createIntervention(eq(interventionCreationDTOMock), any(InterventionCreationDTOValidator.class),
+		verify(interventionServiceMock, times(1)).createIntervention(eq(interventionCreationDTOMock), any(InterventionCreationDTOValidator.class),
 				any(InterventionAssembler.class), any(InterventionFactory.class));
 	}
 
 	@Test()
-	public void verifyInterventionCreationReturnsCreatedResponse() throws Exception {
+	public void verifyInterventionCreationReturnsCreatedResponseOnSuccess() throws Exception {
 		Response response = createIntervention();
 		assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
 	}
@@ -76,12 +76,12 @@ public class InterventionResourceTest {
 	@Test
 	public void verifySurgicalToolCreationCallsServiceMethodsCorrectly() throws Exception {
 		createSurgicalTool();
-		verify(interventionServiceMock).createSurgicalTool(eq(surgicalToolCreationDTOMock), any(SurgicalToolCreationDTOValidator.class),
+		verify(interventionServiceMock, times(1)).createSurgicalTool(eq(surgicalToolCreationDTOMock), any(SurgicalToolCreationDTOValidator.class),
 				any(SurgicalToolAssembler.class));
 	}
 
 	@Test
-	public void verifySurgicalToolCreationReturnsCreatedResponse() throws Exception {
+	public void verifySurgicalToolCreationReturnsCreatedResponseOnSuccess() throws Exception {
 		Response response = createSurgicalTool();
 		assertEquals(Status.CREATED.getStatusCode(), response.getStatus());
 	}
@@ -122,11 +122,11 @@ public class InterventionResourceTest {
 	@Test
 	public void verifySurgicalToolModificationCallsServiceMethodsCorrectly() throws Exception {
 		modifySurgicalTool();
-		verify(interventionServiceMock).modifySurgicalTool(eq(surgicalToolModificationDTOMock), any(SurgicalToolModificationDTOValidator.class));
+		verify(interventionServiceMock, times(1)).modifySurgicalTool(eq(surgicalToolModificationDTOMock), any(SurgicalToolModificationDTOValidator.class));
 	}
 
 	@Test
-	public void verifySurgicalToolModificationReturnsOkResponse() throws Exception {
+	public void verifySurgicalToolModificationReturnsOkResponseOnSuccess() throws Exception {
 		Response response = modifySurgicalTool();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}

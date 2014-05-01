@@ -44,9 +44,10 @@ public abstract class InterventionTest {
 	}
 
 	@Test(expected = SurgicalToolNotFoundException.class)
-	public void throwsExceptionWhenRetrievingUnexistingSurgicalToolSerialNumber() {
+	public void throwsExceptionWhenRetrievingAnUnexistingSurgicalToolSerialNumber() {
 		when(surgicalToolMock.compareToSerialNumber(SAMPLE_SERIAL_NUMBER)).thenReturn(false);
 		when(surgicalToolMock.compareToId(SAMPLE_ID)).thenReturn(false);
+		
 		intervention.addSurgicalTool(surgicalToolMock);
 		
 		intervention.getSurgicalToolBySerialNumberOrId(SAMPLE_SERIAL_NUMBER);

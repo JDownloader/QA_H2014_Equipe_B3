@@ -72,7 +72,7 @@ public class InterventionServiceTest {
 		when(interventionRepositoryMock.getById(anyInt())).thenReturn(interventionMock);
 		when(interventionMock.getSurgicalToolBySerialNumberOrId(anyString())).thenReturn(surgicalToolMock);
 		when(interventionAssemblerMock.assembleFromDTO(interventionCreationDTO, interventionFactoryMock, patientRepositoryMock)).thenReturn(interventionMock);
-		when(surgicalToolFactoryMock.createFromDTO(surgicalToolCreationDTO)).thenReturn(surgicalToolMock);
+		when(surgicalToolFactoryMock.assembleFromDTO(surgicalToolCreationDTO)).thenReturn(surgicalToolMock);
 	}
 	
 	private void setupDTOs() {
@@ -82,7 +82,7 @@ public class InterventionServiceTest {
 	@Test
 	public void verifyInterventionCreationCallsCorrectRepositoryMethods() {
 		createIntervention();
-		verify(interventionRepositoryMock).persist(interventionMock);
+		verify(interventionRepositoryMock, times(1)).persist(interventionMock);
 	}
 
 	@Test
@@ -90,8 +90,8 @@ public class InterventionServiceTest {
 		createIntervention();
 		InOrder inOrder = inOrder(entityTransactionMock);
 
-		inOrder.verify(entityTransactionMock).begin();
-		inOrder.verify(entityTransactionMock).commit();
+		inOrder.verify(entityTransactionMock, times(1)).begin();
+		inOrder.verify(entityTransactionMock, times(1)).commit();
 	}
 
 	@Test
@@ -102,7 +102,7 @@ public class InterventionServiceTest {
 		try {
 			createIntervention();
 		} catch (RuntimeException e) {
-			verify(entityTransactionMock).rollback();
+			verify(entityTransactionMock, times(1)).rollback();
 			return;
 		}
 	}
@@ -113,7 +113,7 @@ public class InterventionServiceTest {
 
 		createIntervention();
 
-		verify(entityTransactionMock).commit();
+		verify(entityTransactionMock, times(1)).commit();
 		verify(entityTransactionMock, never()).rollback();
 	}
 
@@ -121,14 +121,14 @@ public class InterventionServiceTest {
 	public void verifySurgicalToolCreationCallsCorrectRepositoryMethods() {
 		createSurgicalTool();
 
-		verify(interventionRepositoryMock).getById(anyInt());
-		verify(interventionRepositoryMock).persist(interventionMock);
+		verify(interventionRepositoryMock, times(1)).getById(anyInt());
+		verify(interventionRepositoryMock, times(1)).persist(interventionMock);
 	}
 
 	@Test
 	public void verifySurgicalToolCreationCallsCorrectDomainMethods() {
 		createSurgicalTool();
-		verify(interventionMock).addSurgicalTool(surgicalToolMock);
+		verify(interventionMock, times(1)).addSurgicalTool(surgicalToolMock);
 	}
 
 	@Test
@@ -146,8 +146,8 @@ public class InterventionServiceTest {
 		createSurgicalTool();
 		InOrder inOrder = inOrder(entityTransactionMock);
 
-		inOrder.verify(entityTransactionMock).begin();
-		inOrder.verify(entityTransactionMock).commit();
+		inOrder.verify(entityTransactionMock, times(1)).begin();
+		inOrder.verify(entityTransactionMock, times(1)).commit();
 	}
 
 	@Test
@@ -158,7 +158,7 @@ public class InterventionServiceTest {
 		try {
 			createSurgicalTool();
 		} catch (RuntimeException e) {
-			verify(entityTransactionMock).rollback();
+			verify(entityTransactionMock, times(1)).rollback();
 			return;
 		}
 	}
@@ -177,17 +177,17 @@ public class InterventionServiceTest {
 	public void verifySurgicalToolModificationCallsCorrectRepositoryMethods() {
 		modifySurgicalTool();
 
-		verify(interventionRepositoryMock).getById(anyInt());
-		verify(interventionRepositoryMock).persist(interventionMock);
+		verify(interventionRepositoryMock, times(1)).getById(anyInt());
+		verify(interventionRepositoryMock, times(1)).persist(interventionMock);
 	}
 
 	@Test
 	public void verifySurgicalToolModificationCallsCorrectDomainMethods() {
 		modifySurgicalTool();
 
-		verify(interventionMock).getSurgicalToolBySerialNumberOrId(anyString());
-		verify(surgicalToolMock).setStatus(any(SurgicalToolStatus.class));
-		verify(surgicalToolMock).changeSerialNumber(anyString());
+		verify(interventionMock, times(1)).getSurgicalToolBySerialNumberOrId(anyString());
+		verify(surgicalToolMock, times(1)).setStatus(any(SurgicalToolStatus.class));
+		verify(surgicalToolMock, times(1)).changeSerialNumber(anyString());
 	}
 
 	@Test
@@ -195,8 +195,8 @@ public class InterventionServiceTest {
 		modifySurgicalTool();
 		InOrder inOrder = inOrder(entityTransactionMock);
 
-		inOrder.verify(entityTransactionMock).begin();
-		inOrder.verify(entityTransactionMock).commit();
+		inOrder.verify(entityTransactionMock, times(1)).begin();
+		inOrder.verify(entityTransactionMock, times(1)).commit();
 	}
 
 	@Test
@@ -207,7 +207,7 @@ public class InterventionServiceTest {
 		try {
 			modifySurgicalTool();
 		} catch (RuntimeException e) {
-			verify(entityTransactionMock).rollback();
+			verify(entityTransactionMock, times(1)).rollback();
 			return;
 		}
 	}
@@ -218,7 +218,7 @@ public class InterventionServiceTest {
 
 		modifySurgicalTool();
 
-		verify(entityTransactionMock).commit();
+		verify(entityTransactionMock, times(1)).commit();
 		verify(entityTransactionMock, never()).rollback();
 	}
 

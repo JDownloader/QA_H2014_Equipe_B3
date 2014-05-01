@@ -19,8 +19,6 @@ public class DrugResource {
 	
 	private DrugService drugService;
 
-	public static final String BAD_REQUEST_ERROR_CODE_DIN001 = "DIN001";
-
 	public DrugResource() {
 		this.drugService = new DrugService();
 	}

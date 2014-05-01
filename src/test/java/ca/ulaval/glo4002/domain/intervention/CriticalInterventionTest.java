@@ -20,7 +20,7 @@ public class CriticalInterventionTest extends InterventionTest {
 	}
 	
 	@Test
-	public void addsSurgicalToolObserverCorrectly() {
+	public void addsSurgicalToolObserverWhenAddingSurgicalTool() {
 		intervention.addSurgicalTool(surgicalToolMock);
 		verify(surgicalToolMock, times(1)).addObserver(any(CriticalIntervention.SurgicalToolObserver.class));
 	}

@@ -49,7 +49,7 @@ public class PrescriptionAssemblerTest {
 	@Test
 	public void callsCorrectRepositoryMethod() {
 		prescriptionAssembler.assembleFromDTO(prescriptionCreationDTO, drugRepositoryMock);
-		verify(drugRepositoryMock).getByDin(any(Din.class));
+		verify(drugRepositoryMock, times(1)).getByDin(any(Din.class));
 	}
 	
 	@Test

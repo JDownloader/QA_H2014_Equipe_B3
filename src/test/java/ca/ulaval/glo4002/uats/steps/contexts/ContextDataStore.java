@@ -5,13 +5,13 @@ import java.util.HashMap;
 import org.jbehave.core.context.Context;
 
 public class ContextDataStore extends Context {
-	private HashMap<String, Object> objectMap = new HashMap<String, Object>();
+	private HashMap<String, Object> objectHashMap = new HashMap<String, Object>();
 	
 	public Object getObject(String key) {
-		return objectMap.get(key);
+		return objectHashMap.get(key);
 	}
 	
 	public Object putObject(String key, Object object) {
-		return objectMap.put(key, object);
+		return objectHashMap.put(key, object);
 	}
 }

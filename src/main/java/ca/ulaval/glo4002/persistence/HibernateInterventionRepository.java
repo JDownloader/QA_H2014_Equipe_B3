@@ -10,6 +10,8 @@ import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolExistsException;
 
 public class HibernateInterventionRepository extends HibernateRepository implements InterventionRepository {
 
+	private static final String UNIQUE_SERIALNUMBER_CONSTRAINT_NAME = "UQ_SERIALNUMBER";
+
 	public HibernateInterventionRepository() {
 		super();
 	}
@@ -25,7 +27,7 @@ public class HibernateInterventionRepository extends HibernateRepository impleme
 		} catch (PersistenceException e) {
 			if (e.getCause() instanceof ConstraintViolationException) {
 				String contraintName = ((ConstraintViolationException) e.getCause()).getConstraintName();
-				if (contraintName.contains("UQ_SERIALNUMBER")) {
+				if (contraintName.contains(UNIQUE_SERIALNUMBER_CONSTRAINT_NAME)) {
 					throw new SurgicalToolExistsException("Un instrument avec le numéro de série spécifié existe déjà.", e);
 				}
 			}

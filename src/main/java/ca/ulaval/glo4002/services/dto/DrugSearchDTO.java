@@ -4,6 +4,7 @@ public class DrugSearchDTO {
 	public String name;
 	
 	public DrugSearchDTO() {
+		//Required for unit tests
 	}
 	
 	public DrugSearchDTO(String name) {

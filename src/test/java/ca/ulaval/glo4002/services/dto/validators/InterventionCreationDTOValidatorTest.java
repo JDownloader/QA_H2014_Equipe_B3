@@ -40,7 +40,7 @@ public class InterventionCreationDTOValidatorTest {
 	}
 
 	@Test
-	public void validatingCompleteRequestDoesNotThrowAnException() {
+	public void validRequestIsCorrectlyValidated() {
 		try {
 			interventionCreationDTOValidator.validate(interventionCreationDTO);
 		} catch (Exception e) {

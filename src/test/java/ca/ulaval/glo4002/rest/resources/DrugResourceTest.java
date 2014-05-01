@@ -33,11 +33,11 @@ public class DrugResourceTest {
 	@Test
 	public void verifyDrugSearchCallsServiceMethodsCorrectly() throws Exception {
 		drugResource.get(SAMPLE_DRUG_NAME);
-		verify(drugServiceMock).searchDrug(any(DrugSearchDTO.class), any(DrugSearchDTOValidator.class));
+		verify(drugServiceMock, times(1)).searchDrug(any(DrugSearchDTO.class), any(DrugSearchDTOValidator.class));
 	}
 
 	@Test
-	public void verifyDrugSearchReturnsOkResponse() throws Exception {
+	public void verifyDrugSearchReturnsOkResponseOnSuccess() throws Exception {
 		Response response = drugResource.get(SAMPLE_DRUG_NAME);
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}

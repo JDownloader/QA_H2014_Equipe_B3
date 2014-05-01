@@ -13,20 +13,17 @@ public class DrugTest {
 	private static final String SAMPLE_DESCRIPTION = "SampleDescription";
 	private static final String SAMPLE_DIN_VALUE1 = "SampleDin1";
 	private static final String SAMPLE_DIN_VALUE2 = "SampleDin2";
-	private static final String SAMPLE_DIN_VALUE3 = "SampleDin3";
 	
 	Drug baseDrug;
 	Drug interactiveDrug;
 	Set<Din> interactiveDins;
 	Din sampleDin1;
 	Din sampleDin2;
-	Din sampleDin3;
 	
 	@Before
 	public void init() {
 		sampleDin1 = new Din(SAMPLE_DIN_VALUE1);
 		sampleDin2 = new Din(SAMPLE_DIN_VALUE2);
-		sampleDin3 = new Din(SAMPLE_DIN_VALUE3);
 		
 		interactiveDins = new HashSet<Din>();
 		
@@ -50,7 +47,7 @@ public class DrugTest {
 	
 	@Test
 	public void ignoresInteractionWhenDrugsAreNotInteractive() {
-		interactiveDins.add(sampleDin3);
+		interactiveDins.add(sampleDin2);
 		interactiveDrug.setInteractiveDinList(interactiveDins);
 		assertFalse(baseDrug.isDrugInteractive(interactiveDrug));
 	}

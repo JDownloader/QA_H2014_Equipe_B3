@@ -34,10 +34,9 @@ public class HttpResponseSteps {
 		Assert.assertEquals(errorCode, jsonObject.get("code"));
 	}
 	
-	protected static RequestSpecification getDefaultRequestSepcification(JSONObject jsonObject) {
+	protected static RequestSpecification getDefaultRequestSpecification(JSONObject jsonObject) {
 		return given().port(JettyTestRunner.JETTY_TEST_PORT)
 				.body(jsonObject.toString())
-				.contentType("application/json; charset=UTF-8")
-				.when();
+				.contentType("application/json; charset=UTF-8");
 	}
 }

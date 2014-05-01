@@ -59,9 +59,9 @@ public class DemoDrugInteractionsFiller {
 			drug.setInteractiveDinList(interactiveDins);
 			drugRepository.persist(drug);
 		} catch (DrugNotFoundException e) {
-			throw new BadFileFormatException(String.format("Interactive at line %d could not be found in the repository.", lineNumber));
+			throw new BadFileFormatException(String.format("Le médicament d'interaction spécifié à la ligne %d n'a pu être trouvé dans l'entrepôt.", lineNumber));
 		} catch (Exception e) {
-			throw new BadFileFormatException(String.format("Could not parse line %d due to bad data format.", lineNumber));
+			throw new BadFileFormatException(String.format("Impossible d'analyser la ligne %d dû à un mauvais format de données.", lineNumber));
 		}
 	}
 	

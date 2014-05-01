@@ -67,7 +67,7 @@ public class PatientServiceTest {
 
 		verify(prescriptionRepositoryMock).persist(any(Prescription.class));
 		verify(patientRepositoryMock).getById(anyInt());
-		verify(patientRepositoryMock).update(patientMock);
+		verify(patientRepositoryMock).merge(patientMock);
 	}
 
 	@Test

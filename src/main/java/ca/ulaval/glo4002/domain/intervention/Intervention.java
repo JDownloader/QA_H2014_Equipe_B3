@@ -10,7 +10,7 @@ import ca.ulaval.glo4002.domain.surgicaltool.SurgicalTool;
 import ca.ulaval.glo4002.domain.surgicaltool.SurgicalToolNotFoundException;
 
 @SuppressWarnings("unused")
-// Suppresses warning for private attributes used for Hibernate persistence
+// Suppresses warning for private attributes used by Hibernate persistence
 @Entity
 public abstract class Intervention {
 

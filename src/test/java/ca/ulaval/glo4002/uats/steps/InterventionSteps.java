@@ -96,8 +96,8 @@ public class InterventionSteps {
 	public void createIntervention() {
 		interventionJson.put(PATIENT_PARAMETER, ThreadLocalContext.getObject(PatientSteps.LAST_PATIENT_ID_KEY));
 		
-		response = HttpResponseSteps.getDefaultRequestSepcification(interventionJson)
-				.post("interventions/");
+		response = HttpResponseSteps.getDefaultRequestSpecification(interventionJson)
+				.when().post("interventions/");
 		
 		saveInterventionCreationResponseContext();
 	}

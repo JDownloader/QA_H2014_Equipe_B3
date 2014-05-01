@@ -53,9 +53,9 @@ public class DemoDrugRepositoryFiller {
 			Din din = new Din(line[DRUG_IDENTIFICATION_NUMBER_COLUMN]);
 			return new Drug(din, line[BRAND_NAME_COLUMN], line[DESCRIPTOR_COLUMN]);
 		} catch (NumberFormatException e) {
-			throw new BadFileFormatException(String.format("Could not parse line %d due to bad data format.", lineNumber));
+			throw new BadFileFormatException(String.format("Impossible d'analyser la ligne %d dû à un mauvais format de données.", lineNumber));
 		} catch (ArrayIndexOutOfBoundsException e) {
-			throw new BadFileFormatException(String.format("Could not parse line %d due to invalid number of values.", lineNumber));
+			throw new BadFileFormatException(String.format("Impossible d'analyser la ligne %d dû à un nombre invalide de valeurs.", lineNumber));
 		}
 	}
 }

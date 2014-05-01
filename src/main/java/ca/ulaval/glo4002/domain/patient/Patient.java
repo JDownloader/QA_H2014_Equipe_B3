@@ -29,11 +29,11 @@ public class Patient {
 	}
 
 	public void addPrescription(Prescription prescription) {
-		checkPrescriptionInteractions(prescription);
+		checkForPrescriptionInteractions(prescription);
 		prescriptions.add(prescription);
 	}
 	
-	private void checkPrescriptionInteractions(Prescription newPrescription) {
+	private void checkForPrescriptionInteractions(Prescription newPrescription) {
 		for (Prescription prescription : prescriptions) {
 			if (prescription.isPrescriptionInteractive(newPrescription)) {
 				throw new DrugInteractionException("Interaction détectée");

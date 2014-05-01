@@ -15,7 +15,6 @@ public class SurgicalTool extends Observable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-
 	private String serialNumber;
 	private String typeCode;
 	@Enumerated(EnumType.STRING)

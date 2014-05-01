@@ -92,12 +92,6 @@ public class DrugSteps {
 		expectedDins = new ArrayList<String>(Arrays.asList(ROSALIAC_UV_RICHE_DIN, ROSALIAC_UV_LEGERE_DIN));
 	}
 
-	private void doHttpGet() {
-		response = given().port(JettyTestRunner.JETTY_TEST_PORT).when().get(String.format("medicaments/dins/?nom=%s", drugName));
-
-		ThreadLocalContext.putObject(HttpResponseSteps.LAST_RESPONSE_OBJECT_KEY, response);
-	}
-
 	@Then("la liste de médicaments retournée contient ceux-ci")
 	public void isReturnedDrugListMatching() {
 		String bodyString = response.getBody().asString();
@@ -106,7 +100,7 @@ public class DrugSteps {
 		assertEquals(expectedDins.size(), actualDrugList.length());
 		checkActualDrugListEqualsExpectedDrugList(actualDrugList);
 	}
-
+	
 	private void checkActualDrugListEqualsExpectedDrugList(JSONArray actualDrugList) {
 		for (int i = 0; i < expectedDins.size(); i++) {
 			String expectedDin = expectedDins.get(i);
@@ -122,12 +116,18 @@ public class DrugSteps {
 		assertTrue(drugObject.has(BRAND_NAME_PARAMETER));
 		assertTrue(drugObject.has(DESCRIPTION_PARAMETER));
 	}
-
+	
 	@Then("la liste de médicaments retournée est vide")
 	public void isReturnedDrugListEmpty() {
 		String bodyString = response.getBody().asString();
 		JSONArray actualDrugList = new JSONArray(bodyString);
 
 		assertEquals(EMPTY_SIZE, actualDrugList.length());
+	}
+	
+	private void doHttpGet() {
+		response = given().port(JettyTestRunner.JETTY_TEST_PORT).when().get(String.format("medicaments/dins/?nom=%s", drugName));
+
+		ThreadLocalContext.putObject(HttpResponseSteps.LAST_RESPONSE_OBJECT_KEY, response);
 	}
 }

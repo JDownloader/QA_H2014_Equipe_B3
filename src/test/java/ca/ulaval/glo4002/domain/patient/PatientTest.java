@@ -41,7 +41,7 @@ public class PatientTest {
 	}
 	
 	@Test
-	public void addsPrescriptionCorrectlyWhenDrugInteractionIsNotDetected() {
+	public void prescriptionIsAddedWhenDrugInteractionIsNotDetected() {
 		patient.addPrescription(prescriptionMock);
 		when(prescriptionMock.isPrescriptionInteractive(eq(anotherPrescriptionMock))).thenReturn(false);
 		

@@ -6,7 +6,7 @@ import ca.ulaval.glo4002.services.dto.SurgicalToolCreationDTO;
 
 public class SurgicalToolAssembler {
 
-	public SurgicalTool createFromDTO(SurgicalToolCreationDTO surgicalToolCreationDTO) {
+	public SurgicalTool assembleFromDTO(SurgicalToolCreationDTO surgicalToolCreationDTO) {
 		
 		return new SurgicalTool(surgicalToolCreationDTO.serialNumber,
 				surgicalToolCreationDTO.typeCode, SurgicalToolStatus.fromString(surgicalToolCreationDTO.status));

@@ -16,7 +16,7 @@ public class PatientSteps {
 	}
 	
 	@Given("un patient inexistant")
-	public void setNonExistingPatientID() {
+	public void createdNonExistingPatient() {
 		//Patients already created by demo repository filling
 		ThreadLocalContext.putObject(LAST_PATIENT_ID_KEY, NON_EXISTING_PATIENT_ID);
 	}

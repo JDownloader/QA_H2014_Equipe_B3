@@ -8,7 +8,6 @@ import ca.ulaval.glo4002.domain.intervention.InterventionStatus;
 import ca.ulaval.glo4002.domain.staff.Surgeon;
 
 public class InterventionCreationDTO {
-	
 	public String description;
 	@JsonProperty("chirurgien")
 	public Surgeon surgeon;

@@ -10,6 +10,7 @@ import ca.ulaval.glo4002.services.dto.DrugSearchDTO;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DrugSearchDTOValidatorTest {
+	private static final String EMPTY_STRING = "";
 	private static final String SAMPLE_FOUR_LETTER_PARAMETER = "abcd";
 	private static final String SAMPLE_THREE_LETTER_PARAMETER = "abc";
 	private static final String SAMPLE_TWO_LETTER_PARAMETER = "ab ";
@@ -48,7 +49,7 @@ public class DrugSearchDTOValidatorTest {
 
 	@Test(expected = DTOValidationException.class)
 	public void disallowsEmptyDrugName() {
-		drugSearchDTO.name = "";
+		drugSearchDTO.name = EMPTY_STRING;
 
 		drugSearchDTOValidator.validate(drugSearchDTO);
 	}

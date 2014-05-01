@@ -68,10 +68,10 @@ public class InterventionService {
 			surgicalToolCreationDTOValidator.validate(surgicalToolCreationDTO);
 			entityTransaction.begin();
 
-			SurgicalTool newSurgicalTool = doCreateSurgicalTool(surgicalToolCreationDTO, surgicalToolAssembler);
+			SurgicalTool createdSurgicalTool = doCreateSurgicalTool(surgicalToolCreationDTO, surgicalToolAssembler);
 
 			entityTransaction.commit();
-			return newSurgicalTool.getId();
+			return createdSurgicalTool.getId();
 		} catch (Exception e) {
 			if (entityTransaction.isActive()) {
 				entityTransaction.rollback();
@@ -81,7 +81,7 @@ public class InterventionService {
 	}
 
 	private SurgicalTool doCreateSurgicalTool(SurgicalToolCreationDTO surgicalToolCreationDTO, SurgicalToolAssembler surgicalToolAssembler) {
-		SurgicalTool surgicalTool = surgicalToolAssembler.createFromDTO(surgicalToolCreationDTO);
+		SurgicalTool surgicalTool = surgicalToolAssembler.assembleFromDTO(surgicalToolCreationDTO);
 		Intervention intervention = interventionRepository.getById(surgicalToolCreationDTO.interventionNumber);
 		intervention.addSurgicalTool(surgicalTool);
 		interventionRepository.persist(intervention);

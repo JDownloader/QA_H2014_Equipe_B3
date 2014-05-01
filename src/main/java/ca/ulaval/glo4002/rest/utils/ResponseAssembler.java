@@ -17,6 +17,10 @@ public class ResponseAssembler {
 		return Response.status(Status.OK).type(MediaType.APPLICATION_JSON).entity(entity).build();
 	}
 	
+	public static Response assembleCreatedResponse() {
+		return Response.status(Status.CREATED).build();
+	}
+	
 	public static Response assembleCreatedResponse(URI resourceLocationURI) {
 		return Response.status(Status.CREATED).location(resourceLocationURI).build();
 	}

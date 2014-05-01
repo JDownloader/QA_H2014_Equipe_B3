@@ -61,7 +61,7 @@ public class PatientService {
 		prescriptionRepository.persist(prescription);
 		Patient patient = patientRepository.getById(prescriptionCreationDTO.patientNumber);
 		patient.addPrescription(prescription);
-		patientRepository.update(patient);
+		patientRepository.merge(patient);
 	}
 
 }

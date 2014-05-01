@@ -57,7 +57,7 @@ public class DrugServiceTest {
 	public void verifyDrugSearchCallsCorrectRepositoryMethods() {
 		drugService.searchDrug(drugSearchDTO, drugSearchDToValidatorMock);
 
-		verify(drugRepositoryMock).search(SAMPLE_DRUG_NAME);
+		verify(drugRepositoryMock, times(1)).search(SAMPLE_DRUG_NAME);
 	}
 
 	@Test
@@ -65,8 +65,8 @@ public class DrugServiceTest {
 		drugService.searchDrug(drugSearchDTO, drugSearchDToValidatorMock);
 		InOrder inOrder = inOrder(entityTransactionMock);
 
-		inOrder.verify(entityTransactionMock).begin();
-		inOrder.verify(entityTransactionMock).commit();
+		inOrder.verify(entityTransactionMock, times(1)).begin();
+		inOrder.verify(entityTransactionMock, times(1)).commit();
 	}
 
 	@Test
@@ -77,7 +77,7 @@ public class DrugServiceTest {
 		try {
 			drugService.searchDrug(drugSearchDTO, drugSearchDToValidatorMock);
 		} catch (RuntimeException e) {
-			verify(entityTransactionMock).rollback();
+			verify(entityTransactionMock, times(1)).rollback();
 			return;
 		}
 	}
@@ -88,7 +88,7 @@ public class DrugServiceTest {
 
 		drugService.searchDrug(drugSearchDTO, drugSearchDToValidatorMock);
 
-		verify(entityTransactionMock).commit();
+		verify(entityTransactionMock, times(1)).commit();
 		verify(entityTransactionMock, never()).rollback();
 	}
 }
